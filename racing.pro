@@ -57,7 +57,10 @@ SOURCES += \
     light/Light.cpp \
     scene/SceneManager.cpp \
     render/RenderManager.cpp \
-    util/StringUtil.cpp
+    util/StringUtil.cpp \
+    animation/Animation.cpp \
+    animation/BoneNode.cpp \
+    animation/Skeleton.cpp
 
 HEADERS += \
     tools/ModelLoader/ReadCommon.h \
@@ -105,4 +108,7 @@ HEADERS += \
     render/RenderManager.h \
     util/StringUtil.h \
     examples/fbx_render_test.h \
-    LogUtil.h
+    LogUtil.h \
+    animation/Animation.h \
+    animation/BoneNode.h \
+    animation/Skeleton.h

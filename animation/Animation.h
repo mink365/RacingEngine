@@ -7,4 +7,19 @@ public:
     Animation();
 };
 
+class KeyFrame
+{
+
+};
+
+class AnimationTrack
+{
+
+};
+
+class AnimationStack
+{
+
+};
+
 #endif // ANIMATION_H
