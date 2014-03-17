@@ -6,9 +6,10 @@
 #include <memory>
 #include "platform.h"
 
-class reVec3;
-class reQuat;
-class reMat4;
+#include "math/Vector.h"
+#include "math/Matrix.h"
+#include "math/Quaternion.h"
+
 class BoneNode;
 class AnimationTrack;
 class AnimationStack;

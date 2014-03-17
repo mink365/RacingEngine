@@ -4,6 +4,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+QMAKE_CXXFLAGS += -std=c++11
+
 LIBS += -lpng -ljpeg
 LIBS += -lGL -lGLEW
 LIBS += -lglut -lGLU
