@@ -12,10 +12,10 @@ class SceneManager
 public:
     static SceneManager &getInstance();
 
-    void addRootNode(SceneNode *node);
-    void removeRootNode(const SceneNode *node);
+    void addRootNode(SceneNodePtr node);
+    void removeRootNode(const SceneNodePtr node);
     void clearRootNodes();
-    std::vector<SceneNode *> &getRootNodes();
+    std::vector<SceneNodePtr> &getRootNodes();
 
     void renderScene();
 
@@ -28,15 +28,15 @@ public:
     void clearFrame();
 
 protected:
-    void vist(SceneNode &node);
+    void vist(SceneNodePtr node);
 
 private:
     SceneManager();
 
 private:
-    std::vector<SceneNode*> roots;
+    std::vector<SceneNodePtr> roots;
 
-    std::vector<SceneNode*> sceneTransformUpdateBucket;
+    std::vector<SceneNodePtr> sceneTransformUpdateBucket;
 
     RenderManager renderManger;
 };

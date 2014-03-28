@@ -17,6 +17,9 @@ enum SceneNodeType {
     LIGHT
 };
 
+class SceneNode;
+typedef shared_ptr<SceneNode> SceneNodePtr;
+
 class SceneNode : public Node {
     friend class SceneManager;
 

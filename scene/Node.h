@@ -14,10 +14,14 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "platform.h"
 
-class Node {
+class Node;
+typedef std::shared_ptr<Node> NodePtr;
+
+class Node : public enable_shared_from_this<Node> {
     friend class FbxParser;
     friend class SceneManager;
 public:
@@ -38,13 +42,14 @@ public:
 
     const reMat4& getWorldMatrix() const;
 
-    Node *getParent() const;
-    void setParent(Node *value);
+    NodePtr getParent() const;
+    void setParent(NodePtr value);
+    void resetParent();
 
     int getLevel() const;
 
-    const std::vector<Node *> getChildren() const;
-    void addChild(Node *node);
+    const std::vector<NodePtr> getChildren() const;
+    void addChild(NodePtr node);
 
 protected:
     void setWorldTranslation(const reVec3 &t);
@@ -72,8 +77,8 @@ protected:
     OBJ_ID id;
     int level;
 
-    Node *parent;
-    std::vector<Node*> children;
+    std::weak_ptr<Node> parent;
+    std::vector<NodePtr> children;
 
     reVec3 localTranslation;
     reVec3 localScaling;

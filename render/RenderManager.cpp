@@ -30,11 +30,10 @@ Renderer &RenderManager::getRenderer()
 
 void RenderManager::renderList(RenderableList &list)
 {
-    std::vector<SceneNode *>::iterator iter;
-    for (iter = list.nodes.begin(); iter != list.nodes.end(); ++iter) {
-        SceneNode *node = *iter;
+    for (auto node : list.nodes) {
+        MeshPtr mesh = dynamic_pointer_cast<Mesh>(node);
 
-        this->renderMesh((Mesh &)*node);
+        this->renderMesh(mesh);
     }
 }
 
@@ -58,18 +57,18 @@ void RenderManager::initDefaultRenderState()
     this->renderer.resetToRenderState(defaultRenderState);
 }
 
-void RenderManager::renderMesh(Mesh &mesh)
+void RenderManager::renderMesh(MeshPtr mesh)
 {
-    this->renderer.setWorldMatrix(mesh.getWorldMatrix());
-    mesh.getMaterial().getShder()->getUniform("model")->setData((float*)mesh.getWorldMatrix());
+    this->renderer.setWorldMatrix(mesh->getWorldMatrix());
+    mesh->getMaterial().getShder()->getUniform("model")->setData((float*)mesh->getWorldMatrix());
 
-    glUseProgram(mesh.getMaterial().getShder()->getProgram());
+    glUseProgram(mesh->getMaterial().getShder()->getProgram());
 
-    this->renderer.bindBuffer(mesh.getGeometry());
+    this->renderer.bindBuffer(mesh->getGeometry());
 
-    this->applyMaterial(mesh.getMaterial());
+    this->applyMaterial(mesh->getMaterial());
 
-    this->renderer.renderMesh(mesh.getGeometry());
+    this->renderer.renderMesh(mesh->getGeometry());
 }
 
 void RenderManager::render()

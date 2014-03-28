@@ -40,7 +40,7 @@ public:
 
 public:
     int listType;
-    std::vector<SceneNode *> nodes;
+    std::vector<SceneNodePtr> nodes;
 };
 
 class RenderQueue
@@ -51,8 +51,8 @@ public:
     RenderQueue();
     virtual ~RenderQueue();
 
-    void addRenderableNode(SceneNode &node);
-    void addRenderableNode(SceneNode &node, int type);
+    void addRenderableNode(SceneNodePtr node);
+    void addRenderableNode(SceneNodePtr node, int type);
 
     RenderableList &getRenderableList(int type);
 

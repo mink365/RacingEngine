@@ -160,9 +160,9 @@ void printFloatArray(std::string head, float *v, int count, int split) {
 
 const static int BLOCK_LENGTH = 157;
 const static int BLOCK_COUNT = 5;
-std::vector<SceneNode *> blocks;
-SceneNode *black_box;
-SceneNode* motoRoot;
+std::vector<SceneNodePtr> blocks;
+SceneNodePtr black_box;
+SceneNodePtr motoRoot;
 float y = 0, z = 0, zV = 1, rotation = 0;
 
 // blocks切换的次数记录
@@ -184,7 +184,7 @@ void updateMatrix(bool isAnim) {
     if (y > block_index * BLOCK_LENGTH) {
         // 交换block
 
-        SceneNode *first = blocks[0];
+        SceneNodePtr first = blocks[0];
 
         reVec3 old = first->getLocalTranslation();
         first->setLocalTranslation(reVec3(0, old.y + BLOCK_LENGTH * BLOCK_COUNT, 0));
@@ -276,14 +276,14 @@ void initResource()
 
     delete[] buffer;
 
-    Mesh *black = (Mesh *)parser->getNodes()[0];
+    MeshPtr black = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
 
     filestr.open ((assertDir + "wall.data").c_str(), ios::binary);
     parser->parseStream(&filestr);
     filestr.close();
 
-    Mesh *wall = (Mesh *)parser->getNodes()[0];
-    Mesh *floor = (Mesh *)parser->getNodes()[1];
+    MeshPtr wall = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
+    MeshPtr floor = dynamic_pointer_cast<Mesh>(parser->getNodes()[1]);
 
     assertDir = resDir + "model/Moto/";
 
@@ -300,20 +300,17 @@ void initResource()
     filestr.open((assertDir + "new_group_moto03.data").c_str(), ios::binary);
     parser->parseStream(&filestr);
     filestr.close();
-    Mesh *shadow = (Mesh*)parser->getNodes()[0];
-    Mesh *moto = (Mesh*)parser->getNodes()[1];
+    MeshPtr shadow = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
+    MeshPtr moto = dynamic_pointer_cast<Mesh>(parser->getNodes()[1]);
 
-    std::vector<Mesh *> meshs;
+    std::vector<MeshPtr> meshs;
     meshs.push_back(wall);
     meshs.push_back(floor);
     meshs.push_back(black);
     meshs.push_back(shadow);
     meshs.push_back(moto);
 
-    std::vector<Mesh *>::iterator iter;
-    for (iter = meshs.begin(); iter != meshs.end(); ++iter) {
-        Mesh *node = *iter;
-
+    for (auto node : meshs) {
         Geometry *geometry = &(node->getGeometry());
         BufferObjectUtil::getInstance().loadGeometryToHardware(*geometry);
 
@@ -326,13 +323,14 @@ void initResource()
 //    SceneManager::getInstance().addRootNode(*block);
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
-        SceneNode *block = new SceneNode();
+        SceneNodePtr block = std::make_shared<SceneNode>();
 
-        Mesh *wall_copy = new Mesh();
+        auto wall_copy = std::make_shared<Mesh>();
         *wall_copy = *wall;
 
-        Mesh *floor_copy = new Mesh();
+        auto floor_copy = std::make_shared<Mesh>();
         *floor_copy = *floor;
+
 
         block->addChild(wall_copy);
         block->addChild(floor_copy);
@@ -344,7 +342,7 @@ void initResource()
         blocks.push_back(block);
     }
 
-    motoRoot = new SceneNode();
+    motoRoot = std::make_shared<SceneNode>();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->setLocalTranslation(reVec3(0, 0, 12));

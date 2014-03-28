@@ -25,7 +25,7 @@ void FbxParser::parseStream(std::istream *st) {
     std::cout << "type: " << type << " len: " << mode_len << " index: " << index << " count: " << count << std::endl;
 
     for (int i = 0; i < count; ++i) {
-        Node *node = readNode(st);
+        auto node = readNode(st);
 
         this->nodes.push_back(node);
     }
@@ -39,13 +39,13 @@ void FbxParser::parseData(void *data, long datalen)
     this->parseStream(&stream);
 }
 
-Node * FbxParser::readNode(std::istream *st) {
-    Node *node = NULL;
+NodePtr FbxParser::readNode(std::istream *st) {
+    NodePtr node;
 
     int att_type = reader->ReadInt(st);
 
     if (att_type == NODE_MESH) {
-        node = new Mesh();
+        node = dynamic_pointer_cast<Node>(std::make_shared<Mesh>());
 
         long id = reader->ReadLong(st);
         std::string name = reader->ReadString(st);
@@ -60,17 +60,17 @@ Node * FbxParser::readNode(std::istream *st) {
         if (att_type == NODE_MESH) {
             std::cout << " read mesh" << std::endl;
 
-            this->readMesh(st, (Mesh*)node);
+            this->readMesh(st, dynamic_pointer_cast<Mesh>(node));
         }
 
         int child_count = reader->ReadInt(st);
         for (int i = 0; i < child_count; ++i) {
-            Node *child = this->readNode(st);
+            auto child = this->readNode(st);
 
             node->addChild(child);
         }
     } else if (att_type == NODE_GROUP) {
-        node = new SceneNode();
+        node = dynamic_pointer_cast<Node>(std::make_shared<SceneNode>());
 
         long id = reader->ReadLong(st);
         std::string name = reader->ReadString(st);
@@ -84,7 +84,7 @@ Node * FbxParser::readNode(std::istream *st) {
 
         int child_count = reader->ReadInt(st);
         for (int i = 0; i < child_count; ++i) {
-            Node *child = this->readNode(st);
+            auto child = this->readNode(st);
 
             node->addChild(child);
         }
@@ -102,7 +102,7 @@ void printV(reVec3 *v) {
     std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
 }
 
-void FbxParser::readNodeTransform(std::istream *st, Node *node) {
+void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
     reVec3 transform = reader->ReadVec3(st);
     reVec3 rotation = reader->ReadVec3(st);
     reVec3 scale = reader->ReadVec3(st);
@@ -167,7 +167,7 @@ void printIntArray(std::string head, int *v, int count, int split) {
     std::cout << oss.str() << std::endl;
 }
 
-void FbxParser::readMesh(std::istream *st, Mesh *node) {
+void FbxParser::readMesh(std::istream *st, MeshPtr node) {
     // controller points
     int len = reader->ReadInt(st);
     float points[len * 3];
@@ -295,7 +295,7 @@ void FbxParser::readMesh(std::istream *st, Mesh *node) {
     std::cout << "mesh read done. " << std::endl;
 }
 
-void FbxParser::readMaterial(std::istream *st, Mesh *node) {
+void FbxParser::readMaterial(std::istream *st, MeshPtr node) {
     int id = -1;
 
     do {
@@ -323,7 +323,7 @@ void FbxParser::readMaterial(std::istream *st, Mesh *node) {
     } while (id != -1);
 }
 
-std::vector<Node *> FbxParser::getNodes() const
+std::vector<NodePtr> FbxParser::getNodes() const
 {
     return nodes;
 }

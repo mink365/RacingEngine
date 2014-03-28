@@ -32,17 +32,17 @@ public:
 
     void parseData(void *data, long datalen);
 
-    std::vector<Node *> getNodes() const;
+    std::vector<NodePtr> getNodes() const;
 
 private:
-    Node *readNode(std::istream *st);
-    void readMesh(std::istream *st, Mesh *node);
+    NodePtr readNode(std::istream *st);
+    void readMesh(std::istream *st, MeshPtr node);
 
-    void readNodeTransform(std::istream *st, Node *node);
+    void readNodeTransform(std::istream *st, NodePtr node);
 
-    void readMaterial(std::istream *st, Mesh *node);
+    void readMaterial(std::istream *st, MeshPtr node);
 
-    std::vector<Node *> nodes;
+    std::vector<NodePtr> nodes;
 
     ReadCommon *reader;
 };

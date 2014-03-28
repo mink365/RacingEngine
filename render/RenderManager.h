@@ -20,7 +20,7 @@ public:
 
     Camera &getActivatedCamera();
 
-    void renderMesh(Mesh &mesh);
+    void renderMesh(MeshPtr mesh);
 
     void render();
 

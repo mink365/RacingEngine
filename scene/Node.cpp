@@ -8,7 +8,6 @@
 #include "Node.h"
 
 Node::Node() {
-    this->parent = NULL;
     this->id = 0;
     this->level = 0;
     this->refreshFlags = 0;
@@ -103,8 +102,8 @@ void Node::updateLocalMatrix()
 
 void Node::updateWorldMatrix()
 {
-    if (this->parent != NULL) {
-        this->worldMatrix = this->parent->worldMatrix * this->localMatrix;
+    if (this->getParent() != nullptr) {
+        this->worldMatrix = this->getParent()->worldMatrix * this->localMatrix;
     } else {
         this->worldMatrix = this->localMatrix;
     }
@@ -135,22 +134,25 @@ void Node::updateTransform()
 
 void Node::updateChildrenTransform()
 {
-    std::vector<Node *>::iterator iter;
-    for (iter = this->children.begin(); iter != this->children.end(); ++iter) {
-        Node* child = *iter;
+    for (auto iter = this->children.begin(); iter != this->children.end(); ++iter) {
+        auto child = *iter;
 
         child->updateTransform();
     }
 }
 
-Node *Node::getParent() const
+NodePtr Node::getParent() const
 {
-    return parent;
+    return parent.lock();
 }
 
-void Node::setParent(Node *value)
+void Node::setParent(NodePtr value)
 {
     parent = value;
+}
+
+void Node::resetParent() {
+    parent.reset();
 }
 
 int Node::getLevel() const
@@ -158,15 +160,15 @@ int Node::getLevel() const
     return this->level;
 }
 
-const std::vector<Node *> Node::getChildren() const
+const std::vector<NodePtr> Node::getChildren() const
 {
     return children;
 }
 
-void Node::addChild(Node *node)
+void Node::addChild(NodePtr node)
 {
-    node->parent = this;
-    node->level = node->parent->level + 1;
+    node->parent = this->shared_from_this();
+    node->level = node->getParent()->level + 1;
 
     this->children.push_back(node);
 }

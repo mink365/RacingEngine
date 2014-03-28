@@ -14,16 +14,16 @@ RenderQueue::~RenderQueue()
     }
 }
 
-void RenderQueue::addRenderableNode(SceneNode &node)
+void RenderQueue::addRenderableNode(SceneNodePtr node)
 {
     this->addRenderableNode(node, RENDER_QUEUE_MAIN);
 }
 
-void RenderQueue::addRenderableNode(SceneNode &node, int type)
+void RenderQueue::addRenderableNode(SceneNodePtr node, int type)
 {
     RenderableList &list = this->getRenderableList(type);
 
-    list.nodes.push_back(&node);
+    list.nodes.push_back(node);
 }
 
 RenderableList &RenderQueue::getRenderableList(int type)

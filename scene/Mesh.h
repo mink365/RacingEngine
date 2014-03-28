@@ -5,6 +5,9 @@
 #include <geometry/Geometry.h>
 #include <material/Material.h>
 
+class Mesh;
+typedef std::shared_ptr<Mesh> MeshPtr;
+
 class Mesh : public SceneNode
 {
 public:
