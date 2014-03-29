@@ -8,15 +8,18 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 
-class reColor {
+namespace re {
+
+class Color {
 public:
     float r, g, b, a;
 
-    reColor();
-    reColor(float r, float g, float b, float a);
+    Color();
+    Color(float r, float g, float b, float a);
 
     void set(float r, float g, float b, float a);
 };
 
+} // namespace re
 
 #endif /* COLOR_H_ */

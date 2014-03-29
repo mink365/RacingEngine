@@ -5,6 +5,8 @@
 #include <vector>
 #include <scene/Mesh.h>
 
+namespace re {
+
 class Node;
 class ReadCommon;
 
@@ -46,5 +48,7 @@ private:
 
     ReadCommon *reader;
 };
+
+} // namespace re
 
 #endif // FBXPARSER_H

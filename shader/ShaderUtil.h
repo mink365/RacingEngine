@@ -5,6 +5,8 @@
 #include "Uniform.h"
 #include "Shader.h"
 
+namespace re {
+
 class ShaderUtil
 {
 public:
@@ -28,5 +30,7 @@ private:
     uint loadShader(const char *source, uint type);
     void linkPrograme(Shader *shader);
 };
+
+} // namespace re
 
 #endif // SHADERUTIL_H

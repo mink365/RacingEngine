@@ -10,6 +10,8 @@
 
 #include "Node.h"
 
+namespace re {
+
 enum SceneNodeType {
     GROUP,
     MESH,
@@ -35,5 +37,7 @@ protected:
     bool visible;
     SceneNodeType type;
 };
+
+} // namespace re
 
 #endif /* SCENENODE_H_ */

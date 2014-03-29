@@ -3,6 +3,8 @@
 
 #include "platform.h"
 
+namespace re {
+
 class IndexBuffer
 {
 public:
@@ -12,5 +14,7 @@ public:
     uint nIndices;
     uint indexSize;
 };
+
+} // namespace re
 
 #endif // INDEXBUFFER_H

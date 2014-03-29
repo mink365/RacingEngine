@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+namespace re {
+
 Shader::Shader()
 {
     this->init();
@@ -127,4 +129,6 @@ void Shader::init()
     this->program = -1;
     this->vertexShader = -1;
     this->vertexSource = -1;
+}
+
 }

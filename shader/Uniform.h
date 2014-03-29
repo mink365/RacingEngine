@@ -3,6 +3,8 @@
 
 #include <platform.h>
 
+namespace re {
+
 enum UniformType {
     UNIFORM_FLOAT,
     UNIFORM_VEC2,
@@ -59,5 +61,7 @@ private:
      */
     float *data;
 };
+
+} // namespace re
 
 #endif // UNIFORM_H

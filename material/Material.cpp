@@ -1,5 +1,7 @@
 #include "Material.h"
 
+namespace re {
+
 Material::Material()
 {
     this->transparent = false;
@@ -39,4 +41,6 @@ Shader *Material::getShder() const
 void Material::setShder(Shader *value)
 {
     shder = value;
+}
+
 }

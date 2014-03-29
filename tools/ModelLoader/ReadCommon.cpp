@@ -11,6 +11,8 @@
 #include <iostream>
 #include <fstream>
 
+namespace re {
+
 ReadCommon::ReadCommon() {
 	// TODO Auto-generated constructor stub
 
@@ -69,10 +71,12 @@ std::string ReadCommon::ReadString(std::istream *stream) {
     return v;
 }
 
-reVec3 ReadCommon::ReadVec3(std::istream *stream) {
+Vec3 ReadCommon::ReadVec3(std::istream *stream) {
     float v[3];
 
     stream->read((char*)v, 3 * 4);
 
-    return reVec3(v[0], v[1], v[2]);
+    return re::Vec3(v[0], v[1], v[2]);
+}
+
 }

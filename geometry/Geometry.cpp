@@ -1,5 +1,7 @@
 #include "Geometry.h"
 
+namespace re {
+
 Geometry::Geometry()
 {
 }
@@ -42,4 +44,6 @@ IndexBuffer &Geometry::getIbo()
 VertexBuffer &Geometry::getVbo()
 {
     return vbo;
+}
+
 }

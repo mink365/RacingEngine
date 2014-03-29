@@ -5,6 +5,8 @@
 #include "SceneNode.h"
 #include <render/RenderManager.h>
 
+namespace re {
+
 using std::vector;
 
 class SceneManager
@@ -40,5 +42,7 @@ private:
 
     RenderManager renderManger;
 };
+
+} // namespace re
 
 #endif // SCENEMANAGER_H

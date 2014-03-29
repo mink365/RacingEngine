@@ -3,6 +3,8 @@
 
 #include "platform.h"
 
+namespace re {
+
 class VertexBuffer
 {
 public:
@@ -11,5 +13,7 @@ public:
     uint vbo;
     uint size;
 };
+
+} // namespace re
 
 #endif // VERTEXBUFFER_H

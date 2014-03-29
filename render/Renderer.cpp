@@ -7,6 +7,8 @@
 
 #include "Renderer.h"
 
+namespace re {
+
 Renderer::Renderer() {
 	// TODO Auto-generated constructor stub
 
@@ -20,16 +22,16 @@ void Renderer::setViewPort(int x, int y, int width, int height)
 {
 }
 
-void Renderer::setWorldMatrix(const reMat4 &mat)
+void Renderer::setWorldMatrix(const Mat4 &mat)
 {
 
 }
 
-void Renderer::setViewMatrix(const reMat4 &mat)
+void Renderer::setViewMatrix(const Mat4 &mat)
 {
 }
 
-void Renderer::setProjectionMatrix(const reMat4 &mat)
+void Renderer::setProjectionMatrix(const Mat4 &mat)
 {
 }
 
@@ -43,7 +45,7 @@ void Renderer::setTexture(int unit, bool enable, const Texture &texture)
     }
 }
 
-void Renderer::setTextureMatrix(int unit, const reMat4 &mat)
+void Renderer::setTextureMatrix(int unit, const Mat4 &mat)
 {
     // TODO:
 }
@@ -91,4 +93,6 @@ void Renderer::resetToRenderState(const RenderState &state)
 //    this->context.textureID = state.
 
     this->context.textureID = 0;
+}
+
 }

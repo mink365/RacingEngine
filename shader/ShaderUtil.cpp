@@ -7,6 +7,8 @@
 #include <iostream>
 #include <math/Matrix.h>
 
+namespace re {
+
 const static GLenum glTypes[] = {
     GL_FLOAT,
     0, // No half float support
@@ -378,4 +380,4 @@ void ShaderUtil::linkPrograme(Shader *shader)
     }
 }
 
-
+}

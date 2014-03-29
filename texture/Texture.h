@@ -4,6 +4,8 @@
 #include "platform.h"
 #include <string>
 
+namespace re {
+
 class Texture
 {
 public:
@@ -29,5 +31,7 @@ private:
     int height;
     GPU_ID glID;
 };
+
+} // namespace re
 
 #endif // TEXTURE_H

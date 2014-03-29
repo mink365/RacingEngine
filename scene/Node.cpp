@@ -7,6 +7,8 @@
 
 #include "Node.h"
 
+namespace re {
+
 Node::Node() {
     this->id = 0;
     this->level = 0;
@@ -45,48 +47,48 @@ Node::~Node() {
 
 }
 
-const reVec3 &Node::getLocalTranslation() const
+const Vec3 &Node::getLocalTranslation() const
 {
     return localTranslation;
 }
 
-void Node::setLocalTranslation(const reVec3 &value)
+void Node::setLocalTranslation(const Vec3 &value)
 {
     localTranslation = value;
 
     this->markLocalTransformRefreshFlag();
 }
 
-const reVec3 &Node::getLocalScaling() const
+const Vec3 &Node::getLocalScaling() const
 {
     return localScaling;
 }
 
-void Node::setLocalScaling(const reVec3 &value)
+void Node::setLocalScaling(const Vec3 &value)
 {
     localScaling = value;
 
     this->markLocalTransformRefreshFlag();
 }
 
-const reQuat &Node::getLocalRotation() const
+const Quat &Node::getLocalRotation() const
 {
     return localRotation;
 }
 
-void Node::setLocalRotation(const reQuat &value)
+void Node::setLocalRotation(const Quat &value)
 {
     localRotation = value;
 
     this->markLocalTransformRefreshFlag();
 }
 
-const reMat4 &Node::getLocalMatrix() const
+const Mat4 &Node::getLocalMatrix() const
 {
     return this->localMatrix;
 }
 
-const reMat4 &Node::getWorldMatrix() const
+const Mat4 &Node::getWorldMatrix() const
 {
     return this->worldMatrix;
 }
@@ -173,15 +175,17 @@ void Node::addChild(NodePtr node)
     this->children.push_back(node);
 }
 
-void Node::setWorldTranslation(const reVec3 &t)
+void Node::setWorldTranslation(const Vec3 &t)
 {
 }
 
-void Node::setWorldRotation(const reQuat &r)
+void Node::setWorldRotation(const Quat &r)
 {
 }
 
 void Node::calcLocalTransformFromWorld()
 {
+
+}
 
 }

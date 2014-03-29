@@ -7,6 +7,8 @@
 
 #include "SceneNode.h"
 
+namespace re {
+
 SceneNode::SceneNode() {
     this->type = GROUP;
     this->visible = true;
@@ -29,4 +31,6 @@ void SceneNode::setVisible(bool value)
 SceneNodeType SceneNode::getType()
 {
     return this->type;
+}
+
 }

@@ -1,5 +1,7 @@
 #include "Mesh.h"
 
+namespace re {
+
 Mesh::Mesh()
 {
     this->type = MESH;
@@ -13,4 +15,6 @@ Geometry &Mesh::getGeometry()
 Material& Mesh::getMaterial()
 {
     return material;
+}
+
 }

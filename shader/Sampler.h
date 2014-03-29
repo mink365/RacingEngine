@@ -3,6 +3,8 @@
 
 #include "platform.h"
 
+namespace re {
+
 class Sampler
 {
     friend class ShaderUtil;
@@ -13,5 +15,7 @@ public:
 
     uint location;
 };
+
+} // namespace re
 
 #endif // SAMPLE_H

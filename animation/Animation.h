@@ -10,6 +10,8 @@
 #include "math/Matrix.h"
 #include "math/Quaternion.h"
 
+namespace re {
+
 class BoneNode;
 class AnimationTrack;
 class AnimationStack;
@@ -35,41 +37,41 @@ class KeyFrame
 {
 public:
     KeyFrame();
-    KeyFrame(const long time, const reVec3& tran, const reQuat& rotation, const reVec3& scale);
+    KeyFrame(const long time, const Vec3& tran, const Quat& rotation, const Vec3& scale);
 
     string getName() const;
     Long getTime() const;
-    const reVec3& getTranslation() const;
-    const reVec3& getScaling() const;
-    const reQuat& getRotation() const;
-    const reMat4& getMatrix() const;
+    const Vec3& getTranslation() const;
+    const Vec3& getScaling() const;
+    const Quat& getRotation() const;
+    const Mat4& getMatrix() const;
 
     void setName(const string &value);
-    void setTranslation(const reVec3 &value);
-    void setScaling(const reVec3 &value);
-    void setRotation(const reQuat &value);
+    void setTranslation(const Vec3 &value);
+    void setScaling(const Vec3 &value);
+    void setRotation(const Quat &value);
 
 private:
     string name;
     Long time;
-    reVec3 translation;
-    reVec3 scaling;
-    reQuat rotation;
-    reMat4 matrix;
+    Vec3 translation;
+    Vec3 scaling;
+    Quat rotation;
+    Mat4 matrix;
 };
 
 class AnimationTrack
 {
 public:
     void addKeyFrame(const KeyFrame& frame);
-    reMat4 getLocalMatrix();
+    Mat4 getLocalMatrix();
 
     Int getCurrKeyFrameIndex();
     Int getKeyFrameCount();
 
 private:
     void calcProportion(Long timePos);
-    reMat4 linearDeformation();
+    Mat4 linearDeformation();
 
     void update();
 private:
@@ -104,5 +106,7 @@ private:
     Long stackEndTime;
     Long stackLength;
 };
+
+} // namespace re
 
 #endif // ANIMATION_H

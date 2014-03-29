@@ -14,18 +14,20 @@
 #include <geometry/Geometry.h>
 #include "RenderContext.h"
 
+namespace re {
+
 class Renderer {
 public:
 	Renderer();
 	virtual ~Renderer();
 
     void setViewPort(int x, int y, int width, int height);
-    void setWorldMatrix(const reMat4 &mat);
-    void setViewMatrix(const reMat4 &mat);
-    void setProjectionMatrix(const reMat4 &mat);
+    void setWorldMatrix(const Mat4 &mat);
+    void setViewMatrix(const Mat4 &mat);
+    void setProjectionMatrix(const Mat4 &mat);
 
     void setTexture(int unit, bool enable, const Texture &texture);
-    void setTextureMatrix(int unit, const reMat4 &mat);
+    void setTextureMatrix(int unit, const Mat4 &mat);
 
     void bindBuffer(const Geometry &geometry);
     void renderMesh(const Geometry &geometry);
@@ -43,5 +45,7 @@ public:
 private:
     RenderContext context;
 };
+
+} // namespace re
 
 #endif /* RENDERER_H_ */

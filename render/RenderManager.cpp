@@ -8,6 +8,8 @@
 #include "RenderManager.h"
 #include <shader/ShaderUtil.h>
 
+namespace re {
+
 const RenderState RenderManager::defaultRenderState = RenderState();
 
 RenderManager::RenderManager()
@@ -47,7 +49,7 @@ void RenderManager::applyMaterial(Material &material)
     this->renderer.setTexture(0, true, state.getActivityTexture());
 
     // TODO: 纹理矩阵
-    this->renderer.setTextureMatrix(0, reMat4().identity());
+    this->renderer.setTextureMatrix(0, Mat4().identity());
 
     this->renderer.applyRenderState(material.getRenderState());
 }
@@ -100,4 +102,6 @@ void RenderManager::setDefaultRenderEnv()
 void RenderManager::clear()
 {
     this->renderQueue.clear();
+}
+
 }

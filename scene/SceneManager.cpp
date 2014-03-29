@@ -1,6 +1,8 @@
 #include "SceneManager.h"
 #include <algorithm>
 
+namespace re {
+
 SceneManager::SceneManager()
 {
 }
@@ -94,4 +96,6 @@ void SceneManager::vist(SceneNodePtr node)
             this->vist(childSceneNode);
         }
     }
+}
+
 }

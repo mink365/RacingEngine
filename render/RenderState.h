@@ -1,6 +1,9 @@
 #ifndef RENDERSTATE_H
 #define RENDERSTATE_H
 
+
+namespace re {
+
 //enum {
 //    Off,
 //    Additive
@@ -17,5 +20,7 @@ public:
 private:
     bool depthTest;
 };
+
+} // namespace re
 
 #endif // RENDERSTATE_H

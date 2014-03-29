@@ -8,6 +8,8 @@
 #ifndef RENDERCONTEXT_H_
 #define RENDERCONTEXT_H_
 
+namespace re {
+
 class RenderContext {
     friend class Renderer;
 public:
@@ -20,5 +22,7 @@ private:
     int boundIBO;
     int textureID;
 };
+
+} // namespace re
 
 #endif /* RENDERCONTEXT_H_ */

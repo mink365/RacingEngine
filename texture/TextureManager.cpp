@@ -4,6 +4,8 @@
 #include <iostream>
 #include <image/Image.h>
 
+namespace re {
+
 TextureManager::TextureManager()
 {
 }
@@ -71,4 +73,6 @@ void ImageLoader::loadImage(Texture *texture, Image &image)
     } else {
         image.loadJPEG(texture->getPath().c_str());
     }
+}
+
 }

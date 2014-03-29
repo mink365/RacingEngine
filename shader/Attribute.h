@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace re {
+
 enum AttributeFormat {
     ATTR_FORMAT_FLOAT = 0,
     ATTR_FORMAT_HALF  = 1,
@@ -85,5 +87,7 @@ private:
      */
     int offset;
 };
+
+} // namespace re
 
 #endif // ATTRIBUTE_H

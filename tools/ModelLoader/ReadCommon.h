@@ -9,7 +9,10 @@
 #define READCOMMON_H_
 
 #include <fstream>
-class reVec3;
+
+namespace re {
+
+class Vec3;
 
 class ReadCommon {
 public:
@@ -21,9 +24,11 @@ public:
     float ReadFloat(std::istream *st);
     std::string ReadString(std::istream *st);
 
-    reVec3 ReadVec3(std::istream *st);
+    Vec3 ReadVec3(std::istream *st);
 
 	virtual ~ReadCommon();
 };
+
+} // namespace re
 
 #endif /* READCOMMON_H_ */

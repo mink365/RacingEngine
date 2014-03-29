@@ -5,15 +5,19 @@
 #include "math/Color.h"
 #include "math/UV.h"
 
+namespace re {
+
 class Vertex
 {
 public:
     Vertex();
 
-    reVec3 xyz;
-    reUv uv;
-    reVec3 normal;
-    reColor color;
+    Vec3 xyz;
+    Uv uv;
+    Vec3 normal;
+    Color color;
 };
+
+} // namespace re
 
 #endif // VERTEX_H

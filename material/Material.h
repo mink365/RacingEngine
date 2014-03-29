@@ -5,6 +5,8 @@
 #include "TextureUnitState.h"
 #include <shader/Shader.h>
 
+namespace re {
+
 class Material
 {
 public:
@@ -32,5 +34,7 @@ private:
 
     Shader *shder;
 };
+
+} // namespace re
 
 #endif // MATERIAL_H

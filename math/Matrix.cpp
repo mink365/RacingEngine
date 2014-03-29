@@ -11,48 +11,50 @@
 #include <cmath>
 #include <algorithm>
 
-reMat3::reMat3()
+namespace re {
+
+Mat3::Mat3()
 {
 }
 
-reMat3::reMat3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
+Mat3::Mat3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 {
     mat[0].set(m00, m01, m02);
     mat[1].set(m10, m11, m12);
     mat[2].set(m20, m21, m22);
 }
 
-float reMat3::getDeterminant()
+float Mat3::getDeterminant()
 {
     return mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1]) -
            mat[0][1] * (mat[1][0] * mat[2][2] - mat[1][2] * mat[2][0]) +
            mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
 }
 
-reMat4 reMat3::toMat4()
+Mat4 Mat3::toMat4()
 {
-    return reMat4(mat[0][0], mat[0][1], mat[0][2], 0.0f,
+    return Mat4(mat[0][0], mat[0][1], mat[0][2], 0.0f,
                   mat[1][0], mat[1][1], mat[1][2], 0.0f,
                   mat[2][0], mat[2][1], mat[2][2], 0.0f,
             0.0f,      0.0f,      0.0f,      1.0f);
 }
 
-reMat3::operator float *() const
+Mat3::operator float *() const
 {
     return (float *)this->mat[0];
 }
 
-float *reMat3::toFloatPtr()
+float *Mat3::toFloatPtr()
 {
     return this->mat[0].toFloatPtr();
 }
 
-const float *reMat3::toFloatPtr() const
+const float *Mat3::toFloatPtr() const
 {
     return this->mat[0].toFloatPtr();
 }
 
-reMat3 &reMat3::transpose()
+Mat3 &Mat3::transpose()
 {
     std::swap(mat[0][1], mat[1][0]);
     std::swap(mat[0][2], mat[2][0]);
@@ -61,7 +63,7 @@ reMat3 &reMat3::transpose()
     return *this;
 }
 
-reMat3 &reMat3::invert()
+Mat3 &Mat3::invert()
 {
     float determinant, invDeterminant;
     float tmp[9];
@@ -99,11 +101,11 @@ reMat3 &reMat3::invert()
 }
 
 
-reMat4::reMat4() {
+Mat4::Mat4() {
 
 }
 
-reMat4 &reMat4::setRotationX(const float angle)
+Mat4 &Mat4::setRotationX(const float angle)
 {
     float cosA = cosf(angle);
     float sinA = sinf(angle);
@@ -116,7 +118,7 @@ reMat4 &reMat4::setRotationX(const float angle)
     return *this;
 }
 
-reMat4 &reMat4::setRotationY(const float angle)
+Mat4 &Mat4::setRotationY(const float angle)
 {
     float cosA = cosf(angle);
     float sinA = sinf(angle);
@@ -129,7 +131,7 @@ reMat4 &reMat4::setRotationY(const float angle)
     return *this;
 }
 
-reMat4 &reMat4::setRotationZ(const float angle)
+Mat4 &Mat4::setRotationZ(const float angle)
 {
     float cosA = cosf(angle);
     float sinA = sinf(angle);
@@ -142,7 +144,7 @@ reMat4 &reMat4::setRotationZ(const float angle)
     return *this;
 }
 
-reMat4 &reMat4::setTranslation(const float x, const float y, const float z)
+Mat4 &Mat4::setTranslation(const float x, const float y, const float z)
 {
     this->identity();
     mat[0][3] = x;
@@ -152,7 +154,7 @@ reMat4 &reMat4::setTranslation(const float x, const float y, const float z)
     return *this;
 }
 
-reMat4 &reMat4::setScaling(float x, float y, float z)
+Mat4 &Mat4::setScaling(float x, float y, float z)
 {
     this->identity();
 
@@ -163,14 +165,14 @@ reMat4 &reMat4::setScaling(float x, float y, float z)
     return *this;
 }
 
-reMat4 &reMat4::fromRTS(const reQuat &r, const reVec3 &t, const reVec3 &s)
+Mat4 &Mat4::fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s)
 {
-    reMat4 tempRotateMatrix = r.toMat4();
+    Mat4 tempRotateMatrix = r.toMat4();
 
-    reMat4 tempScalingMatrix;
+    Mat4 tempScalingMatrix;
     tempScalingMatrix.setScaling(s.x, s.y, s.z);
 
-    reMat4 tempTranslationMatrix;
+    Mat4 tempTranslationMatrix;
     tempTranslationMatrix.setTranslation(t.x, t.y, t.z);
 
     // TM * RM * SM
@@ -194,7 +196,7 @@ inline float getCofactor(float m0, float m1, float m2,
 ///////////////////////////////////////////////////////////////////////////////
 // transpose 4x4 matrix
 ///////////////////////////////////////////////////////////////////////////////
-reMat4& reMat4::transpose()
+Mat4& Mat4::transpose()
 {
     std::swap(mat[0][1],  mat[1][0]);
     std::swap(mat[0][2],  mat[2][0]);
@@ -211,7 +213,7 @@ reMat4& reMat4::transpose()
 ///////////////////////////////////////////////////////////////////////////////
 // inverse 4x4 matrix
 ///////////////////////////////////////////////////////////////////////////////
-reMat4& reMat4::invert()
+Mat4& Mat4::invert()
 {
     // If the 4th row is [0,0,0,1] then it is affine matrix and
     // it has no projective transformation.
@@ -247,10 +249,10 @@ reMat4& reMat4::invert()
 //  [ --+-- ]   = [ -----+---------- ]
 //  [ 0 | 1 ]     [  0   +     1     ]
 ///////////////////////////////////////////////////////////////////////////////
-reMat4& reMat4::invertAffine()
+Mat4& Mat4::invertAffine()
 {
     // R^-1
-    reMat3 r(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1],mat[1][2], mat[2][0],mat[2][1],mat[2][2]);
+    Mat3 r(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1],mat[1][2], mat[2][0],mat[2][1],mat[2][2]);
     r.invert();
 
     mat[0][0] = mat[0][0];  mat[0][1] = mat[0][1];  mat[0][2] = mat[0][2];
@@ -278,7 +280,7 @@ reMat4& reMat4::invertAffine()
 // If cannot find inverse, return indentity matrix
 // M^-1 = adj(M) / det(M)
 ///////////////////////////////////////////////////////////////////////////////
-reMat4& reMat4::invertGeneral()
+Mat4& Mat4::invertGeneral()
 {
     // get cofactors of minor matrices
     float cofactor0 = getCofactor(mat[1][1],mat[1][2],mat[1][3], mat[2][1],mat[2][2],mat[2][3], mat[3][1],mat[3][2],mat[3][3]);
@@ -340,7 +342,7 @@ reMat4& reMat4::invertGeneral()
 ///////////////////////////////////////////////////////////////////////////////
 // return determinant of 4x4 matrix
 ///////////////////////////////////////////////////////////////////////////////
-float reMat4::getDeterminant()
+float Mat4::getDeterminant()
 {
     return mat[0][0] * getCofactor(mat[1][1],mat[1][2],mat[1][3], mat[2][1],mat[2][2],mat[2][3], mat[3][1],mat[3][2],mat[3][3]) -
            mat[0][1] * getCofactor(mat[1][0],mat[1][2],mat[1][3], mat[2][0],mat[2][2],mat[2][3], mat[3][0],mat[3][2],mat[3][3]) +
@@ -349,7 +351,7 @@ float reMat4::getDeterminant()
 }
 
 
-reMat4 &reMat4::lookAt(reVec3 eye, reVec3 center, reVec3 up)
+Mat4 &Mat4::lookAt(Vec3 eye, Vec3 center, Vec3 up)
 {
     // See the OpenGL GLUT documentation for gluLookAt for a description
     // of the algorithm. We implement it in a straightforward way:
@@ -407,4 +409,6 @@ reMat4 &reMat4::lookAt(reVec3 eye, reVec3 center, reVec3 up)
     }
 
     return *this;
+}
+
 }

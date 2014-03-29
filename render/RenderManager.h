@@ -13,6 +13,8 @@
 #include "RenderQueue.h"
 #include "Renderer.h"
 
+namespace re {
+
 class RenderManager {
 public:
     RenderManager();
@@ -52,5 +54,7 @@ private:
 
     static const RenderState defaultRenderState;
 };
+
+} // namespace re
 
 #endif /* RENDERSYSTEM_H_ */

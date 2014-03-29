@@ -5,6 +5,8 @@
 #include <geometry/Geometry.h>
 #include <material/Material.h>
 
+namespace re {
+
 class Mesh;
 typedef std::shared_ptr<Mesh> MeshPtr;
 
@@ -22,5 +24,7 @@ private:
 
     Geometry geometry;
 };
+
+} // namespace re
 
 #endif // MESH_H

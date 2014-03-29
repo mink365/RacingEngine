@@ -1,5 +1,7 @@
 #include "BufferObjectUtil.h"
 
+namespace re {
+
 BufferObjectUtil::BufferObjectUtil()
 {
 }
@@ -46,4 +48,6 @@ void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
     error=glGetError();
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 }

@@ -2,6 +2,8 @@
 
 #include "opengl.h"
 
+namespace re {
+
 static const GLint internalFormats[] = {
     0,
     // Unsigned formats
@@ -191,4 +193,6 @@ void TextureUtil::DeleteTextureFromHardware(Texture &texture)
 {
     GLuint id = texture.getGlID();
     glDeleteTextures(1, &id);
+}
+
 }

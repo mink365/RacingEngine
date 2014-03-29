@@ -7,22 +7,26 @@
 
 #include "UV.h"
 
-reUv::reUv()
+namespace re {
+
+Uv::Uv()
 {
     this->u = 0;
     this->v = 0;
 }
 
-reUv::reUv(float u, float v)
+Uv::Uv(float u, float v)
 {
     this->u = u;
     this->v = v;
 }
 
-void reUv::set(float u, float v)
+void Uv::set(float u, float v)
 {
     this->u = u;
     this->v = v;
+}
+
 }
 
 

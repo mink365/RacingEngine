@@ -4,6 +4,8 @@
 #include <vector>
 #include <texture/Texture.h>
 
+namespace re {
+
 class TextureUnitState
 {
 public:
@@ -40,5 +42,7 @@ private:
     float scaleV;
     float rotation;
 };
+
+} // namespace re
 
 #endif // TEXTUREUNITSTATE_H

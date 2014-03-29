@@ -7,18 +7,19 @@
 
 #include "math/Vector.h"
 
+namespace re {
 
-reVec3::reVec3() {
+Vec3::Vec3() {
 
 }
 
-reVec3::reVec3(const float x, const float y, const float z) {
+Vec3::Vec3(const float x, const float y, const float z) {
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-reVec3 &reVec3::set(float x, float y, float z)
+Vec3 &Vec3::set(float x, float y, float z)
 {
     this->x = x;
     this->y = y;
@@ -27,30 +28,32 @@ reVec3 &reVec3::set(float x, float y, float z)
     return *this;
 }
 
-reVec3 &reVec3::set(const reVec3 &v)
+Vec3 &Vec3::set(const Vec3 &v)
 {
     this->set(v.x, v.y, v.z);
 
     return *this;
 }
 
-float *reVec3::toFloatPtr()
+float *Vec3::toFloatPtr()
 {
     return &x;
 }
 
-const float *reVec3::toFloatPtr() const
+const float *Vec3::toFloatPtr() const
 {
     return &x;
 }
 
-reVec4::reVec4() {
+Vec4::Vec4() {
 
 }
 
-reVec4::reVec4(const float x, const float y, const float z, const float w) {
+Vec4::Vec4(const float x, const float y, const float z, const float w) {
     this->x = x;
     this->y = y;
     this->z = z;
     this->w = w;
+}
+
 }

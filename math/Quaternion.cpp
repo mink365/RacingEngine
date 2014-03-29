@@ -10,21 +10,23 @@
 #include <math/Matrix.h>
 #include <math/Matrix.h>
 
-reQuat::reQuat() {
+namespace re {
+
+Quat::Quat() {
     this->x = 0;
     this->y = 0;
     this->z = 0;
     this->w = 1;
 }
 
-reQuat::reQuat(float x, float y, float z, float w) {
+Quat::Quat(float x, float y, float z, float w) {
     this->x = x;
     this->y = y;
     this->z = z;
     this->w = w;
 }
 
-void reQuat::set(float x, float y, float z, float w)
+void Quat::set(float x, float y, float z, float w)
 {
     this->x = x;
     this->y = y;
@@ -32,9 +34,9 @@ void reQuat::set(float x, float y, float z, float w)
     this->w = w;
 }
 
-reMat3 reQuat::toMat3() const
+Mat3 Quat::toMat3() const
 {
-    reMat3	mat;
+    Mat3	mat;
     float	wx, wy, wz;
     float	xx, yy, yz;
     float	xy, xz, zz;
@@ -72,14 +74,14 @@ reMat3 reQuat::toMat3() const
     return mat;
 }
 
-reMat4 reQuat::toMat4() const
+Mat4 Quat::toMat4() const
 {
     return this->toMat3().toMat4();
 }
 
-reVec3 reQuat::toVec3() const
+Vec3 Quat::toVec3() const
 {
-    reVec3 result;
+    Vec3 result;
 
     float sqx = x * x;
     float sqy = y * y;
@@ -93,14 +95,14 @@ reVec3 reQuat::toVec3() const
 }
 
 /**
- * @brief reQuat::fromAngles
+ * @brief Quat::fromAngles
  * @param angles
  * @return
  *
  * 由Euler angles 换算出四元数
  * http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
  */
-reQuat &reQuat::fromAngles(const reVec3 &angles)
+Quat &Quat::fromAngles(const Vec3 &angles)
 {
     float angle;
     float sinRoll, sinPitch, sinYaw, cosRoll, cosPitch, cosYaw;
@@ -125,14 +127,14 @@ reQuat &reQuat::fromAngles(const reVec3 &angles)
     return *this;
 }
 
-reQuat &reQuat::fromAxes(const reVec3 &xAxis, const reVec3 &yAxis, const reVec3 &zAxis)
+Quat &Quat::fromAxes(const Vec3 &xAxis, const Vec3 &yAxis, const Vec3 &zAxis)
 {
     this->fromRotationMatrix(xAxis.x, yAxis.x, zAxis.x,
                              xAxis.y, yAxis.y, zAxis.y,
                              xAxis.z, yAxis.z, zAxis.z);
 }
 
-reQuat &reQuat::fromRotationMatrix(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
+Quat &Quat::fromRotationMatrix(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 {
     // Use the Graphics Gems code, from
     // ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
@@ -176,7 +178,7 @@ reQuat &reQuat::fromRotationMatrix(float m00, float m01, float m02, float m10, f
     return *this;
 }
 
-reQuat &reQuat::slerp(reQuat &q2, float changeAmnt)
+Quat &Quat::slerp(Quat &q2, float changeAmnt)
 {
     if (this->x == q2.x && this->y == q2.y && this->z == q2.z
             && this->w == q2.w) {
@@ -222,4 +224,6 @@ reQuat &reQuat::slerp(reQuat &q2, float changeAmnt)
     this->w = (scale0 * this->w) + (scale1 * q2.w);
 
     return *this;
+}
+
 }

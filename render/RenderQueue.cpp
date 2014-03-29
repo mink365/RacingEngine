@@ -1,5 +1,7 @@
 #include "RenderQueue.h"
 
+namespace re {
+
 RenderQueue::RenderQueue()
 {
 }
@@ -68,4 +70,6 @@ RenderableList::RenderableList(const int type)
 bool RenderableList::operator <(const RenderableList &list) const
 {
     return this->listType < list.listType;
+}
+
 }

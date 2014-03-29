@@ -7,6 +7,8 @@
 #include <render/bufferobject/VertexBuffer.h>
 #include <render/bufferobject/IndexBuffer.h>
 
+namespace re {
+
 class Geometry
 {
     friend class Renderer;
@@ -35,5 +37,7 @@ private:
     VertexBuffer vbo;
     IndexBuffer ibo;
 };
+
+} // namespace re
 
 #endif // GEOMETRY_H

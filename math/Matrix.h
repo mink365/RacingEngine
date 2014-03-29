@@ -15,41 +15,43 @@
 #include "math/MathTool.h"
 #include "Quaternion.h"
 
-class reMat4;
+class Mat4;
 
-class reMat3 {
+namespace re {
+
+class Mat3 {
 public:
-    reMat3();
-    reMat3(float m00, float m01, float m02,
+    Mat3();
+    Mat3(float m00, float m01, float m02,
            float m10, float m11, float m12,
            float m20, float m21, float m22);
 
-    reMat3 &zero();
-    reMat3 &identity();
-    reMat3 &transpose();
-    reMat3 &invert();
+    Mat3 &zero();
+    Mat3 &identity();
+    Mat3 &transpose();
+    Mat3 &invert();
 
-    const reVec3 	&operator[](int block_index) const;
-    reVec3          &operator[](int block_index);
+    const Vec3 	&operator[](int block_index) const;
+    Vec3          &operator[](int block_index);
 
     float getDeterminant();
 
-    reMat4 toMat4();
+    Mat4 toMat4();
 
     operator float *() const;
     float *toFloatPtr();
     const float *toFloatPtr () const;
 private:
-    reVec3 mat[3];
+    Vec3 mat[3];
 };
 
-inline reMat3 &reMat3::zero() {
-    memset(mat, 0, sizeof(reMat3));
+inline Mat3 &Mat3::zero() {
+    memset(mat, 0, sizeof(Mat3));
 
     return *this;
 }
 
-inline reMat3 &reMat3::identity()
+inline Mat3 &Mat3::identity()
 {
     mat[0][0] = 1;
     mat[1][1] = 1;
@@ -59,52 +61,52 @@ inline reMat3 &reMat3::identity()
 }
 
 
-inline const reVec3 &reMat3::operator[](int index) const
+inline const Vec3 &Mat3::operator[](int index) const
 {
     //assert( ( index >= 0 ) && ( index < 3 ) );
     return mat[ index ];
 }
 
-inline reVec3 &reMat3::operator[](int index)
+inline Vec3 &Mat3::operator[](int index)
 {
     //assert( ( index >= 0 ) && ( index < 3 ) );
     return mat[ index ];
 }
 
 /**
- * @brief The reMat4 class
+ * @brief The Mat4 class
  * 列主序(column major)
  */
-class reMat4 {
+class Mat4 {
 public:
-    reMat4();
+    Mat4();
 
-    reMat4(const float m00, const float m01, const float m02, const float m03,
+    Mat4(const float m00, const float m01, const float m02, const float m03,
            const float m10, const float m11, const float m12, const float m13,
            const float m20, const float m21, const float m22, const float m23,
            const float m30, const float m31, const float m32, const float m33);
 
-    reMat4 &set(const float m00, const float m01, const float m02, const float m03,
+    Mat4 &set(const float m00, const float m01, const float m02, const float m03,
                 const float m10, const float m11, const float m12, const float m13,
                 const float m20, const float m21, const float m22, const float m23,
                 const float m30, const float m31, const float m32, const float m33);
 
-    reMat4 &zero();
-    reMat4 &identity();
+    Mat4 &zero();
+    Mat4 &identity();
 
-    reMat4 &setPerspective(const float fov, const float zNear, const float zFar);
-    reMat4 &setPerspectiveY(const float fovY, const float aspect, const float zNear, const float zFar);
-    reMat4 &setFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
-    reMat4 &setOrthoFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
-    reMat4 &lookAt(reVec3 eye, reVec3 center, reVec3 up);
+    Mat4 &setPerspective(const float fov, const float zNear, const float zFar);
+    Mat4 &setPerspectiveY(const float fovY, const float aspect, const float zNear, const float zFar);
+    Mat4 &setFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
+    Mat4 &setOrthoFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
+    Mat4 &lookAt(Vec3 eye, Vec3 center, Vec3 up);
 
-    reMat4 &setRotationX(const float angle);
-    reMat4 &setRotationY(const float angle);
-    reMat4 &setRotationZ(const float angle);
+    Mat4 &setRotationX(const float angle);
+    Mat4 &setRotationY(const float angle);
+    Mat4 &setRotationZ(const float angle);
 
-    reMat4 &setTranslation(const float x, const float y, const float z);
+    Mat4 &setTranslation(const float x, const float y, const float z);
 
-    reMat4 &setScaling(float x, float y, float z);
+    Mat4 &setScaling(float x, float y, float z);
 
     /**
      * @brief fromRTS
@@ -114,29 +116,29 @@ public:
      * @return
      * 使用RTS数据给出矩阵
      */
-    reMat4 &fromRTS(const reQuat &r, const reVec3 &t, const reVec3 &s);
+    Mat4 &fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s);
 
     float *toFloatPtr();
     const float *toFloatPtr () const;
 
-    reMat4 operator*(const reMat4 &r) const;
-    reMat4 &operator *=(const reMat4 &r);
+    Mat4 operator*(const Mat4 &r) const;
+    Mat4 &operator *=(const Mat4 &r);
 
     operator float *() const;
-    const reVec4 	&operator[](int block_index) const;
-    reVec4          &operator[](int block_index);
+    const Vec4 	&operator[](int block_index) const;
+    Vec4          &operator[](int block_index);
 
     float getDeterminant();
 
-    reMat4 &invertGeneral();
-    reMat4 &invertAffine();
-    reMat4 &invert();
-    reMat4 &transpose();
+    Mat4 &invertGeneral();
+    Mat4 &invertAffine();
+    Mat4 &invert();
+    Mat4 &transpose();
 private:
-    reVec4 mat[4];
+    Vec4 mat[4];
 };
 
-inline reMat4::reMat4(const float m00, const float m01, const float m02, const float m03,
+inline Mat4::Mat4(const float m00, const float m01, const float m02, const float m03,
                       const float m10, const float m11, const float m12, const float m13,
                       const float m20, const float m21, const float m22, const float m23,
                       const float m30, const float m31, const float m32, const float m33) {
@@ -146,7 +148,7 @@ inline reMat4::reMat4(const float m00, const float m01, const float m02, const f
     mat[3].set(m30, m31, m32, m33);
 }
 
-inline reMat4 &reMat4::set(const float m00, const float m01, const float m02, const float m03,
+inline Mat4 &Mat4::set(const float m00, const float m01, const float m02, const float m03,
                            const float m10, const float m11, const float m12, const float m13,
                            const float m20, const float m21, const float m22, const float m23,
                            const float m30, const float m31, const float m32, const float m33) {
@@ -158,13 +160,13 @@ inline reMat4 &reMat4::set(const float m00, const float m01, const float m02, co
     return *this;
 }
 
-inline reMat4 &reMat4::zero() {
-    memset(mat, 0, sizeof(reMat4));
+inline Mat4 &Mat4::zero() {
+    memset(mat, 0, sizeof(Mat4));
 
     return *this;
 }
 
-inline reMat4 &reMat4::identity() {
+inline Mat4 &Mat4::identity() {
     this->zero ();
     mat[0][0] = 1.0f;
     mat[1][1] = 1.0f;
@@ -174,14 +176,14 @@ inline reMat4 &reMat4::identity() {
     return *this;
 }
 
-inline reMat4 &reMat4::setPerspective(const float fov, const float zNear, const float zFar)
+inline Mat4 &Mat4::setPerspective(const float fov, const float zNear, const float zFar)
 {
     this->setPerspectiveY (fov, 1.0f, zNear, zFar);
 
     return *this;
 }
 
-inline reMat4 &reMat4::setPerspectiveY(const float fovY, const float aspect, const float zNear, const float zFar)
+inline Mat4 &Mat4::setPerspectiveY(const float fovY, const float aspect, const float zNear, const float zFar)
 {
     // 获取near面上的高的半长
     float top = tan((fovY / 2.0f) * DEG_TO_RAD) * zNear;
@@ -194,7 +196,7 @@ inline reMat4 &reMat4::setPerspectiveY(const float fovY, const float aspect, con
     return *this;
 }
 
-inline reMat4 &reMat4::setFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far)
+inline Mat4 &Mat4::setFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far)
 {
     this->zero ();
 
@@ -213,7 +215,7 @@ inline reMat4 &reMat4::setFrustum(const float left, const float right, const flo
     return *this;
 }
 
-inline reMat4 &reMat4::setOrthoFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far)
+inline Mat4 &Mat4::setOrthoFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far)
 {
     float x_orth = 2 / (right - left);
     float y_orth = 2 / (top - bottom);
@@ -236,22 +238,22 @@ inline reMat4 &reMat4::setOrthoFrustum(const float left, const float right, cons
     return *this;
 }
 
-inline float *reMat4::toFloatPtr()
+inline float *Mat4::toFloatPtr()
 {
     return mat[0].toFloatPtr();
 }
 
-inline const float *reMat4::toFloatPtr() const
+inline const float *Mat4::toFloatPtr() const
 {
     return mat[0].toFloatPtr ();
 }
 
-inline reMat4 reMat4::operator *(const reMat4 &r) const
+inline Mat4 Mat4::operator *(const Mat4 &r) const
 {
     int i, j;
     const float *m1Ptr, *m2Ptr;
     float *dstPtr;
-    reMat4 dst;
+    Mat4 dst;
 
     m1Ptr = reinterpret_cast<const float *>(this);
     m2Ptr = reinterpret_cast<const float *>(&r);
@@ -272,27 +274,29 @@ inline reMat4 reMat4::operator *(const reMat4 &r) const
     return dst;
 }
 
-inline reMat4 &reMat4::operator *=(const reMat4 &r)
+inline Mat4 &Mat4::operator *=(const Mat4 &r)
 {
     *this = (*this) * r;
 
     return *this;
 }
 
-inline reMat4::operator float *() const
+inline Mat4::operator float *() const
 {
     return (float *)mat[0];
 }
 
 
-inline const reVec4 &reMat4::operator[](int index) const
+inline const Vec4 &Mat4::operator[](int index) const
 {
     return mat[ index ];
 }
 
-inline reVec4 &reMat4::operator[](int index)
+inline Vec4 &Mat4::operator[](int index)
 {
     return mat[ index ];
 }
+
+} // namespace re
 
 #endif /* MATRIX_H_ */

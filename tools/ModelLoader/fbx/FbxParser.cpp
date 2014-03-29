@@ -9,6 +9,8 @@
 #include <sstream>
 #include <texture/TextureManager.h>
 
+namespace re {
+
 FbxParser::FbxParser()
 {
     this->reader = new ReadCommon();
@@ -98,14 +100,14 @@ NodePtr FbxParser::readNode(std::istream *st) {
     return node;
 }
 
-void printV(reVec3 *v) {
+void printV(Vec3 *v) {
     std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
 }
 
 void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
-    reVec3 transform = reader->ReadVec3(st);
-    reVec3 rotation = reader->ReadVec3(st);
-    reVec3 scale = reader->ReadVec3(st);
+    Vec3 transform = reader->ReadVec3(st);
+    Vec3 rotation = reader->ReadVec3(st);
+    Vec3 scale = reader->ReadVec3(st);
 
     printV(&transform);
     printV(&scale);
@@ -326,4 +328,6 @@ void FbxParser::readMaterial(std::istream *st, MeshPtr node) {
 std::vector<NodePtr> FbxParser::getNodes() const
 {
     return nodes;
+}
+
 }

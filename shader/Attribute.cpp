@@ -1,5 +1,7 @@
 #include "Attribute.h"
 
+namespace re {
+
 Attribute::Attribute()
 {
     this->init();
@@ -85,4 +87,6 @@ bool Attribute::getNormalized() const
 void Attribute::setNormalized(bool value)
 {
     normalized = value;
+}
+
 }

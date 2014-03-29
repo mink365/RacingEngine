@@ -10,58 +10,60 @@
 
 #include<cmath>
 
-class reMat3;
-class reMat4;
-class reVec3;
+namespace re {
 
-class reQuat {
+class Mat3;
+class Mat4;
+class Vec3;
+
+class Quat {
 public:
     float x;
     float y;
     float z;
     float w;
 
-    reQuat();
-    reQuat(float x, float y, float z, float w);
+    Quat();
+    Quat(float x, float y, float z, float w);
 
     void set(float x, float y, float z, float w);
 
     float operator [](int index) const;
     float &operator [](int index);
 
-    reQuat inverse() const;
+    Quat inverse() const;
     float  getLength() const;
-    reQuat &normalize();
+    Quat &normalize();
 
-    reVec3 toVec3() const;
-    reMat3 toMat3() const;
-    reMat4 toMat4() const;
+    Vec3 toVec3() const;
+    Mat3 toMat3() const;
+    Mat4 toMat4() const;
 
-    reQuat &fromAngles(const reVec3 &angles);
-    reQuat &fromAxes(const reVec3 &xAxis, const reVec3 &yAxis, const reVec3 &zAxis);
-    reQuat &fromRotationMatrix(float m00, float m01, float m02,
+    Quat &fromAngles(const Vec3 &angles);
+    Quat &fromAxes(const Vec3 &xAxis, const Vec3 &yAxis, const Vec3 &zAxis);
+    Quat &fromRotationMatrix(float m00, float m01, float m02,
                                float m10, float m11, float m12,
                                float m20, float m21, float m22);
 
-    reQuat &slerp(reQuat &q2, float changeAmnt);
+    Quat &slerp(Quat &q2, float changeAmnt);
 };
 
-inline float reQuat::operator [](int index) const
+inline float Quat::operator [](int index) const
 {
     return (&x)[index];
 }
 
-inline float &reQuat::operator [](int index)
+inline float &Quat::operator [](int index)
 {
     return (&x)[index];
 }
 
-inline reQuat reQuat::inverse() const
+inline Quat Quat::inverse() const
 {
-    return reQuat(-x, -y, -z, w);
+    return Quat(-x, -y, -z, w);
 }
 
-inline float reQuat::getLength() const
+inline float Quat::getLength() const
 {
     float len;
 
@@ -69,7 +71,7 @@ inline float reQuat::getLength() const
     return std::sqrt(len);
 }
 
-inline reQuat &reQuat::normalize()
+inline Quat &Quat::normalize()
 {
     float len;
     float ilength;
@@ -86,5 +88,7 @@ inline reQuat &reQuat::normalize()
 
     return *this;
 }
+
+} // namespace re
 
 #endif /* QUATERNION_H_ */

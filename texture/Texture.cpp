@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+namespace re {
+
 Texture::Texture()
 {
 }
@@ -49,4 +51,6 @@ void Texture::setPath(const std::string &value)
 std::string Texture::getName() const
 {
     return this->name;
+}
+
 }

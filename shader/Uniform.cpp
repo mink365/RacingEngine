@@ -1,5 +1,7 @@
 #include "Uniform.h"
 
+namespace re {
+
 Uniform::Uniform()
 {
     this->init();
@@ -28,4 +30,6 @@ float *Uniform::getData() const
 void Uniform::setData(float *value)
 {
     data = value;
+}
+
 }

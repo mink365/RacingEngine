@@ -3,6 +3,8 @@
 
 #include "platform.h"
 
+namespace re {
+
 class Face
 {
 public:
@@ -14,5 +16,7 @@ public:
 
     void set(uint a, uint b, uint c);
 };
+
+} // namespace re
 
 #endif // FACE_H

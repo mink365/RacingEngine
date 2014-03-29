@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+namespace re {
+
 Camera::Camera()
 {
 }
@@ -16,7 +18,7 @@ void Camera::setViewport(float width, float height)
     this->viewportHeight = height;
 }
 
-void Camera::setView(const reVec3 &center, const reVec3 &eye, const reVec3 &up)
+void Camera::setView(const Vec3 &center, const Vec3 &eye, const Vec3 &up)
 {
     this->center = center;
 
@@ -29,7 +31,7 @@ void Camera::setView(const reVec3 &center, const reVec3 &eye, const reVec3 &up)
     // 			 \|
     //  left <- - .
 
-    reVec3 direction = center - eye;
+    Vec3 direction = center - eye;
 
     left = up.cross(direction).normalize();
 
@@ -38,9 +40,9 @@ void Camera::setView(const reVec3 &center, const reVec3 &eye, const reVec3 &up)
     this->setAxes(this->left, this->up, direction);
 }
 
-void Camera::setAxes(const reVec3 &left, const reVec3 &up, const reVec3 &direction)
+void Camera::setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction)
 {
-    reQuat quat;
+    Quat quat;
     quat.fromAxes(left, up, direction);
 
     this->setWorldRotation(quat);
@@ -48,17 +50,17 @@ void Camera::setAxes(const reVec3 &left, const reVec3 &up, const reVec3 &directi
     this->onChange();
 }
 
-const reMat4 &Camera::getViewMatrix() const
+const Mat4 &Camera::getViewMatrix() const
 {
     return this->viewMatrix;
 }
 
-const reMat4 &Camera::getProjectionMatrix() const
+const Mat4 &Camera::getProjectionMatrix() const
 {
     return this->projectionMatrix;
 }
 
-const reMat4 &Camera::getViewProjectionMatrix() const
+const Mat4 &Camera::getViewProjectionMatrix() const
 {
     return this->viewProjectionMatrix;
 }
@@ -80,4 +82,6 @@ void Camera::onChange()
 {
     this->recalcViewMatrix();
     this->recalcProjectionMatrix();
+}
+
 }

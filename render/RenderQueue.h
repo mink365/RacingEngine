@@ -5,6 +5,8 @@
 #include <vector>
 #include <scene/SceneNode.h>
 
+namespace re {
+
 /// Use this queue for objects which must be rendered first e.g. backgrounds
 static const int RENDER_QUEUE_BACKGROUND = 0;
 
@@ -68,5 +70,7 @@ public:
      */
     std::vector<RenderableList *> lists;
 };
+
+} // namespace re
 
 #endif // RENDERQUEUE_H

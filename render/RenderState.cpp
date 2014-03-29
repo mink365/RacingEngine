@@ -1,5 +1,7 @@
 #include "RenderState.h"
 
+namespace re {
+
 RenderState::RenderState()
 {
 }
@@ -12,4 +14,6 @@ bool RenderState::getDepthTest() const
 void RenderState::setDepthTest(bool value)
 {
     depthTest = value;
+}
+
 }

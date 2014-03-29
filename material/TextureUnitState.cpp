@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+namespace re {
+
 TextureUnitState::TextureUnitState()
 {
     this->currentIndex = 0;
@@ -76,4 +78,6 @@ float TextureUnitState::getRotation() const
 void TextureUnitState::setRotation(float value)
 {
     rotation = value;
+}
+
 }

@@ -7,6 +7,8 @@
 
 #include "RenderContext.h"
 
+namespace re {
+
 RenderContext::RenderContext() {
     this->depthTestEnabled = false;
     this->boundIBO = 0;
@@ -18,3 +20,4 @@ RenderContext::~RenderContext() {
 	// TODO Auto-generated destructor stub
 }
 
+}

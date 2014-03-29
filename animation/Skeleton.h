@@ -1,6 +1,8 @@
 #ifndef SKELETON_H
 #define SKELETON_H
 
+namespace re {
+
 /**
  * @brief The SkinningType enum
  *
@@ -33,5 +35,7 @@ class Skeleton
 public:
     Skeleton();
 };
+
+} // namespace re
 
 #endif // SKELETON_H

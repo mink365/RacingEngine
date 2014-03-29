@@ -7,6 +7,8 @@
 #include <jpeglib.h>
 #include <png.h>
 
+namespace re {
+
 typedef unsigned char ubyte;
 
 enum FORMAT {
@@ -200,5 +202,7 @@ private:
     int nExtraData;
     unsigned char *extraData;
 };
+
+} // namespace re
 
 #endif // IMAGE_H

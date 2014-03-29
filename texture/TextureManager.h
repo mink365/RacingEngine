@@ -6,6 +6,8 @@
 #include "Texture.h"
 #include "TextureUtil.h"
 
+namespace re {
+
 class ImageLoader {
 public:
     virtual void loadImage(Texture *texture, Image &image);
@@ -36,5 +38,7 @@ private:
 
     ImageLoader *loader;
 };
+
+} // namespace re
 
 #endif // TEXTUREMANAGER_H

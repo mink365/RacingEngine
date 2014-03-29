@@ -18,6 +18,8 @@
 
 #include "platform.h"
 
+namespace re {
+
 class Node;
 typedef std::shared_ptr<Node> NodePtr;
 
@@ -29,18 +31,18 @@ public:
 //    Node(const Node &a);
 	virtual ~Node();
 
-    const reVec3 &getLocalTranslation() const;
-    void setLocalTranslation(const reVec3 &value);
+    const Vec3 &getLocalTranslation() const;
+    void setLocalTranslation(const Vec3 &value);
 
-    const reVec3 &getLocalScaling() const;
-    void setLocalScaling(const reVec3 &value);
+    const Vec3 &getLocalScaling() const;
+    void setLocalScaling(const Vec3 &value);
 
-    const reQuat &getLocalRotation() const;
-    void setLocalRotation(const reQuat &value);
+    const Quat &getLocalRotation() const;
+    void setLocalRotation(const Quat &value);
 
-    const reMat4& getLocalMatrix() const;
+    const Mat4& getLocalMatrix() const;
 
-    const reMat4& getWorldMatrix() const;
+    const Mat4& getWorldMatrix() const;
 
     NodePtr getParent() const;
     void setParent(NodePtr value);
@@ -52,8 +54,8 @@ public:
     void addChild(NodePtr node);
 
 protected:
-    void setWorldTranslation(const reVec3 &t);
-    void setWorldRotation(const reQuat &r);
+    void setWorldTranslation(const Vec3 &t);
+    void setWorldRotation(const Quat &r);
 
     /**
      * @brief calcLocalTransformFromWorld
@@ -80,12 +82,12 @@ protected:
     std::weak_ptr<Node> parent;
     std::vector<NodePtr> children;
 
-    reVec3 localTranslation;
-    reVec3 localScaling;
-    reQuat localRotation;
+    Vec3 localTranslation;
+    Vec3 localScaling;
+    Quat localRotation;
 
-    reMat4 localMatrix;
-    reMat4 worldMatrix;
+    Mat4 localMatrix;
+    Mat4 worldMatrix;
 
     int refreshFlags;
 
@@ -93,5 +95,7 @@ private:
     static const int RF_LOCAL_TRANSFORM = 0x01;
     static const int RF_WORLD_TRANSFORM = 0x02;
 };
+
+} // namespace re
 
 #endif /* NODE_H_ */

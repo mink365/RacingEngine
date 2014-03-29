@@ -7,6 +7,8 @@
 #include "Uniform.h"
 #include "Sampler.h"
 
+namespace re {
+
 class Shader
 {
     friend class ShaderUtil;
@@ -57,5 +59,7 @@ private:
 
     bool isCompled;
 };
+
+} // namespace re
 
 #endif // SHADER_H

@@ -7,7 +7,9 @@
 
 #include "Color.h"
 
-reColor::reColor()
+namespace re {
+
+Color::Color()
 {
     this->r = 1;
     this->g = 1;
@@ -15,7 +17,7 @@ reColor::reColor()
     this->a = 1;
 }
 
-reColor::reColor(float r, float g, float b, float a)
+Color::Color(float r, float g, float b, float a)
 {
     this->r = r;
     this->g = g;
@@ -23,7 +25,7 @@ reColor::reColor(float r, float g, float b, float a)
     this->a = a;
 }
 
-void reColor::set(float r, float g, float b, float a)
+void Color::set(float r, float g, float b, float a)
 {
     this->r = r;
     this->g = g;
@@ -31,6 +33,6 @@ void reColor::set(float r, float g, float b, float a)
     this->a = a;
 }
 
-
+}
 
 

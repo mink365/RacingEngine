@@ -3,6 +3,8 @@
 
 #include <geometry/Geometry.h>
 
+namespace re {
+
 class BufferObjectUtil
 {
 public:
@@ -13,5 +15,7 @@ private:
     BufferObjectUtil();
 
 };
+
+} // namespace re
 
 #endif // BUFFEROBJECTUTIL_H

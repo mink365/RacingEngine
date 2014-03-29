@@ -16,6 +16,7 @@
 #include "opengl.h"
 
 using namespace std;
+using namespace re;
 
 Shader shader;
 
@@ -186,8 +187,8 @@ void updateMatrix(bool isAnim) {
 
         SceneNodePtr first = blocks[0];
 
-        reVec3 old = first->getLocalTranslation();
-        first->setLocalTranslation(reVec3(0, old.y + BLOCK_LENGTH * BLOCK_COUNT, 0));
+        Vec3 old = first->getLocalTranslation();
+        first->setLocalTranslation(Vec3(0, old.y + BLOCK_LENGTH * BLOCK_COUNT, 0));
 
         blocks.erase(blocks.begin());
         blocks.push_back(first);
@@ -197,11 +198,11 @@ void updateMatrix(bool isAnim) {
 
 //    camera.setViewport(600, 600);
     camera.setDepthField(10, 1320);
-    camera.setView(reVec3(0, y + 30, 50), reVec3(0, -240 + y, 57 + z), reVec3(0, 1, 0));
+    camera.setView(Vec3(0, y + 30, 50), Vec3(0, -240 + y, 57 + z), Vec3(0, 1, 0));
 
-    black_box->setLocalTranslation(reVec3(0, y - 100, 0));
+    black_box->setLocalTranslation(Vec3(0, y - 100, 0));
 
-//    reMat4 rotationM;
+//    Mat4 rotationM;
 //    rotationM.setRotationY(rotation * DEG_TO_RAD);
 
 //    float scale = 1.0f / 200;
@@ -216,8 +217,8 @@ void updateMatrix(bool isAnim) {
         rotation = 0;
     }
 
-    reQuat quat;
-    quat.fromAngles(reVec3(0, 0, rotation));
+    Quat quat;
+    quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->setLocalRotation(quat);
 }
 
@@ -335,7 +336,7 @@ void initResource()
         block->addChild(wall_copy);
         block->addChild(floor_copy);
 
-        block->setLocalTranslation(reVec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
+        block->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
         SceneManager::getInstance().addRootNode(block);
 
@@ -345,7 +346,7 @@ void initResource()
     motoRoot = std::make_shared<SceneNode>();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
-    motoRoot->setLocalTranslation(reVec3(0, 0, 12));
+    motoRoot->setLocalTranslation(Vec3(0, 0, 12));
     moto->getMaterial().getRenderState().setDepthTest(true);
 
 //    black->setVisible(false);
