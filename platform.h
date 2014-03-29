@@ -2,9 +2,12 @@
 #define PLATFORM_H
 
 #include <string>
+#include <memory>
 
 #include "opengl.h"
 #include "LogUtil.h"
+
+#include "PredefineType.h"
 
 using namespace std;
 

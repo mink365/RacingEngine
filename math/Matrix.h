@@ -108,6 +108,9 @@ public:
 
     Mat4 &setScaling(float x, float y, float z);
 
+    Vec3 getTranslation() const;
+    Vec3 getScaling() const;
+
     /**
      * @brief fromRTS
      * @param r

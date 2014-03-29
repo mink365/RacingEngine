@@ -165,6 +165,23 @@ Mat4 &Mat4::setScaling(float x, float y, float z)
     return *this;
 }
 
+Vec3 Mat4::getTranslation() const
+{
+    Vec3 v;
+    v.set(mat[0][3], mat[1][3], mat[2][3]);
+
+    return v;
+}
+
+Vec3 Mat4::getScaling() const
+{
+    Vec3 v;
+
+    v.set(mat[0][0], mat[1][1], mat[2][2]);
+
+    return v;
+}
+
 Mat4 &Mat4::fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s)
 {
     Mat4 tempRotateMatrix = r.toMat4();

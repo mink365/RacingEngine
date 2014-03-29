@@ -157,6 +157,10 @@ void Node::resetParent() {
     parent.reset();
 }
 
+bool Node::isHasParent() {
+    return parent.lock() == nullptr;
+}
+
 int Node::getLevel() const
 {
     return this->level;

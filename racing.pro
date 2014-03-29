@@ -113,4 +113,5 @@ HEADERS += \
     LogUtil.h \
     animation/Animation.h \
     animation/BoneNode.h \
-    animation/Skeleton.h
+    animation/Skeleton.h \
+    PredefineType.h
