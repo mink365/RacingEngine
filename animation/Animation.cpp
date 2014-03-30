@@ -56,7 +56,7 @@ string KeyFrame::getName() const
     return this->name;
 }
 
-Long KeyFrame::getEndTime() const
+Long KeyFrame::getTime() const
 {
     return this->time;
 }
@@ -132,17 +132,19 @@ Int AnimationTrack::getKeyFrameCount()
 void AnimationTrack::calcProportion(Long timePos)
 {
     std::vector<KeyFramePtr>::iterator iter;
-    for (iter = this->keyFrames.begin(); iter != this->keyFrames.end(); ++iter) {
+    for (iter = this->keyFrames.begin() + 1; iter != this->keyFrames.end(); ++iter) {
         KeyFramePtr keyFrame = *iter;
+        KeyFramePtr lastKeyFrame = *(iter - 1);
 
-        if (timePos >= keyFrame->getBeginTime()
-                && timePos <= keyFrame->getEndTime()) {
+        if (timePos >= lastKeyFrame->getTime()
+                && timePos <= keyFrame->getTime()) {
 
-            this->interpolationBeginKeyFrame = keyFrame;
-            this->interpolationEndKeyFrame = *(iter - 1);
+            this->interpolationBeginKeyFrame = lastKeyFrame;
+            this->interpolationEndKeyFrame = keyFrame;
 
-            this->frameProportion = (timePos - this->interpolationBeginKeyFrame->getBeginTime())
-                    / (float)(this->interpolationBeginKeyFrame->getLength());
+            this->frameProportion = (timePos - this->interpolationBeginKeyFrame->getTime())
+                    / (float)(this->interpolationEndKeyFrame->getTime()
+                              - this->interpolationBeginKeyFrame->getTime());
 
             break;
         }
@@ -156,13 +158,21 @@ void AnimationTrack::calcProportion(Long timePos)
     }
 }
 
-template<typename T>
-T slerp(T& b, T& e, float proportion) {
-    T diff = e - b;
+Vec3 slerp(const Vec3& b, const Vec3& e, float proportion) {
+    Vec3 diff = e - b;
 
     diff *= proportion;
 
     return b + diff;
+}
+
+Quat slerp(const Quat& b, const Quat& e, float proportion) {
+    Quat temp = b;
+    Quat tempEnd = e;
+
+    temp.slerp(tempEnd, proportion);
+
+    return temp;
 }
 
 Mat4 AnimationTrack::linearDeformation()
@@ -170,7 +180,7 @@ Mat4 AnimationTrack::linearDeformation()
     Vec3 trans = slerp(this->interpolationBeginKeyFrame->getTranslation(),
                        this->interpolationEndKeyFrame->getTranslation(), this->frameProportion);
 
-    Quat rotate = Quat::slerp(this->interpolationBeginKeyFrame->getRotation(),
+    Quat rotate = slerp(this->interpolationBeginKeyFrame->getRotation(),
                         this->interpolationEndKeyFrame->getRotation(), this->frameProportion);
 
     Vec3 scale = slerp(this->interpolationBeginKeyFrame->getScaling(),
@@ -187,8 +197,8 @@ Mat4 AnimationTrack::linearDeformation()
 
 void AnimationTrack::updateTrackInfo()
 {
-    this->minKeyTime = this->keyFrames.begin()->getBeginTime();
-    this->maxKeyTime = this->keyFrames.back()->getEndTime();
+    this->minKeyTime = this->keyFrames.front()->getTime();
+    this->maxKeyTime = this->keyFrames.back()->getTime();
 
     this->animLength = maxKeyTime - minKeyTime;
 }

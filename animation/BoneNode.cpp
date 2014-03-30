@@ -25,19 +25,17 @@ Int BoneNode::getNumLinkedControlPoints()
     return this->linkIndices.size();
 }
 
-const Mat4 &BoneNode::getLocalMatrix() const
+void BoneNode::updateLocalMatrix()
 {
     if (animationTrack != nullptr) {
-        animationTrack->getLocalMatrix(matrix);
-    } else {
-        Node::getLocalMatrix();
+        animationTrack->getLocalMatrix();
     }
-
-    return this.localMatrix;
 }
 
-const Mat4 &BoneNode::getGlobalMatrix() const
+Mat4 &BoneNode::getGlobalMatrix()
 {
+    this->updateLocalMatrix();
+
     if (this->getParent() != nullptr) {
         this->worldMatrix = getParent()->getWorldMatrix() * this->getLocalMatrix();
     } else {
@@ -54,10 +52,10 @@ Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Ma
     } else {
         Mat4 globalInitPosition = transformMatrix * meshGeometryMatrix;
 
-        Mat4 transformLinkMatrixInverse = transformLinkMatrix.invert();
+        Mat4 transformLinkMatrixInverse = transformLinkMatrix.invertOut();
         Mat4 clusterRelativeInitPosition = transformLinkMatrixInverse * globalInitPosition;
 
-        Mat4 globalCurrentPositionInverse = globalPositionMatrix.invert();
+        Mat4 globalCurrentPositionInverse = globalPositionMatrix.invertOut();
         Mat4 clusterRelativeCurrentPositionInverse = globalCurrentPositionInverse * getGlobalMatrix();
 
         return clusterRelativeCurrentPositionInverse * clusterRelativeInitPosition;

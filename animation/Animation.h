@@ -60,9 +60,7 @@ public:
     KeyFrame(const long time, const Vec3& tran, const Quat& rotation, const Vec3& scale);
 
     string getName() const;
-    Long getEndTime() const;
-    Long getBeginTime() const;
-    Long getLength() const;
+    Long getTime() const;
     const Vec3& getTranslation() const;
     const Vec3& getScaling() const;
     const Quat& getRotation() const;
@@ -76,7 +74,6 @@ public:
 private:
     string name;
     Long time;
-    Long length;
     Vec3 translation;
     Vec3 scaling;
     Quat rotation;

@@ -7,14 +7,18 @@
 namespace re {
 
 void matrixScale(Mat4& matrix, float value) {
-    for (int i = 0; i < 16; ++i) {
-        matrix[i] *= value;
+    for (int i = 0; i< 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            matrix[i][j] *= value;
+        }
     }
 }
 
-void matrixAdd(Mat4& destMatrix, float srcMatrix) {
-    for (int i = 0; i< 16; ++i) {
-        destMatrix[i] += srcMatrix[i];
+void matrixAdd(Mat4& destMatrix, Mat4& srcMatrix) {
+    for (int i = 0; i< 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            destMatrix[i][j] += srcMatrix[i][j];
+        }
     }
 }
 
@@ -22,12 +26,22 @@ Skeleton::Skeleton()
 {
 }
 
+void Skeleton::setRootBone(BoneNodePtr bone)
+{
+    this->rootBone = bone;
+}
+
+BoneNodePtr Skeleton::getRootBone()
+{
+    return this->rootBone;
+}
+
 void Skeleton::cacheBones(BoneNodePtr bone)
 {
     this->bones.push_back(bone);
 
     for (auto childBone : bone->getChildren()) {
-        this->cacheBones(childBone);
+        this->cacheBones(dynamic_pointer_cast<BoneNode>(childBone));
     }
 }
 
@@ -44,6 +58,7 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
 
     for (Int i = 0; i < bone->getNumLinkedControlPoints(); ++i) {
         Int index = bone->linkIndices[i];
+        // TODO:
         float weight = bone->weightValues[i];
 
         if (weight <= 0) {
@@ -61,7 +76,7 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
         }
 
         for (auto childBone : bone->getChildren()) {
-            this->computeBone(childBone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
+            this->computeBone(dynamic_pointer_cast<BoneNode>(childBone), boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
         }
     }
 }
@@ -75,7 +90,7 @@ void Skeleton::updateBoneVertex(BoneNodePtr bone, vector<float> &boneVertex, Int
     for (auto childBone : bone->getChildren()) {
         Index++;
 
-        this->updateBoneVertex(childBone, boneVertex, Index);
+        this->updateBoneVertex(dynamic_pointer_cast<BoneNode>(childBone), boneVertex, Index);
     }
 }
 

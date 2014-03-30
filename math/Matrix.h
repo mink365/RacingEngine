@@ -137,6 +137,8 @@ public:
     Mat4 &invertAffine();
     Mat4 &invert();
     Mat4 &transpose();
+
+    Mat4 invertOut() const;
 private:
     Vec4 mat[4];
 };

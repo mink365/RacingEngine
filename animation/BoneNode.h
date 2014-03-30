@@ -19,6 +19,8 @@ typedef shared_ptr<BoneNode> BoneNodePtr;
 
 class BoneNode : public Node
 {
+    friend class Skeleton;
+
 public:
     BoneNode();
 
@@ -27,8 +29,8 @@ public:
 
     Int getNumLinkedControlPoints();
 
-    const Mat4& getLocalMatrix() const override;
-    const Mat4& getGlobalMatrix() const;
+    void updateLocalMatrix();
+    Mat4& getGlobalMatrix();
 
     Mat4 getVertexTransformMatrix(const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix);
 

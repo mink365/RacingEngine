@@ -225,7 +225,14 @@ Mat4& Mat4::transpose()
     return *this;
 }
 
+Mat4 Mat4::invertOut() const
+{
+    Mat4 temp = *this;
 
+    temp.invert();
+
+    return temp;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // inverse 4x4 matrix

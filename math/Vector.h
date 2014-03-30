@@ -165,6 +165,7 @@ public:
     Vec4(const float x, const float y, const float z, const float w);
 
     Vec4 &set(const float x, const float y, const float z, const float w);
+    Vec4 &set(const Vec4 &source);
     Vec4 &zero();
 
     float operator [](int index) const;
@@ -185,6 +186,16 @@ inline Vec4 &Vec4::set(const float x, const float y, const float z, const float 
     this->y = y;
     this->z = z;
     this->w = w;
+
+    return *this;
+}
+
+inline Vec4 &Vec4::set(const Vec4 &source)
+{
+    this->x = source.x;
+    this->y = source.y;
+    this->z = source.z;
+    this->w = source.w;
 
     return *this;
 }
