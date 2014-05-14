@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <assert.h>
 
 #include "opengl.h"
 #include "LogUtil.h"

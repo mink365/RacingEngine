@@ -29,10 +29,10 @@ public:
 
     Int getNumLinkedControlPoints();
 
-    void updateLocalMatrix();
-    Mat4& getGlobalMatrix();
-
     Mat4 getVertexTransformMatrix(const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix);
+
+private:
+    void updateMatrix();
 
 private:
     Int type;

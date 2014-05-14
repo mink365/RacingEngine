@@ -1,6 +1,7 @@
-#include "Skeleton.h"
+﻿#include "Skeleton.h"
 
 #include "math/Matrix.h"
+#include "math/Vector.h"
 #include "BoneNode.h"
 #include "scene/Node.h"
 
@@ -23,12 +24,15 @@ void matrixAdd(Mat4& destMatrix, Mat4& srcMatrix) {
 }
 
 Skeleton::Skeleton()
+    : linkMode(LinkMode::Normalize)
 {
 }
 
 void Skeleton::setRootBone(BoneNodePtr bone)
 {
     this->rootBone = bone;
+
+    this->linkMode = bone->linkMode;
 }
 
 BoneNodePtr Skeleton::getRootBone()
@@ -58,18 +62,24 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
 
     for (Int i = 0; i < bone->getNumLinkedControlPoints(); ++i) {
         Int index = bone->linkIndices[i];
-        // TODO:
+
         float weight = bone->weightValues[i];
 
         if (weight <= 0) {
             continue;
         }
 
+        /*
+         * influence在matrixScale中被改变，对于每一个控点的计算，influence需要被设置为由骨骼计算来的顶点变换矩阵。根本原因是，
+         * 虽然骨骼link的控点都有共同的vertexTransformMatrix但是，每个控点有不同的weight（权重）
+         */
         Mat4 influence = vertexTransformMatrix;
         matrixScale(influence, weight);
 
         if (linkMode == LinkMode::Additive) {
+            // not support now
 
+            assert(false);
         } else {
             matrixAdd(boneDeformations[i], influence);
             boneWeights[i] += weight;
@@ -81,16 +91,17 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
     }
 }
 
-void Skeleton::updateBoneVertex(BoneNodePtr bone, vector<float> &boneVertex, Int Index)
+void Skeleton::updateBoneVertex(BoneNodePtr bone, vector<Vec3> &boneVertex, Int index)
 {
     Vec3 v = bone->getWorldMatrix().getTranslation();
 
-    // TODO: ....
+    Vec3 vertex = boneVertex.at(index);
+    vertex = v;
 
     for (auto childBone : bone->getChildren()) {
-        Index++;
+        index++;
 
-        this->updateBoneVertex(dynamic_pointer_cast<BoneNode>(childBone), boneVertex, Index);
+        this->updateBoneVertex(dynamic_pointer_cast<BoneNode>(childBone), boneVertex, index);
     }
 }
 

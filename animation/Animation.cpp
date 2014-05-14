@@ -3,6 +3,8 @@
 #include "BoneNode.h"
 #include "scene/Node.h"
 
+#include <memory>
+
 namespace re {
 
 Animation::Animation()
@@ -49,6 +51,34 @@ void Animation::addAnimationStack(AnimationStackPtr stack)
 {
     stack->animation = this->shared_from_this();
     this->animStacks.push_back(stack);
+}
+
+AnimationStackPtr Animation::getCurrAnimationStack()
+{
+    if (this->currentStackIndex > 0
+            && this->currentStackIndex < this->animStacks.size()) {
+        return this->animStacks.at(this->currentStackIndex);
+    } else {
+        nullptr;
+    }
+}
+Long Animation::getCurrTime() const
+{
+    return currTime;
+}
+
+void Animation::setCurrTime(const Long &value)
+{
+    currTime = value;
+}
+Long Animation::getBeginTime() const
+{
+    return beginTime;
+}
+
+void Animation::setBeginTime(const Long &value)
+{
+    beginTime = value;
 }
 
 string KeyFrame::getName() const
@@ -109,10 +139,34 @@ void AnimationTrack::addKeyFrame(const KeyFrame &frame)
 
 Mat4 AnimationTrack::getLocalMatrix()
 {
-    // TODO: curr and begin time
-//    this->currentTime = this->animation->
+    AnimationPtr animation = this->animation.lock();
+    AnimationStackPtr currStack = animation->getCurrAnimationStack();
+
+    Long stackBeginTime = 0;
+    Long stackEndTIme = 0;
+    Long stackLongth = 0;
+    if (currStack != nullptr) {
+        stackBeginTime = currStack->stackBeginTime;
+        stackEndTIme = currStack->stackEndTime;
+        stackLongth = currStack->stackLength;
+    } else {
+        stackLongth = this->animLength;
+    }
 
     Long timePos;
+
+    float power = animation->getAnimationPower();
+    if (animation->isAnimationLoop()) {
+        Long time = (this->currentTime - this->beginTime) * power;
+
+        timePos = time % stackLongth + stackBeginTime;
+    } else {
+        timePos = (this->currentTime - this->beginTime) * power + stackBeginTime;
+
+        if (timePos > this->animLength + stackBeginTime) {
+            timePos = this->animLength + stackBeginTime;
+        }
+    }
 
     this->calcProportion(timePos);
 
@@ -186,11 +240,10 @@ Mat4 AnimationTrack::linearDeformation()
     Vec3 scale = slerp(this->interpolationBeginKeyFrame->getScaling(),
                        this->interpolationEndKeyFrame->getScaling(), this->frameProportion);
 
+    // TODO: return a matrix?
     this->boneNode->setLocalTranslation(trans);
     this->boneNode->setLocalRotation(rotate);
     this->boneNode->setLocalScaling(scale);
-
-    this->boneNode->updateLocalMatrix();
 
     return this->boneNode->getLocalMatrix();
 }
@@ -201,6 +254,23 @@ void AnimationTrack::updateTrackInfo()
     this->maxKeyTime = this->keyFrames.back()->getTime();
 
     this->animLength = maxKeyTime - minKeyTime;
+}
+
+void AnimationTrack::updateTimeInfo()
+{
+    AnimationPtr animation = this->animation.lock();
+
+    this->currentTime = animation->getCurrTime();
+    this->beginTime = animation->getBeginTime();
+}
+Long AnimationStack::getStackBeginTime() const
+{
+    return stackBeginTime;
+}
+
+Long AnimationStack::getStackEndTime() const
+{
+    return stackEndTime;
 }
 
 }

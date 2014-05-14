@@ -7,6 +7,7 @@
 namespace re {
 
 class Mat4;
+class Vec3;
 
 /**
  * @brief The SkinningType enum
@@ -50,7 +51,7 @@ private:
 
     void computeBone(BoneNodePtr bone, vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
-    void updateBoneVertex(BoneNodePtr bone, vector<float>& boneVertex, Int Index);
+    void updateBoneVertex(BoneNodePtr bone, vector<Vec3>& boneVertex, Int Index);
 
 private:
     LinkMode linkMode;

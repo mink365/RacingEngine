@@ -1,4 +1,4 @@
-#ifndef ANIMATION_H
+﻿#ifndef ANIMATION_H
 #define ANIMATION_H
 
 #include <string>
@@ -41,6 +41,14 @@ public:
     void addAnimationTrack(AnimationTrackPtr track);
     void addAnimationStack(AnimationStackPtr stack);
 
+    AnimationStackPtr getCurrAnimationStack();
+
+    Long getCurrTime() const;
+    void setCurrTime(const Long &value);
+
+    Long getBeginTime() const;
+    void setBeginTime(const Long &value);
+
 private:
 
     vector<shared_ptr<AnimationTrack>> animTracks;
@@ -51,6 +59,9 @@ private:
 
     Int currentStackIndex;
     bool isUseAnimStack;
+
+    Long currTime;
+    Long beginTime;
 };
 
 class KeyFrame
@@ -80,6 +91,9 @@ private:
     Mat4 matrix;
 };
 
+/*
+ * one track on bone
+ */
 class AnimationTrack
 {
     friend class Animation;
@@ -91,11 +105,14 @@ public:
     Int getCurrKeyFrameIndex();
     Int getKeyFrameCount();
 
+    void updateTimeInfo();
+
 private:
     void calcProportion(Long timePos);
     Mat4 linearDeformation();
 
     void updateTrackInfo();
+
 private:
     weak_ptr<Animation> animation;
 
@@ -119,9 +136,13 @@ private:
 class AnimationStack
 {
     friend class Animation;
+    friend class AnimationTrack;
 
 public:
     AnimationStack(Long begin, Long end);
+
+    Long getStackBeginTime() const;
+    Long getStackEndTime() const;
 
 private:
     weak_ptr<Animation> animation;
