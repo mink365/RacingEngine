@@ -1,0 +1,61 @@
+#ifndef CAMERA_H
+#define CAMERA_H
+
+#include "Scene/SceneNode.h"
+
+namespace re {
+
+class Camera : public SceneNode
+{
+public:
+    Camera();
+
+    void setDepthField(float near, float far);
+    void setViewport(float width, float height);
+
+    /**
+     * @brief setView
+     * @param center
+     * @param eye
+     * @param up 大概的，整个世界的up向量
+     */
+    void setView(const Vec3 &center, const Vec3 &eye, const Vec3 &up);
+
+    /**
+     * @brief setAxes
+     * @param left
+     * @param up
+     * @param direction
+     *
+     * 使用三个轴确定node的旋转状态
+     */
+    void setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction);
+
+    const Mat4 &getViewMatrix() const;
+    const Mat4 &getProjectionMatrix() const;
+    const Mat4 &getViewProjectionMatrix() const;
+
+protected:
+    void recalcViewMatrix();
+    void recalcProjectionMatrix();
+    void onChange();
+
+private:
+    Vec3 center;
+    Vec3 up;
+    Vec3 left;
+
+    Mat4 viewMatrix;
+    Mat4 projectionMatrix;
+    Mat4 viewProjectionMatrix;
+
+    float zNear;
+    float zFar;
+
+    float viewportWidth;
+    float viewportHeight;
+};
+
+} // namespace re
+
+#endif // CAMERA_H
