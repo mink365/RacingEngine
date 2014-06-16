@@ -2,6 +2,7 @@
 #define GEOMETRY_H
 
 #include <vector>
+#include <array>
 #include "Vertex.h"
 #include "Face.h"
 #include "Render/BufferObject/VertexBuffer.h"
@@ -13,6 +14,7 @@ class Geometry
 {
     friend class Renderer;
     friend class BufferObjectUtil;
+    friend class SkeletonController;
 
 public:
     Geometry();
@@ -31,8 +33,15 @@ public:
     IndexBuffer &getIbo();
 
 private:
+    void chacheVertex();
+
+private:
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
+
+    std::vector<Vertex> controlPoints;
+    std::vector<int> vertexToControl;
+    std::vector<vector<int>> controlToVertex;
 
     VertexBuffer vbo;
     IndexBuffer ibo;

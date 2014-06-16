@@ -9,15 +9,9 @@
 #define SCENENODE_H_
 
 #include "Node.h"
+#include "NodeAttribute.h"
 
 namespace re {
-
-enum SceneNodeType {
-    GROUP,
-    MESH,
-    CAMERA,
-    LIGHT
-};
 
 class SceneNode;
 typedef shared_ptr<SceneNode> SceneNodePtr;
@@ -32,10 +26,13 @@ public:
     bool getVisible() const;
     void setVisible(bool value);
 
-    SceneNodeType getType();
+    void setNodeAttribute(NodeAttributePtr att);
+    void clearNodeAttribute();
+    NodeAttributePtr getNodeAttribute();
 protected:
     bool visible;
-    SceneNodeType type;
+
+    NodeAttributePtr attribute;
 };
 
 } // namespace re

@@ -10,7 +10,6 @@
 namespace re {
 
 SceneNode::SceneNode() {
-    this->type = GROUP;
     this->visible = true;
 }
 
@@ -28,9 +27,26 @@ void SceneNode::setVisible(bool value)
     visible = value;
 }
 
-SceneNodeType SceneNode::getType()
+void SceneNode::setNodeAttribute(NodeAttributePtr att)
 {
-    return this->type;
+    SceneNodePtr ptr = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+
+    att->attachNode = ptr;
+    this->attribute = att;
+}
+
+void SceneNode::clearNodeAttribute()
+{
+    if (this->attribute != nullptr) {
+        this->attribute->attachNode.reset();
+
+        this->attribute = nullptr;
+    }
+}
+
+NodeAttributePtr SceneNode::getNodeAttribute()
+{
+    return this->attribute;
 }
 
 }

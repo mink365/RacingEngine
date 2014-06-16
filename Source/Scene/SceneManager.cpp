@@ -85,9 +85,9 @@ void SceneManager::vist(SceneNodePtr node)
 
     if (node->visible) {
         // TODO: 类型辨识
-        if (node->getType() == MESH) {
+        if (node->getNodeAttribute()->getType() == NodeAttributeType::Mesh) {
             MeshPtr mesh = dynamic_pointer_cast<Mesh>(node);
-            this->renderManger.getRenderQueue().addRenderableNode(mesh, mesh->getMaterial().getQueueID());
+            this->renderManger.getRenderQueue().addRenderable(mesh, mesh->getMaterial().getQueueID());
         }
 
         for (auto child : node->children) {

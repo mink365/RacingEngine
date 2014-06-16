@@ -22,8 +22,6 @@ public:
 
     Camera &getActivatedCamera();
 
-    void renderMesh(MeshPtr mesh);
-
     void render();
 
     void setDefaultRenderEnv();
@@ -36,6 +34,9 @@ public:
 
 protected:
     void renderList(RenderableList &list);
+
+    void renderAttribute(NodeAttributePtr attribute);
+    void renderMesh(MeshPtr mesh);
 
     void applyMaterial(Material &material);
 

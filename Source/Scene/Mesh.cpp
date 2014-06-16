@@ -4,7 +4,7 @@ namespace re {
 
 Mesh::Mesh()
 {
-    this->type = MESH;
+    this->type = NodeAttributeType::Mesh;
 }
 
 Geometry &Mesh::getGeometry()

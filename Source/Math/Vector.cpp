@@ -6,6 +6,7 @@
  */
 
 #include "Math/Vector.h"
+#include "Quaternion.h"
 
 namespace re {
 
@@ -43,6 +44,15 @@ float *Vec3::toFloatPtr()
 const float *Vec3::toFloatPtr() const
 {
     return &x;
+}
+
+Quat Vec3::toQuat() const
+{
+    Quat result;
+
+    result.fromAngles(*this);
+
+    return result;
 }
 
 Vec4::Vec4() {

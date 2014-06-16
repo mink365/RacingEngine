@@ -12,6 +12,8 @@
 
 namespace re {
 
+class Quat;
+
 class Vec3 {
 public:
 	float x;
@@ -47,6 +49,8 @@ public:
     operator float *() const;
     float *toFloatPtr();
     const float *toFloatPtr () const;
+
+    Quat toQuat() const;
 };
 
 inline float Vec3::operator [](int index) const

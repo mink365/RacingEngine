@@ -7,6 +7,7 @@
 
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
+#include "Scene/NodeAttribute.h"
 
 namespace re {
 
@@ -32,10 +33,29 @@ Renderer &RenderManager::getRenderer()
 
 void RenderManager::renderList(RenderableList &list)
 {
-    for (auto node : list.nodes) {
-        MeshPtr mesh = dynamic_pointer_cast<Mesh>(node);
+    for (auto att : list.attributes) {
+        this->renderAttribute(att);
+    }
+}
+
+void RenderManager::renderAttribute(NodeAttributePtr attribute)
+{
+    switch(attribute->getType()) {
+        case NodeAttributeType::Mesh:
+    {
+        //TODO:
+//        MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
+        MeshPtr mesh;
 
         this->renderMesh(mesh);
+    }
+        break;
+
+        case NodeAttributeType::Camera:
+        break;
+
+        case NodeAttributeType::Light:
+        break;
     }
 }
 
@@ -61,8 +81,10 @@ void RenderManager::initDefaultRenderState()
 
 void RenderManager::renderMesh(MeshPtr mesh)
 {
-    this->renderer.setWorldMatrix(mesh->getWorldMatrix());
-    mesh->getMaterial().getShder()->getUniform("model")->setData((float*)mesh->getWorldMatrix());
+    SceneNodePtr node = mesh->getNode();
+
+    this->renderer.setWorldMatrix(node->getWorldMatrix());
+    mesh->getMaterial().getShder()->getUniform("model")->setData((float*)node->getWorldMatrix());
 
     glUseProgram(mesh->getMaterial().getShder()->getProgram());
 

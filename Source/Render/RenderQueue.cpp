@@ -16,16 +16,16 @@ RenderQueue::~RenderQueue()
     }
 }
 
-void RenderQueue::addRenderableNode(SceneNodePtr node)
+void RenderQueue::addRenderable(NodeAttributePtr node)
 {
-    this->addRenderableNode(node, RENDER_QUEUE_MAIN);
+    this->addRenderable(node, RENDER_QUEUE_MAIN);
 }
 
-void RenderQueue::addRenderableNode(SceneNodePtr node, int type)
+void RenderQueue::addRenderable(NodeAttributePtr node, int type)
 {
     RenderableList &list = this->getRenderableList(type);
 
-    list.nodes.push_back(node);
+    list.attributes.push_back(node);
 }
 
 RenderableList &RenderQueue::getRenderableList(int type)
@@ -58,7 +58,7 @@ void RenderQueue::clear()
     for (iter = this->queues.begin(); iter != this->queues.end(); ++iter) {
         RenderableList *list = iter->second;
 
-        list->nodes.clear();
+        list->attributes.clear();
     }
 }
 

@@ -41,6 +41,25 @@ IndexBuffer &Geometry::getIbo()
     return ibo;
 }
 
+void Geometry::chacheVertex()
+{
+
+    for (int i = 0; i < this->controlPoints.size(); ++i) {
+
+        std::vector<int> vertexIndexList;
+
+        for (int j = 0; j < this->vertexToControl.size(); ++j) {
+            int& controlIndex = vertexToControl[j];
+
+            if (controlIndex == i) {
+                vertexIndexList.push_back(j);
+            }
+        }
+
+        this->controlToVertex.push_back(vertexIndexList);
+    }
+}
+
 VertexBuffer &Geometry::getVbo()
 {
     return vbo;
