@@ -77,14 +77,15 @@ void SceneManager::clearFrame()
     this->renderManger.clear();
 }
 
-void SceneManager::vist(SceneNodePtr node)
+void SceneManager::vist(const SceneNodePtr &node)
 {
     if (node->refreshFlags & Node::RF_LOCAL_TRANSFORM) {
         this->sceneTransformUpdateBucket.push_back(node);
     }
 
     if (node->visible) {
-        if (node->getNodeAttribute()->getType() == NodeAttributeType::Mesh) {
+        if (node->getNodeAttribute() != nullptr
+                &&node->getNodeAttribute()->getType() == NodeAttributeType::Mesh) {
             MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
             this->renderManger.getRenderQueue().addRenderable(mesh, mesh->getMaterial().getQueueID());
         }

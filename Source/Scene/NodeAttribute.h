@@ -27,6 +27,12 @@ public:
 
     SceneNodePtr getNode();
 
+    NodeAttributePtr clone();
+
+protected:
+    virtual NodeAttributePtr createCloneInstance();
+    virtual void copyProperties(NodeAttribute* att);
+
 protected:
     string name;
     Long id;
@@ -39,11 +45,6 @@ protected:
 inline NodeAttributeType NodeAttribute::getType()
 {
     return this->type;
-}
-
-inline SceneNodePtr NodeAttribute::getNode()
-{
-    return this->attachNode.lock();
 }
 
 } //namespace re

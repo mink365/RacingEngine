@@ -14,7 +14,7 @@ SceneNode::SceneNode() {
 }
 
 SceneNode::~SceneNode() {
-	// TODO Auto-generated destructor stub
+
 }
 
 bool SceneNode::getVisible() const
@@ -47,6 +47,33 @@ void SceneNode::clearNodeAttribute()
 NodeAttributePtr SceneNode::getNodeAttribute()
 {
     return this->attribute;
+}
+
+SceneNodePtr SceneNode::clone()
+{
+    NodePtr inst = Node::clone();
+
+    return dynamic_pointer_cast<SceneNode>(inst);
+}
+
+NodePtr SceneNode::createCloneInstance()
+{
+    return std::make_shared<SceneNode>();
+}
+
+void SceneNode::copyProperties(Node *node)
+{
+    Node::copyProperties(node);
+
+    SceneNode* inst = dynamic_cast<SceneNode*>(node);
+    if (inst) {
+        inst->visible = this->visible;
+
+        if (this->attribute != nullptr) {
+            NodeAttributePtr clonedAtt = this->attribute->clone();
+            inst->setNodeAttribute(clonedAtt);
+        }
+    }
 }
 
 }

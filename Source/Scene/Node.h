@@ -28,7 +28,6 @@ class Node : public enable_shared_from_this<Node> {
     friend class SceneManager;
 public:
 	Node();
-//    Node(const Node &a);
 	virtual ~Node();
 
     const Vec3 &getLocalTranslation() const;
@@ -54,6 +53,8 @@ public:
     const std::vector<NodePtr> getChildren() const;
     void addChild(NodePtr node);
 
+    NodePtr clone();
+
 protected:
     void setWorldTranslation(const Vec3 &t);
     void setWorldRotation(const Quat &r);
@@ -74,6 +75,10 @@ protected:
 
     void updateTransform();
     void updateChildrenTransform();
+
+    virtual NodePtr createCloneInstance();
+    virtual void copyChildren(Node* node);
+    virtual void copyProperties(Node* node);
 
 protected:
     std::string name;

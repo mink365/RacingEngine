@@ -29,6 +29,13 @@ public:
     void setNodeAttribute(NodeAttributePtr att);
     void clearNodeAttribute();
     NodeAttributePtr getNodeAttribute();
+
+    SceneNodePtr clone();
+
+protected:
+    virtual NodePtr createCloneInstance() override;
+    virtual void copyProperties(Node* node) override;
+
 protected:
     bool visible;
 

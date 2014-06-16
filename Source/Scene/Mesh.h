@@ -20,9 +20,17 @@ public:
 
     Geometry& getGeometry();
 
+    MeshPtr clone();
+
+protected:
+    virtual NodeAttributePtr createCloneInstance() override;
+    virtual void copyProperties(NodeAttribute* att) override;
+
 private:
+    // TODO: use shared_ptr instance of a data
     Material material;
 
+    // TODO: geometry not need to be copy? or we just copy it in deep clone?
     Geometry geometry;
 };
 

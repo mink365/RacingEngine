@@ -20,29 +20,6 @@ Node::Node() {
     this->localScaling.set(1, 1, 1);
 }
 
-//Node::Node(const Node &a)
-//{
-//    this->name = a.name;
-//    this->id = a.id;
-//    this->level = 0;
-//    this->parent = NULL;
-//    this->refreshFlags = 0;
-//    this->markLocalTransformRefreshFlag();
-//    this->localTranslation = a.localTranslation;
-//    this->localScaling = a.localScaling;
-//    this->localRotation = a.localRotation;
-//    this->localMatrix = a.localMatrix;
-//    this->worldMatrix.identity();
-
-//    std::vector<Node *>::iterator iter;
-//    for (iter = a.children.begin(); iter != a.children.end(); ++iter) {
-//        Node *source = *iter;
-
-//        Node *node = source->clone();
-//        this->children.push_back();
-//    }
-//}
-
 Node::~Node() {
 
 }
@@ -143,6 +120,35 @@ void Node::updateChildrenTransform()
     }
 }
 
+NodePtr Node::createCloneInstance()
+{
+    return std::make_shared<Node>();
+}
+
+void Node::copyChildren(Node *node)
+{
+    node->children.clear();
+    for (auto child : node->children) {
+        node->children.push_back(child->clone());
+    }
+}
+
+void Node::copyProperties(Node *node)
+{
+    node->name = this->name;
+    node->localMatrix = this->localMatrix;
+    node->localRotation = this->localRotation;
+    node->localTranslation = this->localTranslation;
+    node->localScaling = this->localScaling;
+
+    node->worldMatrix = this->worldMatrix;
+
+    node->markLocalTransformRefreshFlag();
+    node->markWorldTransformRefreshFlag();
+
+    node->parent.reset();
+}
+
 NodePtr Node::getParent() const
 {
     return parent.lock();
@@ -177,6 +183,15 @@ void Node::addChild(NodePtr node)
     node->level = node->getParent()->level + 1;
 
     this->children.push_back(node);
+}
+
+NodePtr Node::clone()
+{
+    NodePtr cloned = this->createCloneInstance();
+    cloned->copyProperties(this);
+    cloned->copyProperties(this);
+
+    return cloned;
 }
 
 void Node::setWorldTranslation(const Vec3 &t)

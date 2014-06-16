@@ -30,7 +30,7 @@ public:
     void clearFrame();
 
 protected:
-    void vist(SceneNodePtr node);
+    void vist(const SceneNodePtr& node);
 
 private:
     SceneManager();
