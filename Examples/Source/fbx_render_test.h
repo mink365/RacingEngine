@@ -117,11 +117,12 @@ int LoadShader(std::string vs, std::string fs) {
 //    colorAttr->setStride(sizeof(Vertex));
 //    colorAttr->setOffset((8) * 4);
 
-    Attribute *normalAttr = shader.getAttribute("aNormal");
-    normalAttr->setType(ATTR_FORMAT_FLOAT);
-    normalAttr->setSize(3);
-    normalAttr->setStride(sizeof(Vertex));
-    normalAttr->setOffset((5) * 4);
+      // TODO:
+//    Attribute *normalAttr = shader.getAttribute("aNormal");
+//    normalAttr->setType(ATTR_FORMAT_FLOAT);
+//    normalAttr->setSize(3);
+//    normalAttr->setStride(sizeof(Vertex));
+//    normalAttr->setOffset((5) * 4);
 
 //    shader.getUniform("model")->setData((float*)model);
     shader.getUniform("view")->setData((float*)camera.getViewMatrix());
@@ -136,8 +137,7 @@ int LoadShader(const char *pfilePath_vs, const char *pfilePath_fs)
     std::string vertexShaderString = loadFile(pfilePath_vs);
     std::string fragmentShaderString = loadFile(pfilePath_fs);
 
-
-    LoadShader(vertexShaderString, fragmentShaderString);
+    return LoadShader(vertexShaderString, fragmentShaderString);
 }
 
 namespace Test {
@@ -328,18 +328,16 @@ void initResource()
     for (int i = 0; i < BLOCK_COUNT; ++i) {
         SceneNodePtr block = std::make_shared<SceneNode>();
 
-        auto wall_copy = std::make_shared<SceneNode>();
-        *wall_copy = *wall;
+        auto wall_copy = wall->clone();
 
-        auto floor_copy = std::make_shared<SceneNode>();
-        *floor_copy = *floor;
-
+        auto floor_copy = floor->clone();
 
         block->addChild(wall_copy);
         block->addChild(floor_copy);
 
         block->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
+        // TODO: cloned node not show?
         SceneManager::getInstance().addRootNode(block);
 
         blocks.push_back(block);
