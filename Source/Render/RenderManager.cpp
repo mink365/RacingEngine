@@ -31,14 +31,14 @@ Renderer &RenderManager::getRenderer()
     return renderer;
 }
 
-void RenderManager::renderList(RenderableList &list)
+void RenderManager::renderList(const RenderableList &list)
 {
     for (auto att : list.attributes) {
         this->renderAttribute(att);
     }
 }
 
-void RenderManager::renderAttribute(NodeAttributePtr attribute)
+void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
 {
     switch(attribute->getType()) {
         case NodeAttributeType::Mesh:
@@ -78,7 +78,7 @@ void RenderManager::initDefaultRenderState()
     this->renderer.resetToRenderState(defaultRenderState);
 }
 
-void RenderManager::renderMesh(MeshPtr mesh)
+void RenderManager::renderMesh(const MeshPtr& mesh)
 {
     SceneNodePtr node = mesh->getNode();
 

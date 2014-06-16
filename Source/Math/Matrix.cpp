@@ -194,6 +194,8 @@ Mat4 &Mat4::fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s)
 
     // TM * RM * SM
     *this = tempTranslationMatrix * tempRotateMatrix * tempScalingMatrix;
+
+    return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

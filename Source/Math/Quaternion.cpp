@@ -132,6 +132,8 @@ Quat &Quat::fromAxes(const Vec3 &xAxis, const Vec3 &yAxis, const Vec3 &zAxis)
     this->fromRotationMatrix(xAxis.x, yAxis.x, zAxis.x,
                              xAxis.y, yAxis.y, zAxis.y,
                              xAxis.z, yAxis.z, zAxis.z);
+
+    return *this;
 }
 
 Quat &Quat::fromRotationMatrix(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)

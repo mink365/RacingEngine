@@ -33,10 +33,10 @@ public:
     Renderer &getRenderer();
 
 protected:
-    void renderList(RenderableList &list);
+    void renderList(const RenderableList &list);
 
-    void renderAttribute(NodeAttributePtr attribute);
-    void renderMesh(MeshPtr mesh);
+    void renderAttribute(const NodeAttributePtr &attribute);
+    void renderMesh(const MeshPtr &mesh);
 
     void applyMaterial(Material &material);
 

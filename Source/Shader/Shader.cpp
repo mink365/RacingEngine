@@ -90,6 +90,8 @@ Attribute *Shader::getAttribute(const std::string name)
             return attr;
         }
     }
+
+    return nullptr;
 }
 
 void Shader::addAttribute(Attribute *value)
