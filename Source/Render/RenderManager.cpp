@@ -44,8 +44,7 @@ void RenderManager::renderAttribute(NodeAttributePtr attribute)
         case NodeAttributeType::Mesh:
     {
         //TODO:
-//        MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
-        MeshPtr mesh;
+        MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
 
         this->renderMesh(mesh);
     }

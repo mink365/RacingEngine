@@ -21,6 +21,7 @@ class NodeAttribute
 
 public:
     NodeAttribute();
+    virtual ~NodeAttribute();
 
     NodeAttributeType getType();
 

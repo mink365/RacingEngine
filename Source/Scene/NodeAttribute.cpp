@@ -6,4 +6,9 @@ NodeAttribute::NodeAttribute()
 {
 }
 
+NodeAttribute::~NodeAttribute()
+{
+
+}
+
 }

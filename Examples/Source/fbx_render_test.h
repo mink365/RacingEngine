@@ -232,7 +232,7 @@ void initResource()
 {
     InitGLStates();
 
-    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+    std::string resDir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
 //    std::string resDir = "/sdcard/book/racing/";
     std::string shaderDir = resDir + "Shaders/";
     std::string assertDir = resDir + "Model/PAD/";
@@ -277,14 +277,14 @@ void initResource()
 
     delete[] buffer;
 
-    MeshPtr black = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
+    SceneNodePtr black = parser->getNodes()[0];
 
     filestr.open ((assertDir + "wall.data").c_str(), ios::binary);
     parser->parseStream(&filestr);
     filestr.close();
 
-    MeshPtr wall = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
-    MeshPtr floor = dynamic_pointer_cast<Mesh>(parser->getNodes()[1]);
+    SceneNodePtr wall = parser->getNodes()[0];
+    SceneNodePtr floor = parser->getNodes()[1];
 
     assertDir = resDir + "Model/Moto/";
 
@@ -301,21 +301,23 @@ void initResource()
     filestr.open((assertDir + "new_group_moto03.data").c_str(), ios::binary);
     parser->parseStream(&filestr);
     filestr.close();
-    MeshPtr shadow = dynamic_pointer_cast<Mesh>(parser->getNodes()[0]);
-    MeshPtr moto = dynamic_pointer_cast<Mesh>(parser->getNodes()[1]);
+    SceneNodePtr shadow = parser->getNodes()[0];
+    SceneNodePtr moto = parser->getNodes()[1];
 
-    std::vector<MeshPtr> meshs;
+    std::vector<SceneNodePtr> meshs;
     meshs.push_back(wall);
     meshs.push_back(floor);
     meshs.push_back(black);
     meshs.push_back(shadow);
     meshs.push_back(moto);
 
-    for (auto node : meshs) {
-        Geometry *geometry = &(node->getGeometry());
+    for (SceneNodePtr node : meshs) {
+        MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
+
+        Geometry *geometry = &(mesh->getGeometry());
         BufferObjectUtil::getInstance().loadGeometryToHardware(*geometry);
 
-        node->getMaterial().setShder(&shader);
+        mesh->getMaterial().setShder(&shader);
     }
 
 //    SceneNode *block = new SceneNode();
@@ -326,10 +328,10 @@ void initResource()
     for (int i = 0; i < BLOCK_COUNT; ++i) {
         SceneNodePtr block = std::make_shared<SceneNode>();
 
-        auto wall_copy = std::make_shared<Mesh>();
+        auto wall_copy = std::make_shared<SceneNode>();
         *wall_copy = *wall;
 
-        auto floor_copy = std::make_shared<Mesh>();
+        auto floor_copy = std::make_shared<SceneNode>();
         *floor_copy = *floor;
 
 
@@ -347,12 +349,20 @@ void initResource()
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->setLocalTranslation(Vec3(0, 0, 12));
-    moto->getMaterial().getRenderState().setDepthTest(true);
+
+    // TODO:
+//    moto->getMaterial().getRenderState().setDepthTest(true);
 
 //    black->setVisible(false);
 //    SceneManager::getInstance().addRootNode(black);
     SceneManager::getInstance().addRootNode(motoRoot);
     black_box = black;
+
+
+    assertDir = resDir + "Model/Man/";
+    parser->parse(assertDir + "group_girl.data");
+
+    string hello("test");
 }
 
 #endif // FBX_RENDER_TEST_H

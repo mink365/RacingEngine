@@ -23,6 +23,9 @@ typedef std::shared_ptr<BoneNode> BoneNodePtr;
 class SceneNode;
 typedef std::shared_ptr<SceneNode> SceneNodePtr;
 
+class NodeAttribute;
+typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
+
 class Mesh;
 typedef std::shared_ptr<Mesh> MeshPtr;
 
