@@ -20,6 +20,7 @@ typedef shared_ptr<BoneNode> BoneNodePtr;
 class BoneNode : public Node
 {
     friend class Skeleton;
+    friend class FbxParser;
 
 public:
     BoneNode();

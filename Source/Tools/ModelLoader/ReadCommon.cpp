@@ -7,6 +7,8 @@
 
 #include "ReadCommon.h"
 #include "Math/Vector.h"
+#include "Math/Quaternion.h"
+#include "Math/Matrix.h"
 
 #include <iostream>
 #include <fstream>
@@ -30,7 +32,7 @@ bool ReadCommon::ReadBoolean(std::istream *stream) {
     return (v != 0);
 }
 
-int ReadCommon::ReadInt(std::istream *stream) {
+Int ReadCommon::ReadInt(std::istream *stream) {
   int v = 0;
 
   stream->read((char*)&v, 4);
@@ -38,7 +40,7 @@ int ReadCommon::ReadInt(std::istream *stream) {
   return v;
 }
 
-long ReadCommon::ReadLong(std::istream *stream) {
+Long ReadCommon::ReadLong(std::istream *stream) {
     long v = 0;
 
     stream->read((char*)&v, 8);
@@ -77,6 +79,19 @@ Vec3 ReadCommon::ReadVec3(std::istream *stream) {
     stream->read((char*)v, 3 * 4);
 
     return re::Vec3(v[0], v[1], v[2]);
+}
+
+Mat4 ReadCommon::ReadMat4(istream *st)
+{
+    Vec3 vectorT = this->ReadVec3(st);
+    Vec3 vectorR = this->ReadVec3(st);
+    Vec3 vectorS = this->ReadVec3(st);
+
+    Mat4 mat;
+
+    mat.fromRTS(vectorR.toQuat(), vectorT, vectorS);
+
+    return mat;
 }
 
 }

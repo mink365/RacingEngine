@@ -81,6 +81,14 @@ void Animation::setBeginTime(const Long &value)
     beginTime = value;
 }
 
+KeyFrame::KeyFrame(const long time, const Vec3 &tran, const Quat &rotation, const Vec3 &scale)
+{
+    this->time = time;
+    this->translation = tran;
+    this->rotation = rotation;
+    this->scaling = scale;
+}
+
 string KeyFrame::getName() const
 {
     return this->name;

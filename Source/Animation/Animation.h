@@ -96,6 +96,7 @@ private:
  */
 class AnimationTrack
 {
+    friend class FbxParser;
     friend class Animation;
 
 public:

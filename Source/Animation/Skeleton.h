@@ -8,6 +8,9 @@ namespace re {
 
 class Mat4;
 class Vec3;
+class Skeleton;
+
+typedef shared_ptr<Skeleton> SkeletonPtr;
 
 /**
  * @brief The SkinningType enum
@@ -38,6 +41,8 @@ enum class LinkMode {
  */
 class Skeleton
 {
+    friend class SkeletonController;
+
 public:
     Skeleton();
 
