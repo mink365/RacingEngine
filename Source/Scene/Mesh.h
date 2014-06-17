@@ -23,8 +23,8 @@ public:
     MeshPtr clone();
 
 protected:
-    virtual NodeAttributePtr createCloneInstance() override;
-    virtual void copyProperties(NodeAttribute* att) override;
+    virtual NodeAttributePtr createCloneInstance() const override;
+    virtual void copyProperties(const NodeAttribute* att) override;
 
 private:
     // TODO: use shared_ptr instance of a data

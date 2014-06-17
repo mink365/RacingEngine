@@ -16,7 +16,7 @@ SceneNodePtr NodeAttribute::getNode()
     return this->attachNode.lock();
 }
 
-NodeAttributePtr NodeAttribute::clone()
+NodeAttributePtr NodeAttribute::clone() const
 {
     NodeAttributePtr cloned = this->createCloneInstance();
 
@@ -25,12 +25,12 @@ NodeAttributePtr NodeAttribute::clone()
     return cloned;
 }
 
-NodeAttributePtr NodeAttribute::createCloneInstance()
+NodeAttributePtr NodeAttribute::createCloneInstance() const
 {
     return std::make_shared<NodeAttribute>();
 }
 
-void NodeAttribute::copyProperties(NodeAttribute *att)
+void NodeAttribute::copyProperties(const NodeAttribute *att)
 {
     this->name = att->name;
     this->type = att->type;

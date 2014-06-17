@@ -232,7 +232,7 @@ void initResource()
 {
     InitGLStates();
 
-    std::string resDir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
+    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 //    std::string resDir = "/sdcard/book/racing/";
     std::string shaderDir = resDir + "Shaders/";
     std::string assertDir = resDir + "Model/PAD/";

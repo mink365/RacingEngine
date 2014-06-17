@@ -17,13 +17,15 @@
 #include <memory>
 
 #include "platform.h"
+#include "Base/Named.h"
+#include "Base/Uncopyable.h"
 
 namespace re {
 
 class Node;
 typedef std::shared_ptr<Node> NodePtr;
 
-class Node : public enable_shared_from_this<Node> {
+class Node : public enable_shared_from_this<Node>, public Named, public Clonable<Node> {
     friend class FbxParser;
     friend class SceneManager;
 public:
@@ -53,7 +55,7 @@ public:
     const std::vector<NodePtr> getChildren() const;
     void addChild(NodePtr node);
 
-    NodePtr clone();
+    NodePtr clone() const;
 
 protected:
     void setWorldTranslation(const Vec3 &t);
@@ -76,13 +78,11 @@ protected:
     void updateTransform();
     void updateChildrenTransform();
 
-    virtual NodePtr createCloneInstance();
-    virtual void copyChildren(Node* node);
-    virtual void copyProperties(Node* node);
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyChildren(const Node* node);
+    virtual void copyProperties(const Node *node);
 
 protected:
-    std::string name;
-    OBJ_ID id;
     int level;
 
     std::weak_ptr<Node> parent;

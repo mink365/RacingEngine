@@ -33,8 +33,8 @@ public:
     SceneNodePtr clone();
 
 protected:
-    virtual NodePtr createCloneInstance() override;
-    virtual void copyProperties(Node* node) override;
+    virtual NodePtr createCloneInstance() const override;
+    virtual void copyProperties(const Node* node) override;
 
 protected:
     bool visible;

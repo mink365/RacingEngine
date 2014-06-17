@@ -56,16 +56,16 @@ SceneNodePtr SceneNode::clone()
     return dynamic_pointer_cast<SceneNode>(inst);
 }
 
-NodePtr SceneNode::createCloneInstance()
+NodePtr SceneNode::createCloneInstance() const
 {
     return std::make_shared<SceneNode>();
 }
 
-void SceneNode::copyProperties(Node *node)
+void SceneNode::copyProperties(const Node *node)
 {
     Node::copyProperties(node);
 
-    SceneNode* inst = dynamic_cast<SceneNode*>(node);
+    const SceneNode* inst = dynamic_cast<const SceneNode*>(node);
     if (inst) {
         this->visible = inst->visible;
 

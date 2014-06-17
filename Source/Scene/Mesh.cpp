@@ -24,16 +24,16 @@ MeshPtr Mesh::clone()
     return dynamic_pointer_cast<Mesh>(inst);
 }
 
-NodeAttributePtr Mesh::createCloneInstance()
+NodeAttributePtr Mesh::createCloneInstance() const
 {
     return std::make_shared<Mesh>();
 }
 
-void Mesh::copyProperties(NodeAttribute* att)
+void Mesh::copyProperties(const NodeAttribute *att)
 {
     NodeAttribute::copyProperties(att);
 
-    Mesh* inst = dynamic_cast<Mesh*>(att);
+    const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {
         this->material = inst->material;
         this->geometry = inst->geometry;

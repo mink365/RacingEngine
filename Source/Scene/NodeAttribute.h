@@ -3,6 +3,9 @@
 
 #include "platform.h"
 
+#include "Base/Named.h"
+#include "Base/Uncopyable.h"
+
 namespace re {
 
 enum class NodeAttributeType {
@@ -14,7 +17,7 @@ enum class NodeAttributeType {
 class NodeAttribute;
 typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 
-class NodeAttribute
+class NodeAttribute : public Named, public Clonable<NodeAttribute>
 {
     friend class SceneNode;
     friend class FbxParser;
@@ -27,16 +30,13 @@ public:
 
     SceneNodePtr getNode();
 
-    NodeAttributePtr clone();
+    NodeAttributePtr clone() const;
 
 protected:
-    virtual NodeAttributePtr createCloneInstance();
-    virtual void copyProperties(NodeAttribute* att);
+    virtual NodeAttributePtr createCloneInstance() const;
+    virtual void copyProperties(const NodeAttribute *att);
 
 protected:
-    string name;
-    Long id;
-
     NodeAttributeType type;
 
     std::weak_ptr<SceneNode> attachNode;

@@ -120,12 +120,12 @@ void Node::updateChildrenTransform()
     }
 }
 
-NodePtr Node::createCloneInstance()
+NodePtr Node::createCloneInstance() const
 {
     return std::make_shared<Node>();
 }
 
-void Node::copyChildren(Node *node)
+void Node::copyChildren(const Node *node)
 {
     this->children.clear();
     for (auto child : node->children) {
@@ -133,7 +133,7 @@ void Node::copyChildren(Node *node)
     }
 }
 
-void Node::copyProperties(Node *node)
+void Node::copyProperties(const Node *node)
 {
     this->name = node->name;
     this->localRotation = node->localRotation;
@@ -185,7 +185,7 @@ void Node::addChild(NodePtr node)
     this->children.push_back(node);
 }
 
-NodePtr Node::clone()
+NodePtr Node::clone() const
 {
     NodePtr cloned = this->createCloneInstance();
     cloned->copyProperties(this);
