@@ -31,9 +31,9 @@ enum class SkinningType {
  * weight act on controlPoint
  */
 enum class LinkMode {
-    Normalize,
-    Additive,
-    Total,
+    Normalize = 0,
+    Additive = 1,
+    Total = 2,
 };
 
 /**
@@ -47,7 +47,9 @@ public:
     Skeleton();
 
     void setRootBone(BoneNodePtr bone);
-    BoneNodePtr getRootBone();
+    BoneNodePtr getRootBone() const;
+
+    BoneNodePtr getBone(Long id);
 
     void compute(vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
@@ -63,7 +65,6 @@ private:
 
     BoneNodePtr rootBone;
     std::vector<BoneNodePtr> bones;
-    std::vector<AnimationPtr> animations;
 };
 
 } // namespace re

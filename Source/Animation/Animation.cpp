@@ -5,9 +5,13 @@
 
 #include <memory>
 
+//TODO:
+#include <iostream>
+
 namespace re {
 
 Animation::Animation()
+    :looping(false), power(1), currentStackIndex(0), isUseAnimStack(false), currTime(0), beginTime(0)
 {
 }
 
@@ -55,12 +59,17 @@ void Animation::addAnimationStack(AnimationStackPtr stack)
 
 AnimationStackPtr Animation::getCurrAnimationStack()
 {
-    if (this->currentStackIndex > 0
-            && this->currentStackIndex < this->animStacks.size()) {
+    if ((this->currentStackIndex >= 0)
+            && (this->currentStackIndex < this->animStacks.size())) {
         return this->animStacks.at(this->currentStackIndex);
-    } else {
-        nullptr;
     }
+
+    return nullptr;
+}
+
+AnimationTrackPtr Animation::getCurrAnimationTrack()
+{
+    return this->animTracks.at(0);
 }
 Long Animation::getCurrTime() const
 {
@@ -176,6 +185,8 @@ Mat4 AnimationTrack::getLocalMatrix()
         }
     }
 
+    std::cout << "TIME: " << timePos << std::endl;
+
     this->calcProportion(timePos);
 
     return this->linearDeformation();
@@ -189,6 +200,11 @@ Int AnimationTrack::getCurrKeyFrameIndex()
 Int AnimationTrack::getKeyFrameCount()
 {
     return this->keyFrames.size();
+}
+
+KeyFramePtr AnimationTrack::getKeyFrame(int index)
+{
+    return this->keyFrames[index];
 }
 
 void AnimationTrack::calcProportion(Long timePos)
@@ -249,11 +265,13 @@ Mat4 AnimationTrack::linearDeformation()
                        this->interpolationEndKeyFrame->getScaling(), this->frameProportion);
 
     // TODO: return a matrix?
-    this->boneNode->setLocalTranslation(trans);
-    this->boneNode->setLocalRotation(rotate);
-    this->boneNode->setLocalScaling(scale);
+    std::shared_ptr<BoneNode> bone =  this->boneNode.lock();
 
-    return this->boneNode->getLocalMatrix();
+    bone->setLocalTranslation(trans);
+    bone->setLocalRotation(rotate);
+    bone->setLocalScaling(scale);
+
+    return bone->getLocalMatrix();
 }
 
 void AnimationTrack::updateTrackInfo()
@@ -271,6 +289,14 @@ void AnimationTrack::updateTimeInfo()
     this->currentTime = animation->getCurrTime();
     this->beginTime = animation->getBeginTime();
 }
+AnimationStack::AnimationStack(Long begin, Long end)
+{
+    this->stackBeginTime = begin;
+    this->stackEndTime = end;
+
+    this->stackLength = end - begin;
+}
+
 Long AnimationStack::getStackBeginTime() const
 {
     return stackBeginTime;

@@ -35,9 +35,23 @@ void Skeleton::setRootBone(BoneNodePtr bone)
     this->linkMode = bone->linkMode;
 }
 
-BoneNodePtr Skeleton::getRootBone()
+BoneNodePtr Skeleton::getRootBone() const
 {
     return this->rootBone;
+}
+
+BoneNodePtr Skeleton::getBone(Long id)
+{
+    this->bones.clear();
+    this->cacheBones(this->rootBone);
+
+    for (auto bone : this->bones) {
+        if (bone->getId() == id) {
+            return bone;
+        }
+    }
+
+    return nullptr;
 }
 
 void Skeleton::cacheBones(BoneNodePtr bone)
@@ -54,13 +68,20 @@ void Skeleton::compute(vector<Mat4> &boneDeformations, vector<float> &boneWeight
     BoneNodePtr rootBone = this->getRootBone();
 
     this->computeBone(rootBone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
+
+    for (int i = 0; i < boneDeformations.size(); ++i) {
+        Mat4& mat = boneDeformations[i];
+
+        PrintArray("Mat: ", mat.toFloatPtr(), 16, 4);
+    }
 }
 
 void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vector<float> &boneWeights, const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix)
 {
     Mat4 vertexTransformMatrix = bone->getVertexTransformMatrix(meshGeometryMatrix, globalPositionMatrix);
 
-    for (Int i = 0; i < bone->getNumLinkedControlPoints(); ++i) {
+    Int num = bone->getNumLinkedControlPoints();
+    for (Int i = 0; i < num; ++i) {
         Int index = bone->linkIndices[i];
 
         float weight = bone->weightValues[i];
@@ -81,13 +102,13 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
 
             assert(false);
         } else {
-            matrixAdd(boneDeformations[i], influence);
-            boneWeights[i] += weight;
+            matrixAdd(boneDeformations[index], influence);
+            boneWeights[index] += weight;
         }
+    }
 
-        for (auto childBone : bone->getChildren()) {
-            this->computeBone(dynamic_pointer_cast<BoneNode>(childBone), boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
-        }
+    for (auto childBone : bone->getChildren()) {
+        this->computeBone(dynamic_pointer_cast<BoneNode>(childBone), boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
     }
 }
 

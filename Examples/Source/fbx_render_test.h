@@ -12,6 +12,9 @@
 #include "Tools/ModelLoader/fbx/FbxParser.h"
 #include "Texture/TextureManager.h"
 #include "Scene/SceneManager.h"
+#include "Animation/SkeletonController.h"
+#include "Animation/Animation.h"
+#include "Animation/Skeleton.h"
 
 #include "opengl.h"
 
@@ -164,6 +167,7 @@ const static int BLOCK_COUNT = 5;
 std::vector<SceneNodePtr> blocks;
 SceneNodePtr black_box;
 SceneNodePtr motoRoot;
+SkeletonControllerPtr manController;
 float y = 0, z = 0, zV = 1, rotation = 0;
 
 // blocks切换的次数记录
@@ -220,6 +224,15 @@ void updateMatrix(bool isAnim) {
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->setLocalRotation(quat);
+
+    manController->update();
+    MeshPtr mesh = manController->getMesh();
+
+    Geometry *geometry = &(mesh->getGeometry());
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*geometry);
+    mesh->getMaterial().setShder(&shader);
+
+    mesh->getNode()->setLocalRotation(quat);
 }
 
 void registerTexture(string path) {
@@ -295,6 +308,7 @@ void initResource()
     registerTexture(assertDir + "huoyan_02.png");
     registerTexture(assertDir + "huoyan_03.png");
     registerTexture(assertDir + "qiliu.png");
+    registerTexture(resDir + "Model/Man/girl.jpg");
 
     TextureManager::getInstance().loadTextures();
 
@@ -358,6 +372,16 @@ void initResource()
 
     assertDir = resDir + "Model/Man/";
     parser->parse(assertDir + "group_girl.data");
+    manController = parser->getSkeletonController("girl");
+
+    AnimationTrackPtr track = manController->getAnimation()->getCurrAnimationTrack();
+    Long beginTime = track->getKeyFrame(2)->getTime();
+    Long endTime = track->getKeyFrame(12)->getTime();
+    manController->getAnimation()->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
+    manController->getAnimation()->setAnimationStackIndex(0);
+    manController->getAnimation()->setAnimationLoop(true);
+
+    SceneManager::getInstance().addRootNode(manController->getMeshNode());
 
     string hello("test");
 }

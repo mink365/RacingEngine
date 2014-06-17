@@ -4,11 +4,13 @@
 #include <streambuf>
 #include <vector>
 #include "Scene/Mesh.h"
+#include "Animation/Skeleton.h"
 
 namespace re {
 
 class Node;
 class ReadCommon;
+class SkeletonController;
 
 enum class FbxNodeAttributeType {
     GROUP = 1,
@@ -33,7 +35,7 @@ struct FBXCluster {
     Long linkedMeshId;
     Long linkedBoneId;
 
-    Int linkMode;
+    LinkMode linkMode;
 
     vector<Int> linkIndices;
     vector<float> weightValues;
@@ -59,6 +61,10 @@ public:
     void parseData(void *data, long datalen);
 
     std::vector<SceneNodePtr> getNodes() const;
+    SceneNodePtr getSceneNode(const string &name) const;
+    ClusterCollectionPtr getClusterCollection(Long id) const;
+    SkeletonPtr getSkeleton(Long id) const;
+    SkeletonControllerPtr getSkeletonController(const string& name) const;
 
 private:
     SceneNodePtr readNode(std::istream *st);
@@ -73,6 +79,9 @@ private:
 
     void readMaterial(std::istream *st, MeshPtr mesh);
 
+    void bindClusterData();
+
+private:
     std::vector<SceneNodePtr> nodes;
     std::vector<SkeletonPtr> skeletons;
     std::vector<AnimationPtr> animations;

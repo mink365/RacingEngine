@@ -5,6 +5,7 @@
 #include <array>
 #include "Vertex.h"
 #include "Face.h"
+#include "ControlPoints.h"
 #include "Render/BufferObject/VertexBuffer.h"
 #include "Render/BufferObject/IndexBuffer.h"
 
@@ -15,6 +16,7 @@ class Geometry
     friend class Renderer;
     friend class BufferObjectUtil;
     friend class SkeletonController;
+    friend class FbxParser;
 
 public:
     Geometry();
@@ -29,23 +31,46 @@ public:
     void setFaces(const std::vector<Face> &value);
 
     VertexBuffer &getVbo();
-
     IndexBuffer &getIbo();
 
-private:
-    void chacheVertex();
+    bool isDirty() const;
+    void setDirty();
+
+    /**
+     * @brief isStatic
+     * @return
+     *
+     * this is a static geometry or not.static geometry cann't be modify in runtime.
+     */
+    bool isStatic();
 
 private:
+    ControlPoints controlPointsData;
+
     std::vector<Vertex> vertices;
     std::vector<Face> faces;
 
-    std::vector<Vertex> controlPoints;
-    std::vector<int> vertexToControl;
-    std::vector<vector<int>> controlToVertex;
-
     VertexBuffer vbo;
     IndexBuffer ibo;
+
+    bool dirtyFlag;
+    bool staticGeometry;
 };
+
+inline bool Geometry::isDirty() const
+{
+    return this->dirtyFlag;
+}
+
+inline void Geometry::setDirty()
+{
+    this->dirtyFlag = true;
+}
+
+inline bool Geometry::isStatic()
+{
+    return this->staticGeometry;
+}
 
 } // namespace re
 

@@ -30,6 +30,8 @@ public:
 
     Int getNumLinkedControlPoints();
 
+    void setAnimationTrack(AnimationTrackPtr track);
+
     Mat4 getVertexTransformMatrix(const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix);
 
 private:

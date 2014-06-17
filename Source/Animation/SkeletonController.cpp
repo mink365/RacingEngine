@@ -9,10 +9,36 @@
 #include "Math/Quaternion.h"
 #include "Scene/Mesh.h"
 
-re::SkeletonController::SkeletonController()
+re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation)
 {
     float* mat = this->emptyMatrix.toFloatPtr();
     std::fill(mat, mat+16, 0);
+
+    this->sceneNode = mesh;
+    this->skeleton = skeleton;
+    this->animation = animation;
+
+    this->mesh = dynamic_pointer_cast<Mesh>(this->sceneNode->getNodeAttribute());
+}
+
+re::SkeletonPtr re::SkeletonController::getSkeleton()
+{
+    return this->skeleton;
+}
+
+re::AnimationPtr re::SkeletonController::getAnimation()
+{
+    return this->animation;
+}
+
+re::SceneNodePtr re::SkeletonController::getMeshNode()
+{
+    return this->sceneNode;
+}
+
+re::MeshPtr re::SkeletonController::getMesh()
+{
+    return this->mesh;
 }
 
 void re::SkeletonController::reset()
@@ -37,6 +63,10 @@ void re::SkeletonController::setDefaultFrame(int frame)
 
 void re::SkeletonController::computeLinearDeformation()
 {
+    Geometry& geometry = this->mesh->getGeometry();
+
+    this->controlPointsCount = geometry.controlPointsData.controlPoints.size();
+
     if (this->controlPointsCount >= this->boneWeights.size()) {
         this->initMatrixVector();
     } else {
@@ -47,9 +77,10 @@ void re::SkeletonController::computeLinearDeformation()
     this->skeleton->compute(this->boneDeformations, this->boneWeights, identity, this->sceneNode->getLocalMatrix());
 
     for (int i = 0; i < this->controlPointsCount; ++i) {
+        Vec3& xyz = geometry.controlPointsData.controlPoints[i];
 
-        Vec3 srcVertex;
-        Vec3 destVertex;
+        Vec3 srcVertex(xyz);
+        Vec3 destVertex(xyz);
 
         float weight = boneWeights[i];
         if (weight > 0) {
@@ -67,10 +98,8 @@ void re::SkeletonController::computeLinearDeformation()
             }
         }
 
-        Geometry& geometry = this->mesh->getGeometry();
-
-        if (geometry.controlToVertex.size() != 0) {
-            vector<int>& vertexList = geometry.controlToVertex.at(i);
+        if (geometry.controlPointsData.controlToVertex.size() != 0) {
+            vector<int>& vertexList = geometry.controlPointsData.controlToVertex.at(i);
 
             for (auto& index : vertexList) {
                 Vertex vertex = geometry.getVertices().at(index);
@@ -78,8 +107,8 @@ void re::SkeletonController::computeLinearDeformation()
                 vertex.xyz = destVertex;
             }
         } else {
-            for (int j = 0; j < geometry.vertexToControl.size(); ++j) {
-                Int controlPointIndex = geometry.vertexToControl[j];
+            for (int j = 0; j < geometry.controlPointsData.vertexToControl.size(); ++j) {
+                Int controlPointIndex = geometry.controlPointsData.vertexToControl[j];
 
                 if (controlPointIndex == i) {
                     Vertex vertex = geometry.getVertices().at(j);

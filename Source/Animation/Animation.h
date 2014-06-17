@@ -42,6 +42,7 @@ public:
     void addAnimationStack(AnimationStackPtr stack);
 
     AnimationStackPtr getCurrAnimationStack();
+    AnimationTrackPtr getCurrAnimationTrack();
 
     Long getCurrTime() const;
     void setCurrTime(const Long &value);
@@ -96,8 +97,8 @@ private:
  */
 class AnimationTrack
 {
-    friend class FbxParser;
     friend class Animation;
+    friend class BoneNode;
 
 public:
     void addKeyFrame(const KeyFrame& frame);
@@ -106,13 +107,15 @@ public:
     Int getCurrKeyFrameIndex();
     Int getKeyFrameCount();
 
+    KeyFramePtr getKeyFrame(int index);
+
     void updateTimeInfo();
+
+    void updateTrackInfo();
 
 private:
     void calcProportion(Long timePos);
     Mat4 linearDeformation();
-
-    void updateTrackInfo();
 
 private:
     weak_ptr<Animation> animation;
@@ -124,7 +127,7 @@ private:
     Int currentFrameIndex;
 
     shared_ptr<KeyFrame> interpolationBeginKeyFrame, interpolationEndKeyFrame;
-    shared_ptr<BoneNode> boneNode;
+    std::weak_ptr<BoneNode> boneNode;
 
     Long currentTime, beginTime;
 };

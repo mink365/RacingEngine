@@ -26,11 +26,16 @@ Int BoneNode::getNumLinkedControlPoints()
     return this->linkIndices.size();
 }
 
+void BoneNode::setAnimationTrack(AnimationTrackPtr track)
+{
+    this->animationTrack = track;
+    track->boneNode = dynamic_pointer_cast<BoneNode>(this->shared_from_this());
+}
+
 Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix)
 {
     if (this->linkMode == LinkMode::Additive) {
         // TODO:
-
         assert(false);
     } else {
         this->updateMatrix();

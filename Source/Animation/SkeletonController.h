@@ -6,10 +6,19 @@
 #include "Math/Matrix.h"
 
 namespace re {
+
+class SkeletonController;
+typedef shared_ptr<SkeletonController> SkeletonControllerPtr;
+
 class SkeletonController
 {
 public:
-    SkeletonController();
+    SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation);
+
+    SkeletonPtr getSkeleton();
+    AnimationPtr getAnimation();
+    SceneNodePtr getMeshNode();
+    MeshPtr getMesh();
 
     void play();
     void stop();

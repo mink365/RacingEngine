@@ -10,7 +10,8 @@
 
 namespace re {
 
-Vec3::Vec3() {
+Vec3::Vec3()
+{
 
 }
 

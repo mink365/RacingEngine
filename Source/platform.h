@@ -10,6 +10,8 @@
 
 #include "PredefineType.h"
 
+#include "Util/PrintUtil.h"
+
 using namespace std;
 
 typedef GLuint GPU_ID;

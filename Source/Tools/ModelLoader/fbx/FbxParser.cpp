@@ -5,11 +5,10 @@
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 #include "Animation/BoneNode.h"
+#include "Animation/SkeletonController.h"
 
 #include <iostream>
-#include <istream>
 #include <vector>
-#include <sstream>
 #include "Texture/TextureManager.h"
 #include "Util/ContainerUtil.h"
 
@@ -50,6 +49,8 @@ void FbxParser::parseStream(std::istream *st) {
             this->nodes.push_back(node);
         }
     }
+
+    this->bindClusterData();
 }
 
 void FbxParser::parseData(void *data, long datalen)
@@ -58,6 +59,20 @@ void FbxParser::parseData(void *data, long datalen)
     std::istream stream(&mb);
 
     this->parseStream(&stream);
+}
+
+void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
+    Vec3 transform = reader->ReadVec3(st);
+    Vec3 rotation = reader->ReadVec3(st);
+    Vec3 scale = reader->ReadVec3(st);
+
+//    PrintVector(&transform);
+//    PrintVector(&scale);
+//    PrintVector(&rotation);
+
+    node->localTranslation.set(transform);
+    node->localRotation.fromAngles(rotation);
+    node->localScaling.set(scale);
 }
 
 SceneNodePtr FbxParser::readNode(std::istream *st) {
@@ -107,75 +122,6 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
     return nullptr;
 }
 
-void printV(Vec3 *v) {
-    std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
-}
-
-void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
-    Vec3 transform = reader->ReadVec3(st);
-    Vec3 rotation = reader->ReadVec3(st);
-    Vec3 scale = reader->ReadVec3(st);
-
-    printV(&transform);
-    printV(&scale);
-    printV(&rotation);
-
-    node->localTranslation.set(transform);
-    node->localRotation.fromAngles(rotation);
-    node->localScaling.set(scale);
-}
-
-void printFloatArray(std::string head, float *v, int count, int split) {
-
-    std::ostringstream oss;
-
-    oss << head << "Array: {" << "\n";
-    for (int i = 0; i < count / split; ++i) {
-        oss << "V[";
-        for (int j = 0; j < split; ++j) {
-            oss << v[i * split + j] << ", ";
-        }
-
-        oss << "]" << "\n";
-    }
-
-    std::cout << oss.str() << std::endl;
-}
-
-void printShortArray(std::string head, short *v, int count, int split) {
-
-    std::ostringstream oss;
-
-    oss << head << "Array: {" << "\n";
-    for (int i = 0; i < count / split; ++i) {
-        oss << "V[";
-        for (int j = 0; j < split; ++j) {
-            oss << v[i * split + j] << ", ";
-        }
-
-        oss << "]" << "\n";
-    }
-
-    std::cout << oss.str() << std::endl;
-}
-
-void printIntArray(std::string head, int *v, int count, int split) {
-
-    std::ostringstream oss;
-
-    oss << head << "Array: {" << "\n";
-    for (int i = 0; i < count / split; ++i) {
-        oss << "V[";
-        for (int j = 0; j < split; ++j) {
-            oss << v[i * split + j] << ", ";
-        }
-
-        oss << "]" << "\n";
-    }
-
-    std::cout << oss.str() << std::endl;
-}
-
 void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     node->setNodeAttribute(mesh);
@@ -188,20 +134,28 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     std::cout << " count: " << len << std::endl;
 
     st->read((char*)points, len * 3 * 4);
+    for (int i = 0; i < len; ++i) {
+        Vec3 xyz(points[i * 3 + 0], points[i * 3 + 1], points[i * 3 + 2]);
 
-    printFloatArray("points ", points, len * 3, 3);
+        mesh->getGeometry().controlPointsData.controlPoints.push_back(xyz);
+    }
+
+    PrintArray("points ", points, len * 3, 3);
 
     len = reader->ReadInt(st);
     int vertexToControl[len];
     st->read((char*)vertexToControl, len * 4);
 
-    printIntArray(" vertex to control ", vertexToControl, len, 1);
+    PrintArray(" vertex to control ", vertexToControl, len, 1);
+
+    // TODO: give the data to mesh
+    VectorCopy(vertexToControl, 0, len, mesh->getGeometry().controlPointsData.vertexToControl);
 
     len = reader->ReadInt(st);
     short index[len];
     st->read((char*)index, len * 2);
 
-    printShortArray("index ", index, len, 1);
+    PrintArray("index ", index, len, 1);
 
     int num_of_indices = len;
 
@@ -221,7 +175,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     if (len > 0) {
         st->read((char*)vertex, len * 4);
 
-        printFloatArray("vertex ", vertex, len, 3);
+        PrintArray("vertex ", vertex, len, 3);
     }
 
     int colorCount = 0;
@@ -235,7 +189,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
 
             st->read((char*)colorArray, colorCount * 4);
 
-            printFloatArray("color ", colorArray, colorCount, 4);
+            PrintArray("color ", colorArray, colorCount, 4);
         }
     } while (colorCount != -1);
 
@@ -249,7 +203,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
             uvArray = new float[uvCount];
             st->read((char*)uvArray, uvCount * 4);
 
-            printFloatArray("UV ", uvArray, uvCount, 2);
+            PrintArray("UV ", uvArray, uvCount, 2);
         }
     } while (uvCount != -1);
 
@@ -259,7 +213,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
         normalArray = new float[normalCount];
         st->read((char*)normalArray, normalCount * 4);
 
-        printFloatArray("normal ", normalArray, normalCount, 3);
+        PrintArray("normal ", normalArray, normalCount, 3);
     }
     std::cout << " normal " << len << std::endl;
 
@@ -365,7 +319,7 @@ BoneNodePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
         }
 
         track->updateTrackInfo();
-        track->boneNode = bone;
+        bone->setAnimationTrack(track);
 
         animation->addAnimationTrack(track);
     }
@@ -398,7 +352,7 @@ FBXClusterPtr FbxParser::readCluster(istream *st)
     FBXClusterPtr cluster = std::make_shared<FBXCluster>();
 
     cluster->linkedBoneId = reader->ReadLong(st);
-    cluster->linkMode = reader->ReadInt(st);
+    cluster->linkMode = (LinkMode)reader->ReadInt(st);
 
     Int len = reader->ReadInt(st);
 
@@ -445,9 +399,80 @@ void FbxParser::readMaterial(std::istream *st, MeshPtr mesh) {
     } while (id != -1);
 }
 
+void FbxParser::bindClusterData()
+{
+    for (auto coll : this->clusterColls) {
+        Long boneId = coll->clusters.at(0)->linkedBoneId;
+        SkeletonPtr skeleton = this->getSkeleton(boneId);
+        assert(skeleton);
+
+        for (auto cluster : coll->clusters) {
+            auto bone = skeleton->getBone(cluster->linkedBoneId);
+
+            bone->linkIndices = cluster->linkIndices;
+            bone->weightValues = cluster->weightValues;
+
+            bone->setLinkMode(cluster->linkMode);
+
+            bone->transformMatrix = cluster->transformMatrix;
+            bone->transformLinkMatrix = cluster->transformLinkMatrix;
+        }
+    }
+}
+
 std::vector<SceneNodePtr> FbxParser::getNodes() const
 {
     return nodes;
+}
+
+SceneNodePtr FbxParser::getSceneNode(const string &name) const
+{
+    for (auto node : this->nodes) {
+        if (node->getName() == name) {
+            return node;
+        }
+    }
+
+    return nullptr;
+}
+
+ClusterCollectionPtr FbxParser::getClusterCollection(Long id) const
+{
+    for (auto coll : this->clusterColls) {
+        if (coll->meshId == id) {
+            return coll;
+        }
+    }
+
+    return nullptr;
+}
+
+SkeletonPtr FbxParser::getSkeleton(Long id) const
+{
+    for (auto skeleton : this->skeletons) {
+        if (skeleton->getBone(id) != nullptr) {
+            return skeleton;
+        }
+    }
+
+    return nullptr;
+}
+
+SkeletonControllerPtr FbxParser::getSkeletonController(const string &name) const
+{
+    auto node = this->getSceneNode(name);
+    assert(node != nullptr);
+
+    auto coll = this->getClusterCollection(node->getId());
+
+    Long boneId = coll->clusters.at(0)->linkedBoneId;
+    auto skeleton = this->getSkeleton(boneId);
+
+    auto animation = this->animations.at(0);
+
+    SkeletonControllerPtr controller = std::make_shared<SkeletonController>(node, skeleton, animation);
+
+    return controller;
 }
 
 }
