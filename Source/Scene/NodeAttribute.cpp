@@ -32,8 +32,8 @@ NodeAttributePtr NodeAttribute::createCloneInstance()
 
 void NodeAttribute::copyProperties(NodeAttribute *att)
 {
-    att->name = this->name;
-    att->type = this->type;
+    this->name = att->name;
+    this->type = att->type;
 
     this->attachNode.reset();
 }

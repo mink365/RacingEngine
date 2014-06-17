@@ -67,11 +67,11 @@ void SceneNode::copyProperties(Node *node)
 
     SceneNode* inst = dynamic_cast<SceneNode*>(node);
     if (inst) {
-        inst->visible = this->visible;
+        this->visible = inst->visible;
 
-        if (this->attribute != nullptr) {
-            NodeAttributePtr clonedAtt = this->attribute->clone();
-            inst->setNodeAttribute(clonedAtt);
+        if (inst->attribute != nullptr) {
+            NodeAttributePtr clonedAtt = inst->attribute->clone();
+            this->setNodeAttribute(clonedAtt);
         }
     }
 }

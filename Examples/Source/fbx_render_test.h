@@ -337,7 +337,6 @@ void initResource()
 
         block->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
-        // TODO: cloned node not show?
         SceneManager::getInstance().addRootNode(block);
 
         blocks.push_back(block);

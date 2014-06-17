@@ -35,8 +35,8 @@ void Mesh::copyProperties(NodeAttribute* att)
 
     Mesh* inst = dynamic_cast<Mesh*>(att);
     if (inst) {
-        inst->material = this->material;
-        inst->geometry = this->geometry;
+        this->material = inst->material;
+        this->geometry = inst->geometry;
     }
 }
 

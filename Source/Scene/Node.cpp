@@ -127,26 +127,26 @@ NodePtr Node::createCloneInstance()
 
 void Node::copyChildren(Node *node)
 {
-    node->children.clear();
+    this->children.clear();
     for (auto child : node->children) {
-        node->children.push_back(child->clone());
+        this->children.push_back(child->clone());
     }
 }
 
 void Node::copyProperties(Node *node)
 {
-    node->name = this->name;
-    node->localMatrix = this->localMatrix;
-    node->localRotation = this->localRotation;
-    node->localTranslation = this->localTranslation;
-    node->localScaling = this->localScaling;
+    this->name = node->name;
+    this->localRotation = node->localRotation;
+    this->localTranslation = node->localTranslation;
+    this->localScaling = node->localScaling;
 
-    node->worldMatrix = this->worldMatrix;
+    this->localMatrix = node->localMatrix;
+    this->worldMatrix = node->worldMatrix;
 
-    node->markLocalTransformRefreshFlag();
-    node->markWorldTransformRefreshFlag();
+    this->markLocalTransformRefreshFlag();
+    this->markWorldTransformRefreshFlag();
 
-    node->parent.reset();
+    this->parent.reset();
 }
 
 NodePtr Node::getParent() const
@@ -189,7 +189,7 @@ NodePtr Node::clone()
 {
     NodePtr cloned = this->createCloneInstance();
     cloned->copyProperties(this);
-    cloned->copyProperties(this);
+    cloned->copyChildren(this);
 
     return cloned;
 }
