@@ -52,12 +52,6 @@ void Skeleton::compute(vector<Mat4> &boneDeformations, vector<float> &boneWeight
     BoneNodePtr rootBone = this->getRootBone();
 
     this->computeBone(rootBone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
-
-//    for (int i = 0; i < boneDeformations.size(); ++i) {
-//        Mat4& mat = boneDeformations[i];
-
-//        PrintArray("Mat: ", mat.toFloatPtr(), 16, 4);
-//    }
 }
 
 void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vector<float> &boneWeights, const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix)

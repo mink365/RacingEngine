@@ -1,4 +1,4 @@
-#ifndef FBX_RENDER_TEST_H
+﻿#ifndef FBX_RENDER_TEST_H
 #define FBX_RENDER_TEST_H
 
 #include <iostream>
@@ -15,6 +15,7 @@
 #include "Animation/SkeletonController.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
+#include "Animation/BoneNode.h"
 
 #include "opengl.h"
 
@@ -143,23 +144,141 @@ int LoadShader(const char *pfilePath_vs, const char *pfilePath_fs)
     return LoadShader(vertexShaderString, fragmentShaderString);
 }
 
-namespace Test {
-void printFloatArray(std::string head, float *v, int count, int split) {
+MeshPtr createBox(float side) {
+    MeshPtr mesh = std::make_shared<Mesh>();
 
-    std::ostringstream oss;
+    float coords[] = {
+        -side/2.0f, -side/2.0f, side/2.0f, //v0
+        side/2.0f, -side/2.0f, side/2.0f, 	//v1
+        -side/2.0f, side/2.0f, side/2.0f, 	//v2
+        side/2.0f, side/2.0f, side/2.0f, 	//v3
 
-    oss << head << "Array: {" << "\n";
-    for (int i = 0; i < count / split; ++i) {
-        oss << "V[";
-        for (int j = 0; j < split; ++j) {
-            oss << v[i * split + j] << ", ";
-        }
+        side/2.0f, -side/2.0f, side/2.0f, 	//...
+        side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
 
-        oss << "]" << "\n";
+        side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+        -side/2.0f, side/2.0f, side/2.0f,
+
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, side/2.0f,
+        side/2.0f, -side/2.0f, side/2.0f,
+
+        -side/2.0f, side/2.0f, side/2.0f,
+        side/2.0f, side/2.0f, side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
+            };
+
+    float textureCood[] = {
+        //Mapping coordinates for the vertices
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    float normals[] = {
+                        //Normals
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f
+                                            };
+
+    short indices[] = {
+        // Faces definition
+        0, 1, 3, 0, 3, 2, 		// Face front
+        4, 5, 7, 4, 7, 6, 		// Face right
+        8, 9, 11, 8, 11, 10, 	// ...
+        12, 13, 15, 12, 15, 14,
+        16, 17, 19, 16, 19, 18,
+        20, 21, 23, 20, 23, 22,
+    };
+
+    for (int i = 0; i < 24; ++i) {
+      Vertex v;
+      v.xyz.set(coords[i * 3 + 0], coords[i * 3 + 1], coords[i * 3 + 2]);
+
+      v.uv.set(textureCood[i * 2 + 0], textureCood[i * 2 + 1]);
+
+      v.normal.set(normals[i * 3 + 0], normals[i * 3 + 1], normals[i * 3 + 2]);
+
+      mesh->getGeometry().addVertex(v);
     }
 
-    std::cout << oss.str() << std::endl;
-}
+    for (int i = 0; i < 12; ++i) {
+        Face f(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2]);
+
+        mesh->getGeometry().addFace(f);
+    }
+
+    TextureUnitState &unit = mesh->getMaterial().getTexture();
+    unit.setUVstate(0, 0, 1, 1, 0);
+
+    Texture &tex = TextureManager::getInstance().getTexture("girl");
+    unit.addTextureFrame(&tex);
+
+    return mesh;
 }
 
 const static int BLOCK_LENGTH = 157;
@@ -167,6 +286,7 @@ const static int BLOCK_COUNT = 5;
 std::vector<SceneNodePtr> blocks;
 SceneNodePtr black_box;
 SceneNodePtr motoRoot;
+SceneNodePtr box;
 SkeletonControllerPtr manController;
 float y = 0, z = 0, zV = 1, rotation = 0;
 
@@ -233,12 +353,22 @@ void updateMatrix(bool isAnim) {
     mesh->getMaterial().setShder(&shader);
 
     mesh->getNode()->setLocalRotation(quat);
+
+    box->setLocalRotation(quat);
 }
 
 void registerTexture(string path) {
     Texture *texture = new Texture();
     texture->setPath(path);
     TextureManager::getInstance().registerTexture(*texture);
+}
+
+void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
+    node->setNodeAttribute(mesh->clone());
+
+    for (auto child : node->getChildren()) {
+        AddMeshToNode(dynamic_pointer_cast<SceneNode>(child), mesh);
+    }
 }
 
 void initResource()
@@ -334,11 +464,6 @@ void initResource()
         mesh->getMaterial().setShder(&shader);
     }
 
-//    SceneNode *block = new SceneNode();
-//    block->addChild(wall);
-//    block->addChild(floor);
-//    SceneManager::getInstance().addRootNode(*block);
-
     for (int i = 0; i < BLOCK_COUNT; ++i) {
         SceneNodePtr block = std::make_shared<SceneNode>();
 
@@ -364,11 +489,8 @@ void initResource()
     // TODO:
 //    moto->getMaterial().getRenderState().setDepthTest(true);
 
-//    black->setVisible(false);
-//    SceneManager::getInstance().addRootNode(black);
     SceneManager::getInstance().addRootNode(motoRoot);
     black_box = black;
-
 
     assertDir = resDir + "Model/Man/";
     parser->parse(assertDir + "group_girl.data");
@@ -380,8 +502,28 @@ void initResource()
     manController->getAnimation()->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
     manController->getAnimation()->setAnimationStackIndex(0);
     manController->getAnimation()->setAnimationLoop(true);
+    manController->getAnimation()->setAnimationPower(1.0);
+    manController->getAnimation()->setIsUseAnimationStack(true);
+
+//    manController->setDefaultFrame(1);
 
     SceneManager::getInstance().addRootNode(manController->getMeshNode());
+
+    MeshPtr mesh = createBox(2);
+    Geometry& geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
+    mesh->getMaterial().setShder(&shader);
+
+    box = std::make_shared<SceneNode>();
+    AddMeshToNode(box, mesh);
+
+//    BoneNodePtr rootBone = manController->getSkeleton()->getRootBone();
+//    SceneNodePtr node = rootBone;
+
+//    AddMeshToNode(node, mesh);
+
+//    box->setLocalTranslation(Vec3(0, 0, 52));
+//    SceneManager::getInstance().addRootNode(node);
 
     string hello("test");
 }

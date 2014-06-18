@@ -58,7 +58,16 @@ void re::SkeletonController::update()
 
 void re::SkeletonController::setDefaultFrame(int frame)
 {
+    this->animation->setIsUseAnimationStack(false);
 
+    this->animation->setAnimationLoop(false);
+    this->animation->setAnimationPower(1.0f);
+
+    Long time = this->animation->getCurrAnimationTrack()->getKeyFrame(frame)->getTime();
+
+    this->animation->setCurrTime(time);
+
+    this->computeLinearDeformation();
 }
 
 void re::SkeletonController::computeLinearDeformation()
@@ -96,8 +105,6 @@ void re::SkeletonController::computeLinearDeformation()
                 destVertex += srcVertex;
             }
         }
-
-        PrintArray("destVertex: ", destVertex.toFloatPtr(), 3, 3);
 
         if (geometry.controlPointsData.controlToVertex.size() != 0) {
             vector<int>& vertexList = geometry.controlPointsData.controlToVertex.at(i);

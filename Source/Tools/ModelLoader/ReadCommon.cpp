@@ -87,6 +87,8 @@ Mat4 ReadCommon::ReadMat4(istream *st)
     Vec3 vectorR = this->ReadVec3(st);
     Vec3 vectorS = this->ReadVec3(st);
 
+    vectorR *= DEG_TO_RAD;
+
     Mat4 mat;
 
     mat.fromRTS(vectorR.toQuat(), vectorT, vectorS);

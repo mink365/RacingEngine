@@ -17,6 +17,7 @@ namespace re {
 
 Mat3::Mat3()
 {
+    this->identity();
 }
 
 Mat3::Mat3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
@@ -104,7 +105,7 @@ Mat3 &Mat3::invert()
 
 
 Mat4::Mat4() {
-
+    this->identity();
 }
 
 Mat4 &Mat4::setRotationX(const float angle)

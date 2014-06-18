@@ -55,7 +55,8 @@ void Animation::addAnimationStack(AnimationStackPtr stack)
 
 AnimationStackPtr Animation::getCurrAnimationStack()
 {
-    if ((this->currentStackIndex >= 0)
+    if (this->isUseAnimStack
+            &&(this->currentStackIndex >= 0)
             && (this->currentStackIndex < this->animStacks.size())) {
         return this->animStacks.at(this->currentStackIndex);
     }
@@ -204,12 +205,11 @@ KeyFramePtr AnimationTrack::getKeyFrame(int index)
 void AnimationTrack::calcProportion(Long timePos)
 {
     int i = 0;
-    for (i = 0; i < this->keyFrames.size() - 1; ++i) {
-        KeyFramePtr keyFrame = this->keyFrames[i + 1];
-        KeyFramePtr lastKeyFrame = this->keyFrames[i];
+    for (i = 1; i < this->keyFrames.size(); ++i) {
+        KeyFramePtr lastKeyFrame = this->keyFrames[i - 1];
+        KeyFramePtr keyFrame = this->keyFrames[i];
 
-        if (timePos >= lastKeyFrame->getTime()
-                && timePos <= keyFrame->getTime()) {
+        if (timePos <= keyFrame->getTime()) {
 
             this->interpolationBeginKeyFrame = lastKeyFrame;
             this->interpolationEndKeyFrame = keyFrame;
@@ -224,7 +224,7 @@ void AnimationTrack::calcProportion(Long timePos)
         }
     }
 
-    if (i >= this->keyFrames.size() - 1){
+    if (i >= this->keyFrames.size()){
         this->interpolationBeginKeyFrame = this->keyFrames.at(0);
         this->interpolationEndKeyFrame = this->keyFrames.at(0);
 
@@ -263,10 +263,6 @@ void AnimationTrack::linearDeformation()
                        this->interpolationEndKeyFrame->getScaling(), this->frameProportion);
 
     std::shared_ptr<Node> node =  this->node.lock();
-
-    PrintArray("Trans: ", trans.toFloatPtr(), 3, 3);
-    PrintArray("Rotate: ", rotate.toVec3().toFloatPtr(), 3, 3);
-    PrintArray("Scale: ", scale.toFloatPtr(), 3, 3);
 
     node->setLocalTranslation(trans);
     node->setLocalRotation(rotate);

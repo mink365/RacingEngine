@@ -34,6 +34,16 @@ void Quat::set(float x, float y, float z, float w)
     this->w = w;
 }
 
+float *Quat::toFloatPtr()
+{
+    return &x;
+}
+
+const float *Quat::toFloatPtr() const
+{
+    return &x;
+}
+
 Mat3 Quat::toMat3() const
 {
     Mat3	mat;
@@ -177,6 +187,8 @@ Quat &Quat::fromRotationMatrix(float m00, float m01, float m02, float m10, float
         w = (m10 - m01) * s;
     }
 
+    this->normalize();
+
     return *this;
 }
 
@@ -224,6 +236,8 @@ Quat &Quat::slerp(Quat &q2, float changeAmnt)
     this->y = (scale0 * this->y) + (scale1 * q2.y);
     this->z = (scale0 * this->z) + (scale1 * q2.z);
     this->w = (scale0 * this->w) + (scale1 * q2.w);
+
+    this->normalize();
 
     return *this;
 }

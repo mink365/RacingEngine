@@ -35,6 +35,9 @@ public:
     float  getLength() const;
     Quat &normalize();
 
+    float *toFloatPtr();
+    const float *toFloatPtr () const;
+
     Vec3 toVec3() const;
     Mat3 toMat3() const;
     Mat4 toMat4() const;
