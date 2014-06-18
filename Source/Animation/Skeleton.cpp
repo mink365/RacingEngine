@@ -7,22 +7,6 @@
 
 namespace re {
 
-void matrixScale(Mat4& matrix, float value) {
-    for (int i = 0; i< 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            matrix[i][j] *= value;
-        }
-    }
-}
-
-void matrixAdd(Mat4& destMatrix, Mat4& srcMatrix) {
-    for (int i = 0; i< 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            destMatrix[i][j] += srcMatrix[i][j];
-        }
-    }
-}
-
 Skeleton::Skeleton()
     : linkMode(LinkMode::Normalize)
 {
@@ -69,11 +53,11 @@ void Skeleton::compute(vector<Mat4> &boneDeformations, vector<float> &boneWeight
 
     this->computeBone(rootBone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
 
-    for (int i = 0; i < boneDeformations.size(); ++i) {
-        Mat4& mat = boneDeformations[i];
+//    for (int i = 0; i < boneDeformations.size(); ++i) {
+//        Mat4& mat = boneDeformations[i];
 
-        PrintArray("Mat: ", mat.toFloatPtr(), 16, 4);
-    }
+//        PrintArray("Mat: ", mat.toFloatPtr(), 16, 4);
+//    }
 }
 
 void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vector<float> &boneWeights, const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix)
@@ -95,14 +79,13 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
          * 虽然骨骼link的控点都有共同的vertexTransformMatrix但是，每个控点有不同的weight（权重）
          */
         Mat4 influence = vertexTransformMatrix;
-        matrixScale(influence, weight);
+        influence *= weight;
 
         if (linkMode == LinkMode::Additive) {
             // not support now
-
             assert(false);
         } else {
-            matrixAdd(boneDeformations[index], influence);
+            boneDeformations[index] += influence;
             boneWeights[index] += weight;
         }
     }

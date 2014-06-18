@@ -1,12 +1,8 @@
 #include "Animation.h"
 
-#include "BoneNode.h"
 #include "Scene/Node.h"
 
 #include <memory>
-
-//TODO:
-#include <iostream>
 
 namespace re {
 
@@ -154,7 +150,7 @@ void AnimationTrack::addKeyFrame(const KeyFrame &frame)
     this->keyFrames.push_back(framePtr);
 }
 
-Mat4 AnimationTrack::getLocalMatrix()
+void AnimationTrack::updateLocalMatrix()
 {
     AnimationPtr animation = this->animation.lock();
     AnimationStackPtr currStack = animation->getCurrAnimationStack();
@@ -185,11 +181,9 @@ Mat4 AnimationTrack::getLocalMatrix()
         }
     }
 
-    std::cout << "TIME: " << timePos << std::endl;
-
     this->calcProportion(timePos);
 
-    return this->linearDeformation();
+    this->linearDeformation();
 }
 
 Int AnimationTrack::getCurrKeyFrameIndex()
@@ -209,10 +203,10 @@ KeyFramePtr AnimationTrack::getKeyFrame(int index)
 
 void AnimationTrack::calcProportion(Long timePos)
 {
-    std::vector<KeyFramePtr>::iterator iter;
-    for (iter = this->keyFrames.begin() + 1; iter != this->keyFrames.end(); ++iter) {
-        KeyFramePtr keyFrame = *iter;
-        KeyFramePtr lastKeyFrame = *(iter - 1);
+    int i = 0;
+    for (i = 0; i < this->keyFrames.size() - 1; ++i) {
+        KeyFramePtr keyFrame = this->keyFrames[i + 1];
+        KeyFramePtr lastKeyFrame = this->keyFrames[i];
 
         if (timePos >= lastKeyFrame->getTime()
                 && timePos <= keyFrame->getTime()) {
@@ -224,15 +218,19 @@ void AnimationTrack::calcProportion(Long timePos)
                     / (float)(this->interpolationEndKeyFrame->getTime()
                               - this->interpolationBeginKeyFrame->getTime());
 
+            this->currentFrameIndex = i;
+
             break;
         }
     }
 
-    if (iter == this->keyFrames.end()){
+    if (i >= this->keyFrames.size() - 1){
         this->interpolationBeginKeyFrame = this->keyFrames.at(0);
         this->interpolationEndKeyFrame = this->keyFrames.at(0);
 
         this->frameProportion = 0;
+
+        this->currentFrameIndex = 0;
     }
 }
 
@@ -253,7 +251,7 @@ Quat slerp(const Quat& b, const Quat& e, float proportion) {
     return temp;
 }
 
-Mat4 AnimationTrack::linearDeformation()
+void AnimationTrack::linearDeformation()
 {
     Vec3 trans = slerp(this->interpolationBeginKeyFrame->getTranslation(),
                        this->interpolationEndKeyFrame->getTranslation(), this->frameProportion);
@@ -264,14 +262,15 @@ Mat4 AnimationTrack::linearDeformation()
     Vec3 scale = slerp(this->interpolationBeginKeyFrame->getScaling(),
                        this->interpolationEndKeyFrame->getScaling(), this->frameProportion);
 
-    // TODO: return a matrix?
-    std::shared_ptr<BoneNode> bone =  this->boneNode.lock();
+    std::shared_ptr<Node> node =  this->node.lock();
 
-    bone->setLocalTranslation(trans);
-    bone->setLocalRotation(rotate);
-    bone->setLocalScaling(scale);
+    PrintArray("Trans: ", trans.toFloatPtr(), 3, 3);
+    PrintArray("Rotate: ", rotate.toVec3().toFloatPtr(), 3, 3);
+    PrintArray("Scale: ", scale.toFloatPtr(), 3, 3);
 
-    return bone->getLocalMatrix();
+    node->setLocalTranslation(trans);
+    node->setLocalRotation(rotate);
+    node->setLocalScaling(scale);
 }
 
 void AnimationTrack::updateTrackInfo()

@@ -86,8 +86,7 @@ void re::SkeletonController::computeLinearDeformation()
         if (weight > 0) {
             Mat4& m = boneDeformations[i];
 
-            // TODO: !!!
-//            destVertex = m * srcVertex;
+            destVertex = m * srcVertex;
 
             if (this->skeleton->linkMode == LinkMode::Normalize) {
                 destVertex *= (1 / weight);
@@ -98,11 +97,13 @@ void re::SkeletonController::computeLinearDeformation()
             }
         }
 
+        PrintArray("destVertex: ", destVertex.toFloatPtr(), 3, 3);
+
         if (geometry.controlPointsData.controlToVertex.size() != 0) {
             vector<int>& vertexList = geometry.controlPointsData.controlToVertex.at(i);
 
             for (auto& index : vertexList) {
-                Vertex vertex = geometry.getVertices().at(index);
+                Vertex& vertex = geometry.getVertices().at(index);
 
                 vertex.xyz = destVertex;
             }
@@ -111,7 +112,7 @@ void re::SkeletonController::computeLinearDeformation()
                 Int controlPointIndex = geometry.controlPointsData.vertexToControl[j];
 
                 if (controlPointIndex == i) {
-                    Vertex vertex = geometry.getVertices().at(j);
+                    Vertex& vertex = geometry.getVertices().at(j);
                     vertex.xyz = destVertex;
                 }
             }
@@ -127,6 +128,8 @@ void re::SkeletonController::resetMatrixVector()
 
 void re::SkeletonController::initMatrixVector()
 {
+    this->mesh->getGeometry().controlPointsData.cacheVertex();
+
     this->boneDeformations.resize(this->controlPointsCount, emptyMatrix);
     this->boneWeights.resize(this->controlPointsCount);
 

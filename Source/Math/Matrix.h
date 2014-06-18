@@ -122,10 +122,18 @@ public:
     Mat4 &fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s);
 
     float *toFloatPtr();
-    const float *toFloatPtr () const;
+    const float *toFloatPtr() const;
 
+    Mat4 operator*(const float a) const;
+    Vec4 operator*(const Vec4 &vec) const;
+    Vec3 operator*(const Vec3 &vec) const;
     Mat4 operator*(const Mat4 &r) const;
-    Mat4 &operator *=(const Mat4 &r);
+    Mat4 operator+(const Mat4 &r) const;
+    Mat4 operator-(const Mat4 &r) const;
+    Mat4 &operator*=(const float r);
+    Mat4 &operator*=(const Mat4 &r);
+    Mat4 &operator+=(const Mat4 &r);
+    Mat4 &operator-=(const Mat4 &r);
 
     operator float *() const;
     const Vec4 	&operator[](int block_index) const;
@@ -139,6 +147,9 @@ public:
     Mat4 &transpose();
 
     Mat4 invertOut() const;
+
+    Mat4 inverse() const;
+    bool inverseSelf();
 private:
     Vec4 mat[4];
 };
@@ -253,6 +264,45 @@ inline const float *Mat4::toFloatPtr() const
     return mat[0].toFloatPtr ();
 }
 
+inline Mat4 Mat4::operator*(const float a) const
+{
+    return Mat4(
+        mat[0].x * a, mat[0].y * a, mat[0].z * a, mat[0].w * a,
+        mat[1].x * a, mat[1].y * a, mat[1].z * a, mat[1].w * a,
+        mat[2].x * a, mat[2].y * a, mat[2].z * a, mat[2].w * a,
+        mat[3].x * a, mat[3].y * a, mat[3].z * a, mat[3].w * a );
+}
+
+inline Vec4 Mat4::operator*(const Vec4 &vec) const
+{
+    return Vec4(
+        mat[ 0 ].x * vec.x + mat[ 0 ].y * vec.y + mat[ 0 ].z * vec.z + mat[ 0 ].w * vec.w,
+        mat[ 1 ].x * vec.x + mat[ 1 ].y * vec.y + mat[ 1 ].z * vec.z + mat[ 1 ].w * vec.w,
+        mat[ 2 ].x * vec.x + mat[ 2 ].y * vec.y + mat[ 2 ].z * vec.z + mat[ 2 ].w * vec.w,
+        mat[ 3 ].x * vec.x + mat[ 3 ].y * vec.y + mat[ 3 ].z * vec.z + mat[ 3 ].w * vec.w );
+}
+
+inline Vec3 Mat4::operator*(const Vec3 &vec) const
+{
+    float s = mat[ 3 ].x * vec.x + mat[ 3 ].y * vec.y + mat[ 3 ].z * vec.z + mat[ 3 ].w;
+    if ( s == 0.0f ) {
+        return Vec3( 0.0f, 0.0f, 0.0f );
+    }
+    if ( s == 1.0f ) {
+        return Vec3(
+            mat[ 0 ].x * vec.x + mat[ 0 ].y * vec.y + mat[ 0 ].z * vec.z + mat[ 0 ].w,
+            mat[ 1 ].x * vec.x + mat[ 1 ].y * vec.y + mat[ 1 ].z * vec.z + mat[ 1 ].w,
+            mat[ 2 ].x * vec.x + mat[ 2 ].y * vec.y + mat[ 2 ].z * vec.z + mat[ 2 ].w );
+    }
+    else {
+        float invS = 1.0f / s;
+        return Vec3(
+            (mat[ 0 ].x * vec.x + mat[ 0 ].y * vec.y + mat[ 0 ].z * vec.z + mat[ 0 ].w) * invS,
+            (mat[ 1 ].x * vec.x + mat[ 1 ].y * vec.y + mat[ 1 ].z * vec.z + mat[ 1 ].w) * invS,
+            (mat[ 2 ].x * vec.x + mat[ 2 ].y * vec.y + mat[ 2 ].z * vec.z + mat[ 2 ].w) * invS );
+    }
+}
+
 inline Mat4 Mat4::operator *(const Mat4 &r) const
 {
     int i, j;
@@ -279,10 +329,55 @@ inline Mat4 Mat4::operator *(const Mat4 &r) const
     return dst;
 }
 
+inline Mat4 Mat4::operator+(const Mat4 &r) const
+{
+    return Mat4(
+        mat[0].x + r[0].x, mat[0].y + r[0].y, mat[0].z + r[0].z, mat[0].w + r[0].w,
+        mat[1].x + r[1].x, mat[1].y + r[1].y, mat[1].z + r[1].z, mat[1].w + r[1].w,
+        mat[2].x + r[2].x, mat[2].y + r[2].y, mat[2].z + r[2].z, mat[2].w + r[2].w,
+        mat[3].x + r[3].x, mat[3].y + r[3].y, mat[3].z + r[3].z, mat[3].w + r[3].w );
+}
+
+inline Mat4 Mat4::operator-(const Mat4 &r) const
+{
+    return Mat4(
+        mat[0].x - r[0].x, mat[0].y - r[0].y, mat[0].z - r[0].z, mat[0].w - r[0].w,
+        mat[1].x - r[1].x, mat[1].y - r[1].y, mat[1].z - r[1].z, mat[1].w - r[1].w,
+        mat[2].x - r[2].x, mat[2].y - r[2].y, mat[2].z - r[2].z, mat[2].w - r[2].w,
+        mat[3].x - r[3].x, mat[3].y - r[3].y, mat[3].z - r[3].z, mat[3].w - r[3].w );
+}
+
+inline Mat4 &Mat4::operator*=(const float a)
+{
+    mat[0].x *= a; mat[0].y *= a; mat[0].z *= a; mat[0].w *= a;
+    mat[1].x *= a; mat[1].y *= a; mat[1].z *= a; mat[1].w *= a;
+    mat[2].x *= a; mat[2].y *= a; mat[2].z *= a; mat[2].w *= a;
+    mat[3].x *= a; mat[3].y *= a; mat[3].z *= a; mat[3].w *= a;
+    return *this;
+}
+
 inline Mat4 &Mat4::operator *=(const Mat4 &r)
 {
     *this = (*this) * r;
 
+    return *this;
+}
+
+inline Mat4 &Mat4::operator+=(const Mat4 &r)
+{
+    mat[0].x += r[0].x; mat[0].y += r[0].y; mat[0].z += r[0].z; mat[0].w += r[0].w;
+    mat[1].x += r[1].x; mat[1].y += r[1].y; mat[1].z += r[1].z; mat[1].w += r[1].w;
+    mat[2].x += r[2].x; mat[2].y += r[2].y; mat[2].z += r[2].z; mat[2].w += r[2].w;
+    mat[3].x += r[3].x; mat[3].y += r[3].y; mat[3].z += r[3].z; mat[3].w += r[3].w;
+    return *this;
+}
+
+inline Mat4 &Mat4::operator-=(const Mat4 &r)
+{
+    mat[0].x -= r[0].x; mat[0].y -= r[0].y; mat[0].z -= r[0].z; mat[0].w -= r[0].w;
+    mat[1].x -= r[1].x; mat[1].y -= r[1].y; mat[1].z -= r[1].z; mat[1].w -= r[1].w;
+    mat[2].x -= r[2].x; mat[2].y -= r[2].y; mat[2].z -= r[2].z; mat[2].w -= r[2].w;
+    mat[3].x -= r[3].x; mat[3].y -= r[3].y; mat[3].z -= r[3].z; mat[3].w -= r[3].w;
     return *this;
 }
 

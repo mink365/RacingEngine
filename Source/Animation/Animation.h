@@ -12,7 +12,7 @@
 
 namespace re {
 
-class BoneNode;
+class Node;
 class AnimationTrack;
 class AnimationStack;
 class Animation;
@@ -102,7 +102,6 @@ class AnimationTrack
 
 public:
     void addKeyFrame(const KeyFrame& frame);
-    Mat4 getLocalMatrix();
 
     Int getCurrKeyFrameIndex();
     Int getKeyFrameCount();
@@ -110,12 +109,13 @@ public:
     KeyFramePtr getKeyFrame(int index);
 
     void updateTimeInfo();
-
     void updateTrackInfo();
+
+    void updateLocalMatrix();
 
 private:
     void calcProportion(Long timePos);
-    Mat4 linearDeformation();
+    void linearDeformation();
 
 private:
     weak_ptr<Animation> animation;
@@ -127,7 +127,7 @@ private:
     Int currentFrameIndex;
 
     shared_ptr<KeyFrame> interpolationBeginKeyFrame, interpolationEndKeyFrame;
-    std::weak_ptr<BoneNode> boneNode;
+    std::weak_ptr<Node> node;
 
     Long currentTime, beginTime;
 };
