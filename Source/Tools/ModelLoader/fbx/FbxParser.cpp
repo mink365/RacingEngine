@@ -260,7 +260,9 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     // bone and link
     len = reader->ReadInt(st);
     if (len > 0) {
-        // have some bone
+        // have some bone, is a dynamic mesh
+
+        mesh->getGeometry().staticGeometry = false;
 
         ClusterCollectionPtr clusterColl = std::make_shared<ClusterCollection>();
         clusterColl->meshId = node->id;

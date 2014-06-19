@@ -11,6 +11,8 @@ public:
     static BufferObjectUtil& getInstance();
 
     void loadGeometryToHardware(Geometry &geometry);
+
+    void updateGeometryToHardware(Geometry &geometry);
 private:
     BufferObjectUtil();
 

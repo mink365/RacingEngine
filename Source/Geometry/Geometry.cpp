@@ -3,6 +3,7 @@
 namespace re {
 
 Geometry::Geometry()
+    : staticGeometry(true), dirtyFlag(true)
 {
 }
 

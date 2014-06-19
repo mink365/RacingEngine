@@ -28,25 +28,33 @@ void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
     geometry.ibo.nIndices = face_count * 3;
     geometry.ibo.indexSize = face_count * 3 *sizeof(GLushort);
 
+    GLint mode;
+    if (geometry.isStatic()) {
+        mode = GL_STATIC_DRAW;
+    } else {
+        mode = GL_DYNAMIC_DRAW;
+    }
+
     glGenBuffers(1, &(geometry.ibo.vboIB));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.vboIB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.indexSize, pindex_buffer, GL_STATIC_DRAW);
 
-    GLenum error=glGetError();
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    error=glGetError();
 
     int vertex_count = geometry.getVertices().size();
     geometry.vbo.size = vertex_count *sizeof(Vertex);
 
     glGenBuffers(1, &(geometry.vbo.vbo));
     glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
-    glBufferData(GL_ARRAY_BUFFER, geometry.vbo.size, (GLvoid*)geometry.getVertices().data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, geometry.vbo.size, (GLvoid*)geometry.getVertices().data(), mode);
 
-    error=glGetError();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
+void BufferObjectUtil::updateGeometryToHardware(Geometry &geometry)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, geometry.vbo.size, (GLvoid*)geometry.getVertices().data());
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
