@@ -349,7 +349,7 @@ void updateMatrix(bool isAnim) {
     MeshPtr mesh = manController->getMesh();
 
     Geometry *geometry = &(mesh->getGeometry());
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*geometry);
+    BufferObjectUtil::getInstance().updateGeometryToHardware(*geometry);
     mesh->getMaterial().setShder(&shader);
 
     mesh->getNode()->setLocalRotation(quat);
@@ -369,6 +369,12 @@ void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
     for (auto child : node->getChildren()) {
         AddMeshToNode(dynamic_pointer_cast<SceneNode>(child), mesh);
     }
+}
+
+void InitMeshInHardward(MeshPtr mesh) {
+    Geometry& geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
+    mesh->getMaterial().setShder(&shader);
 }
 
 void initResource()
@@ -458,10 +464,7 @@ void initResource()
     for (SceneNodePtr node : meshs) {
         MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
 
-        Geometry *geometry = &(mesh->getGeometry());
-        BufferObjectUtil::getInstance().loadGeometryToHardware(*geometry);
-
-        mesh->getMaterial().setShder(&shader);
+        InitMeshInHardward(mesh);
     }
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
@@ -507,12 +510,11 @@ void initResource()
 
 //    manController->setDefaultFrame(1);
 
+    InitMeshInHardward(manController->getMesh());
     SceneManager::getInstance().addRootNode(manController->getMeshNode());
 
     MeshPtr mesh = createBox(2);
-    Geometry& geometry = mesh->getGeometry();
-    BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
-    mesh->getMaterial().setShder(&shader);
+    InitMeshInHardward(mesh);
 
     box = std::make_shared<SceneNode>();
     AddMeshToNode(box, mesh);
