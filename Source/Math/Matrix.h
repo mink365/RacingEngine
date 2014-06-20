@@ -141,15 +141,10 @@ public:
 
     float getDeterminant();
 
-    Mat4 &invertGeneral();
-    Mat4 &invertAffine();
-    Mat4 &invert();
-    Mat4 &transpose();
-
-    Mat4 invertOut() const;
-
     Mat4 inverse() const;
-    bool inverseSelf();
+    Mat4 &inverseSelf();
+
+    Mat4 &transpose();
 private:
     Vec4 mat[4];
 };

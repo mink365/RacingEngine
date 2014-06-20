@@ -13,8 +13,6 @@
 
 namespace re {
 
-#define MATRIX_INVERSE_EPSILON		1e-14
-
 Mat3::Mat3()
 {
     this->identity();
@@ -230,15 +228,6 @@ Mat4& Mat4::transpose()
     return *this;
 }
 
-Mat4 Mat4::invertOut() const
-{
-    Mat4 temp = *this;
-
-    temp.invert();
-
-    return temp;
-}
-
 Mat4 Mat4::inverse() const
 {
     Mat4 temp = *this;
@@ -248,13 +237,14 @@ Mat4 Mat4::inverse() const
     return temp;
 }
 
+#define MATRIX_INVERSE_EPSILON		1e-14
 float Fabs( float f ) {
     int tmp = *reinterpret_cast<int *>( &f );
     tmp &= 0x7FFFFFFF;
     return *reinterpret_cast<float *>( &tmp );
 }
 
-bool Mat4::inverseSelf()
+Mat4& Mat4::inverseSelf()
 {
     // 84+4+16 = 104 multiplications
     //			   1 division
@@ -277,7 +267,7 @@ bool Mat4::inverseSelf()
     det = ( - det3_201_123 * mat[3][0] + det3_201_023 * mat[3][1] - det3_201_013 * mat[3][2] + det3_201_012 * mat[3][3] );
 
     if ( Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
-        return false;
+        return identity(); // cannot inverse, make it idenety matrix
     }
 
     invDet = 1.0f / det;
@@ -333,136 +323,8 @@ bool Mat4::inverseSelf()
     mat[2][3] = - det3_201_013 * invDet;
     mat[3][3] = + det3_201_012 * invDet;
 
-    return true;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// inverse 4x4 matrix
-///////////////////////////////////////////////////////////////////////////////
-Mat4& Mat4::invert()
-{
-    // If the 4th row is [0,0,0,1] then it is affine matrix and
-    // it has no projective transformation.
-    if(mat[3][0] == 0 && mat[3][1] == 0 && mat[3][2] == 0 && mat[3][3] == 1)
-        this->invertAffine();
-    else
-    {
-        this->invertGeneral();
-        /*@@ invertProjective() is not optimized (slower than generic one)
-        if(fabs(mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0]) > 0.00001f)
-            this->invertProjective();   // inverse using matrix partition
-        else
-            this->invertGeneral();      // generalized inverse
-        */
-    }
-
     return *this;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// compute the inverse of a 4x4 affine transformation matrix
-//
-// Affine transformations are generalizations of Euclidean transformations.
-// Affine transformation includes translation, rotation, reflection, scaling,
-// and shearing. Length and angle are NOT preserved.
-// M = [ R | T ]
-//     [ --+-- ]    (R denotes 3x3 rotation/scale/shear matrix)
-//     [ 0 | 1 ]    (T denotes 1x3 translation matrix)
-//
-// y = M*x  ->  y = R*x + T  ->  x = R^-1*(y - T)  ->  x = R^-1*y - R^-1*T
-//
-//  [ R | T ]-1   [ R^-1 | -R^-1 * T ]
-//  [ --+-- ]   = [ -----+---------- ]
-//  [ 0 | 1 ]     [  0   +     1     ]
-///////////////////////////////////////////////////////////////////////////////
-Mat4& Mat4::invertAffine()
-{
-    // R^-1
-    Mat3 r(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1],mat[1][2], mat[2][0],mat[2][1],mat[2][2]);
-    r.invert();
-
-    mat[0][0] = mat[0][0];  mat[0][1] = mat[0][1];  mat[0][2] = mat[0][2];
-    mat[1][0] = mat[0][3];  mat[1][1] = mat[1][0];  mat[1][2] = mat[1][1];
-    mat[2][0] = mat[1][2];  mat[2][1] = mat[1][3];  mat[2][2]= mat[2][0];
-
-    // -R^-1 * T
-    float x = mat[0][2];
-    float y = mat[1][3];
-    float z = mat[2][3];
-
-    mat[0][2]  = -(mat[0][0] * x + mat[0][1] * y + mat[0][2] * z);
-    mat[1][3]  = -(mat[0][3] * x + mat[1][0] * y + mat[1][1] * z);
-    mat[2][3] = -(mat[1][2] * x + mat[1][3] * y + mat[2][0] * z);
-
-    // last row should be unchanged (0,0,0,1)
-    //mat[3][0] = mat[3][1] = mat[3][2] = 0.0f;
-    //mat[3][3] = 1.0f;
-
-    return * this;
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// compute the inverse of a general 4x4 matrix using Cramer's Rule
-// If cannot find inverse, return indentity matrix
-// M^-1 = adj(M) / det(M)
-///////////////////////////////////////////////////////////////////////////////
-Mat4& Mat4::invertGeneral()
-{
-    // get cofactors of minor matrices
-    float cofactor0 = getCofactor(mat[1][1],mat[1][2],mat[1][3], mat[2][1],mat[2][2],mat[2][3], mat[3][1],mat[3][2],mat[3][3]);
-    float cofactor1 = getCofactor(mat[1][0],mat[1][2],mat[1][3], mat[2][0],mat[2][2],mat[2][3], mat[3][0],mat[3][2],mat[3][3]);
-    float cofactor2 = getCofactor(mat[1][0],mat[1][1],mat[1][3], mat[2][0],mat[2][1], mat[2][3], mat[3][0],mat[3][1],mat[3][3]);
-    float cofactor3 = getCofactor(mat[1][0],mat[1][1],mat[1][2], mat[2][0],mat[2][1], mat[2][2], mat[3][0],mat[3][1],mat[3][2]);
-
-    // get determinant
-    float determinant = mat[0][0] * cofactor0 - mat[0][1] * cofactor1 + mat[0][2] * cofactor2 - mat[0][2] * cofactor3;
-    if(fabs(determinant) <= 0.00001f)
-    {
-        return identity();
-    }
-
-    // get rest of cofactors for adj(M)
-    float cofactor4 = getCofactor(mat[0][1],mat[0][2],mat[0][2], mat[2][1],mat[2][2],mat[2][3], mat[3][1],mat[3][2],mat[3][3]);
-    float cofactor5 = getCofactor(mat[0][0],mat[0][2],mat[0][2], mat[2][0],mat[2][2],mat[2][3], mat[3][0],mat[3][2],mat[3][3]);
-    float cofactor6 = getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[2][0],mat[2][1], mat[2][3], mat[3][0],mat[3][1],mat[3][3]);
-    float cofactor7 = getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[2][0],mat[2][1], mat[2][2], mat[3][0],mat[3][1],mat[3][2]);
-
-    float cofactor8 = getCofactor(mat[0][1],mat[0][2],mat[0][2], mat[1][1],mat[1][2], mat[1][3],  mat[3][1],mat[3][2],mat[3][3]);
-    float cofactor9 = getCofactor(mat[0][0],mat[0][2],mat[0][2], mat[1][0],mat[1][2], mat[1][3],  mat[3][0],mat[3][2],mat[3][3]);
-    float cofactor10= getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1], mat[1][3],  mat[3][0],mat[3][1],mat[3][3]);
-    float cofactor11= getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1], mat[1][2],  mat[3][0],mat[3][1],mat[3][2]);
-
-    float cofactor12= getCofactor(mat[0][1],mat[0][2],mat[0][2], mat[1][1],mat[1][2], mat[1][3],  mat[2][1], mat[2][2],mat[2][3]);
-    float cofactor13= getCofactor(mat[0][0],mat[0][2],mat[0][2], mat[1][0],mat[1][2], mat[1][3],  mat[2][0], mat[2][2],mat[2][3]);
-    float cofactor14= getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1], mat[1][3],  mat[2][0], mat[2][1], mat[2][3]);
-    float cofactor15= getCofactor(mat[0][0],mat[0][1],mat[0][2], mat[1][0],mat[1][1], mat[1][2],  mat[2][0], mat[2][1], mat[2][2]);
-
-    // build inverse matrix = adj(M) / det(M)
-    // adjugate of M is the transpose of the cofactor matrix of M
-    float invDeterminant = 1.0f / determinant;
-    mat[0][0] =  invDeterminant * cofactor0;
-    mat[0][1] = -invDeterminant * cofactor4;
-    mat[0][2] =  invDeterminant * cofactor8;
-    mat[0][2] = -invDeterminant * cofactor12;
-
-    mat[1][0] = -invDeterminant * cofactor1;
-    mat[1][1] =  invDeterminant * cofactor5;
-    mat[1][2] = -invDeterminant * cofactor9;
-    mat[1][3] =  invDeterminant * cofactor13;
-
-    mat[2][0] =  invDeterminant * cofactor2;
-    mat[2][1] = -invDeterminant * cofactor6;
-    mat[2][2] =  invDeterminant * cofactor10;
-    mat[2][3] = -invDeterminant * cofactor14;
-
-    mat[3][0] = -invDeterminant * cofactor3;
-    mat[3][1] =  invDeterminant * cofactor7;
-    mat[3][2] = -invDeterminant * cofactor11;
-    mat[3][3] =  invDeterminant * cofactor15;
-
-    return *this;
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
