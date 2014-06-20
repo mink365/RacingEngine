@@ -6,12 +6,12 @@ ShaderManager::ShaderManager()
 {
 }
 
-void ShaderManager::registerShader(Shader::type shader)
+void ShaderManager::registerShader(Shader::ptr shader)
 {
     this->shaders[shader->getName()] = shader;
 }
 
-Shader::type ShaderManager::getShader(const string &key)
+Shader::ptr ShaderManager::getShader(const string &key)
 {
     return this->shaders[key];
 }

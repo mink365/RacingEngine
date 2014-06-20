@@ -9,8 +9,8 @@ template<class T>
 class Shared
 {
 public:
-    typedef std::shared_ptr<T> type;
-    typedef std::shared_ptr<const T> constType;
+    typedef std::shared_ptr<T> ptr;
+    typedef std::shared_ptr<const T> constPtr;
 
 public:
     static std::shared_ptr<T> create();

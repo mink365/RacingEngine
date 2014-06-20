@@ -22,18 +22,18 @@ private:
     TextureManager() {};
 
 public:
-    void registerTexture(Texture::type& texture);
-    void desposeTexture(Texture::constType& texture);
+    void registerTexture(Texture::ptr& texture);
+    void desposeTexture(Texture::constPtr& texture);
 
     bool containTexture(std::string name);
-    Texture::type getTexture(std::string name);
+    Texture::ptr getTexture(std::string name);
 
     void loadTextures();
 
     void setImageLoader(ImageLoader *loader);
 
 private:
-    std::map<std::string, Texture::type> registeredTextures;
+    std::map<std::string, Texture::ptr> registeredTextures;
 
     TextureUtil textureUtil;
 

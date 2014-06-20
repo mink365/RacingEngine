@@ -16,14 +16,14 @@ private:
     ShaderManager();
 
 public:
-    void registerShader(Shader::type shader);
-    Shader::type getShader(const std::string& key);
+    void registerShader(Shader::ptr shader);
+    Shader::ptr getShader(const std::string& key);
 
     void loadShaders();
     void reloadShaders();
 
 private:
-    std::map<const std::string, Shader::type> shaders;
+    std::map<const std::string, Shader::ptr> shaders;
 };
 
 } // namespace re

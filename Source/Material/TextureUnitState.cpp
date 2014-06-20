@@ -28,14 +28,14 @@ void TextureUnitState::setUVstate(float offsetU, float offsetV, float scaleU, fl
     this->rotation = rotation;
 }
 
-Texture::type TextureUnitState::getActivityTexture()
+Texture::ptr TextureUnitState::getActivityTexture()
 {
     assert(this->frames.size() > currentIndex);
 
     return this->frames[currentIndex];
 }
 
-void TextureUnitState::addTextureFrame(Texture::type texture)
+void TextureUnitState::addTextureFrame(Texture::ptr texture)
 {
     this->frames.push_back(texture);
 }

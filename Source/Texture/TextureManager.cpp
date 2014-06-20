@@ -6,7 +6,7 @@
 
 namespace re {
 
-void TextureManager::registerTexture(Texture::type& texture)
+void TextureManager::registerTexture(Texture::ptr& texture)
 {
     if (this->registeredTextures.find(texture->getName()) == this->registeredTextures.end()) {
         this->registeredTextures[texture->getName()] = texture;
@@ -15,7 +15,7 @@ void TextureManager::registerTexture(Texture::type& texture)
     }
 }
 
-void TextureManager::desposeTexture(Texture::constType& texture)
+void TextureManager::desposeTexture(Texture::constPtr& texture)
 {
     this->registeredTextures.erase(texture->getName());
 }
@@ -29,7 +29,7 @@ bool TextureManager::containTexture(std::string name)
     return false;
 }
 
-Texture::type TextureManager::getTexture(std::string name)
+Texture::ptr TextureManager::getTexture(std::string name)
 {
     return this->registeredTextures[name];
 }
@@ -37,7 +37,7 @@ Texture::type TextureManager::getTexture(std::string name)
 void TextureManager::loadTextures()
 {
     for (auto pair : this->registeredTextures) {
-        Texture::type& texture = pair.second;
+        Texture::ptr& texture = pair.second;
 
         Image image;
 

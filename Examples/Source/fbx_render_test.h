@@ -73,7 +73,7 @@ void InitGLStates()
 }
 
 int LoadShader(std::string vs, std::string fs) {
-    Shader::type shader = Shader::create();
+    Shader::ptr shader = Shader::create();
     shader->setName("Shader_Default");
 
     shader->setVertexSource(vs);
@@ -276,7 +276,7 @@ MeshPtr createBox(float side) {
     TextureUnitState &unit = mesh->getMaterial().getTexture();
     unit.setUVstate(0, 0, 1, 1, 0);
 
-    Texture::type tex = TextureManager::getInstance().getTexture("girl");
+    Texture::ptr tex = TextureManager::getInstance().getTexture("girl");
     unit.addTextureFrame(tex);
 
     return mesh;
@@ -358,7 +358,7 @@ void updateMatrix(bool isAnim) {
 }
 
 void registerTexture(string path) {
-    Texture::type texture = Texture::create();
+    Texture::ptr texture = Texture::create();
     texture->setPath(path);
     TextureManager::getInstance().registerTexture(texture);
 }
@@ -375,7 +375,7 @@ void InitMeshInHardward(MeshPtr mesh) {
     Geometry& geometry = mesh->getGeometry();
     BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
 
-    Shader::type shader = ShaderManager::getInstance().getShader("Shader_Default");
+    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
     mesh->getMaterial().setShder(shader);
 }
 
@@ -393,7 +393,7 @@ void initResource()
         exit(1);
     }
 
-    Shader::type shader1 = Shader::create();
+    Shader::ptr shader1 = Shader::create();
 
     std::shared_ptr<Shader> shader = Shader::create();
 
