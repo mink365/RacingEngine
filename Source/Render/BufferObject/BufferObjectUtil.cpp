@@ -6,12 +6,6 @@ BufferObjectUtil::BufferObjectUtil()
 {
 }
 
-BufferObjectUtil &BufferObjectUtil::getInstance()
-{
-    static BufferObjectUtil instance;
-    return instance;
-}
-
 void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
 {
     int face_count = geometry.getFaces().size();

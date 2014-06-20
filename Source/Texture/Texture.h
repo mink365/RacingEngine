@@ -6,7 +6,7 @@
 
 namespace re {
 
-class Texture
+class Texture : public Shared<Texture>
 {
 public:
     Texture();

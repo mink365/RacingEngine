@@ -1,4 +1,4 @@
-#ifndef NAMED_H
+﻿#ifndef NAMED_H
 #define NAMED_H
 
 #include <memory>
@@ -17,25 +17,24 @@ public:
 
 class Named {
 public:
-    Long getId();
-    void setId(const Long& id);
+    Long getId() const;
 
     std::string getName();
     void setName(const std::string& name);
 
+    Long getTag() const;
+    void setTag(const Long &value);
+
 protected:
     Long id;
     std::string name;
+
+    Long tag;
 };
 
-inline Long Named::getId()
+inline Long Named::getId() const
 {
     return this->id;
-}
-
-inline void Named::setId(const Long &id)
-{
-    this->id = id;
 }
 
 inline string Named::getName()
@@ -47,6 +46,17 @@ inline void Named::setName(const string &name)
 {
     this->name = name;
 }
+
+inline Long Named::getTag() const
+{
+    return tag;
+}
+
+inline void Named::setTag(const Long &value)
+{
+    tag = value;
+}
+
 
 } // end namespace
 

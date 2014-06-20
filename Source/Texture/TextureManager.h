@@ -3,6 +3,8 @@
 
 #include <map>
 #include <string>
+#include "Base/Singleton.h"
+
 #include "Texture.h"
 #include "TextureUtil.h"
 
@@ -13,26 +15,25 @@ public:
     virtual void loadImage(Texture *texture, Image &image);
 };
 
-class TextureManager
+class TextureManager : public Singleton<TextureManager>
 {
-public:
-    static TextureManager &getInstance();
+    friend class Singleton;
+private:
+    TextureManager() {};
 
-    void registerTexture(Texture &texture);
-    void desposeTexture(const Texture &texture);
+public:
+    void registerTexture(Texture::type& texture);
+    void desposeTexture(Texture::constType& texture);
 
     bool containTexture(std::string name);
-    Texture &getTexture(std::string name);
+    Texture::type getTexture(std::string name);
 
     void loadTextures();
 
     void setImageLoader(ImageLoader *loader);
 
 private:
-    TextureManager();
-
-private:
-    std::map<std::string, Texture *> registeredTextures;
+    std::map<std::string, Texture::type> registeredTextures;
 
     TextureUtil textureUtil;
 

@@ -107,13 +107,6 @@ const char* logForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunc
 //    return logForOpenGLObject(id, (GLInfoFunction)&glGetProgramiv, (GLLogFunction)&glGetProgramInfoLog);
 //}
 
-ShaderUtil &ShaderUtil::getInstance()
-{
-    static ShaderUtil instance;
-
-    return instance;
-}
-
 void ShaderUtil::compileShader(Shader *shader)
 {
     uint vertexShaderID = this->loadShader(shader->getVertexSource().c_str(), GL_VERTEX_SHADER);

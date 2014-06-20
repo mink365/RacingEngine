@@ -1,17 +1,19 @@
 #ifndef SHADERUTIL_H
 #define SHADERUTIL_H
 
+#include "Base/Singleton.h"
+
 #include "Attribute.h"
 #include "Uniform.h"
 #include "Shader.h"
 
 namespace re {
 
-class ShaderUtil
+class ShaderUtil : public Singleton<ShaderUtil>
 {
-public:
-    static ShaderUtil &getInstance();
+    friend class Singleton;
 
+public:
     void compileShader(Shader *shader);
     /**
      * @brief bindShader

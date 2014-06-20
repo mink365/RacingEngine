@@ -2,6 +2,8 @@
 #define SCENEMANAGER_H
 
 #include <vector>
+#include "Base/Singleton.h"
+
 #include "SceneNode.h"
 #include "Render/RenderManager.h"
 
@@ -9,11 +11,11 @@ namespace re {
 
 using std::vector;
 
-class SceneManager
+class SceneManager : public Singleton<SceneManager>
 {
-public:
-    static SceneManager &getInstance();
+    friend class Singleton;
 
+public:
     void addRootNode(SceneNodePtr node);
     void removeRootNode(const SceneNodePtr node);
     void clearRootNodes();

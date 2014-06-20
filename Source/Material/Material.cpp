@@ -33,12 +33,12 @@ TextureUnitState &Material::getTexture()
     return texture;
 }
 
-Shader *Material::getShder() const
+Shader::type Material::getShder() const
 {
     return shder;
 }
 
-void Material::setShder(Shader *value)
+void Material::setShder(Shader::type& value)
 {
     shder = value;
 }

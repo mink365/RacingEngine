@@ -35,7 +35,7 @@ void Renderer::setProjectionMatrix(const Mat4 &mat)
 {
 }
 
-void Renderer::setTexture(int unit, bool enable, const Texture &texture)
+void Renderer::setTexture(int unit, bool enable, const Texture& texture)
 {
     // TODO: unit
     if (this->context.textureID != texture.getGlID()) {

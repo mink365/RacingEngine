@@ -400,8 +400,8 @@ void FbxParser::readMaterial(std::istream *st, MeshPtr mesh) {
             TextureUnitState &unit = mesh->getMaterial().getTexture();
             unit.setUVstate(offsetU, offsetV, scaleU, scaleV, 0);
 
-            Texture &tex = TextureManager::getInstance().getTexture(name);
-            unit.addTextureFrame(&tex);
+            Texture::type tex = TextureManager::getInstance().getTexture(name);
+            unit.addTextureFrame(tex);
 
             std::cout << "id: " << id << " " << name << " offset " << offsetU << " " << offsetV << " scale " << scaleU << " " << scaleV << std::endl;
         }

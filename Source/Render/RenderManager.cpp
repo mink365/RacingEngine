@@ -61,11 +61,11 @@ void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
 void RenderManager::applyMaterial(Material &material)
 {
     // shader
-    ShaderUtil::getInstance().bindShader(material.getShder());
+    ShaderUtil::getInstance().bindShader(material.getShder().get());
 
     TextureUnitState state = material.getTexture();
 
-    this->renderer.setTexture(0, true, state.getActivityTexture());
+    this->renderer.setTexture(0, true, *(state.getActivityTexture().get()));
 
     // TODO: 纹理矩阵
     this->renderer.setTextureMatrix(0, Mat4().identity());

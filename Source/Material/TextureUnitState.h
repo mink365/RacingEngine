@@ -28,11 +28,11 @@ public:
 
     void setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation);
 
-    Texture& getActivityTexture();
-    void addTextureFrame(Texture *texture);
+    Texture::type getActivityTexture();
+    void addTextureFrame(Texture::type texture);
 
 private:
-    std::vector<Texture *> frames;
+    std::vector<Texture::type> frames;
 
     int currentIndex;
 

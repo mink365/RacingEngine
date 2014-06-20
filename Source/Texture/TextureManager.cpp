@@ -6,28 +6,18 @@
 
 namespace re {
 
-TextureManager::TextureManager()
+void TextureManager::registerTexture(Texture::type& texture)
 {
-}
-
-TextureManager &TextureManager::getInstance()
-{
-    static TextureManager instance;
-    return instance;
-}
-
-void TextureManager::registerTexture(Texture &texture)
-{
-    if (this->registeredTextures.find(texture.getName()) == this->registeredTextures.end()) {
-        this->registeredTextures[texture.getName()] = &texture;
+    if (this->registeredTextures.find(texture->getName()) == this->registeredTextures.end()) {
+        this->registeredTextures[texture->getName()] = texture;
     } else {
-        std::cout << "aready has key!: " << texture.getName() << std::endl;
+        std::cout << "aready has key!: " << texture->getName() << std::endl;
     }
 }
 
-void TextureManager::desposeTexture(const Texture &texture)
+void TextureManager::desposeTexture(Texture::constType& texture)
 {
-    this->registeredTextures.erase(texture.getName());
+    this->registeredTextures.erase(texture->getName());
 }
 
 bool TextureManager::containTexture(std::string name)
@@ -39,20 +29,19 @@ bool TextureManager::containTexture(std::string name)
     return false;
 }
 
-Texture &TextureManager::getTexture(std::string name)
+Texture::type TextureManager::getTexture(std::string name)
 {
-    return *(this->registeredTextures[name]);
+    return this->registeredTextures[name];
 }
 
 void TextureManager::loadTextures()
 {
-    std::map<std::string, Texture *>::iterator iter;
-    for (iter = this->registeredTextures.begin(); iter != this->registeredTextures.end(); ++iter) {
-        Texture *texture = iter->second;
+    for (auto pair : this->registeredTextures) {
+        Texture::type& texture = pair.second;
 
         Image image;
 
-        this->loader->loadImage(texture, image);
+        this->loader->loadImage(texture.get(), image);
 
         textureUtil.UploadTextureToHardware(image, *texture);
     }

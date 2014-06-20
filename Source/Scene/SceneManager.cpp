@@ -7,12 +7,6 @@ SceneManager::SceneManager()
 {
 }
 
-SceneManager &SceneManager::getInstance()
-{
-    static SceneManager instance;
-    return instance;
-}
-
 void SceneManager::addRootNode(SceneNodePtr node)
 {
     node->resetParent();

@@ -1,15 +1,15 @@
 #ifndef BUFFEROBJECTUTIL_H
 #define BUFFEROBJECTUTIL_H
 
+#include "Base/Singleton.h"
 #include "Geometry/Geometry.h"
 
 namespace re {
 
-class BufferObjectUtil
+class BufferObjectUtil : public Singleton<BufferObjectUtil>
 {
+    friend class Singleton;
 public:
-    static BufferObjectUtil& getInstance();
-
     void loadGeometryToHardware(Geometry &geometry);
 
     void updateGeometryToHardware(Geometry &geometry);

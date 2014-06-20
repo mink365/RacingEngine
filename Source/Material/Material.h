@@ -21,8 +21,8 @@ public:
 
     TextureUnitState& getTexture();
 
-    Shader *getShder() const;
-    void setShder(Shader *value);
+    Shader::type getShder() const;
+    void setShder(Shader::type &value);
 
 private:
     bool transparent;
@@ -32,7 +32,7 @@ private:
 
     TextureUnitState texture;
 
-    Shader *shder;
+    Shader::type shder;
 };
 
 } // namespace re
