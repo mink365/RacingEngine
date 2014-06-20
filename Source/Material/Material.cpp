@@ -35,12 +35,25 @@ TextureUnitState &Material::getTexture()
 
 Shader::ptr Material::getShder() const
 {
-    return shder;
+    return shader;
 }
 
 void Material::setShder(Shader::ptr& value)
 {
-    shder = value;
+    shader = value;
+}
+
+Material::ptr Material::clone() const
+{
+    Material::ptr inst = Material::create();
+
+    inst->queueID = this->queueID;
+    inst->renderState = this->renderState;
+    inst->shader = this->shader;
+    inst->texture = this->texture;
+    inst->transparent = this->transparent;
+
+    return inst;
 }
 
 }

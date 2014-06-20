@@ -83,15 +83,19 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     SceneNodePtr node = mesh->getNode();
 
     this->renderer.setWorldMatrix(node->getWorldMatrix());
-    mesh->getMaterial().getShder()->getUniform("model")->setData((float*)node->getWorldMatrix());
 
-    glUseProgram(mesh->getMaterial().getShder()->getProgram());
+    Material::ptr material = mesh->getMaterial();
+    Geometry::ptr geometry = mesh->getGeometry();
 
-    this->renderer.bindBuffer(mesh->getGeometry());
+    material->getShder()->getUniform("model")->setData((float*)node->getWorldMatrix());
 
-    this->applyMaterial(mesh->getMaterial());
+    glUseProgram(material->getShder()->getProgram());
 
-    this->renderer.renderMesh(mesh->getGeometry());
+    this->renderer.bindBuffer(*(geometry.get()));
+
+    this->applyMaterial(*(material.get()));
+
+    this->renderer.renderMesh(*(geometry.get()));
 }
 
 void RenderManager::render()

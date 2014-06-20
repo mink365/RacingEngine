@@ -72,9 +72,9 @@ void re::SkeletonController::setDefaultFrame(int frame)
 
 void re::SkeletonController::computeLinearDeformation()
 {
-    Geometry& geometry = this->mesh->getGeometry();
+    Geometry::ptr geometry = this->mesh->getGeometry();
 
-    this->controlPointsCount = geometry.controlPointsData.controlPoints.size();
+    this->controlPointsCount = geometry->controlPointsData.controlPoints.size();
 
     if (this->controlPointsCount >= this->boneWeights.size()) {
         this->initMatrixVector();
@@ -86,7 +86,7 @@ void re::SkeletonController::computeLinearDeformation()
     this->skeleton->compute(this->boneDeformations, this->boneWeights, identity, this->sceneNode->getLocalMatrix());
 
     for (int i = 0; i < this->controlPointsCount; ++i) {
-        Vec3& xyz = geometry.controlPointsData.controlPoints[i];
+        Vec3& xyz = geometry->controlPointsData.controlPoints[i];
 
         Vec3 srcVertex(xyz);
         Vec3 destVertex(xyz);
@@ -106,20 +106,20 @@ void re::SkeletonController::computeLinearDeformation()
             }
         }
 
-        if (geometry.controlPointsData.controlToVertex.size() != 0) {
-            vector<int>& vertexList = geometry.controlPointsData.controlToVertex.at(i);
+        if (geometry->controlPointsData.controlToVertex.size() != 0) {
+            vector<int>& vertexList = geometry->controlPointsData.controlToVertex.at(i);
 
             for (auto& index : vertexList) {
-                Vertex& vertex = geometry.getVertices().at(index);
+                Vertex& vertex = geometry->getVertices().at(index);
 
                 vertex.xyz = destVertex;
             }
         } else {
-            for (int j = 0; j < geometry.controlPointsData.vertexToControl.size(); ++j) {
-                Int controlPointIndex = geometry.controlPointsData.vertexToControl[j];
+            for (int j = 0; j < geometry->controlPointsData.vertexToControl.size(); ++j) {
+                Int controlPointIndex = geometry->controlPointsData.vertexToControl[j];
 
                 if (controlPointIndex == i) {
-                    Vertex& vertex = geometry.getVertices().at(j);
+                    Vertex& vertex = geometry->getVertices().at(j);
                     vertex.xyz = destVertex;
                 }
             }
@@ -135,7 +135,7 @@ void re::SkeletonController::resetMatrixVector()
 
 void re::SkeletonController::initMatrixVector()
 {
-    this->mesh->getGeometry().controlPointsData.cacheVertex();
+    this->mesh->getGeometry()->controlPointsData.cacheVertex();
 
     this->boneDeformations.resize(this->controlPointsCount, emptyMatrix);
     this->boneWeights.resize(this->controlPointsCount);

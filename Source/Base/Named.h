@@ -7,14 +7,6 @@
 
 namespace re {
 
-template<class T>
-class Clonable : public Uncopyable {
-public:
-    virtual ~Clonable() {};
-
-    virtual std::shared_ptr<T> clone() const = 0;
-};
-
 class Named {
 public:
     Long getId() const;

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <array>
+#include "Base/Shared.h"
+#include "Base/Clonable.h"
 #include "Vertex.h"
 #include "Face.h"
 #include "ControlPoints.h"
@@ -11,7 +13,7 @@
 
 namespace re {
 
-class Geometry
+class Geometry : public Shared<Geometry>, public Clonable<Geometry>
 {
     friend class Renderer;
     friend class BufferObjectUtil;
@@ -21,8 +23,8 @@ class Geometry
 public:
     Geometry();
 
-    void addVertex(Vertex &v);
-    void addFace(Face &face);
+    void addVertex(const Vertex &v);
+    void addFace(const Face &face);
 
     std::vector<Vertex> &getVertices();
     void setVertices(const std::vector<Vertex> &value);
@@ -42,7 +44,11 @@ public:
      *
      * this is a static geometry or not.static geometry cann't be modify in runtime.
      */
-    bool isStatic();
+    bool isStatic() const;
+
+    bool isLoaded() const;
+
+    Geometry::ptr clone() const override;
 
 private:
     ControlPoints controlPointsData;
@@ -67,9 +73,14 @@ inline void Geometry::setDirty()
     this->dirtyFlag = true;
 }
 
-inline bool Geometry::isStatic()
+inline bool Geometry::isStatic() const
 {
     return this->staticGeometry;
+}
+
+inline bool Geometry::isLoaded() const
+{
+    return this->vbo.vbo != 0;
 }
 
 } // namespace re

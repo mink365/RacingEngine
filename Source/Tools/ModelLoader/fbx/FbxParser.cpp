@@ -128,6 +128,7 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
 
 void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
+    mesh->init();
     node->setNodeAttribute(mesh);
     mesh->name = node->name;
 
@@ -141,7 +142,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     for (int i = 0; i < len; ++i) {
         Vec3 xyz(points[i * 3 + 0], points[i * 3 + 1], points[i * 3 + 2]);
 
-        mesh->getGeometry().controlPointsData.controlPoints.push_back(xyz);
+        mesh->getGeometry()->controlPointsData.controlPoints.push_back(xyz);
     }
 
     PrintArray("points ", points, len * 3, 3);
@@ -153,7 +154,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     PrintArray(" vertex to control ", vertexToControl, len, 1);
 
     // TODO: give the data to mesh
-    VectorCopy(vertexToControl, 0, len, mesh->getGeometry().controlPointsData.vertexToControl);
+    VectorCopy(vertexToControl, 0, len, mesh->getGeometry()->controlPointsData.vertexToControl);
 
     len = reader->ReadInt(st);
     short index[len];
@@ -167,7 +168,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     for (int i = 0; i < num_of_indices; i += 3) {
         Face f(index[i], index[i + 1], index[i + 2]);
 
-        mesh->getGeometry().addFace(f);
+        mesh->getGeometry()->addFace(f);
     }
 
     std::cout << " num of indices " << len << std::endl;
@@ -239,7 +240,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
             v.normal.set(normalArray[i * 3], normalArray[i * 3 + 1], normalArray[i * 3 + 2]);
         }
 
-        mesh->getGeometry().addVertex(v);
+        mesh->getGeometry()->addVertex(v);
     }
 
     if (colorArray != NULL) {
@@ -262,7 +263,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     if (len > 0) {
         // have some bone, is a dynamic mesh
 
-        mesh->getGeometry().staticGeometry = false;
+        mesh->getGeometry()->staticGeometry = false;
 
         ClusterCollectionPtr clusterColl = std::make_shared<ClusterCollection>();
         clusterColl->meshId = node->id;
@@ -397,7 +398,7 @@ void FbxParser::readMaterial(std::istream *st, MeshPtr mesh) {
             float scaleU = reader->ReadFloat(st);
             float scaleV = reader->ReadFloat(st);
 
-            TextureUnitState &unit = mesh->getMaterial().getTexture();
+            TextureUnitState &unit = mesh->getMaterial()->getTexture();
             unit.setUVstate(offsetU, offsetV, scaleU, scaleV, 0);
 
             Texture::ptr tex = TextureManager::getInstance().getTexture(name);

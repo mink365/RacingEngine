@@ -147,6 +147,7 @@ int LoadShader(const char *pfilePath_vs, const char *pfilePath_fs)
 
 MeshPtr createBox(float side) {
     MeshPtr mesh = std::make_shared<Mesh>();
+    mesh->init();
 
     float coords[] = {
         -side/2.0f, -side/2.0f, side/2.0f, //v0
@@ -264,16 +265,16 @@ MeshPtr createBox(float side) {
 
       v.normal.set(normals[i * 3 + 0], normals[i * 3 + 1], normals[i * 3 + 2]);
 
-      mesh->getGeometry().addVertex(v);
+      mesh->getGeometry()->addVertex(v);
     }
 
     for (int i = 0; i < 12; ++i) {
         Face f(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2]);
 
-        mesh->getGeometry().addFace(f);
+        mesh->getGeometry()->addFace(f);
     }
 
-    TextureUnitState &unit = mesh->getMaterial().getTexture();
+    TextureUnitState &unit = mesh->getMaterial()->getTexture();
     unit.setUVstate(0, 0, 1, 1, 0);
 
     Texture::ptr tex = TextureManager::getInstance().getTexture("girl");
@@ -349,8 +350,8 @@ void updateMatrix(bool isAnim) {
     manController->update();
     MeshPtr mesh = manController->getMesh();
 
-    Geometry *geometry = &(mesh->getGeometry());
-    BufferObjectUtil::getInstance().updateGeometryToHardware(*geometry);
+    Geometry::ptr geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().updateGeometryToHardware(*(geometry.get()));
 
     mesh->getNode()->setLocalRotation(quat);
 
@@ -372,11 +373,11 @@ void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
 }
 
 void InitMeshInHardward(MeshPtr mesh) {
-    Geometry& geometry = mesh->getGeometry();
-    BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
+    Geometry::ptr geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
-    mesh->getMaterial().setShder(shader);
+    mesh->getMaterial()->setShder(shader);
 }
 
 void initResource()
@@ -488,7 +489,7 @@ void initResource()
     motoRoot->setLocalTranslation(Vec3(0, 0, 12));
 
     // TODO:
-//    moto->getMaterial().getRenderState().setDepthTest(true);
+//    moto->getMaterial()->getRenderState().setDepthTest(true);
 
     SceneManager::getInstance().addRootNode(motoRoot);
     black_box = black;

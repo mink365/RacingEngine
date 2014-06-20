@@ -19,6 +19,7 @@
 #include "platform.h"
 #include "Base/Named.h"
 #include "Base/Uncopyable.h"
+#include "Base/Clonable.h"
 
 namespace re {
 

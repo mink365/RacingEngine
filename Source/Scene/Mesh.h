@@ -16,9 +16,15 @@ class Mesh : public NodeAttribute
 public:
     Mesh();
 
-    Material& getMaterial();
+    /**
+     * @brief init
+     * init a material and geometry
+     */
+    void init();
 
-    Geometry& getGeometry();
+    Material::ptr getMaterial();
+
+    Geometry::ptr getGeometry();
 
     MeshPtr clone();
 
@@ -27,11 +33,9 @@ protected:
     virtual void copyProperties(const NodeAttribute* att) override;
 
 private:
-    // TODO: use shared_ptr instance of a data
-    Material material;
+    Material::ptr material;
 
-    // TODO: geometry not need to be copy? or we just copy it in deep clone?
-    Geometry geometry;
+    Geometry::ptr geometry;
 };
 
 } // namespace re

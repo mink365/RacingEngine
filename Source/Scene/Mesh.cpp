@@ -7,12 +7,18 @@ Mesh::Mesh()
     this->type = NodeAttributeType::Mesh;
 }
 
-Geometry &Mesh::getGeometry()
+void Mesh::init()
+{
+    this->geometry = Geometry::create();
+    this->material = Material::create();
+}
+
+Geometry::ptr Mesh::getGeometry()
 {
     return geometry;
 }
 
-Material& Mesh::getMaterial()
+Material::ptr Mesh::getMaterial()
 {
     return material;
 }
@@ -36,7 +42,13 @@ void Mesh::copyProperties(const NodeAttribute *att)
     const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {
         this->material = inst->material;
-        this->geometry = inst->geometry;
+
+        if (!inst->geometry->isStatic()) {
+            // only dynamic geometry need to be copy
+            this->geometry = inst->geometry;
+        } else {
+            this->geometry = inst->geometry;
+        }
     }
 }
 
