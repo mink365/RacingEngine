@@ -32,28 +32,6 @@ void display()
 
     SceneManager::getInstance().renderScene();
 
-//    Texture &texture1 = TextureManager::getInstance().getTexture("floor");
-//    glBindTexture(GL_TEXTURE_2D, texture1.getGlID());
-
-//    //Bind the shader that we want to use
-//    glUseProgram(shader.getProgram());
-
-//    SceneNode *currNode = SceneManager::getInstance().getRootNodes()[1];
-//    Geometry *currGeometry = &(((Mesh*)currNode)->getGeometry());
-
-//    SceneManager::getInstance().getRenderManager().renderMesh(*((Mesh*)currNode));
-//    SceneManager::getInstance().getRenderManager().getRenderer().renderMesh(*currGeometry);
-
-//    //Bind the VBO and setup pointers for the VAO
-//    glBindBuffer(GL_ARRAY_BUFFER, currGeometry->getVbo().vbo);
-
-//    //Bind the IBO for the VAO
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currGeometry->getIbo().vboIB);
-
-//    ShaderUtil::getInstance().bindShader(&shader);
-
-//    glDrawElements(GL_TRIANGLES, currGeometry->getIbo().nIndices, GL_UNSIGNED_SHORT, NULL);
-
     glutSwapBuffers();
 }
 

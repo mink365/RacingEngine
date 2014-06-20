@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "Shader/ShaderUtil.h"
+#include "Shader/ShaderManager.h"
 #include "Camera/Camera.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Scene/Mesh.h"
@@ -22,12 +23,7 @@
 using namespace std;
 using namespace re;
 
-Shader shader;
-
 Camera camera;
-
-#define TRUE true
-#define FALSE false
 
 // loadFile - loads text file into char* fname
 // allocates memory - so need to delete after use
@@ -77,23 +73,26 @@ void InitGLStates()
 }
 
 int LoadShader(std::string vs, std::string fs) {
-    shader.setVertexSource(vs);
-    shader.setFragmentSource(fs);
+    Shader::type shader = Shader::create();
+    shader->setName("Shader_Default");
 
-    ShaderUtil::getInstance().compileShader(&shader);
+    shader->setVertexSource(vs);
+    shader->setFragmentSource(fs);
+
+    ShaderUtil::getInstance().compileShader(shader.get());
 
     GLint IsLinked;
-    glGetProgramiv(shader.getProgram(), GL_LINK_STATUS, (GLint *)&IsLinked);
+    glGetProgramiv(shader->getProgram(), GL_LINK_STATUS, (GLint *)&IsLinked);
     if(IsLinked==FALSE)
     {
         LOG_E("Failed to link shader.");
 
         GLint maxLength;
-        glGetProgramiv(shader.getProgram(), GL_INFO_LOG_LENGTH, &maxLength);
+        glGetProgramiv(shader->getProgram(), GL_INFO_LOG_LENGTH, &maxLength);
         if(maxLength > 0)
         {
             char *pLinkInfoLog = new char[maxLength];
-            glGetProgramInfoLog(shader.getProgram(), maxLength, &maxLength, pLinkInfoLog);
+            glGetProgramInfoLog(shader->getProgram(), maxLength, &maxLength, pLinkInfoLog);
             LOG_E("shader log: %s\n", pLinkInfoLog);
 
             delete [] pLinkInfoLog;
@@ -103,13 +102,13 @@ int LoadShader(std::string vs, std::string fs) {
     }
 
     // set vertex attribute
-    Attribute *vertAttr = shader.getAttribute("aPosition");
+    Attribute *vertAttr = shader->getAttribute("aPosition");
     vertAttr->setType(ATTR_FORMAT_FLOAT);
     vertAttr->setSize(3);
     vertAttr->setStride(sizeof(Vertex));
     vertAttr->setOffset(0);
 
-    Attribute *uvAttr = shader.getAttribute("aTexCoord");
+    Attribute *uvAttr = shader->getAttribute("aTexCoord");
     uvAttr->setType(ATTR_FORMAT_FLOAT);
     uvAttr->setSize(2);
     uvAttr->setStride(sizeof(Vertex));
@@ -129,8 +128,10 @@ int LoadShader(std::string vs, std::string fs) {
 //    normalAttr->setOffset((5) * 4);
 
 //    shader.getUniform("model")->setData((float*)model);
-    shader.getUniform("view")->setData((float*)camera.getViewMatrix());
-    shader.getUniform("projection")->setData((float*)camera.getProjectionMatrix());
+    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
+    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
+
+    ShaderManager::getInstance().registerShader(shader);
 
     return 1;               //Success
 }
@@ -275,8 +276,8 @@ MeshPtr createBox(float side) {
     TextureUnitState &unit = mesh->getMaterial().getTexture();
     unit.setUVstate(0, 0, 1, 1, 0);
 
-    Texture &tex = TextureManager::getInstance().getTexture("girl");
-    unit.addTextureFrame(&tex);
+    Texture::type tex = TextureManager::getInstance().getTexture("girl");
+    unit.addTextureFrame(tex);
 
     return mesh;
 }
@@ -350,7 +351,6 @@ void updateMatrix(bool isAnim) {
 
     Geometry *geometry = &(mesh->getGeometry());
     BufferObjectUtil::getInstance().updateGeometryToHardware(*geometry);
-    mesh->getMaterial().setShder(&shader);
 
     mesh->getNode()->setLocalRotation(quat);
 
@@ -358,9 +358,9 @@ void updateMatrix(bool isAnim) {
 }
 
 void registerTexture(string path) {
-    Texture *texture = new Texture();
+    Texture::type texture = Texture::create();
     texture->setPath(path);
-    TextureManager::getInstance().registerTexture(*texture);
+    TextureManager::getInstance().registerTexture(texture);
 }
 
 void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
@@ -374,7 +374,9 @@ void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
 void InitMeshInHardward(MeshPtr mesh) {
     Geometry& geometry = mesh->getGeometry();
     BufferObjectUtil::getInstance().loadGeometryToHardware(geometry);
-    mesh->getMaterial().setShder(&shader);
+
+    Shader::type shader = ShaderManager::getInstance().getShader("Shader_Default");
+    mesh->getMaterial().setShder(shader);
 }
 
 void initResource()
@@ -391,19 +393,15 @@ void initResource()
         exit(1);
     }
 
+    Shader::type shader1 = Shader::create();
+
+    std::shared_ptr<Shader> shader = Shader::create();
+
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
-    Texture *texture = new Texture();
-    texture->setPath(assertDir + "floor.jpg");
-    TextureManager::getInstance().registerTexture(*texture);
-
-    texture = new Texture();
-    texture->setPath(assertDir + "wall.jpg");
-    TextureManager::getInstance().registerTexture(*texture);
-
-    texture = new Texture();
-    texture->setPath(assertDir + "black.png");
-    TextureManager::getInstance().registerTexture(*texture);
+    registerTexture(assertDir + "floor.jpg");
+    registerTexture(assertDir + "wall.jpg");
+    registerTexture(assertDir + "black.png");
 
 //    TextureManager::getInstance().loadTextures();
 
