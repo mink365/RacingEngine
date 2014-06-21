@@ -55,6 +55,7 @@ public:
 
     const std::vector<NodePtr> getChildren() const;
     void addChild(NodePtr node);
+    void removeChild(NodePtr node);
 
     NodePtr clone() const;
 

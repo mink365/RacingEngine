@@ -10,7 +10,19 @@
 
 namespace re {
 
+void Vec2::lerp(const Vec2 &v1, const Vec2 &v2, const float l)
+{
+    if ( l <= 0.0f ) {
+        (*this) = v1;
+    } else if ( l >= 1.0f ) {
+        (*this) = v2;
+    } else {
+        (*this) = v1 + l * ( v2 - v1 );
+    }
+}
+
 Vec3::Vec3()
+    : x(0), y(0), z(0)
 {
 
 }
@@ -35,16 +47,6 @@ Vec3 &Vec3::set(const Vec3 &v)
     this->set(v.x, v.y, v.z);
 
     return *this;
-}
-
-float *Vec3::toFloatPtr()
-{
-    return &x;
-}
-
-const float *Vec3::toFloatPtr() const
-{
-    return &x;
 }
 
 Quat Vec3::toQuat() const

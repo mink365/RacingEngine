@@ -6,6 +6,7 @@
  */
 
 #include "Node.h"
+#include <algorithm>
 
 namespace re {
 
@@ -183,6 +184,16 @@ void Node::addChild(NodePtr node)
     node->level = node->getParent()->level + 1;
 
     this->children.push_back(node);
+}
+
+void Node::removeChild(NodePtr node)
+{
+    auto iter = std::find(children.begin(), children.end(), node);
+
+    if (iter != children.end()) {
+        this->children.erase(iter);
+        node->parent.reset();
+    }
 }
 
 NodePtr Node::clone() const

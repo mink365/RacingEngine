@@ -17,4 +17,10 @@ inline float radianToDegree(const float r) {
     return r * RAD_TO_DEG;
 }
 
+inline float Fabs( float f ) {
+    int tmp = *reinterpret_cast<int *>( &f );
+    tmp &= 0x7FFFFFFF;
+    return *reinterpret_cast<float *>( &tmp );
+}
+
 #endif // MATHTOOL_H

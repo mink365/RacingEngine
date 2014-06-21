@@ -238,11 +238,6 @@ Mat4 Mat4::inverse() const
 }
 
 #define MATRIX_INVERSE_EPSILON		1e-14
-float Fabs( float f ) {
-    int tmp = *reinterpret_cast<int *>( &f );
-    tmp &= 0x7FFFFFFF;
-    return *reinterpret_cast<float *>( &tmp );
-}
 
 Mat4& Mat4::inverseSelf()
 {
@@ -266,7 +261,7 @@ Mat4& Mat4::inverseSelf()
 
     det = ( - det3_201_123 * mat[3][0] + det3_201_023 * mat[3][1] - det3_201_013 * mat[3][2] + det3_201_012 * mat[3][3] );
 
-    if ( Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
+    if ( fabs( det ) < MATRIX_INVERSE_EPSILON ) {
         return identity(); // cannot inverse, make it idenety matrix
     }
 
