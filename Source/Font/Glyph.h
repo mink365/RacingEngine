@@ -26,6 +26,14 @@ class Glyph : public Shared<Glyph>
 public:
     Glyph();
 
+    void init(wchar_t c, int offsetX, int offsetY, float advanceX, float advanceY);
+    void setTextureFrame(TextureFrame::ptr frame);
+
+    wchar_t getCharcode();
+
+    void addKerningPair(const KerningPair& kerning);
+    void clearKerningPair();
+
 private:
     /**
      * Wide character this glyph represents

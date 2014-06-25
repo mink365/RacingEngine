@@ -6,4 +6,9 @@ TextureFrame::TextureFrame()
 {
 }
 
+void TextureFrame::init(const Rect &region)
+{
+
+}
+
 }

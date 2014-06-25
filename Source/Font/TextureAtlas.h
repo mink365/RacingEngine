@@ -15,8 +15,10 @@ struct AtlasNode {
     Int width;
 };
 
-class TextureAtlas
+class TextureAtlas : public Shared<TextureAtlas>
 {
+    friend class FreeTypeUtil;
+
 public:
     TextureAtlas();
     ~TextureAtlas();

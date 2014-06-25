@@ -9,6 +9,7 @@ QMAKE_CXXFLAGS += -std=c++11
 LIBS += -lpng -ljpeg
 LIBS += -lGL -lGLEW
 LIBS += -lglut -lGLU
+LIBS += -lfreetype
 
 # 控制defined
 DEFINES += _LINUX
@@ -16,7 +17,7 @@ DEFINES += _LINUX
 SOURCES += \
     $$system("find Source/ -name '*.cpp'") \
 #    $$system("find Examples/ -name '*.cpp'") \
-    Examples/Source/fbx_render_test.cpp
+    Examples/Source/fbx_render_test.cpp \
 
 #SOURCES -= \
 #    Source/Animation/Animation.cpp
@@ -28,3 +29,5 @@ HEADERS += \
 
 INCLUDEPATH += \
     Source/
+
+INCLUDEPATH += "/usr/include/freetype2/"

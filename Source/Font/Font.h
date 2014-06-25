@@ -19,9 +19,15 @@ public:
 
 public:
     Glyph::constPtr getGlyph(const wchar_t& c) const;
+    void addGlyph(Glyph::ptr& glyph);
 
-private:
-    std::map<wchar_t, Glyph::constPtr> glyphs;
+    float getSize() const;
+    FontType getType() const;
+
+    const std::map<wchar_t, Glyph::ptr>& getAllGlyphs();
+
+protected:
+    std::map<wchar_t, Glyph::ptr> glyphs;
 
     /**
      * @brief size

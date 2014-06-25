@@ -17,6 +17,7 @@ public:
 
     void setTexture(std::shared_ptr<const Texture> texture);
 
+    void init(const Rect& region);
     void init(const string& name, bool rotated, float x, float y, float width, float height);
     void init(const string& name, bool rotated, float x, float y, float width, float height, float offsetX, float offsetY, float originalW, float originalH);
 
