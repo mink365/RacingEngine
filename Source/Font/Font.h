@@ -15,13 +15,15 @@ enum class FontType {
 class Font : public Named, public Shared<Font>
 {
 public:
-    Font();
+    Font(Int size, const char * filename);
+
+    ~Font();
 
 public:
     Glyph::constPtr getGlyph(const wchar_t& c) const;
     void addGlyph(Glyph::ptr& glyph);
 
-    float getSize() const;
+    Int getSize() const;
     FontType getType() const;
 
     const std::map<wchar_t, Glyph::ptr>& getAllGlyphs();
@@ -33,8 +35,24 @@ protected:
      * @brief size
      * font size
      */
-    float size;
+    Int size;
     FontType type;
+
+public:
+    union {
+        /**
+         * Font filename, for when location == TEXTURE_FONT_FILE
+         */
+        char *filename;
+
+        /**
+         * Font memory address, for when location == TEXTURE_FONT_MEMORY
+         */
+        struct {
+            const void *base;
+            size_t size;
+        } memory;
+    };
 };
 
 }

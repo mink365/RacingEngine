@@ -33,17 +33,18 @@ public:
     const Size& getSize() const;
 
 private:
+    Vec2 transform(const Vec2& v) const;
+
+private:
     std::shared_ptr<const Texture> texture;
 
     bool isTrimmed;
     bool isRotated;
 
-    Size size;
+    Rect region;
 
-    float originalWidth;
-    float originalHeight;
-    float offsetX;
-    float offsetY;
+    Size originalSize;
+    Vec2 offset;
 };
 
 }

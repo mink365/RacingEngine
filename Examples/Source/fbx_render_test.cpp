@@ -21,6 +21,8 @@
 
 #include "fbx_render_test.h"
 
+#include "Font/FreeTypeUtil.h"
+
 //Globals
 
 void display()
@@ -114,4 +116,27 @@ int main (int argc, char* argv[])
 
     glutMainLoop();
     return 0;
+}
+
+
+void TestFont()
+{
+    auto fontFile = resDir + "Fonts/entsani.ttf";
+
+    auto font = std::make_shared<Font>(330, fontFile.c_str());
+    auto atlas = TextureAtlas::create();
+    atlas->init(512, 512, 4);
+
+    FreeTypeUtil::LoadGlyphs(atlas, font, L"Hello People我");
+
+    atlas->upload();
+
+    MeshPtr mesh = createBox(50, atlas->getTexture());
+    InitMeshInHardward(mesh);
+
+    box = std::make_shared<SceneNode>();
+    AddMeshToNode(box, mesh);
+
+    box->setLocalTranslation(Vec3(0, 0, 52));
+    SceneManager::getInstance().addRootNode(box);
 }

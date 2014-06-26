@@ -3,6 +3,7 @@
 
 #include "platform.h"
 #include <string>
+#include "Math/UV.h"
 
 namespace re {
 
@@ -12,17 +13,18 @@ public:
     Texture();
     Texture(const int width, const int height, const int glID);
 
+    std::string getName() const;
+
     GPU_ID getGlID() const;
     void setGlID(GPU_ID value);
 
-    int getHeight() const;
-
     int getWidth() const;
+    int getHeight() const;
 
     std::string getPath() const;
     void setPath(const std::string &value);
 
-    std::string getName() const;
+    Uv getUv(const Vec2& p) const;
 private:
     std::string path;
     std::string name;

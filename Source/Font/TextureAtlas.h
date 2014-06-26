@@ -5,6 +5,7 @@
 
 #include "platform.h"
 #include "Math/BoundingVolume.h"
+#include "Texture/Texture.h"
 
 namespace re {
 
@@ -24,10 +25,16 @@ public:
     ~TextureAtlas();
 
 public:
+    void init(Int width, Int height, Int depth);
+
     Rect getRegin(float width, float height);
     void setRegin(const Rect& rect, const unsigned char *data, const Int stride);
 
     void clear();
+
+    Texture::ptr getTexture();
+
+    void upload();
 
 private:
     Int fit(Int index, Int width, Int height) const;
@@ -35,6 +42,8 @@ private:
     void merge();
 
 private:
+    Texture::ptr texture;
+
     std::vector<AtlasNode*> nodes;
 
     /**

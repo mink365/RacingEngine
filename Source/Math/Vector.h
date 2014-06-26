@@ -23,7 +23,7 @@ public:
     float y;
 
     Vec2(void);
-    explicit Vec2(const float x, const float y);
+    Vec2(const float x, const float y);
 
     Vec2& set(const float x, const float y);
     Vec2& set(const Vec2 &v);

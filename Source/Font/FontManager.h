@@ -13,8 +13,8 @@ public:
     FontManager();
 
 public:
-    void registerFont(Font::ptr& frame);
-    void desposeFont(Font::constPtr& frame);
+    void registerFont(Font::ptr& font);
+    void desposeFont(Font::constPtr& font);
 
     bool containFont(std::string name);
     Font::ptr getFont(std::string name);

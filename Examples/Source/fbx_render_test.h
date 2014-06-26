@@ -25,6 +25,8 @@ using namespace re;
 
 Camera camera;
 
+std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+
 // loadFile - loads text file into char* fname
 // allocates memory - so need to delete after use
 // size of file returned in fSize
@@ -145,7 +147,7 @@ int LoadShader(const char *pfilePath_vs, const char *pfilePath_fs)
     return LoadShader(vertexShaderString, fragmentShaderString);
 }
 
-MeshPtr createBox(float side) {
+MeshPtr createBox(float side, Texture::ptr texture = nullptr) {
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
 
@@ -277,8 +279,10 @@ MeshPtr createBox(float side) {
     TextureUnitState &unit = mesh->getMaterial()->getTexture();
     unit.setUVstate(0, 0, 1, 1, 0);
 
-    Texture::ptr tex = TextureManager::getInstance().getTexture("girl");
-    unit.addTextureFrame(tex);
+    if (texture == nullptr) {
+        texture = TextureManager::getInstance().getTexture("girl");
+    }
+    unit.addTextureFrame(texture);
 
     return mesh;
 }
@@ -380,12 +384,12 @@ void InitMeshInHardward(MeshPtr mesh) {
     mesh->getMaterial()->setShder(shader);
 }
 
+void TestFont();
+
 void initResource()
 {
     InitGLStates();
 
-    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
-//    std::string resDir = "/sdcard/book/racing/";
     std::string shaderDir = resDir + "Shaders/";
     std::string assertDir = resDir + "Model/PAD/";
 
@@ -527,6 +531,8 @@ void initResource()
 //    SceneManager::getInstance().addRootNode(node);
 
     string hello("test");
+
+    TestFont();
 }
 
 #endif // FBX_RENDER_TEST_H

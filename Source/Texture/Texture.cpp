@@ -48,6 +48,11 @@ void Texture::setPath(const std::string &value)
     this->name = value.substr(pos + 1, pos2 - pos - 1);
 }
 
+Uv Texture::getUv(const Vec2 &p) const
+{
+    return {p.x / this->width, p.y / this->height};
+}
+
 std::string Texture::getName() const
 {
     return this->name;

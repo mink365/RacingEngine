@@ -9,9 +9,9 @@ namespace re {
 class FreeTypeUtil
 {
 public:
-    static void GenerateKerning(Font::ptr font);
+    static void GenerateKerning(Font::ptr& font);
 
-    static size_t LoadGlyphs(TextureAtlas::ptr atlas, Font::ptr font, const wchar_t* charcodes);
+    static size_t LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const wchar_t* charcodes);
 };
 
 }
