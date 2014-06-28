@@ -58,6 +58,16 @@ const Size &TextureFrame::getSize() const
     return this->region.size;
 }
 
+const Vec2 &TextureFrame::getOffset() const
+{
+    return this->offset;
+}
+
+const Size &TextureFrame::getOriginalSize() const
+{
+    return this->originalSize;
+}
+
 Vec2 TextureFrame::transform(const Vec2 &v) const
 {
     // TODO: the real func

@@ -12,6 +12,9 @@ namespace re {
 
 class Color {
 public:
+    static const Color White;
+
+public:
     float r, g, b, a;
 
     Color();

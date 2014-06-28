@@ -7,6 +7,12 @@ re::Rect::Rect()
 
 }
 
+re::Rect::Rect(const re::Vec2 &p, const re::Size &size)
+{
+    this->origin = p;
+    this->size = size;
+}
+
 re::Rect::Rect(float x, float y, float width, float height)
 {
     this->origin.x = x;
@@ -61,6 +67,36 @@ float re::Rect::getMaxY() const
     return origin.y + size.height;
 }
 
+float re::Rect::getWidth() const
+{
+    return this->size.width;
+}
+
+float re::Rect::getHeight() const
+{
+    return this->size.height;
+}
+
+void re::Rect::setLeft(float v)
+{
+    this->origin.x = v;
+}
+
+void re::Rect::setRight(float v)
+{
+    this->size.width = v - this->origin.x;
+}
+
+void re::Rect::setBottom(float v)
+{
+    this->origin.y = v;
+}
+
+void re::Rect::setTop(float v)
+{
+    this->size.height = v - this->origin.y;
+}
+
 bool re::Rect::equals(const re::Rect &rect) const
 {
     return compare(rect);
@@ -84,7 +120,13 @@ bool re::Rect::intersectsRect(const re::Rect &rect) const
     return !(     getMaxX() < rect.getMinX() ||
              rect.getMaxX() <      getMinX() ||
                   getMaxY() < rect.getMinY() ||
-             rect.getMaxY() <      getMinY());
+                  rect.getMaxY() <      getMinY());
+}
+
+bool re::Rect::containsRect(const re::Rect &rect) const
+{
+    return (this->containsPoint(rect.origin)
+            && this->containsPoint(Vec2(rect.getMaxX(), rect.getMaxY())));
 }
 
 re::Rect re::Rect::unionWithRect(const re::Rect &rect) const

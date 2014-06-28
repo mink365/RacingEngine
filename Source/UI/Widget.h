@@ -1,7 +1,7 @@
 #ifndef WIDGETCONTAINER_H
 #define WIDGETCONTAINER_H
 
-#include "Node2d.h"
+#include "Base/Node2d.h"
 #include "Layout/Screen.h"
 
 #include <string>

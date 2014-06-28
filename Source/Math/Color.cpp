@@ -9,6 +9,8 @@
 
 namespace re {
 
+const Color Color::White(0, 0, 0, 0);
+
 Color::Color()
 {
     this->r = 1;

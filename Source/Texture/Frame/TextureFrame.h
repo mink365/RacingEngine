@@ -32,6 +32,9 @@ public:
 
     const Size& getSize() const;
 
+    const Vec2& getOffset() const;
+    const Size& getOriginalSize() const;
+
 private:
     Vec2 transform(const Vec2& v) const;
 

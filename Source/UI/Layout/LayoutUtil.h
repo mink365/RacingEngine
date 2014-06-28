@@ -1,7 +1,7 @@
 #ifndef __LayoutUtil__
 #define __LayoutUtil__
 
-#include "UI/Node2d.h"
+#include "UI/Base/Node2d.h"
 
 namespace re {
 
