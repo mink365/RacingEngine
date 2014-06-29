@@ -1,5 +1,7 @@
 #include "Glyph.h"
 
+#include <algorithm>
+
 namespace re {
 
 Glyph::Glyph()
@@ -23,6 +25,23 @@ void Glyph::setTextureFrame(TextureFrame::ptr frame)
 wchar_t Glyph::getCharcode()
 {
     return this->charcode;
+}
+
+float Glyph::getKerning(wchar_t charcode) const
+{
+    auto iter = std::find_if(kernings.begin(), kernings.end(), [=](const KerningPair& pair) {
+        if (pair.charcode == charcode) {
+            return true;
+        }
+
+        return false;
+    });
+
+    if (iter != kernings.end()) {
+        return (*iter).kerning;
+    }
+
+    return 0;
 }
 
 void Glyph::addKerningPair(const KerningPair &kerning)

@@ -31,10 +31,12 @@ public:
 
     wchar_t getCharcode();
 
+    float getKerning(wchar_t charcode) const;
+
     void addKerningPair(const KerningPair& kerning);
     void clearKerningPair();
 
-private:
+public:
     /**
      * Wide character this glyph represents
      */
