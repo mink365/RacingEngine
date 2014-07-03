@@ -37,6 +37,22 @@ bool re::Rect::operator !=(const re::Rect &v) const
     return !compare(v);
 }
 
+void re::Rect::set(float x, float y, float width, float height)
+{
+    this->origin.x = x;
+    this->origin.y = y;
+
+    this->size.width = width;
+    this->size.height = height;
+}
+
+void re::Rect::fromeVertex(const re::Vec2 &lb, const re::Vec2 &rt)
+{
+    this->origin = lb;
+    this->size.width = rt.x - lb.x;
+    this->size.height = rt.y - lb.y;
+}
+
 float re::Rect::getMinX() const
 {
     return origin.x;

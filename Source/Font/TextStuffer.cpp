@@ -10,8 +10,11 @@ TextStuffer::TextStuffer()
 {
 }
 
-void TextStuffer::AddText(const wstring &text)
+void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::constPtr font)
 {
+    this->geometry = geometry;
+    this->defaultFont = font;
+
     wstring plain;
     std::vector<Tag::ptr> tags;
     std::vector<Span::ptr> spans;

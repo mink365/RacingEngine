@@ -12,6 +12,9 @@ public:
     Sprite(const std::string& tex);
     Sprite(const std::string& tex, const Rect& rect);
 
+protected:
+    void init(const TextureFrame::ptr& tex, const Rect& rect);
+
 private:
     Rect rect;
 

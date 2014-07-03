@@ -5,6 +5,7 @@
 #include "Math/Color.h"
 #include "Base/Shared.h"
 #include "Scene/SceneNode.h"
+#include "Geometry/Geometry.h"
 
 namespace re {
 
@@ -84,7 +85,11 @@ public:
      * Converts a Vec2 to world space coordinates. The result is in Points.
      */
     Vec2 convertToWorldSpace(const Vec2& nodePoint) const;
-private:
+
+protected:
+    Geometry::ptr getGeometry() const;
+
+protected:
     Size size;
     Vec2 anchorPoint;
 };

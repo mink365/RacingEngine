@@ -72,7 +72,7 @@ public:
      */
     Color backgroundColor;
 
-    Font::ptr font;
+    Font::constPtr font;
 };
 
 class TextStuffer : public Singleton<TextStuffer>
@@ -86,7 +86,12 @@ public:
      *
      * add a rich text, text should be parse, cut to many markup block
      */
-    void AddText(const std::wstring& text);
+    void AddText(const std::wstring& text, Geometry::ptr geometry, Font::constPtr font=nullptr);
+
+    const Rect& getTextRect() const {return rect;};
+    const Vec2& getTextOrigin() const {return vertexOrigin;};
+
+protected:
     void AddText(Pen& pen, const Markup& markup, const std::wstring& text, size_t begin=0, size_t end=0);
     void AddChar(Pen& pen, const Markup& markup, wchar_t current, wchar_t previous);
     void AddGlyph(Pen& pen, const Color& color, const Glyph& glyph);
@@ -100,7 +105,12 @@ protected:
 
 private:
     Geometry::ptr geometry;
+    Font::constPtr defaultFont;
+
     Vec2 scale;
+
+    Rect rect;
+    Vec2 vertexOrigin;
 };
 
 }

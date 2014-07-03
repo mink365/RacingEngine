@@ -80,6 +80,9 @@ public:
     bool operator ==(const Rect& v) const;
     bool operator !=(const Rect& v) const;
 
+    void set(float x, float y, float width, float height);
+    void fromeVertex(const Vec2& lb, const Vec2& rt);
+
     float getMinX() const;
     float getMidX() const;
     float getMaxX() const;
