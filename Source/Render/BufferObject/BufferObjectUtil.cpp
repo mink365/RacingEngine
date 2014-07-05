@@ -29,7 +29,10 @@ void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
         mode = GL_DYNAMIC_DRAW;
     }
 
-    glGenBuffers(1, &(geometry.ibo.vboIB));
+    if (geometry.ibo.vboIB == 0) {
+        glGenBuffers(1, &(geometry.ibo.vboIB));
+    }
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.vboIB);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.indexSize, pindex_buffer, GL_STATIC_DRAW);
 
@@ -38,7 +41,10 @@ void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
     int vertex_count = geometry.getVertices().size();
     geometry.vbo.size = vertex_count *sizeof(Vertex);
 
-    glGenBuffers(1, &(geometry.vbo.vbo));
+    if (geometry.vbo.vbo == 0) {
+        glGenBuffers(1, &(geometry.vbo.vbo));
+    }
+
     glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
     glBufferData(GL_ARRAY_BUFFER, geometry.vbo.size, (GLvoid*)geometry.getVertices().data(), mode);
 

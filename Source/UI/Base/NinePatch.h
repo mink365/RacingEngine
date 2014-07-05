@@ -19,7 +19,7 @@ public:
 class NinePatch : public Node2d
 {
 public:
-    NinePatch();
+    NinePatch(const std::string& tex);
 
     void setStretch(float x, float y, float w, float h);
     void setStreth(float w, float h);

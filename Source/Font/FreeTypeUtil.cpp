@@ -238,6 +238,7 @@ size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const
         TextureFrame::ptr frame = TextureFrame::create();
         frame->init(realRegion);
         frame->setTexture(atlas->getTexture());
+        glyph->setTextureFrame(frame);
 
         font->addGlyph(glyph);
     }

@@ -28,6 +28,14 @@ public:
 
     const std::map<wchar_t, Glyph::ptr>& getAllGlyphs();
 
+    /**
+     * @brief getTexture
+     * @return
+     *
+     * TODO: one font can have two or more texture?
+     */
+    Texture::ptr getTexture();
+
 protected:
     std::map<wchar_t, Glyph::ptr> glyphs;
 

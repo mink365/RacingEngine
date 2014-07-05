@@ -101,6 +101,7 @@ protected:
 
     void unfold(const std::vector<Tag::ptr>& tags, std::vector<Span::ptr>& flatSpans);
 
+    void defaultMarkup(Markup& markup);
     void tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup& markup);
 
 private:

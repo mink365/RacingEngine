@@ -2,6 +2,9 @@
 
 #include "Scene/Mesh.h"
 
+#include "Render/BufferObject/BufferObjectUtil.h"
+#include "Shader/ShaderManager.h"
+
 namespace re {
 
 Node2d::Node2d()
@@ -211,6 +214,25 @@ const Color &Rgba::getColor() const
 const Color &Rgba::getDisplayColor() const
 {
     return this->worldColor;
+}
+
+void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture)
+{
+    MeshPtr mesh = std::make_shared<Mesh>();
+    mesh->init();
+
+    TextureUnitState &unit = mesh->getMaterial()->getTexture();
+    unit.setUVstate(0, 0, 1, 1, 0);
+
+    unit.addTextureFrame(texture);
+
+    Geometry::ptr geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
+
+    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
+    mesh->getMaterial()->setShder(shader);
+
+    node->setNodeAttribute(mesh->clone());
 }
 
 }

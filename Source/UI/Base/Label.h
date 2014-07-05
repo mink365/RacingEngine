@@ -11,7 +11,9 @@ class Label : public Node2d
 public:
     Label();
 
-    void setText(std::string& text);
+    void init(Font::ptr& font);
+
+    void setText(const string &text);
 
 protected:
     Font::ptr font;

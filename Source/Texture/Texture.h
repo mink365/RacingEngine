@@ -20,6 +20,7 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    void setSize(int width, int height);
 
     FilePtr getFile() const;
     void setFile(FilePtr &value);

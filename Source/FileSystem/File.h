@@ -34,6 +34,12 @@ public:
     virtual ~File();
 
     virtual const std::string& getName() const;
+    /**
+     * @brief getFullPath
+     * @return
+     *
+     * full path is relative to the root of the resources
+     */
     virtual const std::string& getFullPath() const;
     virtual const std::string getExt() const;
 
@@ -58,7 +64,6 @@ public:
 
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;
-
 
     virtual int read( void *buffer, int len );
     virtual int write(const void *buffer, int len);

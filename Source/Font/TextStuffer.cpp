@@ -1,6 +1,7 @@
 #include "TextStuffer.h"
 
 #include "UI/Base/QuadStuffer.h"
+#include "FontManager.h"
 
 #include <stack>
 
@@ -26,11 +27,28 @@ void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::con
     Pen pen;
     Markup markup;
 
-    for (auto span : spans) {
-        this->tagStackToMarkup(span->stack, markup);
+    if (spans.size() > 0) {
+        // start and end may have no tag, so use the default markup
 
-        AddText(pen, markup, plain, span->start, span->end);
+        auto firstSpan = spans[0];
+        this->defaultMarkup(markup);
+        AddText(pen, markup, plain, 0, firstSpan->start);
+
+        for (auto span : spans) {
+            this->tagStackToMarkup(span->stack, markup);
+
+            AddText(pen, markup, plain, span->start, span->end);
+        }
+
+        auto lastSpan = spans[spans.size() - 1];
+        this->defaultMarkup(markup);
+        AddText(pen, markup, plain, lastSpan->end, plain.size());
+    } else {
+        this->defaultMarkup(markup);
+        AddText(pen, markup, plain, 0, plain.size());
     }
+
+    return;
 }
 
 void TextStuffer::AddText(Pen &pen, const Markup &markup, const wstring &text, size_t begin, size_t end)
@@ -41,7 +59,7 @@ void TextStuffer::AddText(Pen &pen, const Markup &markup, const wstring &text, s
         end = text.size();
     }
 
-    AddChar(pen, markup, text[0], begin);
+    AddChar(pen, markup, text[begin], 0);
     for (auto i = begin + 1; i < length; ++i) {
         AddChar(pen, markup, text[i], text[i - 1]);
     }
@@ -74,6 +92,8 @@ void TextStuffer::AddGlyph(Pen &pen, const Color &color, const Glyph &glyph)
     Rect textureRect(0, 0, width, height);
 
     QuadStuffer::AddOriginalQuad(rect, textureRect, color, glyph.frame, geometry);
+
+    pen.x += glyph.advanceX;
 }
 
 std::vector<std::wstring> &split(const std::wstring &s, wchar_t delim, std::vector<std::wstring> &elems) {
@@ -186,26 +206,27 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
             if (text[index + 1] == L'/') {
                 // tag end
 
-                size_t end = text.find_first_of(L"<", index);
+                size_t start = text.find_last_of(L">", index);
 
-                if (end == string::npos) {
-                    plainText.append(text, index + 1, text.size() - (index + 1));
+                plainText.append(text, start + 1, index - (start + 1));
+                stack.top()->end = plainText.size();
 
-                    assert(stack.size() == 0);
+                stack.pop();
+
+                size_t nextTag = text.find_first_of(L"<", index + 1);
+                if (nextTag == string::npos) {
+                    size_t end2 = text.find_first_of(L">", index + 1);
+
+                    plainText.append(text, end2 + 1, text.size() - (end2 + 1));
 
                     return;
-                } else {
-                    stack.top()->end = end;
-
-                    plainText.append(text, index + 1, end - (index + 1));
-
-                    stack.pop();
                 }
+
             } else {
                 auto tag = Tag::create();
 
-                size_t end1 = text.find_first_of(L"/>");
-                size_t end2 = text.find_first_of(L">");
+                size_t end1 = text.find_first_of(L"/>", index + 1);
+                size_t end2 = text.find_first_of(L">", index + 1);
                 if (end1 < end2) {
                     // self end tag
 
@@ -214,7 +235,7 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
                     // TODO: start and end?
                 } else {
                     // normal tag
-                    tag->start = end2;
+                    tag->start = plainText.size();
 
                     ParseAttribute(text, index + 1, end2, *tag.get());
                 }
@@ -280,6 +301,14 @@ void TextStuffer::unfold(const std::vector<Tag::ptr> &tags, std::vector<Span::pt
     }
 }
 
+void TextStuffer::defaultMarkup(Markup &markup)
+{
+    markup.foregroundColor = Color::White;
+    markup.backgroundColor = Color::White;
+    markup.size = 25;
+    markup.font = FontManager::getInstance().getFont("default");
+}
+
 Color FromARGBToColor(int color) {
     Color c;
     c.r = color & 0x000000FF / 256;
@@ -292,6 +321,8 @@ Color FromARGBToColor(int color) {
 
 void TextStuffer::tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup &markup)
 {
+    this->defaultMarkup(markup);
+
     for (auto tag : stack) {
         switch (tag->type) {
         case TagType::Color:

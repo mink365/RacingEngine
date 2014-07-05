@@ -15,7 +15,8 @@ class TextureFrame : public Named, public Shared<TextureFrame>
 public:
     TextureFrame();
 
-    void setTexture(std::shared_ptr<const Texture> texture);
+    std::shared_ptr<Texture> getTexture();
+    void setTexture(std::shared_ptr<Texture> texture);
 
     void init(const Rect& region);
     void init(const string& name, bool rotated, float x, float y, float width, float height);
@@ -39,7 +40,7 @@ private:
     Vec2 transform(const Vec2& v) const;
 
 private:
-    std::shared_ptr<const Texture> texture;
+    std::shared_ptr<Texture> texture;
 
     bool isTrimmed;
     bool isRotated;

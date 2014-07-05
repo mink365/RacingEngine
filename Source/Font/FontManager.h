@@ -3,11 +3,12 @@
 
 #include <vector>
 
+#include "Base/Singleton.h"
 #include "Font.h"
 
 namespace re {
 
-class FontManager
+class FontManager : public Singleton<FontManager>
 {
 public:
     FontManager();

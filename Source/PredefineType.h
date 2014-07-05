@@ -19,6 +19,10 @@ class Mesh;
 
 class File;
 
+class Sprite;
+class Label;
+class NinePatch;
+
 typedef std::shared_ptr<Animation> AnimationPtr;
 typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
 typedef std::shared_ptr<AnimationStack> AnimationStackPtr;
@@ -33,6 +37,10 @@ typedef std::shared_ptr<Mesh> MeshPtr;
 
 typedef std::shared_ptr<File> FilePtr;
 typedef std::shared_ptr<const File> ConstFilePtr;
+
+typedef std::shared_ptr<Sprite> SpritePtr;
+typedef std::shared_ptr<NinePatch> NinePatchPtr;
+typedef std::shared_ptr<Label> LabelPtr;
 
 }
 

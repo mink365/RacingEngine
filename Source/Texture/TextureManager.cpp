@@ -41,9 +41,14 @@ void TextureManager::loadTextures()
     for (auto pair : this->registeredTextures) {
         Texture::ptr& texture = pair.second;
 
+        if (texture->getGlID() != 0) {
+            continue;
+        }
+
         Image image;
 
         this->loader->loadImage(texture.get(), image);
+        texture->setSize(image.getWidth(), image.getHeight());
 
         textureUtil.UploadTextureToHardware(image, *texture);
     }

@@ -6,8 +6,11 @@
 #include "Base/Shared.h"
 #include "Scene/SceneNode.h"
 #include "Geometry/Geometry.h"
+#include "Texture/Texture.h"
 
 namespace re {
+
+void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture);
 
 class Rgba {
 public:

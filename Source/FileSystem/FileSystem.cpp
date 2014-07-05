@@ -297,6 +297,9 @@ FilePtr FileSystem::CreateFile(const std::string &path, FileType type)
 
     if (type == FileType::Permanent) {
         auto localFile = std::make_shared<FilePermanent>();
+
+        int pos = path.find_last_of("/") + 1;
+        localFile->name = path.substr(pos, path.length() - pos);
         localFile->fullPath = path;
 
         file = localFile;

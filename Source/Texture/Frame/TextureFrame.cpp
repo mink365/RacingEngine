@@ -8,7 +8,12 @@ TextureFrame::TextureFrame()
 {
 }
 
-void TextureFrame::setTexture(std::shared_ptr<const Texture> texture)
+std::shared_ptr<Texture> TextureFrame::getTexture()
+{
+    return this->texture;
+}
+
+void TextureFrame::setTexture(std::shared_ptr<Texture> texture)
 {
     this->texture = texture;
 }
@@ -19,6 +24,8 @@ void TextureFrame::init(const Rect &region)
     this->isRotated = false;
 
     this->region = region;
+
+    this->originalSize = region.size;
 }
 
 void TextureFrame::init(const string &name, bool rotated, float x, float y, float width, float height)
@@ -28,8 +35,9 @@ void TextureFrame::init(const string &name, bool rotated, float x, float y, floa
     this->isTrimmed = false;
     this->isRotated = rotated;
 
-
     this->region = {x, y, width, height};
+
+    this->originalSize = {width, height};
 }
 
 void TextureFrame::init(const string &name, bool rotated, float x, float y, float width, float height, float offsetX, float offsetY, float originalW, float originalH)

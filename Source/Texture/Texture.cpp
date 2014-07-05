@@ -5,6 +5,10 @@ namespace re {
 
 Texture::Texture()
 {
+    this->width = 0;
+    this->height = 0;
+
+    this->glID = 0;
 }
 
 Texture::Texture(const int width, const int height, const int glID)
@@ -34,6 +38,12 @@ int Texture::getHeight() const
     return height;
 }
 
+void Texture::setSize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+}
+
 FilePtr Texture::getFile() const
 {
     return this->file;
@@ -52,7 +62,7 @@ void Texture::setFile(FilePtr &value)
 
 Uv Texture::getUv(const Vec2 &p) const
 {
-    return {p.x / this->width, p.y / this->height};
+    return {p.x / this->width, (this->height - p.y) / this->height};
 }
 
 std::string Texture::getName() const

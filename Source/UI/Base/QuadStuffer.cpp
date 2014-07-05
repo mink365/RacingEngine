@@ -22,11 +22,11 @@ Vec2 GetPoint(const Rect& rect, AlignType align) {
   case AlignType::LEFT_TOP:
     return Vec2(rect.getMinX(), rect.getMaxY());
   case AlignType::LEFT_BOTTOM:
-    return Vec2(rect.getMinX(), rect.getMaxY());
+    return Vec2(rect.getMinX(), rect.getMinY());
   case AlignType::RIGHT_TOP:
-    return Vec2(rect.getMinX(), rect.getMaxY());
+    return Vec2(rect.getMaxX(), rect.getMaxY());
   case AlignType::RIGHT_BOTTOM:
-    return Vec2(rect.getMinX(), rect.getMaxY());
+    return Vec2(rect.getMaxX(), rect.getMinY());
   }
 
   return Vec2();
@@ -127,16 +127,13 @@ void QuadStuffer::AddOriginalQuad(const Rect &rect, const Rect &textureRect, con
     Clamp(clampRect, newTextureRect, newVertexRect);
 
     // 0
+    AddVertex(newVertexRect, newTextureRect, color, AlignType::LEFT_TOP, frame, geomerty);
     AddVertex(newVertexRect, newTextureRect, color, AlignType::LEFT_BOTTOM, frame, geomerty);
     AddVertex(newVertexRect, newTextureRect, color, AlignType::RIGHT_BOTTOM, frame, geomerty);
-    AddVertex(newVertexRect, newTextureRect, color, AlignType::LEFT_TOP, frame, geomerty);
-
     AddVertex(newVertexRect, newTextureRect, color, AlignType::RIGHT_TOP, frame, geomerty);
-    AddVertex(newVertexRect, newTextureRect, color, AlignType::LEFT_TOP, frame, geomerty);
-    AddVertex(newVertexRect, newTextureRect, color, AlignType::RIGHT_BOTTOM, frame, geomerty);
 
     Face face(0, 1, 2);
-    Face face2(3, 4, 5);
+    Face face2(2, 3, 0);
     geomerty->addFace(face);
     geomerty->addFace(face2);
 }

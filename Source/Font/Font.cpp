@@ -47,4 +47,18 @@ const std::map<wchar_t, Glyph::ptr> &Font::getAllGlyphs()
     return this->glyphs;
 }
 
+Texture::ptr Font::getTexture()
+{
+    if (this->glyphs.size() > 1) {
+        auto iter = this->glyphs.begin();
+        TextureFrame::ptr frame = iter->second->frame;
+
+        Texture::ptr tex = frame->getTexture();
+
+        return tex;
+    }
+
+    return nullptr;
+}
+
 }

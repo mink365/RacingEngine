@@ -1,11 +1,14 @@
 #include "NinePatch.h"
 
 #include "QuadStuffer.h"
+#include "Texture/Frame/TextureFrameManager.h"
+#include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
 
-NinePatch::NinePatch()
+NinePatch::NinePatch(const std::string& tex)
 {
+    this->frame = TextureFrameManager::getInstance().getFrame(tex);
 }
 
 void NinePatch::setStretch(float x, float y, float w, float h)
@@ -66,6 +69,9 @@ float NinePatch::getTopPadding() const
 
 void NinePatch::rebind()
 {
+    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    InitNodeForLeaf(node, frame->getTexture());
+
     this->vertexGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
     this->textureGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
 
@@ -88,6 +94,8 @@ void NinePatch::rebind()
     this->addQuad(AlignType::RIGHT_BOTTOM);
     this->addQuad(AlignType::CENTER_BOTTOM);
     this->addQuad(AlignType::CENTER);
+
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
 }
 
 QuadStuffer* stuffer;
