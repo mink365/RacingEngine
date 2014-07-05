@@ -382,6 +382,8 @@ void InitMeshInHardward(MeshPtr mesh) {
 
 void TestFont();
 
+void TestUI();
+
 void initResource()
 {
     InitGLStates();
@@ -509,6 +511,8 @@ void initResource()
     string hello("test");
 
     TestFont();
+
+    TestUI();
 }
 
 #endif // FBX_RENDER_TEST_H

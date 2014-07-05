@@ -22,6 +22,10 @@
 #include "fbx_render_test.h"
 
 #include "Font/FreeTypeUtil.h"
+#include "Font/FontManager.h"
+#include "UI/Base/NinePatch.h"
+#include "UI/Base/Sprite.h"
+#include "UI/Base/Label.h"
 
 //Globals
 
@@ -119,15 +123,20 @@ int main (int argc, char* argv[])
 }
 
 
+Font::ptr font;
+
 void TestFont()
 {
     auto fontFile = resDir + "Fonts/entsani.ttf";
 
-    auto font = std::make_shared<Font>(330, fontFile.c_str());
+    font = std::make_shared<Font>(330, fontFile.c_str());
+    font->setName("default");
+    FontManager::getInstance().registerFont(font);
+
     auto atlas = TextureAtlas::create();
     atlas->init(512, 512, 4);
 
-    FreeTypeUtil::LoadGlyphs(atlas, font, L"Hello People我");
+    FreeTypeUtil::LoadGlyphs(atlas, font, L"Hello People我xtb");
 
     atlas->upload();
 
@@ -139,4 +148,21 @@ void TestFont()
 
     box->setLocalTranslation(Vec3(0, 0, 52));
     SceneManager::getInstance().addRootNode(box);
+}
+
+void TestUI()
+{
+    TextureParser::getInstance().addTextures("UI/", "png");
+    TextureManager::getInstance().loadTextures();
+
+    SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
+    sprite->rebind();
+
+    NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
+    patch->setStrethPadding(20, 20, 20, 20);
+    patch->rebind();
+
+    LabelPtr label = std::make_shared<Label>();
+    label->init(font);
+    label->setText("xHello <color=FFFF00>xxo</color>tbo");
 }
