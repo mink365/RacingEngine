@@ -34,12 +34,12 @@ int Texture::getHeight() const
     return height;
 }
 
-ConstFilePtr Texture::getFile() const
+FilePtr Texture::getFile() const
 {
     return this->file;
 }
 
-void Texture::setFile(ConstFilePtr &value)
+void Texture::setFile(FilePtr &value)
 {
     this->file = value;
 

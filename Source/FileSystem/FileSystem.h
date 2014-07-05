@@ -13,7 +13,7 @@ typedef FileType SearchPathType;
 
 struct SearchPath {
     union {
-        char* rootDir;
+        const char* rootDir;
     };
 
     std::string secondDir;
@@ -29,11 +29,13 @@ class FileSystem : public Singleton<FileSystem>
     friend class Singleton;
 
 public:
-    FileList listFiles(const std::string& path, const std::string& extension="", bool sort=false, bool fullRelativePath=false);
-    FileList listFilesTree(const std::string& path, const std::string& extension="", bool sort=false);
+    void addSearchPath(const SearchPath& searchPath);
+
+    FileList listFiles(const std::string& relativePath, const std::string& extension="", bool sort=false, bool fullRelativePath=false);
+    FileList listFilesTree(const std::string& relativePath, const std::string& extension="", bool sort=false);
 
     FilePtr openFile(const std::string& path, fsMode mode=fsMode::Read);
-    void openFile(FilePtr& file, fsMode mode=fsMode::Read);
+    void openFile(FilePtr &file, fsMode mode=fsMode::Read);
     void closeFile(ConstFilePtr& file);
 
 protected:

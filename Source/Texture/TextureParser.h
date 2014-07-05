@@ -11,9 +11,9 @@ class TextureParser : public Singleton<TextureParser>
 public:
     TextureParser();
 
-    void addTextures(const std::string& dir);
+    void addTextures(const std::string& dir, const std::string& extension);
 
-    void parseSingle(ConstFilePtr& file);
+    void parseSingle(FilePtr &file);
 };
 
 } // namespace re

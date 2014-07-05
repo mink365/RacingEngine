@@ -1,5 +1,7 @@
 #include "Node2d.h"
 
+#include "Scene/Mesh.h"
+
 namespace re {
 
 Node2d::Node2d()
@@ -173,6 +175,17 @@ Vec2 Node2d::convertToNodeSpace(const Vec2 &worldPoint) const
 Vec2 Node2d::convertToWorldSpace(const Vec2 &nodePoint) const
 {
 
+}
+
+Geometry::ptr Node2d::getGeometry() const
+{
+    if (this->attribute != nullptr && this->attribute->getType() == NodeAttributeType::Mesh) {
+        auto mesh = std::dynamic_pointer_cast<Mesh>(this->attribute);
+
+        return mesh->getGeometry();
+    }
+
+    return nullptr;
 }
 
 void Rgba::setAlpha(float a)

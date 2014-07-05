@@ -23,7 +23,7 @@ private:
     TextureFrameManager();
 
 private:
-    std::map<std::string, TextureFrame::constPtr> frames;
+    std::map<std::string, TextureFrame::ptr> frames;
 };
 
 }

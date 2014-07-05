@@ -14,18 +14,25 @@
     #include <unistd.h>
 #endif
 
+#include <algorithm>
+
 #define PATHSEPERATOR_CHAR				'/'
 
 namespace re {
 
-FileList FileSystem::listFiles(const std::string &path, const std::string &extension, bool sort, bool fullRelativePath)
+void FileSystem::addSearchPath(const SearchPath &searchPath)
+{
+    this->searchPaths.push_back(searchPath);
+}
+
+FileList FileSystem::listFiles(const std::string &relativePath, const std::string &extension, bool sort, bool fullRelativePath)
 {
     FileList list;
 
     StrList extensions;
     this->GetExtensionList(extension, extensions);
 
-    this->GetFileList(path, extensions, list);
+    this->GetFileList(relativePath, extensions, list);
 
     if (sort) {
         // TODO: sort it
@@ -34,14 +41,14 @@ FileList FileSystem::listFiles(const std::string &path, const std::string &exten
     return list;
 }
 
-FileList FileSystem::listFilesTree(const std::string &path, const std::string &extension, bool sort)
+FileList FileSystem::listFilesTree(const std::string &relativePath, const std::string &extension, bool sort)
 {
     FileList list;
 
     StrList extensions;
     this->GetExtensionList(extension, extensions);
 
-    this->GetFileListTree(path, extensions, list);
+    this->GetFileListTree(relativePath, extensions, list);
 
     if (sort) {
         // TODO: sort it
@@ -53,7 +60,6 @@ FileList FileSystem::listFilesTree(const std::string &path, const std::string &e
 FilePtr FileSystem::openFile(const std::string &path, fsMode mode)
 {
     // TODO: search and check it in android assert or osPath
-
 
     FilePtr file = this->CreateFile(path, FileType::Permanent);
 
@@ -75,7 +81,11 @@ void FileSystem::openFile(FilePtr &file, fsMode mode)
         }
 
         localFile->fp = fp;
-        localFile->mode = mode;
+        if (mode == fsMode::Append) {
+            localFile->mode = (1 << (int)fsMode::Write) | (1 << (int)fsMode::Append);
+        } else {
+            localFile->mode = (1 << (int)mode);
+        }
         localFile->checkLength();
 
         break;
@@ -157,8 +167,10 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                     // scan for files in the filesystem
                     ListOSDirectories( netpath, sysFiles );
 
-//                    sysFiles.Remove( "." );
-//                    sysFiles.Remove( ".." );
+                    auto iter = std::remove_if(sysFiles.begin(), sysFiles.end(), [](const std::string& file) {
+                        return file == "." || file == "..";
+                    });
+                    sysFiles.erase(iter, sysFiles.end());
 
                     for(int j = 0; j < sysFiles.size(); j++ ) {
                         directories->push_back(sysFiles[j]);
@@ -168,7 +180,9 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                     ListOSFiles( netpath, extensions[i], sysFiles );
 
                     for(int j = 0; j < sysFiles.size(); j++ ) {
-                        FilePtr file = CreateFile(sysFiles[j], search.type);
+                        std::string path = BuildOSPath(netpath, sysFiles[j]);
+
+                        FilePtr file = CreateFile(path, search.type);
 
                         list.push_back(file);
                     }
@@ -214,7 +228,7 @@ bool FileSystem::IsOSDirectory(const std::string path)
 #ifndef WIN32
     struct stat buf;
     if ( stat( path.c_str(), &buf ) == 0) {
-        if (S_ISREG(buf.st_mode)) {
+        if (buf.st_mode & S_IFDIR) {
             return true;
         }
     } else {
@@ -243,7 +257,7 @@ int FileSystem::ListOSFiles(const std::string &directory, const std::string &ext
     dirent* dp;
 
     auto dirp = opendir(directory.c_str());
-    while ((dp = readdir(dirp)) != NULL) {
+    while (dirp && (dp = readdir(dirp)) != NULL) {
         std::string file = directory + "/" + dp->d_name;
 
         if (!IsOSDirectory(file.c_str())) {
@@ -251,7 +265,7 @@ int FileSystem::ListOSFiles(const std::string &directory, const std::string &ext
             ExtractFileExtension(file, ext);
 
             if (ext == extension) {
-                list.push_back(file);
+                list.push_back(dp->d_name);
             }
         }
     }
@@ -265,11 +279,11 @@ int FileSystem::ListOSDirectories(const std::string &directory, StrList &list)
     dirent* dp;
 
     auto dirp = opendir(directory.c_str());
-    while ((dp = readdir(dirp)) != NULL) {
+    while (dirp && (dp = readdir(dirp)) != NULL) {
         std::string file = directory + "/" + dp->d_name;
 
         if (IsOSDirectory(file.c_str())) {
-            list.push_back(file);
+            list.push_back(dp->d_name);
         }
     }
     closedir(dirp);

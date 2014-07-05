@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 #include "Image/Image.h"
+#include "FileSystem/File.h"
+#include "Base/Buffer.h"
 
 namespace re {
 
@@ -54,13 +56,14 @@ void TextureManager::setImageLoader(ImageLoader *loader)
 
 void ImageLoader::loadImage(Texture *texture, Image &image)
 {
-    int pos = texture->getPath().find_last_of(".");
-    std::string ext = texture->getPath().substr(pos + 1, texture->getPath().length());
+    std::string ext = texture->getFile()->getExt();
+
+    Buffer::ptr buf = texture->getFile()->read();
 
     if (ext == "png") {
-        image.loadPNG(texture->getPath().c_str());
+        image.loadPNG(buf->getData(), buf->getSize());
     } else {
-        image.loadJPEG(texture->getPath().c_str());
+        image.loadJPEG(buf->getData(), buf->getSize());
     }
 }
 

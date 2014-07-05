@@ -11,6 +11,7 @@
 #include <vector>
 #include "Texture/TextureManager.h"
 #include "Util/ContainerUtil.h"
+#include "Base/Buffer.h"
 
 namespace re {
 
@@ -27,6 +28,13 @@ void FbxParser::parse(const string &path)
     this->parseStream(&filestr);
 
     filestr.close();
+}
+
+void FbxParser::parse(FilePtr &file)
+{
+    Buffer::ptr buf = file->read();
+
+    this->parseData(buf->getData(), buf->getSize());
 }
 
 void FbxParser::parseStream(std::istream *st) {

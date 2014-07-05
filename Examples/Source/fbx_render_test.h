@@ -17,6 +17,8 @@
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 #include "Animation/BoneNode.h"
+#include "Texture/TextureParser.h"
+#include "FileSystem/FileSystem.h"
 
 #include "opengl.h"
 
@@ -362,12 +364,6 @@ void updateMatrix(bool isAnim) {
     box->setLocalRotation(quat);
 }
 
-void registerTexture(string path) {
-    Texture::ptr texture = Texture::create();
-    texture->setPath(path);
-    TextureManager::getInstance().registerTexture(texture);
-}
-
 void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
     node->setNodeAttribute(mesh->clone());
 
@@ -390,6 +386,11 @@ void initResource()
 {
     InitGLStates();
 
+    SearchPath searchPath;
+    searchPath.rootDir = resDir.c_str();
+    searchPath.type = FileType::Permanent;
+    FileSystem::getInstance().addSearchPath(searchPath);
+
     std::string shaderDir = resDir + "Shaders/";
     std::string assertDir = resDir + "Model/PAD/";
 
@@ -404,56 +405,31 @@ void initResource()
 
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
-    registerTexture(assertDir + "floor.jpg");
-    registerTexture(assertDir + "wall.jpg");
-    registerTexture(assertDir + "black.png");
+    TextureParser::getInstance().addTextures("Model/PAD/", "png|jpg");
 
 //    TextureManager::getInstance().loadTextures();
 
     FbxParser *parser = new FbxParser();
 
-    ifstream filestr;
-    // 要读入整个文件，必须采用二进制打开
-    filestr.open ((assertDir + "black.data").c_str(), ios::binary);
-
-    filestr.seekg(0, filestr.end);
-    int length = filestr.tellg();
-    filestr.seekg(0, filestr.beg);
-
-    char *buffer = new char[length];
-
-    filestr.read(buffer, length);
-    filestr.close();
-
-    parser->parseData((void *)buffer, length);
-
-    delete[] buffer;
-
+    FilePtr file = FileSystem::getInstance().openFile((assertDir + "black.data"));
+    parser->parse(file);
     SceneNodePtr black = parser->getNodes()[0];
 
-    filestr.open ((assertDir + "wall.data").c_str(), ios::binary);
-    parser->parseStream(&filestr);
-    filestr.close();
+    file = FileSystem::getInstance().openFile((assertDir + "wall.data"));
+    parser->parse(file);
 
     SceneNodePtr wall = parser->getNodes()[0];
     SceneNodePtr floor = parser->getNodes()[1];
 
     assertDir = resDir + "Model/Moto/";
 
-    registerTexture(assertDir + "moto03.jpg");
-    registerTexture(assertDir + "moto_yingzi.png");
-    registerTexture(assertDir + "moto.jpg");
-    registerTexture(assertDir + "huoyan_01.png");
-    registerTexture(assertDir + "huoyan_02.png");
-    registerTexture(assertDir + "huoyan_03.png");
-    registerTexture(assertDir + "qiliu.png");
-    registerTexture(resDir + "Model/Man/girl.jpg");
+    TextureParser::getInstance().addTextures("Model/Moto/", "png|jpg");
+    TextureParser::getInstance().addTextures("Model/Man/", "png|jpg");
 
     TextureManager::getInstance().loadTextures();
 
-    filestr.open((assertDir + "new_group_moto03.data").c_str(), ios::binary);
-    parser->parseStream(&filestr);
-    filestr.close();
+    file = FileSystem::getInstance().openFile((assertDir + "new_group_moto03.data"));
+    parser->parse(file);
     SceneNodePtr shadow = parser->getNodes()[0];
     SceneNodePtr moto = parser->getNodes()[1];
 

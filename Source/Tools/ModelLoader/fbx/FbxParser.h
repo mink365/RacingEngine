@@ -5,6 +5,7 @@
 #include <vector>
 #include "Scene/Mesh.h"
 #include "Animation/Skeleton.h"
+#include "FileSystem/File.h"
 
 namespace re {
 
@@ -56,6 +57,7 @@ public:
     FbxParser();
 
     void parse(const string &path);
+    void parse(FilePtr& file);
     void parseStream(std::istream *st);
 
     void parseData(void *data, long datalen);

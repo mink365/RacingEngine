@@ -1,4 +1,4 @@
-#ifndef TEXTURE_H
+﻿#ifndef TEXTURE_H
 #define TEXTURE_H
 
 #include "platform.h"
@@ -21,12 +21,12 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-    ConstFilePtr getFile() const;
-    void setFile(ConstFilePtr &value);
+    FilePtr getFile() const;
+    void setFile(FilePtr &value);
 
     Uv getUv(const Vec2& p) const;
 private:
-    ConstFilePtr file;
+    FilePtr file;
     std::string name;
 
     int width;

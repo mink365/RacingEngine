@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include "Base/Buffer.h"
 
 namespace re {
 
@@ -21,9 +22,10 @@ enum class FileType {
 enum class fsMode {
     Read = 0,
     Write = 1,
+    Append = 2,
 };
 
-class File
+class File : public std::enable_shared_from_this<File>
 {
     friend class FileSystem;
 
@@ -35,6 +37,7 @@ public:
     virtual const std::string& getFullPath() const;
     virtual const std::string getExt() const;
 
+    Buffer::ptr read();
     virtual int read( void *buffer, int len );
     virtual int write(const void *buffer, int len);
     virtual int length() const;
@@ -56,6 +59,7 @@ public:
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;
 
+
     virtual int read( void *buffer, int len );
     virtual int write(const void *buffer, int len);
 
@@ -66,7 +70,7 @@ private:
     std::string name;
     std::string fullPath;
 
-    fsMode mode;
+    int mode;
 
     FILE *fp;
 };

@@ -10,16 +10,16 @@ TextureParser::TextureParser()
 {
 }
 
-void TextureParser::addTextures(const string &dir)
+void TextureParser::addTextures(const string &dir, const std::string &extension)
 {
-    auto list = FileSystem::getInstance().listFilesTree(dir);
+    auto list = FileSystem::getInstance().listFilesTree(dir, extension);
 
-    for (std::shared_ptr<const File> file : list) {
+    for (std::shared_ptr<File> file : list) {
         this->parseSingle(file);
     }
 }
 
-void TextureParser::parseSingle(ConstFilePtr &file)
+void TextureParser::parseSingle(FilePtr &file)
 {
     Texture::ptr texture = Texture::create();
     texture->setFile(file);
