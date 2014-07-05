@@ -17,6 +17,8 @@ class SceneNode;
 class NodeAttribute;
 class Mesh;
 
+class File;
+
 typedef std::shared_ptr<Animation> AnimationPtr;
 typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
 typedef std::shared_ptr<AnimationStack> AnimationStackPtr;
@@ -28,6 +30,9 @@ typedef std::shared_ptr<BoneNode> BoneNodePtr;
 typedef std::shared_ptr<SceneNode> SceneNodePtr;
 typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
+
+typedef std::shared_ptr<File> FilePtr;
+typedef std::shared_ptr<const File> ConstFilePtr;
 
 }
 

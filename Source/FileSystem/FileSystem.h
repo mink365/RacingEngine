@@ -5,24 +5,55 @@
 #include <vector>
 
 #include "File.h"
+#include "Base/Singleton.h"
 
 namespace re {
 
-enum class fsMode {
-    Read = 0,
-    Write = 1,
+typedef FileType SearchPathType;
+
+struct SearchPath {
+    union {
+        char* rootDir;
+    };
+
+    std::string secondDir;
+
+    SearchPathType type;
 };
 
-class FileSystem
-{
-public:
-    FileSystem();
+typedef std::vector<std::string> StrList;
+typedef std::vector<FilePtr> FileList;
 
-    std::vector<FilePtr> listFiles(const std::string& path, const std::string& extension, bool sort=false, bool fullRelativePath=false);
-    std::vector<FilePtr> listFilesTree(const std::string& path, const std::string& extension, bool sort=false);
+class FileSystem : public Singleton<FileSystem>
+{
+    friend class Singleton;
+
+public:
+    FileList listFiles(const std::string& path, const std::string& extension="", bool sort=false, bool fullRelativePath=false);
+    FileList listFilesTree(const std::string& path, const std::string& extension="", bool sort=false);
 
     FilePtr openFile(const std::string& path, fsMode mode=fsMode::Read);
+    void openFile(FilePtr& file, fsMode mode=fsMode::Read);
     void closeFile(ConstFilePtr& file);
+
+protected:
+    FILE* OpenOSFile( const char *fileName, const char *mode);
+
+    void GetExtensionList(const std::string &extension, StrList &extensionList ) const;
+    int	GetFileList(const std::string& relativePath, const StrList &extensions, FileList &list, StrList* directories=nullptr);
+    int	GetFileListTree( const std::string& relativePath, const StrList &extensions, FileList &list);
+
+    bool IsOSDirectory(const std::string path);
+    std::string BuildOSPath(const std::string& dir, const std::string& relativeDir);
+    virtual int ListOSFiles(const std::string& directory, const std::string& extension, StrList& list);
+    virtual int ListOSDirectories(const std::string& directory, StrList& list);
+
+    FilePtr CreateFile(const std::string& path, FileType type);
+private:
+    FileSystem();
+
+private:
+    std::vector<SearchPath> searchPaths;
 };
 
 }

@@ -21,12 +21,12 @@ public:
     int getWidth() const;
     int getHeight() const;
 
-    std::string getPath() const;
-    void setPath(const std::string &value);
+    ConstFilePtr getFile() const;
+    void setFile(ConstFilePtr &value);
 
     Uv getUv(const Vec2& p) const;
 private:
-    std::string path;
+    ConstFilePtr file;
     std::string name;
 
     int width;

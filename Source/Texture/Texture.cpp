@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "FileSystem/File.h"
 
 namespace re {
 
@@ -23,29 +24,30 @@ void Texture::setGlID(GPU_ID value)
     glID = value;
 }
 
-int Texture::getHeight() const
-{
-    return height;
-}
-
-
 int Texture::getWidth() const
 {
     return width;
 }
 
-std::string Texture::getPath() const
+int Texture::getHeight() const
 {
-    return path;
+    return height;
 }
 
-void Texture::setPath(const std::string &value)
+ConstFilePtr Texture::getFile() const
 {
-    this->path = value;
+    return this->file;
+}
 
-    int pos = value.find_last_of("/");
-    int pos2 = value.find_last_of(".");
-    this->name = value.substr(pos + 1, pos2 - pos - 1);
+void Texture::setFile(ConstFilePtr &value)
+{
+    this->file = value;
+
+    const std::string& path = value->getFullPath();
+
+    int pos = path.find_last_of("/");
+    int pos2 = path.find_last_of(".");
+    this->name = path.substr(pos + 1, pos2 - pos - 1);
 }
 
 Uv Texture::getUv(const Vec2 &p) const

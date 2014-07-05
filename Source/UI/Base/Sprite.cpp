@@ -1,6 +1,7 @@
 #include "Sprite.h"
 
 #include "Texture/Frame/TextureFrameManager.h"
+#include "UI/Base/QuadStuffer.h"
 
 namespace re {
 
@@ -25,7 +26,10 @@ Sprite::Sprite(const string &tex, const Rect &rect)
 
 void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 {
+    this->texture = tex;
+    this->rect = rect;
 
+    QuadStuffer::FillQuad(tex, rect.size, this->getGeometry());
 }
 
 }
