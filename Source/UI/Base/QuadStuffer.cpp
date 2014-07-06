@@ -132,8 +132,10 @@ void QuadStuffer::AddOriginalQuad(const Rect &rect, const Rect &textureRect, con
     AddVertex(newVertexRect, newTextureRect, color, AlignType::RIGHT_BOTTOM, frame, geomerty);
     AddVertex(newVertexRect, newTextureRect, color, AlignType::RIGHT_TOP, frame, geomerty);
 
-    Face face(0, 1, 2);
-    Face face2(2, 3, 0);
+    int faceIndex = geomerty->getFaces().size() * 3 / 6;
+    int offset = faceIndex * 4;
+    Face face(offset + 0, offset + 1, offset + 2);
+    Face face2(offset + 2, offset + 3, offset + 0);
     geomerty->addFace(face);
     geomerty->addFace(face2);
 }

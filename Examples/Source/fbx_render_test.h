@@ -68,35 +68,31 @@ void InitGLStates()
 //    glClearColor(0.0, 0.0, 0.0, 0.0);
     glClearDepth(1.0);
 //    glClearStencil(0);
-////    glDisable(GL_BLEND);
+//    glDisable(GL_BLEND);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+    //FIXME: if we use GL_ONE, font render may have color bg
+//    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 //    glDisable(GL_ALPHA_TEST);
 //    glDisable(GL_DITHER);
+
     glActiveTexture(GL_TEXTURE0);
 }
 
-int LoadShader(std::string vs, std::string fs) {
-    Shader::ptr shader = Shader::create();
-    shader->setName("Shader_Default");
-
-    shader->setVertexSource(vs);
-    shader->setFragmentSource(fs);
-
-    ShaderUtil::getInstance().compileShader(shader.get());
-
+int CheckShaderLinkError(GLint program) {
     GLint IsLinked;
-    glGetProgramiv(shader->getProgram(), GL_LINK_STATUS, (GLint *)&IsLinked);
+    glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);
     if(IsLinked==FALSE)
     {
         LOG_E("Failed to link shader.");
 
         GLint maxLength;
-        glGetProgramiv(shader->getProgram(), GL_INFO_LOG_LENGTH, &maxLength);
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
         if(maxLength > 0)
         {
             char *pLinkInfoLog = new char[maxLength];
-            glGetProgramInfoLog(shader->getProgram(), maxLength, &maxLength, pLinkInfoLog);
+            glGetProgramInfoLog(program, maxLength, &maxLength, pLinkInfoLog);
             LOG_E("shader log: %s\n", pLinkInfoLog);
 
             delete [] pLinkInfoLog;
@@ -105,6 +101,10 @@ int LoadShader(std::string vs, std::string fs) {
         return -1;
     }
 
+    return 0;
+}
+
+void setLightShaderAttribute(Shader::ptr& shader) {
     // set vertex attribute
     Attribute *vertAttr = shader->getAttribute("aPosition");
     vertAttr->setType(ATTR_FORMAT_FLOAT);
@@ -130,6 +130,47 @@ int LoadShader(std::string vs, std::string fs) {
 //    normalAttr->setSize(3);
 //    normalAttr->setStride(sizeof(Vertex));
 //    normalAttr->setOffset((5) * 4);
+}
+
+void setPTCShaderAttribute(Shader::ptr& shader) {
+    // set vertex attribute
+    Attribute *vertAttr = shader->getAttribute("aPosition");
+    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setSize(3);
+    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setOffset(0);
+
+    Attribute *uvAttr = shader->getAttribute("aTexCoord");
+    uvAttr->setType(ATTR_FORMAT_FLOAT);
+    uvAttr->setSize(2);
+    uvAttr->setStride(sizeof(Vertex));
+    uvAttr->setOffset((3) * 4);
+
+    Attribute *colorAttr = shader->getAttribute("aColor");
+    colorAttr->setType(ATTR_FORMAT_FLOAT);
+    colorAttr->setSize(4);
+    colorAttr->setStride(sizeof(Vertex));
+    colorAttr->setOffset((8) * 4);
+}
+
+int LoadShaderData(std::string name, std::string vs, std::string fs) {
+    Shader::ptr shader = Shader::create();
+    shader->setName(name);
+
+    shader->setVertexSource(vs);
+    shader->setFragmentSource(fs);
+
+    ShaderUtil::getInstance().compileShader(shader.get());
+
+    CheckShaderLinkError(shader->getProgram());
+
+    if (name == "Shader_Default") {
+        setLightShaderAttribute(shader);
+    } else if (name == "Shader_PTC") {
+        setPTCShaderAttribute(shader);
+    } else if (name == "Shader_Font") {
+        setPTCShaderAttribute(shader);
+    }
 
 //    shader.getUniform("model")->setData((float*)model);
     shader->getUniform("view")->setData((float*)camera.getViewMatrix());
@@ -137,16 +178,16 @@ int LoadShader(std::string vs, std::string fs) {
 
     ShaderManager::getInstance().registerShader(shader);
 
-    return 1;               //Success
+    return 1;
 }
 
-int LoadShader(const char *pfilePath_vs, const char *pfilePath_fs)
+int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs)
 {
     // load shaders & get length of each
-    std::string vertexShaderString = loadFile(pfilePath_vs);
-    std::string fragmentShaderString = loadFile(pfilePath_fs);
+    std::string vertexShaderString = loadFile(pfilePath_vs.c_str());
+    std::string fragmentShaderString = loadFile(pfilePath_fs.c_str());
 
-    return LoadShader(vertexShaderString, fragmentShaderString);
+    return LoadShaderData(name, vertexShaderString, fragmentShaderString);
 }
 
 MeshPtr createBox(float side, Texture::ptr texture = nullptr) {
@@ -396,14 +437,17 @@ void initResource()
     std::string shaderDir = resDir + "Shaders/";
     std::string assertDir = resDir + "Model/PAD/";
 
-    if(LoadShader((shaderDir + "light.vert").c_str(), (shaderDir + "light.frag").c_str())==-1)
-    {
-        exit(1);
-    }
+    LoadShader("Shader_Default",
+                        shaderDir + "light.vert",
+                        shaderDir + "light.frag");
 
-    Shader::ptr shader1 = Shader::create();
+    LoadShader("Shader_PTC",
+                        shaderDir + "position_texture_color.vert",
+                        shaderDir + "position_texture_color.frag");
 
-    std::shared_ptr<Shader> shader = Shader::create();
+    LoadShader("Shader_Font",
+                      shaderDir + "v3f-t2f-c4f.vert",
+                      shaderDir + "v3f-t2f-c4f.frag");
 
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
@@ -473,7 +517,7 @@ void initResource()
     // TODO:
 //    moto->getMaterial()->getRenderState().setDepthTest(true);
 
-    SceneManager::getInstance().addRootNode(motoRoot);
+//    SceneManager::getInstance().addRootNode(motoRoot);
     black_box = black;
 
     assertDir = resDir + "Model/Man/";

@@ -37,6 +37,14 @@ void Geometry::setFaces(const std::vector<Face> &value)
     faces = value;
 }
 
+void Geometry::clear()
+{
+    this->vertices.clear();
+    this->faces.clear();
+
+    this->dirtyFlag = true;
+}
+
 IndexBuffer &Geometry::getIbo()
 {
     return ibo;

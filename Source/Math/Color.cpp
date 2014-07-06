@@ -9,7 +9,7 @@
 
 namespace re {
 
-const Color Color::White(0, 0, 0, 0);
+const Color Color::White(1, 1, 1, 1);
 
 Color::Color()
 {

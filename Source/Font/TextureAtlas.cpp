@@ -61,6 +61,7 @@ void TextureAtlas::init(Int width, Int height, Int depth)
                  "line %d: No more memory for allocating data\n", __LINE__ );
         exit( EXIT_FAILURE );
     }
+    memset( this->data, 0, width*height*depth );
 }
 
 Rect TextureAtlas::getRegin(float width, float height)

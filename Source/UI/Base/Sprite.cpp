@@ -28,7 +28,7 @@ Sprite::Sprite(const string &tex, const Rect &rect)
 void Sprite::rebind()
 {
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, frame->getTexture());
+    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     QuadStuffer::FillQuad(frame, rect.size, this->getGeometry());
 

@@ -216,7 +216,7 @@ const Color &Rgba::getDisplayColor() const
     return this->worldColor;
 }
 
-void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture)
+void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
@@ -229,7 +229,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture)
     Geometry::ptr geometry = mesh->getGeometry();
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
+    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
     mesh->getMaterial()->setShder(shader);
 
     node->setNodeAttribute(mesh->clone());

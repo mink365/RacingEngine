@@ -36,6 +36,9 @@ public:
     void addKerningPair(const KerningPair& kerning);
     void clearKerningPair();
 
+    float getWidth() const;
+    float getHeight() const;
+
 public:
     /**
      * Wide character this glyph represents

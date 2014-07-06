@@ -1,6 +1,8 @@
 #include "Label.h"
 
 #include "Font/TextStuffer.h"
+#include "UI/Base/QuadStuffer.h"
+#include "Math/Color.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
@@ -17,7 +19,9 @@ void Label::init(Font::ptr &font)
 void Label::setText(const string &text)
 {
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, font->getTexture());
+    InitNodeForLeaf(node, font->getTexture(), "Shader_Font");
+
+    this->getGeometry()->clear();
 
     TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), this->getGeometry(), this->font);
 

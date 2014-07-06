@@ -53,14 +53,12 @@ void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::con
 
 void TextStuffer::AddText(Pen &pen, const Markup &markup, const wstring &text, size_t begin, size_t end)
 {
-    size_t length = end - begin;
-
     if (end == 0) {
         end = text.size();
     }
 
     AddChar(pen, markup, text[begin], 0);
-    for (auto i = begin + 1; i < length; ++i) {
+    for (auto i = begin + 1; i < end; ++i) {
         AddChar(pen, markup, text[i], text[i - 1]);
     }
 }
@@ -72,28 +70,30 @@ void TextStuffer::AddChar(Pen &pen, const Markup &markup, wchar_t current, wchar
     Glyph::constPtr glyph = markup.font->getGlyph(current);
 
     kerning = glyph->getKerning(previous);
-    pen.x += kerning;
+    pen.x += kerning * scale.x;
+
+    // TODO: scale
+    float scale = markup.size / markup.font->getSize();
+    this->scale.x = scale;
+    this->scale.y = scale;
 
     AddGlyph(pen, markup.foregroundColor, *glyph.get());
 }
 
 void TextStuffer::AddGlyph(Pen &pen, const Color &color, const Glyph &glyph)
 {
-    float x0, y0, x1, y1;
-    float width = glyph.frame->getSize().width;
-    float height = glyph.frame->getSize().height;
-    x0 = pen.x + glyph.offsetX;
-    y0 = pen.y - (height - glyph.offsetY);
-    x1 = x0 + width;
-    y1 = y0 + height;
+    float x0, y0;
+    float width = glyph.getWidth() * scale.x;
+    float height = glyph.getHeight() * scale.y;
+    x0 = pen.x + glyph.offsetX * scale.x;
+    y0 = pen.y - (glyph.getHeight() - glyph.offsetY) * scale.y;
 
-    Rect rect(x0, y0, x1, y1);
-
-    Rect textureRect(0, 0, width, height);
+    Rect rect(x0, y0, width, height);
+    Rect textureRect(0, 0, glyph.getWidth(), glyph.getHeight());
 
     QuadStuffer::AddOriginalQuad(rect, textureRect, color, glyph.frame, geometry);
 
-    pen.x += glyph.advanceX;
+    pen.x += glyph.advanceX * scale.x;
 }
 
 std::vector<std::wstring> &split(const std::wstring &s, wchar_t delim, std::vector<std::wstring> &elems) {
@@ -129,6 +129,16 @@ const string getValue(const wstring& text) {
 int parseColor(const std::string& text, int start, int len) {
     int color = 0;
     int end = start + len;
+
+    // Alpha
+    if (len <= 6) {
+        color <<= 4;
+        color |= 15;
+
+        color <<= 4;
+        color |= 15;
+    }
+
     for(int i = start; i < end; i++) {
         color <<= 4;
         char c = text[i];
@@ -140,6 +150,8 @@ int parseColor(const std::string& text, int start, int len) {
             color |= c - 'A' + 10;
         }
     }
+
+//    printf("color Text: %s, HEx: 0x%X \n", text.c_str(), color);
 
     return color;
 }
@@ -176,7 +188,7 @@ void ParseAttribute(const wstring& text, size_t start, size_t end, Tag& tag) {
         } else if (compare(name, L"color")) {
             tag.type = TagType::Color;
             // #FFFFFF#
-            tag.color = parseColor(value, 1, value.size() - 1);
+            tag.color = parseColor(value, 0, value.size());
         } else {
             // some error
             assert(false);
@@ -311,10 +323,10 @@ void TextStuffer::defaultMarkup(Markup &markup)
 
 Color FromARGBToColor(int color) {
     Color c;
-    c.r = color & 0x000000FF / 256;
-    c.r = color >> 8 & 0x000000FF / 256;
-    c.g = color >> 16 & 0x000000FF / 256;
-    c.a = color >> 24 & 0x000000FF / 256;
+    c.b = color & 0xFF / 255;
+    c.g = color >> 8 & 0xFF / 255;
+    c.r = color >> 16 & 0xFF / 255;
+    c.a = color >> 24 & 0xFF / 255;
 
     return c;
 }

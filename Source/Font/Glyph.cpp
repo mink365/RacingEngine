@@ -54,4 +54,14 @@ void Glyph::clearKerningPair()
     this->kernings.clear();
 }
 
+float Glyph::getWidth() const
+{
+    return this->frame->getSize().width;
+}
+
+float Glyph::getHeight() const
+{
+    return this->frame->getSize().height;
+}
+
 }

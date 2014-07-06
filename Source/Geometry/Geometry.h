@@ -32,6 +32,8 @@ public:
     std::vector<Face> &getFaces();
     void setFaces(const std::vector<Face> &value);
 
+    void clear();
+
     VertexBuffer &getVbo();
     IndexBuffer &getIbo();
 

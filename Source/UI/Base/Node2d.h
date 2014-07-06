@@ -10,7 +10,7 @@
 
 namespace re {
 
-void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture);
+void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture, const string &shaderName);
 
 class Rgba {
 public:

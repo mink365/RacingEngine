@@ -32,6 +32,7 @@
 void display()
 {
     //Clear all the buffers
+//    glClearColor( 1.0, 1.0, 1.0, 1.0 );
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     glActiveTexture(GL_TEXTURE0);
@@ -63,7 +64,7 @@ int main (int argc, char* argv[])
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
     //We want to make a GL 3.3 context
-    //glutInitContextVersion(3, 3);
+//    glutInitContextVersion(3, 3);
     glutInitContextFlags(GLUT_CORE_PROFILE);
     glutInitWindowPosition(100, 50);
     glutInitWindowSize(400, 700);
@@ -127,14 +128,14 @@ Font::ptr font;
 
 void TestFont()
 {
-    auto fontFile = resDir + "Fonts/entsani.ttf";
+    auto fontFile = resDir + "Fonts/ObelixPro.ttf";
 
-    font = std::make_shared<Font>(330, fontFile.c_str());
+    font = std::make_shared<Font>(128, fontFile.c_str());
     font->setName("default");
     FontManager::getInstance().registerFont(font);
 
     auto atlas = TextureAtlas::create();
-    atlas->init(512, 512, 4);
+    atlas->init(512, 512, 1);
 
     FreeTypeUtil::LoadGlyphs(atlas, font, L"Hello People我xtb");
 
@@ -157,12 +158,29 @@ void TestUI()
 
     SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
     sprite->rebind();
+    sprite->setPositionY(200);
 
     NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
+    patch->setContentSize(Size(200, 100));
     patch->rebind();
+    patch->setPositionY(80);
 
     LabelPtr label = std::make_shared<Label>();
     label->init(font);
-    label->setText("xHello <color=FFFF00>xxo</color>tbo");
+    // TODO: recursion/mutil tag have some error
+    label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
+
+    SceneNodePtr ui = std::make_shared<SceneNode>();
+    ui->addChild(sprite);
+    ui->addChild(patch);
+    ui->addChild(label);
+
+    Quat quat;
+    quat.fromAngles(Vec3(PI / 2.0f, 0, 0));
+    ui->setLocalRotation(quat);
+    float scale = 0.3f;
+    ui->setLocalScaling(Vec3(1.0f, 1.0f, 1.0f) * scale);
+    ui->setLocalTranslation(Vec3(-30, -100, 0));
+    SceneManager::getInstance().addRootNode(ui);
 }

@@ -70,7 +70,7 @@ float NinePatch::getTopPadding() const
 void NinePatch::rebind()
 {
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, frame->getTexture());
+    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     this->vertexGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
     this->textureGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
@@ -84,6 +84,7 @@ void NinePatch::rebind()
                              this->getRightPadding(), this->getTopPadding());
 
     // TODO: clear the geometry
+    this->getGeometry()->clear();
 
     this->addQuad(AlignType::LEFT_BOTTOM);
     this->addQuad(AlignType::LEFT_CENTER);
@@ -98,14 +99,12 @@ void NinePatch::rebind()
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
 }
 
-QuadStuffer* stuffer;
-
 void NinePatch::addQuad(AlignType type)
 {
     Rect vRect = vertexGrid.getRect(type);
     Rect tRect = textureGrid.getRect(type);
 
-    stuffer->AddOriginalQuad(vRect, tRect, Color::White, this->frame, this->getGeometry());
+    QuadStuffer::AddOriginalQuad(vRect, tRect, Color::White, this->frame, this->getGeometry());
 }
 
 /**
