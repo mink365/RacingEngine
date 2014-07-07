@@ -17,6 +17,8 @@
 
 class Mat4;
 
+// TODO: self (inverseSelf) func unify
+
 namespace re {
 
 class Mat3 {

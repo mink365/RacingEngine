@@ -9,11 +9,11 @@ const static float  E				= 2.71828182845904523536f;
 const static float  DEG_TO_RAD      = PI / 180.0f;
 const static float  RAD_TO_DEG      = 180.0f / PI;
 
-inline float degreeToRadian (const float d) {
+inline float DegreeToRadian (const float d) {
     return d * DEG_TO_RAD;
 }
 
-inline float radianToDegree(const float r) {
+inline float RadianToDegree(const float r) {
     return r * RAD_TO_DEG;
 }
 

@@ -23,6 +23,9 @@ public:
     const Color& getDisplayColor() const;
 
 protected:
+    virtual void updateColor() = 0;
+
+protected:
     Color color;
 
     /**
@@ -92,9 +95,15 @@ public:
 protected:
     Geometry::ptr getGeometry() const;
 
+    virtual void updateLocalMatrix();
+    virtual void updateColor();
+
 protected:
     Size size;
     Vec2 anchorPoint;
+    Vec2 anchorPointInPoints;
+
+    Vec2 skew;
 };
 
 }

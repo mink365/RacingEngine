@@ -21,6 +21,10 @@ public:
     Color(float r, float g, float b, float a);
 
     void set(float r, float g, float b, float a);
+
+    Color operator *(const Color& v) const;
+
+    Color& operator *=(const Color& v);
 };
 
 } // namespace re

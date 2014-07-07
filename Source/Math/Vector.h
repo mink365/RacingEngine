@@ -19,6 +19,9 @@ class Quat;
 
 class Vec2 {
 public:
+    static const Vec2 Zero;
+
+public:
     float x;
     float y;
 

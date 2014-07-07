@@ -10,6 +10,8 @@
 
 namespace re {
 
+const Vec2 Vec2::Zero(0, 0);
+
 void Vec2::lerp(const Vec2 &v1, const Vec2 &v2, const float l)
 {
     if ( l <= 0.0f ) {

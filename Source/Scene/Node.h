@@ -71,7 +71,7 @@ protected:
      */
     void calcLocalTransformFromWorld();
 
-    void updateLocalMatrix();
+    virtual void updateLocalMatrix();
     void updateWorldMatrix();
 
     void markLocalTransformRefreshFlag();
@@ -99,7 +99,7 @@ protected:
 
     int refreshFlags;
 
-private:
+protected:
     static const int RF_LOCAL_TRANSFORM = 0x01;
     static const int RF_WORLD_TRANSFORM = 0x02;
 };

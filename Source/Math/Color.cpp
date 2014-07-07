@@ -35,6 +35,25 @@ void Color::set(float r, float g, float b, float a)
     this->a = a;
 }
 
+Color Color::operator *(const Color &v) const
+{
+    Color color = *this;
+
+    color *= v;
+
+    return color;
+}
+
+Color &Color::operator *=(const Color &v)
+{
+    this->r *= v.r;
+    this->g *= v.g;
+    this->b *= v.b;
+    this->a *= v.a;
+
+    return *this;
+}
+
 }
 
 
