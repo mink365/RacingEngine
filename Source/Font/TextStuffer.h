@@ -18,6 +18,7 @@ namespace re {
 typedef Vec2 Pen;
 
 enum class TagType {
+    Root,
     Color,
     Font,
     Size,

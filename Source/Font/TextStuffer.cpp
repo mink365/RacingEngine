@@ -27,25 +27,10 @@ void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::con
     Pen pen;
     Markup markup;
 
-    if (spans.size() > 0) {
-        // start and end may have no tag, so use the default markup
+    for (auto span : spans) {
+        this->tagStackToMarkup(span->stack, markup);
 
-        auto firstSpan = spans[0];
-        this->defaultMarkup(markup);
-        AddText(pen, markup, plain, 0, firstSpan->start);
-
-        for (auto span : spans) {
-            this->tagStackToMarkup(span->stack, markup);
-
-            AddText(pen, markup, plain, span->start, span->end);
-        }
-
-        auto lastSpan = spans[spans.size() - 1];
-        this->defaultMarkup(markup);
-        AddText(pen, markup, plain, lastSpan->end, plain.size());
-    } else {
-        this->defaultMarkup(markup);
-        AddText(pen, markup, plain, 0, plain.size());
+        AddText(pen, markup, plain, span->start, span->end);
     }
 
     return;
@@ -202,6 +187,13 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
     size_t end = text.find_first_of(L"<", 0);
     if (end == string::npos) {
         plainText.append(text, 0, text.size());
+
+        auto rootTag = Tag::create();
+        rootTag->type = TagType::Root;
+        rootTag->start = 0;
+        rootTag->end = plainText.size();
+        tags.push_back(rootTag);
+
         return;
     } else {
         plainText.append(text, 0, end);
@@ -209,12 +201,18 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
 
     std::stack<Tag::ptr> stack;
 
+    // add the root tag, root tag is not set by use. it just like this: <tag=...>xxx...xxx</tag>
+    auto rootTag = Tag::create();
+    rootTag->type = TagType::Root;
+    rootTag->start = 0;
+    tags.push_back(rootTag);
+    stack.push(rootTag);
+
     size_t index = 0;
     while (index < text.size()) {
         wchar_t c = text[index];
 
         if (c == L'<') {
-            // the end
             if (text[index + 1] == L'/') {
                 // tag end
 
@@ -231,11 +229,19 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
 
                     plainText.append(text, end2 + 1, text.size() - (end2 + 1));
 
-                    return;
+                    break;
                 }
 
             } else {
+                // tag start
+
                 auto tag = Tag::create();
+
+                // push the plain text to the top tag
+                size_t lastTagEnd = text.find_last_of(L">", index);
+                if (lastTagEnd != string::npos) {
+                    plainText.append(text, lastTagEnd + 1, index - (lastTagEnd + 1));
+                }
 
                 size_t end1 = text.find_first_of(L"/>", index + 1);
                 size_t end2 = text.find_first_of(L">", index + 1);
@@ -252,11 +258,8 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
                     ParseAttribute(text, index + 1, end2, *tag.get());
                 }
 
-                if (stack.size() > 0) {
-                    stack.top()->childrenTag.push_back(tag);
-                } else {
-                    tags.push_back(tag);
-                }
+                stack.top()->childrenTag.push_back(tag);
+
                 stack.push(tag);
             }
         } else if (c == L'>') {
@@ -268,7 +271,7 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
                 if (end == string::npos) {
                     plainText.append(text, index + 1, text.size() - (index + 1));
 
-                    return;
+                    break;
                 } else {
                     plainText.append(text, index + 1, end - (index + 1));
                 }
@@ -281,6 +284,10 @@ void TextStuffer::parse(const wstring& text, wstring& plainText, std::vector<Tag
 
         index ++;
     }
+
+    rootTag->end = plainText.size();
+
+    return;
 }
 
 void Unfold(const Tag::ptr& tag, std::vector<Tag::ptr>& stack, std::vector<Span::ptr>& flatSpans) {
@@ -295,7 +302,33 @@ void Unfold(const Tag::ptr& tag, std::vector<Tag::ptr>& stack, std::vector<Span:
         flatSpans.push_back(span);
     } else {
         for (auto child : tag->childrenTag) {
+            int start = 0;
+
+            if (flatSpans.size() > 0) {
+                start = flatSpans[flatSpans.size() - 1]->end;
+            } else {
+                start = tag->start;
+            }
+            if (start < child->start) {
+                auto span = Span::create();
+                span->start = start;
+                span->end = child->start;
+                span->stack = stack;
+
+                flatSpans.push_back(span);
+            }
+
             Unfold(child, stack, flatSpans);
+        }
+
+        auto start = flatSpans[flatSpans.size() - 1]->end;
+        if (start < tag->end) {
+            auto span = Span::create();
+            span->start = start;
+            span->end = tag->end;
+            span->stack = stack;
+
+            flatSpans.push_back(span);
         }
     }
 
@@ -311,6 +344,8 @@ void TextStuffer::unfold(const std::vector<Tag::ptr> &tags, std::vector<Span::pt
     for (auto tag : tags) {
         Unfold(tag, stack, flatSpans);
     }
+
+    return;
 }
 
 void TextStuffer::defaultMarkup(Markup &markup)
