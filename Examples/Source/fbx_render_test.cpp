@@ -153,6 +153,8 @@ void TestFont()
 
 void TestUI()
 {
+    SceneNodePtr ui = std::make_shared<SceneNode>();
+
     TextureParser::getInstance().addTextures("UI/", "png");
     TextureManager::getInstance().loadTextures();
 
@@ -166,15 +168,21 @@ void TestUI()
     patch->rebind();
     patch->setPositionY(80);
 
-    LabelPtr label = std::make_shared<Label>();
-    label->init(font);
-    // TODO: recursion/mutil tag have some error
-    label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
-
-    SceneNodePtr ui = std::make_shared<SceneNode>();
     ui->addChild(sprite);
     ui->addChild(patch);
+
+    LabelPtr label = std::make_shared<Label>();
+    label->init(font);
+    label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
+
+    LabelPtr label2 = std::make_shared<Label>();
+    label2->init(font);
+    label2->setText("xHtbo xx");
+
+    label2->setPositionY(40);
+
     ui->addChild(label);
+    ui->addChild(label2);
 
     Quat quat;
     quat.fromAngles(Vec3(PI / 2.0f, 0, 0));
