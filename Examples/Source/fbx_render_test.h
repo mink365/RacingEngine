@@ -372,6 +372,7 @@ void updateMatrix(bool isAnim) {
 //    camera.setViewport(600, 600);
     camera.setDepthField(10, 1320);
     camera.setView(Vec3(0, y + 30, 50), Vec3(0, -240 + y, 57 + z), Vec3(0, 1, 0));
+    camera.updateTransform();
 
     black_box->setLocalTranslation(Vec3(0, y - 100, 0));
 
@@ -428,6 +429,9 @@ void TestUI();
 void initResource()
 {
     InitGLStates();
+
+    CameraPtr _camera = std::make_shared<Camera>();
+    SceneManager::getInstance().getRenderManager().addCamera(_camera);
 
     SearchPath searchPath;
     searchPath.rootDir = resDir.c_str();
