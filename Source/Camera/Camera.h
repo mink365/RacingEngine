@@ -2,8 +2,14 @@
 #define CAMERA_H
 
 #include "Scene/SceneNode.h"
+#include "Math/BoundingVolume.h"
 
 namespace re {
+
+enum class CameraProjectionMode {
+    Perspective,
+    Orthographic
+};
 
 class Camera : public SceneNode
 {
@@ -12,6 +18,16 @@ public:
 
     void setDepthField(float near, float far);
     void setViewport(float width, float height);
+    void setViewport(Rect v);
+
+    void setProjectionMode(CameraProjectionMode mode);
+    CameraProjectionMode getProjectionMode() const;
+
+    void setFieldOfView(float fov);
+    float getFieldOfView() const;
+
+    void setOrthoWidth(float v);
+    Size getOrthoSize() const;
 
     /**
      * @brief setView
@@ -35,6 +51,11 @@ public:
     const Mat4 &getProjectionMatrix() const;
     const Mat4 &getViewProjectionMatrix() const;
 
+    void setClearFlag(int flag);
+    int getClearFlag() const;
+    void setQueueCullFunc(std::function<bool(int queueID)> func);
+    std::function<bool(int queueID)> getQueueCullFunc() const;
+
 protected:
     void recalcViewMatrix();
     void recalcProjectionMatrix();
@@ -49,11 +70,18 @@ private:
     Mat4 projectionMatrix;
     Mat4 viewProjectionMatrix;
 
+    CameraProjectionMode mode;
+
     float zNear;
     float zFar;
 
-    float viewportWidth;
-    float viewportHeight;
+    float fov;
+    float orthoWidth;
+
+    Rect viewport;
+
+    int clearFlag;
+    std::function<bool(int queueID)> queueCullFunc;
 };
 
 } // namespace re

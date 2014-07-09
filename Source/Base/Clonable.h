@@ -7,6 +7,11 @@
 namespace re {
 
 template<class T>
+std::shared_ptr<T> CreateCloneInstance() {
+    return std::make_shared<T>();
+};
+
+template<class T>
 class Clonable : public Uncopyable {
 public:
     virtual ~Clonable() {};

@@ -33,6 +33,7 @@ public:
     void renderMesh(const Geometry &geometry);
 
     void cleanBuffers(bool color, bool depth, bool stencil);
+    void cleanBuffers(int flag);
 
     void applyRenderState(const RenderState &state);
 

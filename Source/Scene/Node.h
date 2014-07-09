@@ -57,6 +57,8 @@ public:
     void addChild(NodePtr node);
     void removeChild(NodePtr node);
 
+    void updateTransform();
+
     NodePtr clone() const;
 
 protected:
@@ -77,7 +79,6 @@ protected:
     void markLocalTransformRefreshFlag();
     void markWorldTransformRefreshFlag();
 
-    void updateTransform();
     void updateChildrenTransform();
 
     virtual NodePtr createCloneInstance() const;

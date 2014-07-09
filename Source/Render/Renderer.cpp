@@ -77,8 +77,13 @@ void Renderer::cleanBuffers(bool color, bool depth, bool stencil)
     }
 
     if (bits != 0) {
-        glClear(bits);
+        this->cleanBuffers(bits);
     }
+}
+
+void Renderer::cleanBuffers(int flag)
+{
+    glClear(flag);
 }
 
 void Renderer::applyRenderState(const RenderState &state)

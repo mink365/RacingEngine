@@ -21,6 +21,11 @@ RenderManager::~RenderManager()
 {
 }
 
+void RenderManager::addCamera(CameraPtr camera)
+{
+    this->cameraList.push_back(camera);
+}
+
 RenderQueue &RenderManager::getRenderQueue()
 {
     return renderQueue;
@@ -105,23 +110,36 @@ void RenderManager::render()
     this->renderQueue.sortRenderableList();
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
-    std::vector<RenderableList *>::iterator iter;
-    for (iter = lists.begin(); iter != lists.end(); ++iter) {
-        RenderableList *list = *iter;
 
-        this->renderList(*list);
+    for (auto camera : this->cameraList) {
+        this->activeCamera(camera);
+
+        auto func = camera->getQueueCullFunc();
+
+        for (auto renderableList : lists) {
+            int queueID = renderableList->listType;
+
+            if (!func(queueID)) {
+                this->renderList(*renderableList);
+            }
+        }
     }
 }
 
 void RenderManager::setDefaultRenderEnv()
 {
-    this->renderer.setProjectionMatrix(this->camera.getProjectionMatrix());
-    this->renderer.setViewMatrix(this->camera.getViewMatrix());
-
     // apply default
     this->renderer.applyRenderState(defaultRenderState);
+}
 
-    // clear buffer or not
+void RenderManager::activeCamera(CameraPtr camera)
+{
+    this->renderer.setProjectionMatrix(camera->getProjectionMatrix());
+    this->renderer.setViewMatrix(camera->getViewMatrix());
+
+    if (camera->getClearFlag()) {
+        this->renderer.cleanBuffers(camera->getClearFlag());
+    }
 }
 
 void RenderManager::clear()

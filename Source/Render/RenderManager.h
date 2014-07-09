@@ -20,7 +20,7 @@ public:
     RenderManager();
     virtual ~RenderManager();
 
-    Camera &getActivatedCamera();
+    void addCamera(CameraPtr camera);
 
     void render();
 
@@ -46,8 +46,10 @@ protected:
      */
     void initDefaultRenderState();
 
+    void activeCamera(CameraPtr camera);
+
 private:
-    Camera camera;
+    std::vector<CameraPtr> cameraList;
 
     RenderQueue renderQueue;
 

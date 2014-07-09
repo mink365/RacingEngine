@@ -4,6 +4,15 @@ namespace re {
 
 Camera::Camera()
 {
+    this->queueCullFunc = [](int){return false;};
+    this->clearFlag = 0;
+
+    this->fov = 45;
+    this->orthoWidth = 0;
+    this->zNear = 0;
+    this->zFar = 0;
+
+    this->mode = CameraProjectionMode::Perspective;
 }
 
 void Camera::setDepthField(float near, float far)
@@ -14,16 +23,58 @@ void Camera::setDepthField(float near, float far)
 
 void Camera::setViewport(float width, float height)
 {
-    this->viewportWidth = width;
-    this->viewportHeight = height;
+    this->viewport.size.set(width, height);
+}
+
+void Camera::setViewport(Rect v)
+{
+    this->viewport = v;
+}
+
+void Camera::setProjectionMode(CameraProjectionMode mode)
+{
+    this->mode = mode;
+}
+
+CameraProjectionMode Camera::getProjectionMode() const
+{
+    return this->mode;
+}
+
+void Camera::setFieldOfView(float fov)
+{
+    this->fov = fov;
+}
+
+float Camera::getFieldOfView() const
+{
+    return this->fov;
+}
+
+void Camera::setOrthoWidth(float v)
+{
+    this->orthoWidth = v;
+}
+
+Size Camera::getOrthoSize() const
+{
+    float aspect = this->viewport.getWidth() / this->viewport.getHeight();
+
+    float orthoHeight = orthoWidth / aspect;
+
+    return Size(orthoWidth, orthoHeight);
 }
 
 void Camera::setView(const Vec3 &center, const Vec3 &eye, const Vec3 &up)
 {
     this->center = center;
 
-    // TODO: 世界/World位置
-    this->localTranslation = eye;
+    if (this->getParent()) {
+        // TODO: right?
+        this->localTranslation = this->getParent()->getWorldMatrix().inverse() * center;
+    } else {
+        this->localTranslation = eye;
+    }
 
     //       dir  up
     //         ^  ^
@@ -65,17 +116,43 @@ const Mat4 &Camera::getViewProjectionMatrix() const
     return this->viewProjectionMatrix;
 }
 
+void Camera::setClearFlag(int flag)
+{
+    this->clearFlag = flag;
+}
+
+int Camera::getClearFlag() const
+{
+    return this->clearFlag;
+}
+
+void Camera::setQueueCullFunc(std::function<bool (int)> func)
+{
+    this->queueCullFunc = func;
+}
+
+std::function<bool (int queueID)> Camera::getQueueCullFunc() const
+{
+    return this->queueCullFunc;
+}
+
 void Camera::recalcViewMatrix()
 {
-    // TODO: 使用world的translation
-    this->viewMatrix.lookAt(this->localTranslation, this->center, this->up);
+    this->viewMatrix.lookAt(this->worldMatrix.getTranslation(), this->center, this->up);
 }
 
 void Camera::recalcProjectionMatrix()
 {
-    // TODO: 区分perspect和ortho相机，只有ortho相机有fovy(张角)
-    float aspect = this->viewportWidth / this->viewportHeight;
-    this->projectionMatrix.setPerspective(45, zNear, zFar);
+    if (this->mode == CameraProjectionMode::Perspective) {
+        this->projectionMatrix.setPerspective(fov, zNear, zFar);
+    } else {
+        Size ortho = getOrthoSize();
+
+        this->projectionMatrix.setOrthoFrustum(-ortho.width / 2.0, ortho.width / 2.0,
+                                               -ortho.height / 2.0, ortho.height / 2.0,
+                                               zNear, zFar);
+    }
+
 }
 
 void Camera::onChange()
