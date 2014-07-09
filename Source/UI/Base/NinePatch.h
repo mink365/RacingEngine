@@ -19,6 +19,7 @@ public:
 class NinePatch : public Node2d
 {
 public:
+    NinePatch() {};
     NinePatch(const std::string& tex);
 
     void setStretch(float x, float y, float w, float h);
@@ -34,6 +35,10 @@ public:
 
 protected:
     void addQuad(AlignType type);
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
 
 protected:
     Rect centerRect;

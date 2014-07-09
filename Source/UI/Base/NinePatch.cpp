@@ -107,6 +107,22 @@ void NinePatch::addQuad(AlignType type)
     QuadStuffer::AddOriginalQuad(vRect, tRect, Color::White, this->frame, this->getGeometry());
 }
 
+NodePtr NinePatch::createCloneInstance() const
+{
+    return CreateCloneInstance<NinePatch>();
+}
+
+void NinePatch::copyProperties(const Node *node)
+{
+    Node2d::copyProperties(node);
+
+    const NinePatch* inst = dynamic_cast<const NinePatch*>(node);
+    if (inst) {
+        this->frame = inst->frame;
+        this->centerRect = inst->centerRect;
+    }
+}
+
 /**
  *
  *  3   4   5

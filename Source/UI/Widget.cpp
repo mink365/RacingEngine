@@ -8,25 +8,17 @@ Widget::Widget()
     : _touchEnable(true)
     , _blockTouch(true)
 {
-//    this->setCascadeOpacityEnabled(true);
-//    this->setCascadeColorEnabled(true);
+
 }
 
 Widget::~Widget() {
-//    m_pSelectedWidgets->removeAllObjects();
-//    m_pSelectedWidgets->release();
+
 }
 
 bool Widget::init() {
     if (!Node2d::init()) {
         return false;
     }
-    
-//    m_pSelectedWidgets = CCArray::create();
-//    m_pSelectedWidgets->retain();
-    
-//    this->setCascadeOpacityEnabled(true);
-//    this->setCascadeColorEnabled(true);
     
     return true;
 }
@@ -95,6 +87,147 @@ void Widget::setBlockTouch(bool value) {
     _blockTouch = value;
 }
 
+bool Widget::onTouchEvent(TouchEvent &event)
+{
+    if (!this->_touchEnable || !this->isVisible()) {
+        return false;
+    }
+
+    auto curr = event.getCurrPoint();
+
+    // handle event for self
+    WidgetTouchState oldTouchState = this->touchState;
+    WidgetTouchState newTouchState = this->touchState;
+    switch (event.getType()) {
+    case TouchEventType::DOWN:
+        if (this->hit(curr)) {
+            newTouchState = WidgetTouchState::TOUCH_DOWN_INSIDE;
+        } else {
+            newTouchState = WidgetTouchState::TOUCH_DOWN_OUTSIDE;
+        }
+
+        break;
+    case TouchEventType::MOVE:
+        if (this->hit(curr)) {
+            newTouchState = WidgetTouchState::MOVE_INSIDE;
+        } else {
+            newTouchState = WidgetTouchState::MOVE_OUTSIDE;
+        }
+        break;
+
+    case TouchEventType::UP:
+        if (this->hit(curr)) {
+            newTouchState = WidgetTouchState::TOUCHUP_INSIDE;
+        } else {
+            newTouchState = WidgetTouchState::TOUCHUP_OUTSIDE;
+        }
+        break;
+    case TouchEventType::CANCEL:
+        newTouchState = WidgetTouchState::TOUCH_CANCLE;
+    }
+
+    bool handled;
+
+    handled = this->emitWidgetTouchEvent(oldTouchState, newTouchState, event);
+
+    this->touchState = newTouchState;
+
+    //////////// transform to children /////////////////////////
+    bool childHandled = this->dispatchTouchEvent(event);
+    if (childHandled) {
+        handled = true;
+    }
+
+    return handled;
+}
+
+bool Widget::emitWidgetTouchEvent(WidgetTouchState oldTouchState, WidgetTouchState newTouchState, TouchEvent &event)
+{
+    if (_onTouchListeners.size() == 0) {
+        return false;
+    }
+
+    // 只有down事件是阻塞的，即，某个widget发生了down事件，就返回了，事件不再扩散
+    bool r = false;
+    bool lr = false;
+    for (auto listener : this->_onTouchListeners) {
+        std::shared_ptr<Widget> ptr = std::dynamic_pointer_cast<Widget>(this->shared_from_this());
+
+        if (oldTouchState != newTouchState) {
+            listener->onTouchStateChange(oldTouchState, newTouchState, event, ptr);
+        }
+
+        switch (newTouchState) {
+        case WidgetTouchState::TOUCH_DOWN_INSIDE:
+            lr = listener->onTouchDown(event, ptr);
+            break;
+        case WidgetTouchState::MOVE_INSIDE:
+            listener->onTouchMoveInside(event, ptr);
+            if (oldTouchState == WidgetTouchState::MOVE_OUTSIDE) {
+                listener->onTouchMoveEnter(event, ptr);
+            }
+            break;
+        case WidgetTouchState::MOVE_OUTSIDE:
+            listener->onTouchMoveOutside(event, ptr);
+            if (oldTouchState == WidgetTouchState::MOVE_INSIDE) {
+                listener->onTouchMoveOut(event, ptr);
+            }
+            break;
+        case WidgetTouchState::TOUCHUP_INSIDE:
+            listener->onTouchUpInside(event, ptr);
+            break;
+        case WidgetTouchState::TOUCHUP_OUTSIDE:
+            listener->onTouchUpOutside(event, ptr);
+            break;
+        case WidgetTouchState::TOUCH_CANCLE:
+            listener->onTouchCancle(event, ptr);
+            break;
+        case WidgetTouchState::TOUCH_DOWN_OUTSIDE:
+            listener->onTouchDownOutSide(event, ptr);
+            break;
+        default:
+            break;
+        }
+
+        if (lr == true) {
+            r = true;
+        }
+    }
+
+    return r;
+}
+
+bool Widget::dispatchTouchEvent(TouchEvent &event)
+{
+    auto curr = event.getCurrPoint();
+
+    bool handled = false;
+
+    // 靠前的控件先接受事件
+    int size = this->getChildren().size();
+    for (int i = size - 1; i >= 0; --i) {
+        auto child = this->getChildren()[i];
+
+        WidgetPtr childWidget = std::dynamic_pointer_cast<Widget>(child);
+
+        if (!childWidget) {
+            continue;
+        }
+
+        Vec2 p = childWidget->convertParentToLocalSpace(curr);
+        event.setCurrPoint(p);
+
+        // 有控件处理了事件就阻止传递
+        if (childWidget->onTouchEvent(event)) {
+            handled = true;
+
+            break;
+        }
+    }
+
+    return handled;
+}
+
 bool Widget::hitFromWorldPoint(const Vec2 &p) {
     Vec2 point = convertToNodeSpace(p);
     
@@ -128,287 +261,39 @@ bool Widget::hitTest(Node2d::ptr node, Vec2 p) {
     return false;
 }
 
-//bool Widget::checkEventWidget(cocos2d::ui::Widget *root, CCTouch* touch, CCEvent *pEvent)
-//{
-//    checkTouchEvent(root,touch, pEvent);
-//    return (m_pSelectedWidgets->count() > 0);
-//}
-
-//bool Widget::checkTouchEvent(cocos2d::ui::Widget *root, CCTouch* touch, CCEvent* pEvent)
-//{
-//    ccArray* arrayRootChildren = root->getChildren()->data;
-//    int length = arrayRootChildren->num;
-//    for (int i=length-1; i >= 0; i--)
-//    {
-//        cocos2d::ui::Widget* widget = (cocos2d::ui::Widget*)(arrayRootChildren->arr[i]);
-//        if (checkTouchEvent(widget, touch, pEvent))
-//        {
-//            return true;
-//        }
-//    }
-//    bool pass = root->onTouchBegan(touch, pEvent);
-//    if (root->isHitted())
-//    {
-//        m_pSelectedWidgets->addObject(root);
-//        return true;
-//    }
-//    return pass;
-//}
-
-//bool Widget::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent) {
-//    if(!isRunning() || !isVisible() || !isTouchEnabled()){
-//        return false;
-//    }
-    
-//    // uselect all item
-//    _selectedItem = NULL;
-    
-//    bool handled = (_blockTouch && hitFromWorldPoint(pTouch->getLocation()));
-    
-//    if (this->getChildren() == NULL) {
-//        return handled;
-//    }
-    
-//    int size = this->getChildren()->count();
-//    for (int i = size - 1; i >= 0; --i) {
-//        CCObject* child = this->getChildren()->objectAtIndex(i);
-//        CCTouchDelegate* touch = dynamic_cast<CCTouchDelegate*>(child);
-//        cocos2d::ui::Widget* uiWidget = dynamic_cast<cocos2d::ui::Widget*>(child);
-        
-//        if (touch != NULL) {
-//            if (touch->ccTouchBegan(pTouch, pEvent)) {
-//                handled = true;
-                
-//                return true;
-//            }
-//        } else if (uiWidget != nullptr) {
-//            // widget下得所有的控件的点击遍历等，与我们的widgetContainer完全不一样的
-//            return checkEventWidget(uiWidget, pTouch, pEvent);
-//        }
-        
-//        CCMenuItem* item = dynamic_cast<CCMenuItem*>(child);
-//        if (!_selectedItem && item != NULL
-//            && item->isEnabled()
-//            && item->isVisible()
-//            && hitTest(item, pTouch->getLocation())) {
-//            _selectedItem = item;
-//            _selectedItem->selected();
-            
-//            _touchBeginItem = item;
-            
-//            handled = true;
-            
-//            return true;
-//        }
-//    }
-    
-//    return handled;
-//}
-
-//void Widget::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent) {
-//    if(!isRunning() || !isVisible() || !isTouchEnabled()){
-//        return;
-//    }
-    
-//    if (this->getChildren() != NULL) {
-//        int size = this->getChildren()->count();
-//        for (int i = size - 1; i >= 0; --i) {
-//            CCTouchDelegate* child = dynamic_cast<CCTouchDelegate*>(this->getChildren()->objectAtIndex(i));
-            
-//            if (child != NULL) {
-//                child->ccTouchMoved(pTouch, pEvent);
-//            }
-//        }
-//    }
-    
-//    // ccs
-//    ccArray* selectedWidgetArray = m_pSelectedWidgets->data;
-//    int length = selectedWidgetArray->num;
-//    for (int i=0; i<length; ++i)
-//    {
-//        cocos2d::ui::Widget* hitWidget = (cocos2d::ui::Widget*)(selectedWidgetArray->arr[i]);
-//        hitWidget->onTouchMoved(pTouch, pEvent);
-//    }
-    
-//    if (_selectedItem) {
-//        if (!hitTest(_selectedItem, pTouch->getLocation())) {
-//            // we have to find other item
-//            _selectedItem->unselected();
-            
-//            _selectedItem = this->findMenuForTouch(pTouch);
-//            if (_selectedItem != NULL) {
-//                _selectedItem->selected();
-//            }
-//        }
-//    }
-//}
-
-//void Widget::ccTouchEnded(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent) {
-//    if(!isRunning() || !isVisible() || !isTouchEnabled()){
-//        return;
-//    }
-    
-//    if (this->getChildren() != NULL) {
-//        int size = this->getChildren()->count();
-//        for (int i = size - 1; i >= 0; --i) {
-//            CCTouchDelegate* child = dynamic_cast<CCTouchDelegate*>(this->getChildren()->objectAtIndex(i));
-            
-//            if (child != NULL) {
-//                child->ccTouchEnded(pTouch, pEvent);
-//            }
-//        }
-//    }
-    
-//    // ccs
-//    ccArray* selectedWidgetArray = m_pSelectedWidgets->data;
-//    int length = selectedWidgetArray->num;
-//    for (int i=0; i<length; ++i)
-//    {
-//        cocos2d::ui::Widget* hitWidget = (cocos2d::ui::Widget*)(selectedWidgetArray->arr[0]);
-//        m_pSelectedWidgets->removeObject(hitWidget);
-//        hitWidget->onTouchEnded(pTouch, pEvent);
-//    }
-    
-//    if (_selectedItem) {
-//        _selectedItem->unselected();
-        
-//        if (_touchBeginItem == _selectedItem) {
-//            _selectedItem->activate();
-//        }
-//        _selectedItem = NULL;
-//    }
-    
-//    _touchBeginItem = NULL;
-//}
-
-//void Widget::ccTouchCancelled(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent) {
-//    if(!isRunning() || !isVisible() || !isTouchEnabled()){
-//        return;
-//    }
-    
-//    if (this->getChildren() != NULL) {
-//        int size = this->getChildren()->count();
-//        for (int i = size - 1; i >= 0; --i) {
-//            CCTouchDelegate* child = dynamic_cast<CCTouchDelegate*>(this->getChildren()->objectAtIndex(i));
-            
-//            if (child != NULL) {
-//                child->ccTouchCancelled(pTouch, pEvent);
-//            }
-//        }
-//    }
-    
-//    // ccs
-//    ccArray* selectedWidgetArray = m_pSelectedWidgets->data;
-//    int length = selectedWidgetArray->num;
-//    for (int i=0; i<length; ++i)
-//    {
-//        cocos2d::ui::Widget* hitWidget = (cocos2d::ui::Widget*)(selectedWidgetArray->arr[0]);
-//        m_pSelectedWidgets->removeObject(hitWidget);
-//        hitWidget->onTouchCancelled(pTouch, pEvent);
-//    }
-    
-//    if (_selectedItem) {
-//        _selectedItem->unselected();
-//        _selectedItem = NULL;
-//    }
-    
-//    _touchBeginItem = NULL;
-//}
-
-//CCMenuItem* Widget::findMenuForTouch(CCTouch* touch) {
-//    if (this->getChildren() == NULL) {
-//        return NULL;
-//    }
-    
-//    int size = this->getChildren()->count();
-//    for (int i = size - 1; i >= 0; --i) {
-//        CCMenuItem* item = dynamic_cast<CCMenuItem*>(this->getChildren()->objectAtIndex(i));
-        
-//        if (item != NULL && item->isVisible() && item->isEnabled()) {
-//            if(hitTest(item, touch->getLocation())) {
-//                return item;
-//            }
-//        }
-//    }
-    
-//    return NULL;
-//}
-
-//void Widget::registerMenuItem(cocos2d::CCMenuItem* item) {
-
-//}
-
 void Widget::visit() {
 	// quick return if not visible
 	if (!isVisible())
     {
 		return;
     }
-    
-//	kmGLPushMatrix();
-	
-//    if (m_pGrid && m_pGrid->isActive())
-//    {
-//        m_pGrid->beforeDraw();
-//        this->transformAncestors();
-//    }
-    
-//	this->transform();
-    
-//    this->beforeDraw();
-    
-//	if(m_pChildren)
-//    {
-//        sortAllChildren();
-        
-//		ccArray *arrayData = m_pChildren->data;
-//		unsigned int i=0;
-		
-//		// draw children zOrder < 0
-//		for( ; i < arrayData->num; i++ )
-//        {
-//			CCNode *child =  (CCNode*)arrayData->arr[i];
-//			if ( child->getZOrder() < 0 )
-//            {
-//				child->visit();
-//			}
-//            else
-//            {
-//				break;
-//            }
-//		}
-		
-//		// this draw
-//		this->draw();
-		
-//		// draw children zOrder >= 0
-//		for( ; i < arrayData->num; i++ )
-//        {
-//			CCNode* child = (CCNode*)arrayData->arr[i];
-//			child->visit();
-//		}
-        
-//	} else {
-//		this->draw();
-//    }
-    
-//    // reset for next frame
-//    m_uOrderOfArrival = 0;
-    
-//    this->afterDraw();
-    
-//	if ( m_pGrid && m_pGrid->isActive())
-//    {
-//		m_pGrid->afterDraw(this);
-//    }
-    
-//	kmGLPopMatrix();
 }
 
 void Widget::beforeDraw() {
 }
 
 void Widget::afterDraw() {
+}
+
+NodePtr Widget::createCloneInstance() const
+{
+    return CreateCloneInstance<Widget>();
+}
+
+void Widget::copyProperties(const Node *node)
+{
+    Node2d::copyProperties(node);
+
+    const Widget* inst = dynamic_cast<const Widget*>(node);
+    if (inst) {
+        this->_touchEnable = inst->_touchEnable;
+        this->_blockTouch = inst->_blockTouch;
+
+        this->state = inst->state;
+        this->touchState = WidgetTouchState::TOUCH_CANCLE;
+
+        // TODO: listener
+    }
 }
 
 }

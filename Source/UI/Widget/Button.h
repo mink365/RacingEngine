@@ -1,10 +1,62 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-class Button
+#include "UI/Widget.h"
+#include "UI/Base/Sprite.h"
+#include "UI/Base/Label.h"
+
+namespace re {
+
+class ClickListener : public Shared<ClickListener>
 {
 public:
-    Button();
+    std::function<void(WidgetPtr& button)> onButtonClick;
 };
+
+class BaseButton : public Widget
+{
+public:
+    BaseButton();
+
+    virtual void switchState(WidgetState newState);
+
+    virtual void initTouchListener();
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
+
+protected:
+    ClickListener::ptr _clickListener;
+
+    bool isTouchDown;
+    int touchDownTime;
+};
+
+class ImageButton : public BaseButton
+{
+public:
+    virtual void switchState(WidgetState newState);
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
+
+protected:
+    SpritePtr defaultSprite, pressedSprite, disabledSprite;
+};
+
+class LabelButton : public ImageButton
+{
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
+
+protected:
+    LabelPtr label;
+};
+
+}
 
 #endif // BUTTON_H

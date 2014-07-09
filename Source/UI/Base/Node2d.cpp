@@ -218,6 +218,24 @@ Vec2 Node2d::convertToWorldSpace(const Vec2 &nodePoint) const
     return Vec2(result.x, result.y);
 }
 
+Vec2 Node2d::convertParentToLocalSpace(const Vec2 &point) const
+{
+    Vec3 v(point.x, point.y, 0);
+
+    Vec3 result = this->getLocalMatrix().inverse() * v;
+
+    return Vec2(result.x, result.y);
+}
+
+Vec2 Node2d::convertNodeToParentSpace(const Vec2 &point) const
+{
+    Vec3 v(point.x, point.y, 0);
+
+    Vec3 result = this->getLocalMatrix() * v;
+
+    return Vec2(result.x, result.y);
+}
+
 Geometry::ptr Node2d::getGeometry() const
 {
     if (this->attribute != nullptr && this->attribute->getType() == NodeAttributeType::Mesh) {
@@ -290,6 +308,24 @@ void Node2d::updateColor()
         if (node) {
             node->updateColor();
         }
+    }
+}
+
+NodePtr Node2d::createCloneInstance() const
+{
+    return CreateCloneInstance<Node2d>();
+}
+
+void Node2d::copyProperties(const Node *node)
+{
+    SceneNode::copyProperties(node);
+
+    const Node2d* inst = dynamic_cast<const Node2d*>(node);
+    if (inst) {
+        this->size = inst->size;
+        this->anchorPoint = inst->anchorPoint;
+        this->anchorPointInPoints = inst->anchorPointInPoints;
+        this->skew = inst->skew;
     }
 }
 

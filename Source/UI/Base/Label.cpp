@@ -30,4 +30,21 @@ void Label::setText(const string &text)
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
 }
 
+NodePtr Label::createCloneInstance() const
+{
+    return CreateCloneInstance<Label>();
+}
+
+void Label::copyProperties(const Node *node)
+{
+    Node2d::copyProperties(node);
+
+    const Label* inst = dynamic_cast<const Label*>(node);
+    if (inst) {
+        this->font = inst->font;
+        this->text = inst->text;
+        this->dirtyFlag = true;
+    }
+}
+
 }

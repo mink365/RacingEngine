@@ -3,17 +3,19 @@
 
 #include "Base/Node2d.h"
 #include "Layout/Screen.h"
+#include "TouchEvent.h"
 
 #include <string>
 using namespace std;
 
 namespace re {
 
-namespace cocos2d {
-    namespace ui {
-        class Widget;
-    }
-}
+enum class WidgetState {
+    DEFAULT,
+    PRESSED,
+    SELECTED,
+    DISABLED,
+};
 
 class Widget : public Node2d, public Shared<Widget>
 {
@@ -30,17 +32,19 @@ public:
     void visit();
     
 public:
-//    virtual bool ccTouchBegan(cocos2d::CCTouch* pTouch, cocos2d::CCEvent* pEvent);
-//    virtual void ccTouchMoved(cocos2d::CCTouch* pTouch, cocos2d::CCEvent* pEvent);
-//    virtual void ccTouchEnded(cocos2d::CCTouch* pTouch, cocos2d::CCEvent* pEvent);
-//    virtual void ccTouchCancelled(cocos2d::CCTouch* pTouch, cocos2d::CCEvent* pEvent);
-    
     bool isTouchEnabled();
     void setTouchEnabled(bool value);
     
     bool isBlockTouch();
     void setBlockTouch(bool value);
+
+public:
+    bool onTouchEvent(TouchEvent& event);
     
+protected:
+    bool emitWidgetTouchEvent(WidgetTouchState oldState, WidgetTouchState newState, TouchEvent& event);
+    bool dispatchTouchEvent(TouchEvent& event);
+
 protected:
     virtual void addWidgets();
     
@@ -55,33 +59,31 @@ protected:
      */
     virtual void beforeDraw();
     virtual void afterDraw();
+
+    virtual void initView() {};
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
     
 public:
     bool hitFromWorldPoint(const Vec2& p);
     bool hit(const Vec2& p);
     
     bool hitTest(Node2d::ptr node, Vec2 p);
-//    CCMenuItem* findMenuForTouch(CCTouch* pTouch);
     
-//protected:
-//    bool checkEventWidget(cocos2d::ui::Widget *root, CCTouch* touch, CCEvent *pEvent);
-//    bool checkTouchEvent(cocos2d::ui::Widget* root, CCTouch* touch, CCEvent* pEvent);
-    
-//public:
-//    void registerMenuItem(cocos2d::CCMenuItem* item);
-    
-private:
-//    cocos2d::CCMenuItem* _selectedItem;
-//    cocos2d::CCMenuItem* _touchBeginItem;
-    
-//    CCArray* m_pSelectedWidgets;
-    
+protected:
     bool _touchEnable;
     /*
      * 是否阻挡touch，如果阻挡，所有进入此空间范围内的点击会被吞掉
      * 默认是吞掉的
      */
     bool _blockTouch;
+
+    WidgetState state;
+    WidgetTouchState touchState;
+
+    std::vector<TouchEventListener::ptr> _onTouchListeners;
 };
 
 }

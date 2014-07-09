@@ -16,6 +16,10 @@ public:
     void setText(const string &text);
 
 protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
+
+protected:
     Font::ptr font;
 
     std::string text;

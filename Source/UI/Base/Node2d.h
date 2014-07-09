@@ -1,4 +1,4 @@
-﻿#ifndef NODE2D_H
+#ifndef NODE2D_H
 #define NODE2D_H
 
 #include "Math/BoundingVolume.h"
@@ -92,11 +92,18 @@ public:
      */
     Vec2 convertToWorldSpace(const Vec2& nodePoint) const;
 
+    Vec2 convertParentToLocalSpace(const Vec2& point) const;
+    Vec2 convertNodeToParentSpace(const Vec2& point) const;
+
 protected:
     Geometry::ptr getGeometry() const;
 
     virtual void updateLocalMatrix();
     virtual void updateColor();
+
+protected:
+    virtual NodePtr createCloneInstance() const;
+    virtual void copyProperties(const Node* node) override;
 
 protected:
     Size size;
