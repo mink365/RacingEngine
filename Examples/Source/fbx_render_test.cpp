@@ -15,10 +15,6 @@
 //http://freeglut.sourceforge.net
 //http://glew.sourceforge.net
 
-
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-
 #include "fbx_render_test.h"
 
 #include "Font/FreeTypeUtil.h"
@@ -27,105 +23,564 @@
 #include "UI/Base/Sprite.h"
 #include "UI/Base/Label.h"
 
-//Globals
+#include "Platform/GameHub.h"
 
-void display()
+Camera camera;
+
+std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+
+void update(long dt);
+
+FBXTestApp::FBXTestApp()
 {
-    //Clear all the buffers
-//    glClearColor( 1.0, 1.0, 1.0, 1.0 );
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-    glActiveTexture(GL_TEXTURE0);
-
-    SceneManager::getInstance().renderScene();
-
-    glutSwapBuffers();
+    GameHub::getInstance().bindUpdateFunc(&update);
 }
 
-void reshape(int w, int h)
-{
-    glViewport(0, 300, 400, 400);
+bool inited = false;
+void update(long dt) {
+    if (inited) {
+        updateMatrix(false);
+    } else {
+        initResource();
+
+        inited = true;
+    }
 }
 
-void timer( int dt )
+// loadFile - loads text file into char* fname
+// allocates memory - so need to delete after use
+// size of file returned in fSize
+std::string loadFile(const char *fname)
 {
-    updateMatrix(false);
-
-    glutPostRedisplay();
-    glutTimerFunc( dt, timer, dt );
-}
-
-int main (int argc, char* argv[])
-{
-    int i;
-    int NumberOfExtensions;
-    int OpenGLVersion[2];
-
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
-    //We want to make a GL 3.3 context
-//    glutInitContextVersion(3, 3);
-    glutInitContextFlags(GLUT_CORE_PROFILE);
-    glutInitWindowPosition(100, 50);
-    glutInitWindowSize(400, 700);
-    glutCreateWindow("GL 3.3 Test");
-
-    glutTimerFunc( 1000/60, timer, 1000/60 );
-
-    //Currently, GLEW uses glGetString(GL_EXTENSIONS) which is not legal code
-    //in GL 3.3, therefore GLEW would fail if we don't set this to TRUE.
-    //GLEW will avoid looking for extensions and will just get function pointers for all GL functions.
-    glewExperimental=TRUE;
-    GLenum err=glewInit();
-    if(err!=GLEW_OK)
+    std::ifstream file(fname);
+    if(!file.is_open())
     {
-        //Problem: glewInit failed, something is seriously wrong.
-        cout<<"glewInit failed, aborting."<<endl;
+        std::cout << "Unable to open file " << fname << std::endl;
         exit(1);
     }
 
-    //The old way of getting the GL version
-    //This will give you something like 3.3.2895 WinXP SSE
-    //where the 3.3 would be the version number and the rest is vendor
-    //dependent information.
-    //In this case, 2895 is a build number.
-    //Then the OS : WinXP
-    //Then CPU features such as SSE
-    cout<<"OpenGL version = "<<glGetString(GL_VERSION)<<endl;
+    std::stringstream fileData;
+    fileData << file.rdbuf();
+    file.close();
 
-    //This is the new way for getting the GL version.
-    //It returns integers. Much better than the old glGetString(GL_VERSION).
-    glGetIntegerv(GL_MAJOR_VERSION, &OpenGLVersion[0]);
-    glGetIntegerv(GL_MINOR_VERSION, &OpenGLVersion[1]);
-    cout<<"OpenGL major version = "<<OpenGLVersion[0]<<endl;
-    cout<<"OpenGL minor version = "<<OpenGLVersion[1]<<endl<<endl;
+    return fileData.str();
+}
 
-    //The old method to get the extension list is obsolete.
-    //You must use glGetIntegerv and glGetStringi
-    glGetIntegerv(GL_NUM_EXTENSIONS, &NumberOfExtensions);
+void InitGLStates()
+{
+//    glShadeModel(GL_SMOOTH);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//    glReadBuffer(GL_BACK);
+//    glDrawBuffer(GL_BACK);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(TRUE);
+//    glDisable(GL_STENCIL_TEST);
+//    glStencilMask(0xFFFFFFFF);
+//    glStencilFunc(GL_EQUAL, 0x00000000, 0x00000001);
+//    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+//    glFrontFace(GL_CCW);
+////    glCullFace(GL_BACK);
+////    glEnable(GL_CULL_FACE);
+//    glDisable(GL_CULL_FACE);
+//    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearDepth(1.0);
+//    glClearStencil(0);
+//    glDisable(GL_BLEND);
+    glEnable(GL_BLEND);
 
-    //We don't need any extensions. Useless code.
-    for(i=0; i<NumberOfExtensions; i++)
+    //FIXME: if we use GL_ONE, font render may have color bg
+//    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+//    glDisable(GL_ALPHA_TEST);
+//    glDisable(GL_DITHER);
+
+    glActiveTexture(GL_TEXTURE0);
+}
+
+int CheckShaderLinkError(GLint program) {
+    GLint IsLinked;
+    glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);
+    if(IsLinked==FALSE)
     {
-        const GLubyte *ccc=glGetStringi(GL_EXTENSIONS, i);
+        LOG_E("Failed to link shader.");
+
+        GLint maxLength;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
+        if(maxLength > 0)
+        {
+            char *pLinkInfoLog = new char[maxLength];
+            glGetProgramInfoLog(program, maxLength, &maxLength, pLinkInfoLog);
+            LOG_E("shader log: %s\n", pLinkInfoLog);
+
+            delete [] pLinkInfoLog;
+        }
+
+        return -1;
     }
 
-    TextureManager::getInstance().setImageLoader(new ImageLoader());
-
-    initResource();
-
-    camera.setViewport(400, 400);
-
-    glutDisplayFunc(display);
-    glutReshapeFunc(reshape);
-
-    glutMainLoop();
     return 0;
 }
 
+void setLightShaderAttribute(Shader::ptr& shader) {
+    // set vertex attribute
+    Attribute *vertAttr = shader->getAttribute("aPosition");
+    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setSize(3);
+    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setOffset(0);
+
+    Attribute *uvAttr = shader->getAttribute("aTexCoord");
+    uvAttr->setType(ATTR_FORMAT_FLOAT);
+    uvAttr->setSize(2);
+    uvAttr->setStride(sizeof(Vertex));
+    uvAttr->setOffset((3) * 4);
+
+//    Attribute *colorAttr = shader.getAttribute("color");
+//    colorAttr->setType(ATTR_FORMAT_FLOAT);
+//    colorAttr->setSize(4);
+//    colorAttr->setStride(sizeof(Vertex));
+//    colorAttr->setOffset((8) * 4);
+
+      // TODO:
+//    Attribute *normalAttr = shader.getAttribute("aNormal");
+//    normalAttr->setType(ATTR_FORMAT_FLOAT);
+//    normalAttr->setSize(3);
+//    normalAttr->setStride(sizeof(Vertex));
+//    normalAttr->setOffset((5) * 4);
+}
+
+void setPTCShaderAttribute(Shader::ptr& shader) {
+    // set vertex attribute
+    Attribute *vertAttr = shader->getAttribute("aPosition");
+    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setSize(3);
+    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setOffset(0);
+
+    Attribute *uvAttr = shader->getAttribute("aTexCoord");
+    uvAttr->setType(ATTR_FORMAT_FLOAT);
+    uvAttr->setSize(2);
+    uvAttr->setStride(sizeof(Vertex));
+    uvAttr->setOffset((3) * 4);
+
+    Attribute *colorAttr = shader->getAttribute("aColor");
+    colorAttr->setType(ATTR_FORMAT_FLOAT);
+    colorAttr->setSize(4);
+    colorAttr->setStride(sizeof(Vertex));
+    colorAttr->setOffset((8) * 4);
+}
+
+int LoadShaderData(std::string name, std::string vs, std::string fs) {
+    Shader::ptr shader = Shader::create();
+    shader->setName(name);
+
+    shader->setVertexSource(vs);
+    shader->setFragmentSource(fs);
+
+    ShaderUtil::getInstance().compileShader(shader.get());
+
+    CheckShaderLinkError(shader->getProgram());
+
+    if (name == "Shader_Default") {
+        setLightShaderAttribute(shader);
+    } else if (name == "Shader_PTC") {
+        setPTCShaderAttribute(shader);
+    } else if (name == "Shader_Font") {
+        setPTCShaderAttribute(shader);
+    }
+
+//    shader.getUniform("model")->setData((float*)model);
+    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
+    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
+
+    ShaderManager::getInstance().registerShader(shader);
+
+    return 1;
+}
+
+int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs)
+{
+    // load shaders & get length of each
+    std::string vertexShaderString = loadFile(pfilePath_vs.c_str());
+    std::string fragmentShaderString = loadFile(pfilePath_fs.c_str());
+
+    return LoadShaderData(name, vertexShaderString, fragmentShaderString);
+}
+
+MeshPtr createBox(float side, Texture::ptr texture = nullptr) {
+    MeshPtr mesh = std::make_shared<Mesh>();
+    mesh->init();
+
+    float coords[] = {
+        -side/2.0f, -side/2.0f, side/2.0f, //v0
+        side/2.0f, -side/2.0f, side/2.0f, 	//v1
+        -side/2.0f, side/2.0f, side/2.0f, 	//v2
+        side/2.0f, side/2.0f, side/2.0f, 	//v3
+
+        side/2.0f, -side/2.0f, side/2.0f, 	//...
+        side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
+
+        side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+        -side/2.0f, side/2.0f, side/2.0f,
+
+        -side/2.0f, -side/2.0f, -side/2.0f,
+        side/2.0f, -side/2.0f, -side/2.0f,
+        -side/2.0f, -side/2.0f, side/2.0f,
+        side/2.0f, -side/2.0f, side/2.0f,
+
+        -side/2.0f, side/2.0f, side/2.0f,
+        side/2.0f, side/2.0f, side/2.0f,
+        -side/2.0f, side/2.0f, -side/2.0f,
+        side/2.0f, side/2.0f, -side/2.0f,
+            };
+
+    float textureCood[] = {
+        //Mapping coordinates for the vertices
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+    };
+
+    float normals[] = {
+                        //Normals
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 1.0f, 0.0f
+                                            };
+
+    short indices[] = {
+        // Faces definition
+        0, 1, 3, 0, 3, 2, 		// Face front
+        4, 5, 7, 4, 7, 6, 		// Face right
+        8, 9, 11, 8, 11, 10, 	// ...
+        12, 13, 15, 12, 15, 14,
+        16, 17, 19, 16, 19, 18,
+        20, 21, 23, 20, 23, 22,
+    };
+
+    for (int i = 0; i < 24; ++i) {
+      Vertex v;
+      v.xyz.set(coords[i * 3 + 0], coords[i * 3 + 1], coords[i * 3 + 2]);
+
+      v.uv.set(textureCood[i * 2 + 0], textureCood[i * 2 + 1]);
+
+      v.normal.set(normals[i * 3 + 0], normals[i * 3 + 1], normals[i * 3 + 2]);
+
+      mesh->getGeometry()->addVertex(v);
+    }
+
+    for (int i = 0; i < 12; ++i) {
+        Face f(indices[i * 3], indices[i * 3 + 1], indices[i * 3 + 2]);
+
+        mesh->getGeometry()->addFace(f);
+    }
+
+    TextureUnitState &unit = mesh->getMaterial()->getTexture();
+    unit.setUVstate(0, 0, 1, 1, 0);
+
+    if (texture == nullptr) {
+        texture = TextureManager::getInstance().getTexture("girl");
+    }
+    unit.addTextureFrame(texture);
+
+    return mesh;
+}
+
+const static int BLOCK_LENGTH = 157;
+const static int BLOCK_COUNT = 5;
+std::vector<SceneNodePtr> blocks;
+SceneNodePtr black_box;
+SceneNodePtr motoRoot;
+SceneNodePtr box;
+SkeletonControllerPtr manController;
+float y = 0, z = 0, zV = 1, rotation = 0;
+
+// blocks切换的次数记录
+int block_index = 0;
+void updateMatrix(bool isAnim) {
+    if (isAnim) {
+        rotation += 40.0 / (1000 / 60);
+
+        y += 2;
+
+        if (z > 5) {
+            zV = -0.6f;
+        } else if (z < -5) {
+            zV = 0.6f;
+        }
+        z += zV;
+    }
+
+    if (y > block_index * BLOCK_LENGTH) {
+        // 交换block
+
+        SceneNodePtr first = blocks[0];
+
+        Vec3 old = first->getLocalTranslation();
+        first->setLocalTranslation(Vec3(0, old.y + BLOCK_LENGTH * BLOCK_COUNT, 0));
+
+        blocks.erase(blocks.begin());
+        blocks.push_back(first);
+
+        block_index += 1;
+    }
+
+//    camera.setViewport(600, 600);
+    camera.setDepthField(10, 1320);
+    camera.setView(Vec3(0, y + 30, 50), Vec3(0, -240 + y, 57 + z), Vec3(0, 1, 0));
+    camera.updateTransform();
+
+    black_box->setLocalTranslation(Vec3(0, y - 100, 0));
+
+//    Mat4 rotationM;
+//    rotationM.setRotationY(rotation * DEG_TO_RAD);
+
+//    float scale = 1.0f / 200;
+//    model.setScaling(scale, scale, scale);
+
+//    model *= rotationM;
+////    model.setTranslation(0.0f, 0.0f, -4);
+///
+
+    rotation += 0.04;
+    if (rotation > 360) {
+        rotation = 0;
+    }
+
+    Quat quat;
+    quat.fromAngles(Vec3(0, 0, rotation));
+    motoRoot->setLocalRotation(quat);
+
+    manController->update();
+    MeshPtr mesh = manController->getMesh();
+
+    Geometry::ptr geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().updateGeometryToHardware(*(geometry.get()));
+
+    mesh->getNode()->setLocalRotation(quat);
+
+    box->setLocalRotation(quat);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    glActiveTexture(GL_TEXTURE0);
+}
+
+void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
+    node->setNodeAttribute(mesh->clone());
+
+    for (auto child : node->getChildren()) {
+        AddMeshToNode(dynamic_pointer_cast<SceneNode>(child), mesh);
+    }
+}
+
+void InitMeshInHardward(MeshPtr mesh) {
+    Geometry::ptr geometry = mesh->getGeometry();
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
+
+    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
+    mesh->getMaterial()->setShder(shader);
+}
+
+void initResource()
+{
+    InitGLStates();
+
+    CameraPtr _camera = std::make_shared<Camera>();
+    SceneManager::getInstance().getRenderManager().addCamera(_camera);
+
+    SearchPath searchPath;
+    searchPath.rootDir = resDir.c_str();
+    searchPath.type = FileType::Permanent;
+    FileSystem::getInstance().addSearchPath(searchPath);
+
+    std::string shaderDir = resDir + "Shaders/";
+    std::string assertDir = resDir + "Model/PAD/";
+
+    LoadShader("Shader_Default",
+                        shaderDir + "light.vert",
+                        shaderDir + "light.frag");
+
+    LoadShader("Shader_PTC",
+                        shaderDir + "position_texture_color.vert",
+                        shaderDir + "position_texture_color.frag");
+
+    LoadShader("Shader_Font",
+                      shaderDir + "v3f-t2f-c4f.vert",
+                      shaderDir + "v3f-t2f-c4f.frag");
+
+    TextureManager::getInstance().setImageLoader(new ImageLoader());
+
+    TextureParser::getInstance().addTextures("Model/PAD/", "png|jpg");
+
+//    TextureManager::getInstance().loadTextures();
+
+    FbxParser *parser = new FbxParser();
+
+    FilePtr file = FileSystem::getInstance().openFile((assertDir + "black.data"));
+    parser->parse(file);
+    SceneNodePtr black = parser->getNodes()[0];
+
+    file = FileSystem::getInstance().openFile((assertDir + "wall.data"));
+    parser->parse(file);
+
+    SceneNodePtr wall = parser->getNodes()[0];
+    SceneNodePtr floor = parser->getNodes()[1];
+
+    assertDir = resDir + "Model/Moto/";
+
+    TextureParser::getInstance().addTextures("Model/Moto/", "png|jpg");
+    TextureParser::getInstance().addTextures("Model/Man/", "png|jpg");
+
+    TextureManager::getInstance().loadTextures();
+
+    file = FileSystem::getInstance().openFile((assertDir + "new_group_moto03.data"));
+    parser->parse(file);
+    SceneNodePtr shadow = parser->getNodes()[0];
+    SceneNodePtr moto = parser->getNodes()[1];
+
+    std::vector<SceneNodePtr> meshs;
+    meshs.push_back(wall);
+    meshs.push_back(floor);
+    meshs.push_back(black);
+    meshs.push_back(shadow);
+    meshs.push_back(moto);
+
+    for (SceneNodePtr node : meshs) {
+        MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
+
+        InitMeshInHardward(mesh);
+    }
+
+    for (int i = 0; i < BLOCK_COUNT; ++i) {
+        SceneNodePtr block = std::make_shared<SceneNode>();
+
+        auto wall_copy = wall->clone();
+
+        auto floor_copy = floor->clone();
+
+        block->addChild(wall_copy);
+        block->addChild(floor_copy);
+
+        block->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
+
+        SceneManager::getInstance().addRootNode(block);
+
+        blocks.push_back(block);
+    }
+
+    motoRoot = std::make_shared<SceneNode>();
+    motoRoot->addChild(shadow);
+    motoRoot->addChild(moto);
+    motoRoot->setLocalTranslation(Vec3(0, 0, 12));
+
+    // TODO:
+//    moto->getMaterial()->getRenderState().setDepthTest(true);
+
+//    SceneManager::getInstance().addRootNode(motoRoot);
+    black_box = black;
+
+    assertDir = resDir + "Model/Man/";
+    parser->parse(assertDir + "group_girl.data");
+    manController = parser->getSkeletonController("girl");
+
+    AnimationTrackPtr track = manController->getAnimation()->getCurrAnimationTrack();
+    Long beginTime = track->getKeyFrame(2)->getTime();
+    Long endTime = track->getKeyFrame(12)->getTime();
+    manController->getAnimation()->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
+    manController->getAnimation()->setAnimationStackIndex(0);
+    manController->getAnimation()->setAnimationLoop(true);
+    manController->getAnimation()->setAnimationPower(1.0);
+    manController->getAnimation()->setIsUseAnimationStack(true);
+
+//    manController->setDefaultFrame(1);
+
+    InitMeshInHardward(manController->getMesh());
+    SceneManager::getInstance().addRootNode(manController->getMeshNode());
+
+    MeshPtr mesh = createBox(2);
+    InitMeshInHardward(mesh);
+
+    box = std::make_shared<SceneNode>();
+    AddMeshToNode(box, mesh);
+
+//    BoneNodePtr rootBone = manController->getSkeleton()->getRootBone();
+//    SceneNodePtr node = rootBone;
+
+//    AddMeshToNode(node, mesh);
+
+//    box->setLocalTranslation(Vec3(0, 0, 52));
+//    SceneManager::getInstance().addRootNode(node);
+
+    string hello("test");
+
+    TestFont();
+
+    TestUI();
+}
 
 Font::ptr font;
-
 void TestFont()
 {
     auto fontFile = resDir + "Fonts/ObelixPro.ttf";
