@@ -21,6 +21,7 @@ public:
     void setTransparent(bool value);
 
     int getQueueID() const;
+    void setQueueID(int id);
 
     TextureUnitState& getTexture();
 

@@ -9,6 +9,8 @@
 
 #include "Scene.h"
 #include "Layout/LayoutUtil.h"
+#include "Layout/Screen.h"
+#include "Base/Node2d.h"
 
 namespace re {
 
@@ -25,33 +27,22 @@ bool Scene::init() {
         return false;
     }
     
-//    CCDirector* pDirector = CCDirector::sharedDirector();
-//    this->setContentSize(pDirector->getWinSize());
+    this->setContentSize(Screen::getInstance().getSize());
     
-//    alphaBg = ColorQuadNode::create();
-//    alphaBg->setColor(ccBLACK);
+    alphaBg = std::make_shared<Node2d>();
+    alphaBg->setColor(Color::BLACK);
     
-//    alphaBg->setContentSize(this->getContentSize());
-//    alphaBg->setVisible(false);
-//    this->addChild(alphaBg, 5);
-//    alphaBg->retain();
+    alphaBg->setContentSize(this->getContentSize());
+    alphaBg->setVisible(false);
     
     return true;
 }
 
-//bool Scene::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent) {
-//    if (this->windowStack.size() > 0) {
-//        // dispatch to top window
-//        Window *win = getFocusedWindow();
-//        return win->ccTouchBegan(pTouch, pEvent);
-//    } else {
-//        return LogicalScene::ccTouchBegan(pTouch, pEvent);
-//    }
-//}
+// TODO: modify the dispatch of touch event
 
 bool Scene::onBackKeyEvent() {
     if (this->windowStack.size() > 0) {
-        Window* win = getFocusedWindow();
+        std::shared_ptr<Window> win = getFocusedWindow();
         
         return win->onBackKeyEvent();
     } else {
@@ -71,14 +62,17 @@ void Scene::onEnter() {
     this->popAllWindow();
 }
 
-void Scene::addWindowToScene(Window *win) {    
-//    this->addChild(win, this->windowStack.size() + 10);
+void Scene::addWindowToScene(std::shared_ptr<Window> &win) {
+    // TODO: zorder
+    this->addChild(win);
     
-//    LayoutUtil::layoutParentCenter(win);
+    LayoutUtil::layoutParentCenter(win);
     win->layout();
+
+    return;
 }
 
-void Scene::removeWindowFromScene(Window *win) {
+void Scene::removeWindowFromScene(std::shared_ptr<Window>& win) {
     win->removeFromParent();
 }
 
@@ -86,7 +80,7 @@ Node2d::ptr Scene::getAlphaBackground() {
     return this->alphaBg;
 }
 
-void Scene::changeAlphaBackgroundIndex(Window* win) {
+void Scene::changeAlphaBackgroundIndex(std::shared_ptr<Window>& win) {
 //    this->alphaBg->setZOrder(win->getZOrder() - 1);
 }
 

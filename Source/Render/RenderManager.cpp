@@ -92,7 +92,10 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     Material::ptr material = mesh->getMaterial();
     Geometry::ptr geometry = mesh->getGeometry();
 
-    material->getShder()->getUniform("model")->setData((float*)node->getWorldMatrix());
+    std::shared_ptr<Shader> shader = material->getShder();
+    shader->getUniform("model")->setData((float*)node->getWorldMatrix());
+    shader->getUniform("view")->setData((float*)currCamera->getViewMatrix());
+    shader->getUniform("projection")->setData((float*)currCamera->getProjectionMatrix());
 
     glUseProgram(material->getShder()->getProgram());
 
@@ -119,7 +122,7 @@ void RenderManager::render()
         for (auto renderableList : lists) {
             int queueID = renderableList->listType;
 
-            if (!func(queueID)) {
+            if (func(queueID)) {
                 this->renderList(*renderableList);
             }
         }
@@ -140,6 +143,8 @@ void RenderManager::activeCamera(CameraPtr camera)
     if (camera->getClearFlag()) {
         this->renderer.cleanBuffers(camera->getClearFlag());
     }
+
+    this->currCamera = camera;
 }
 
 void RenderManager::clear()

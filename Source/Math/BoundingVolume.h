@@ -5,6 +5,8 @@
 
 namespace re {
 
+class Mat4;
+
 class Size
 {
 public:
@@ -106,6 +108,8 @@ public:
     bool containsRect(const Rect& rect) const;
     Rect unionWithRect(const Rect & rect) const;
 };
+
+Rect RectApplyMatrix(const Rect &rect, const Mat4 &m);
 
 }
 

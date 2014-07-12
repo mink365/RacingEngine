@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Manager/WindowManager.h"
+#include "Layout/Screen.h"
 #include <thread>
 
 namespace re {
@@ -19,8 +20,7 @@ bool Window::init() {
     }
     
     // window default is full screen
-    // TODO:
-//    this->setContentSize(Screen::getInstance.getSize());
+    this->setContentSize(Screen::getInstance().getSize());
     
     this->setAnchorPoint(Vec2(0.5, 0.5));
     
@@ -117,7 +117,10 @@ void Window::popFromWindowManager() {
         return;
     }
     
-    manager->popWindow(this);
+    auto thisPtr = this->shared_from_this();
+    auto win = std::dynamic_pointer_cast<Window>(thisPtr);
+
+    manager->popWindow(win);
 }
 
 bool Window::onBackKeyEvent() {

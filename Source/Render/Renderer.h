@@ -9,6 +9,7 @@
 #define RENDERER_H_
 
 #include "Math/Matrix.h"
+#include "Math/BoundingVolume.h"
 #include "Texture/Texture.h"
 #include "RenderState.h"
 #include "Geometry/Geometry.h"
@@ -45,6 +46,9 @@ public:
     void resetToRenderState(const RenderState &state);
 private:
     RenderContext context;
+
+    Rect viewport;
+    Mat4 viewMatrix, projMatrix;
 };
 
 } // namespace re

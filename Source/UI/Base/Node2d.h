@@ -10,6 +10,17 @@
 
 namespace re {
 
+template<class T>
+std::shared_ptr<T> CreateView() {
+    auto view = std::make_shared<T>();
+
+    if (view != nullptr) {
+        view->init();
+    }
+
+    return view;
+}
+
 void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture, const string &shaderName);
 
 class Rgba {

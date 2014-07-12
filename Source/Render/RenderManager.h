@@ -50,6 +50,7 @@ protected:
 
 private:
     std::vector<CameraPtr> cameraList;
+    CameraPtr currCamera;
 
     RenderQueue renderQueue;
 

@@ -4,6 +4,7 @@
 #include "Base/Singleton.h"
 
 #include <functional>
+#include "NativeView.h"
 
 namespace re {
 
@@ -15,7 +16,6 @@ public:
     void init();
 
     void mainLoop(long dt);
-
     void bindUpdateFunc(std::function<void(long time)> func);
 private:
     std::function<void(long time)> updateFunc;

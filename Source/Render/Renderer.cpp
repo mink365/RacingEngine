@@ -20,6 +20,7 @@ Renderer::~Renderer() {
 
 void Renderer::setViewPort(int x, int y, int width, int height)
 {
+    this->viewport.set(x, y, width, height);
 }
 
 void Renderer::setWorldMatrix(const Mat4 &mat)
@@ -29,10 +30,12 @@ void Renderer::setWorldMatrix(const Mat4 &mat)
 
 void Renderer::setViewMatrix(const Mat4 &mat)
 {
+    this->viewMatrix = mat;
 }
 
 void Renderer::setProjectionMatrix(const Mat4 &mat)
 {
+    this->projMatrix = mat;
 }
 
 void Renderer::setTexture(int unit, bool enable, const Texture& texture)

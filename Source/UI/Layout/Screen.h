@@ -9,28 +9,22 @@ namespace re {
 class Screen : public re::Singleton<Screen>
 {
 public:
-    static const float DESIGN_WIDTH;
-    static const float DESIGN_HEIGHT;
-    static const float MIN_ASPECT_RATIO;
-    
-    void init(float screenWidth, float screenHeight);
+    void setDesignSize(float width, float height);
+    void setRealFrameSize(const Size& size);
+    void setRealFrameSize(float screenWidth, float screenHeight);
 public:
     float getWidth() const;
     float getHeight() const;
-    Size getSize() const;
+    const Size& getSize() const;
 
-    float getScaledDesignedWidth() const;
-    float getScaledDesignedHeight() const;
-    float getFitScreenScaleX() const;
-    float getFitScreenScaleY() const;
+    const Size& getRealSize() const;
+    const Vec2& getFitScreenScale() const;
     float getFinalScale() const;
 private:
-    float _realWidth;
-    float _realHeight;
-    float _scaledDesignWidth;
-    float _scaledDesignHeight;
-    float _fitScreenScaleX;
-    float _fitScreenScaleY;
+    Size _designSize;
+    Size _realSize;
+    Size _scaledSize;
+    Vec2 _fitScreenScale;
     float _finalScale;
 };
 

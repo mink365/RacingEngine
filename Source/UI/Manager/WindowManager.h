@@ -6,8 +6,8 @@
 //
 //
 
-#ifndef __MT__WindowManager__
-#define __MT__WindowManager__
+#ifndef __WindowManager__
+#define __WindowManager__
 
 #include <iostream>
 #include <list>
@@ -26,39 +26,39 @@ class WindowManager : public Uncopyable {
 public:
     WindowManager();
     
-    Window* pushWindow(string name);
-    Window* pushWindow(Window *window);
+    std::shared_ptr<Window> pushWindow(string name);
+    std::shared_ptr<Window> pushWindow(std::shared_ptr<Window>& window);
     
-    Window* popWindow();
-    Window* popWindow(Window *win);
-    Window* popToWindow(Window *win);
+    std::shared_ptr<Window> popWindow();
+    std::shared_ptr<Window> popWindow(std::shared_ptr<Window>& win);
+    std::shared_ptr<Window> popToWindow(std::shared_ptr<Window>& win);
     
     void popAllWindow();
     
-    Window* getFocusedWindow();
-    Window* getWindowByName(string name);
+    std::shared_ptr<Window> getFocusedWindow();
+    std::shared_ptr<Window> getWindowByName(string name);
     
-    void setWindowFactory(IWindowFactory* factory);
+    void setWindowFactory(std::shared_ptr<IWindowFactory>& factory);
     
 protected:
-    virtual void addWindowToScene(Window* win) = 0;
-    virtual void removeWindowFromScene(Window* win) = 0;
+    virtual void addWindowToScene(std::shared_ptr<Window>& win) = 0;
+    virtual void removeWindowFromScene(std::shared_ptr<Window>& win) = 0;
     virtual Node2d::ptr getAlphaBackground() = 0;
-    virtual void changeAlphaBackgroundIndex(Window* win) = 0;
+    virtual void changeAlphaBackgroundIndex(std::shared_ptr<Window>& win) = 0;
     
-    void changeFocusedWindow(Window* win);
+    void changeFocusedWindow(std::shared_ptr<Window>& win);
     void changeFocusedWindowToStackTop();
     
     void update(float dt);
     
-    void onWindowHidden(Window *win);
+    void onWindowHidden(std::shared_ptr<Window>& win);
     
 protected:
-    list<Window*> windowStack;
+    list<std::shared_ptr<Window>> windowStack;
     
-    IWindowFactory* factory;
+    std::shared_ptr<IWindowFactory> factory;
 };
 
 }
 
-#endif /* defined(__MT__WindowManager__) */
+#endif /* defined(__WindowManager__) */

@@ -104,7 +104,7 @@ void NinePatch::addQuad(AlignType type)
     Rect vRect = vertexGrid.getRect(type);
     Rect tRect = textureGrid.getRect(type);
 
-    QuadStuffer::AddOriginalQuad(vRect, tRect, Color::White, this->frame, this->getGeometry());
+    QuadStuffer::AddOriginalQuad(vRect, tRect, Color::WHITE, this->frame, this->getGeometry());
 }
 
 NodePtr NinePatch::createCloneInstance() const

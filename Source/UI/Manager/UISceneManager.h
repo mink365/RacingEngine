@@ -19,14 +19,12 @@ namespace re {
     namespace ui {
 
 class UISceneManager : public LogicalScene, public LayerManager<Scene> {
-private:
+public:
     UISceneManager();
     bool init();
  
 public:
-//    GuideLayer* getGuidLayer();
-    
-    void setSceneFactory(ISceneFactory* factory);
+    void setSceneFactory(std::shared_ptr<ISceneFactory>& factory);
     
 public:
     void handleMessage(Message *message);
@@ -40,19 +38,19 @@ public:
     void keyBackClicked();
     void setKeyBackActive(bool active);
 protected:
-    virtual Scene* createLayer(const std::string& name);
+    virtual std::shared_ptr<Scene> createLayer(const std::string& name);
     /*
      * get the default layer, if we have no layer in the stack, we will jump to it
      */
-    virtual Scene* getDefaultLayer();
+    virtual std::shared_ptr<Scene> getDefaultLayer();
     
-    void addLayerToScene(Scene* node);
-    void removeLayerFromScene(Scene* node);
+    void addLayerToScene(std::shared_ptr<Scene> &node);
+    void removeLayerFromScene(std::shared_ptr<Scene>& node);
     
 private:
     bool isKeyBackActive;
     
-    ISceneFactory* factory;
+    std::shared_ptr<ISceneFactory> factory;
 };
 
     }

@@ -26,8 +26,6 @@ public:
     
     virtual bool init();
         
-//    virtual bool ccTouchBegan(cocos2d::CCTouch* pTouch, cocos2d::CCEvent* pEvent);
-    
     virtual bool onBackKeyEvent();
     
 protected:
@@ -36,10 +34,10 @@ protected:
     virtual void onEnter();
     
 protected:
-    void addWindowToScene(Window* win);
-    void removeWindowFromScene(Window* win);
+    void addWindowToScene(std::shared_ptr<Window>& win);
+    void removeWindowFromScene(std::shared_ptr<Window> &win);
     Node2d::ptr getAlphaBackground();
-    void changeAlphaBackgroundIndex(Window* win);
+    void changeAlphaBackgroundIndex(std::shared_ptr<Window> &win);
     
 private:
     Node2d::ptr alphaBg;

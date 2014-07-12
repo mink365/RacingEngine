@@ -1,6 +1,12 @@
 #include "BoundingVolume.h"
 
+#include "Vector.h"
+#include "Matrix.h"
+
 #include <algorithm>
+#include <math.h>
+
+using namespace std;
 
 re::Rect::Rect()
 {
@@ -183,4 +189,29 @@ re::Rect re::Rect::unionWithRect(const re::Rect &rect) const
     float combinedBottomY = std::min(thisBottomY, otherBottomY);
 
     return Rect(combinedLeftX, combinedBottomY, combinedRightX - combinedLeftX, combinedTopY - combinedBottomY);
+}
+
+
+re::Rect re::RectApplyMatrix(const re::Rect& rect, const re::Mat4& transform)
+{
+    float top    = rect.getMinY();
+    float left   = rect.getMinX();
+    float right  = rect.getMaxX();
+    float bottom = rect.getMaxY();
+
+    Vec3 topLeft(left, top, 0);
+    Vec3 topRight(right, top, 0);
+    Vec3 bottomLeft(left, bottom, 0);
+    Vec3 bottomRight(right, bottom, 0);
+    topLeft = transform * topLeft;
+    topRight = transform * topRight;
+    bottomLeft = transform * bottomLeft;
+    bottomRight = transform * bottomRight;
+
+    float minX = min(min(topLeft.x, topRight.x), min(bottomLeft.x, bottomRight.x));
+    float maxX = max(max(topLeft.x, topRight.x), max(bottomLeft.x, bottomRight.x));
+    float minY = min(min(topLeft.y, topRight.y), min(bottomLeft.y, bottomRight.y));
+    float maxY = max(max(topLeft.y, topRight.y), max(bottomLeft.y, bottomRight.y));
+
+    return Rect(minX, minY, (maxX - minX), (maxY - minY));
 }

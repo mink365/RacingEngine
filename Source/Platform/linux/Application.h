@@ -2,10 +2,11 @@
 #define RE_APPLICATION_H
 
 #include "Base/Singleton.h"
+#include "Platform/ApplicationProtocol.h"
 
 namespace re {
 
-class Application
+class Application : public ApplicationProtocol
 {
 public:
     Application();

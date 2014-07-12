@@ -10,6 +10,8 @@
 #define FairyTails_ViewFactory_h
 
 #include <string>
+#include <memory>
+#include <vector>
 
 namespace re {
 
@@ -19,34 +21,67 @@ class LogicalScene;
 
 using namespace std;
 
-class IWindowFactory {
-public:
-    virtual Window* getWindow(string name) = 0;
-    
-protected:
-    virtual Window* createWindow(string name) = 0;
-};
-
-
-class ISceneFactory {
-public:
-    virtual Scene* getSceneByName(const string& name) = 0;
-    
-protected:
-    virtual Scene* createScene(const string& name) = 0;
-    virtual Scene* getRegisteredScene(const string& name) = 0;
-    virtual void registerScene(const string& name, Scene* scene) = 0;
-};
-
-class ILayerFactory
+template<class T>
+class ViewFactory
 {
 public:
-    virtual LogicalScene* getLayerByName(string layerName) = 0;
-    
+    std::shared_ptr<T> getView(const string& name);
+
 protected:
-    virtual LogicalScene* createlayer(string  layerName) = 0;
-    virtual LogicalScene* getRegisteredLayer(string  layerName) = 0;
-    virtual void registerLayer(string name,LogicalScene* layer) = 0;
+    virtual std::shared_ptr<T> createView(const string& name) = 0;
+    std::shared_ptr<T> registerView(std::shared_ptr<T>& view);
+    std::shared_ptr<T> getRegisteredView(const string& name);
+private:
+    std::vector<std::shared_ptr<T>> list;
+};
+
+template<class T>
+inline std::shared_ptr<T> ViewFactory<T>::getView(const string& name)
+{
+    std::shared_ptr<T> view = this->getRegisteredView(name);
+
+    if (view == nullptr) {
+        view = this->createView(name);
+
+        if (view != nullptr) {
+            this->registerView(view);
+        }
+    }
+
+    return view;
+}
+
+template<class T>
+inline std::shared_ptr<T> ViewFactory<T>::registerView(std::shared_ptr<T>& view)
+{
+    this->list.push_back(view);
+
+    return view;
+}
+
+template<class T>
+inline std::shared_ptr<T> ViewFactory<T>::getRegisteredView(const string& name)
+{
+    for (auto view : list) {
+        if (view->getName() == name) {
+            return view;
+        }
+    }
+
+    return nullptr;
+}
+
+class IWindowFactory : public ViewFactory<Window>
+{
+};
+
+
+class ISceneFactory : public ViewFactory<Scene>
+{
+};
+
+class ILayerFactory : public ViewFactory<LogicalScene>
+{
 };
 
 }

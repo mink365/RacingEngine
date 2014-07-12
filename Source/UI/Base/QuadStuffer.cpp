@@ -13,7 +13,7 @@ void QuadStuffer::FillQuad(const TextureFrame::constPtr &frame, const Size &size
     const Size& originalSize = frame->getOriginalSize();
     Rect textureRect(0, 0, originalSize.width, originalSize.height);
 
-    AddOriginalQuad(rect, textureRect, Color::White, frame, geomerty);
+    AddOriginalQuad(rect, textureRect, Color::WHITE, frame, geomerty);
 }
 
 

@@ -8,7 +8,6 @@
 
 #include "UISceneManager.h"
 
-//#include "WaitingWindowController.h"
 #include "UI/Layout/LayoutUtil.h"
 
 namespace re {
@@ -24,74 +23,61 @@ bool UISceneManager::init() {
     if (!LogicalScene::init()) {
         return false;
     }
+
+    this->setContentSize(Screen::getInstance().getSize());
+
     isKeyBackActive = true;
-    
-//    CCDirector* pDirector = CCDirector::sharedDirector();
-//    this->setContentSize(pDirector->getWinSize());
     
     addWidgets();
     
     return true;
 }
 
-void UISceneManager::setSceneFactory(ISceneFactory *factory) {
+void UISceneManager::setSceneFactory(std::shared_ptr<ISceneFactory> &factory) {
     assert(this->factory == nullptr);
     
     this->factory = factory;
 }
 
 void UISceneManager::handleMessage(Message *message) {
-//    WaitingWindowController::getInstance()->checkMessage(message);
-    
     LogicalScene::handleMessage(message);
 }
 
 void UISceneManager::addWidgets() {
-//    this->addChild(guidLayer, 1);
-//    LayoutUtil::layoutParentCenter(guidLayer);
+
 }
 
 void UISceneManager::updateSelf(float delta) {
-//    WaitingWindowController::getInstance()->update();
     LayerManager::update(delta);
 }
 
-Scene* UISceneManager::createLayer(const std::string &name) {
-    Scene* scene = this->factory->getSceneByName(name);
+std::shared_ptr<Scene> UISceneManager::createLayer(const std::string &name) {
+    std::shared_ptr<Scene> scene = this->factory->getView(name);
     
     return scene;
 }
 
-void UISceneManager::addLayerToScene(Scene* node) {
-//    this->addChild(node);
+void UISceneManager::addLayerToScene(std::shared_ptr<Scene>& node) {
+    this->addChild(node);
     
-//    LayoutUtil::layoutParentCenter(node);
+    LayoutUtil::layoutParentCenter(node);
+
+    return;
 }
 
-void UISceneManager::removeLayerFromScene(Scene *node) {
-    string name = node->getName();
-//    node->removeFromParent();
+void UISceneManager::removeLayerFromScene(std::shared_ptr<Scene> &node) {
+    node->removeFromParent();
 }
 
-Scene* UISceneManager::getDefaultLayer() {
+std::shared_ptr<Scene> UISceneManager::getDefaultLayer() {
     return NULL;
 }
 
 void UISceneManager::onEnter() {
-//    this->scheduleUpdate();
-//    cocos2d::CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0 , true);
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//    cocos2d::CCDirector::sharedDirector()->getKeypadDispatcher()->addDelegate(this);
-//#endif
     LogicalScene::onEnter();
 }
 
 void UISceneManager::onExit() {
-//    this->unscheduleUpdate();
-//    cocos2d::CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//    cocos2d::CCDirector::sharedDirector()->getKeypadDispatcher()->removeDelegate(this);
-//#endif
     LogicalScene::onExit();
 }
 
@@ -99,7 +85,7 @@ void UISceneManager::keyBackClicked() {
     if (!isKeyBackActive) {
         return;
     }
-    Scene* scene = this->getLastLayer();
+    std::shared_ptr<Scene> scene = this->getLastLayer();
     
     if (scene) {
         scene->onBackKeyEvent();

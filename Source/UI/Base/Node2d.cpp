@@ -1,9 +1,10 @@
-#include "Node2d.h"
+﻿#include "Node2d.h"
 
 #include "Scene/Mesh.h"
 
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Shader/ShaderManager.h"
+#include "Render/RenderQueue.h"
 
 namespace re {
 
@@ -197,7 +198,8 @@ const Size &Node2d::getContentSize() const
 
 Rect Node2d::getBoundingBox() const
 {
-    // TODO:
+    Rect rect = Rect(0, 0, size.width, size.height);
+    return RectApplyMatrix(rect, this->localMatrix);
 }
 
 Vec2 Node2d::convertToNodeSpace(const Vec2 &worldPoint) const
@@ -251,32 +253,48 @@ void Node2d::updateLocalMatrix()
 {
     Vec3 position = this->localTranslation;
 
-    bool needsSkewMatrix = (skew == Vec2::Zero);
+    bool needsSkewMatrix = (skew != Vec2::Zero);
 
-    if (needsSkewMatrix && !(anchorPointInPoints == Vec2::Zero)) {
-        Vec3 rotate = localRotation.toVec3();
+    Vec2 anchorPoint;
+    anchorPoint.x = anchorPointInPoints.x * localScaling.x;
+    anchorPoint.y = anchorPointInPoints.y * localScaling.y;
 
-        // TODO: use quat to make it
-        // TODO: _rotationZ_X _rotationZ_Y
-        float cx = 1, sx = 0, cy = 1, sy = 0;
-        if (rotate.z || rotate.z)
-        {
-            float radiansX = -rotate.z;
-            float radiansY = -rotate.z;
-            cx = cosf(radiansX);
-            sx = sinf(radiansX);
-            cy = cosf(radiansY);
-            sy = sinf(radiansY);
-        }
+    Vec3 rotate = localRotation.toVec3();
 
-        position.x += cy * -anchorPointInPoints.x * localScaling.x + -sx * -anchorPointInPoints.y * localScaling.y;
-        position.y += sy * -anchorPointInPoints.x * localScaling.x +  cx * -anchorPointInPoints.y * localScaling.y;
+    // TODO: use quat to make it
+    // TODO: _rotationZ_X _rotationZ_Y
+    float cx = 1, sx = 0, cy = 1, sy = 0;
+    if (rotate.z || rotate.z)
+    {
+        float radiansX = -rotate.z;
+        float radiansY = -rotate.z;
+        cx = cosf(radiansX);
+        sx = sinf(radiansX);
+        cy = cosf(radiansY);
+        sy = sinf(radiansY);
     }
 
-    this->localMatrix.fromRTS(localRotation, localTranslation, localScaling);
+    if (!needsSkewMatrix && !(anchorPoint == Vec2::Zero)) {
+        position.x += cy * -anchorPoint.x + -sx * -anchorPoint.y;
+        position.y += sy * -anchorPoint.x +  cx * -anchorPoint.y;
+    }
+
+//    // TODO:
+//    this->localMatrix.set(cy * localScaling.x,   sy * localScaling.x,   0,          0,
+//                         -sx * localScaling.y,  cx * localScaling.y,   0,          0,
+//                         0,              0,              localScaling.z,    0,
+//                         position.x,    position.y,    position.z,          1 );
+
+    this->localMatrix.set(cy * localScaling.x,   -sx * localScaling.y,   0,         position.x,
+                           sy * localScaling.x,    cx * localScaling.y,   0,          position.y,
+                           0,                                0,        localScaling.z,  position.z,
+                           0,                                0,               0,            1 );
+
+    // TODO: rotate X and Y
 
     if (needsSkewMatrix)
     {
+        // TODO: .....
         Mat4 skewMatrix(1, (float)tanf(DegreeToRadian(skew.y)), 0, 0,
                           (float)tanf(DegreeToRadian(skew.x)), 1, 0, 0,
                           0,  0,  1, 0,
@@ -300,7 +318,12 @@ void Node2d::updateLocalMatrix()
 
 void Node2d::updateColor()
 {
-    worldColor = color * this->getParent()->getDisplayColor();
+    if (this->getParent()) {
+        worldColor = color * this->getParent()->getDisplayColor();
+    } else {
+        worldColor = color;
+    }
+
 
     for (auto child : this->children) {
         std::shared_ptr<Node2d> node = std::dynamic_pointer_cast<Node2d>(child);
@@ -364,10 +387,12 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
 
-    TextureUnitState &unit = mesh->getMaterial()->getTexture();
-    unit.setUVstate(0, 0, 1, 1, 0);
-
-    unit.addTextureFrame(texture);
+    mesh->getMaterial()->setQueueID(RENDER_QUEUE_UI);
+    if (texture) {
+        TextureUnitState &unit = mesh->getMaterial()->getTexture();
+        unit.setUVstate(0, 0, 1, 1, 0);
+        unit.addTextureFrame(texture);
+    }
 
     Geometry::ptr geometry = mesh->getGeometry();
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));

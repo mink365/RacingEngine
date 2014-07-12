@@ -22,10 +22,12 @@
 #include "UI/Base/NinePatch.h"
 #include "UI/Base/Sprite.h"
 #include "UI/Base/Label.h"
+#include "UI/Manager/UISceneManager.h"
+#include "UI/Window.h"
+#include "UI/Scene.h"
+#include "Render/RenderQueue.h"
 
 #include "Platform/GameHub.h"
-
-Camera camera;
 
 std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 
@@ -34,6 +36,27 @@ void update(long dt);
 FBXTestApp::FBXTestApp()
 {
     GameHub::getInstance().bindUpdateFunc(&update);
+}
+
+bool FBXTestApp::initEnvironment()
+{
+    Screen::getInstance().setDesignSize(614, 1024);
+
+    Screen::getInstance().setRealFrameSize(this->view->getFrameSize());
+
+    // TODO: filesystem
+
+    return true;
+}
+
+void FBXTestApp::onEnterForeground()
+{
+
+}
+
+void FBXTestApp::onExitForeground()
+{
+
 }
 
 bool inited = false;
@@ -171,6 +194,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
     colorAttr->setOffset((8) * 4);
 }
 
+Camera camera;
 int LoadShaderData(std::string name, std::string vs, std::string fs) {
     Shader::ptr shader = Shader::create();
     shader->setName(name);
@@ -191,8 +215,8 @@ int LoadShaderData(std::string name, std::string vs, std::string fs) {
     }
 
 //    shader.getUniform("model")->setData((float*)model);
-    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
-    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
+//    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
+//    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
 
     ShaderManager::getInstance().registerShader(shader);
 
@@ -354,8 +378,11 @@ std::vector<SceneNodePtr> blocks;
 SceneNodePtr black_box;
 SceneNodePtr motoRoot;
 SceneNodePtr box;
+shared_ptr<Node2d> widget;
 SkeletonControllerPtr manController;
 float y = 0, z = 0, zV = 1, rotation = 0;
+
+CameraPtr presCamera;
 
 // blocks切换的次数记录
 int block_index = 0;
@@ -388,9 +415,9 @@ void updateMatrix(bool isAnim) {
     }
 
 //    camera.setViewport(600, 600);
-    camera.setDepthField(10, 1320);
-    camera.setView(Vec3(0, y + 30, 50), Vec3(0, -240 + y, 57 + z), Vec3(0, 1, 0));
-    camera.updateTransform();
+//    camera.setDepthField(10, 1320);
+//    camera.setView(Vec3(0, y + 30, 50), Vec3(0, -240 + y, 57 + z), Vec3(0, 1, 0));
+//    camera.updateTransform();
 
     black_box->setLocalTranslation(Vec3(0, y - 100, 0));
 
@@ -408,6 +435,8 @@ void updateMatrix(bool isAnim) {
     if (rotation > 360) {
         rotation = 0;
     }
+
+    widget->setRotation(rotation * 20);
 
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
@@ -447,8 +476,36 @@ void initResource()
 {
     InitGLStates();
 
-    CameraPtr _camera = std::make_shared<Camera>();
-    SceneManager::getInstance().getRenderManager().addCamera(_camera);
+    const Screen& screen = Screen::getInstance();
+
+    presCamera = std::make_shared<Camera>();
+    presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
+    presCamera->setDepthField(10, 1320);
+    presCamera->setView(Vec3(0, 30, 20), Vec3(0, -340, 57), Vec3(0, 0, 1));
+    presCamera->setQueueCullFunc([](int queue) {
+        if (queue == RENDER_QUEUE_UI) {
+            return false;
+        }
+        return true;
+    });
+    CameraPtr uiCamera = std::make_shared<Camera>();
+    uiCamera->setProjectionMode(CameraProjectionMode::Orthographic);
+    uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
+    uiCamera->setOrthoWidth(screen.getWidth());
+    uiCamera->setDepthField(-10, 10);
+    uiCamera->setView(Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 0),
+                        Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 1), Vec3(0, 1, 0));
+    uiCamera->setQueueCullFunc([](int queue) {
+        if (queue == RENDER_QUEUE_UI) {
+            return true;
+        }
+        return false;
+    });
+    SceneManager::getInstance().getRenderManager().addCamera(presCamera);
+    SceneManager::getInstance().getRenderManager().addCamera(uiCamera);
+
+    SceneManager::getInstance().addRootNode(presCamera);
+    SceneManager::getInstance().addRootNode(uiCamera);
 
     SearchPath searchPath;
     searchPath.rootDir = resDir.c_str();
@@ -538,7 +595,7 @@ void initResource()
     // TODO:
 //    moto->getMaterial()->getRenderState().setDepthTest(true);
 
-//    SceneManager::getInstance().addRootNode(motoRoot);
+    SceneManager::getInstance().addRootNode(motoRoot);
     black_box = black;
 
     assertDir = resDir + "Model/Man/";
@@ -622,6 +679,7 @@ void TestUI()
     patch->setContentSize(Size(200, 100));
     patch->rebind();
     patch->setPositionY(80);
+    patch->setAnchorPoint(Vec2(0.5, 0.5));
 
     ui->addChild(sprite);
     ui->addChild(patch);
@@ -639,11 +697,63 @@ void TestUI()
     ui->addChild(label);
     ui->addChild(label2);
 
-    Quat quat;
-    quat.fromAngles(Vec3(PI / 2.0f, 0, 0));
-    ui->setLocalRotation(quat);
-    float scale = 0.3f;
-    ui->setLocalScaling(Vec3(1.0f, 1.0f, 1.0f) * scale);
-    ui->setLocalTranslation(Vec3(-30, -100, 0));
-    SceneManager::getInstance().addRootNode(ui);
+//    Quat quat;
+//    quat.fromAngles(Vec3(PI / 2.0f, 0, 0));
+//    ui->setLocalRotation(quat);
+//    float scale = 0.3f;
+//    ui->setLocalScaling(Vec3(1.0f, 1.0f, 1.0f) * scale);
+//    ui->setLocalTranslation(Vec3(-30, -100, 0));
+//    SceneManager::getInstance().addRootNode(ui);
+
+    auto uiManager = CreateView<ui::UISceneManager>();
+    SceneManager::getInstance().addRootNode(uiManager);
+
+    std::shared_ptr<ISceneFactory> factory = std::make_shared<SceneFactory>();
+    uiManager->setSceneFactory(factory);
+
+    auto scene = uiManager->pushTo("Scene1");
+    auto window = scene->pushWindow("HelloWindow");
+    window->addChild(sprite);
+    window->addChild(patch);
+    window->addChild(label);
+    window->addChild(label2);
+
+    label->setContentSize(Size(200, 50));
+    label->setAnchorPoint(Vec2(0.5, 0.5));
+    label->setRotation(300);
+    label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
+
+    widget = patch;
+}
+
+
+std::shared_ptr<Window> WindowFactory::createView(const string& name)
+{
+    std::shared_ptr<Window> win = nullptr;
+    if (name == "HelloWindow") {
+        win = CreateView<Window>();
+    }
+
+    if (win) {
+        win->setName(name);
+    }
+
+    return win;
+}
+
+std::shared_ptr<Scene> SceneFactory::createView(const string& name)
+{
+    std::shared_ptr<Scene> scene = nullptr;
+    if (name == "Scene1") {
+        scene = CreateView<Scene>();
+    }
+
+    if (scene) {
+        std::shared_ptr<IWindowFactory> factory = std::make_shared<WindowFactory>();
+
+        scene->setName(name);
+        scene->setWindowFactory(factory);
+    }
+
+    return scene;
 }

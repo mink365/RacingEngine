@@ -72,7 +72,7 @@ bool NativeWindow::initView()
 
     glfwInit();
 
-    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
+//    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
 
     window = glfwCreateWindow(rect.size.width,
                                    rect.size.height,
@@ -114,6 +114,16 @@ void NativeWindow::bindEventHandler()
     glfwSetWindowPosCallback(window, GLFWEventHandler::onGLFWWindowPosCallback);
     glfwSetFramebufferSizeCallback(window, GLFWEventHandler::onGLFWframebuffersize);
     glfwSetWindowSizeCallback(window, GLFWEventHandler::onGLFWWindowSizeFunCallback);
+}
+
+void NativeWindow::setFrameSize(float width, float height)
+{
+    this->viewRect.set(0, 0, width, height);
+}
+
+Size NativeWindow::getFrameSize() const
+{
+    return this->viewRect.size;
 }
 
 bool NativeWindow::shouldClose()

@@ -48,6 +48,8 @@ typedef std::shared_ptr<Widget> WidgetPtr;
 
 class TouchEventListener : public Shared<TouchEventListener>
 {
+public:
+    TouchEventListener();
 
 public:
     std::function<bool(TouchEvent&, WidgetPtr)> onTouchDown;

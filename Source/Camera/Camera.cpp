@@ -139,6 +139,8 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
 void Camera::recalcViewMatrix()
 {
     this->viewMatrix.lookAt(this->worldMatrix.getTranslation(), this->center, this->up);
+
+    return;
 }
 
 void Camera::recalcProjectionMatrix()
@@ -157,6 +159,8 @@ void Camera::recalcProjectionMatrix()
 
 void Camera::onChange()
 {
+    this->updateTransform();
+
     this->recalcViewMatrix();
     this->recalcProjectionMatrix();
 }

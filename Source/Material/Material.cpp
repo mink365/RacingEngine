@@ -23,6 +23,11 @@ int Material::getQueueID() const
     return this->queueID;
 }
 
+void Material::setQueueID(int id)
+{
+    this->queueID = id;
+}
+
 RenderState& Material::getRenderState()
 {
     return renderState;

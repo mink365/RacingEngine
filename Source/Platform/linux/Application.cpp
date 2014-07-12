@@ -19,16 +19,21 @@ static long getCurrentMillSecond() {
 
 Application::Application()
 {
+    this->view = new NativeWindow();
 }
 
 void Application::run()
 {
-    NativeWindow* glfwWin = new NativeWindow();
+    NativeWindow* glfwWin = static_cast<NativeWindow*>(this->view);
     glfwWin->initView();
     glfwWin->bindEventHandler();
 
     GameHub& game = GameHub::getInstance();
     game.init();
+
+    if (!this->initEnvironment()) {
+        return;
+    }
 
     long lastTime, curTime, dt, oldTime;
     long _animationInterval = 1 / 60.0 * 1000;

@@ -26,4 +26,18 @@ TouchEventType TouchEvent::getType() const
     return this->type;
 }
 
+TouchEventListener::TouchEventListener()
+{
+    this->onTouchDown = [](TouchEvent&, WidgetPtr){return false;};
+    this->onTouchDownOutSide = [](TouchEvent&, WidgetPtr){};
+    this->onTouchMoveEnter = [](TouchEvent&, WidgetPtr){};
+    this->onTouchMoveInside = [](TouchEvent&, WidgetPtr){};
+    this->onTouchMoveOut = [](TouchEvent&, WidgetPtr){};
+    this->onTouchUpInside = [](TouchEvent&, WidgetPtr){};
+    this->onTouchUpOutside = [](TouchEvent&, WidgetPtr){};
+    this->onTouchCancle = [](TouchEvent&, WidgetPtr){};
+    this->onTouchStateChange = [](WidgetTouchState oldTouchState, WidgetTouchState newTouchState,
+            TouchEvent& event, WidgetPtr widget){};
+}
+
 } // namespace re

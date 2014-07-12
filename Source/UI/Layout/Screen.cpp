@@ -2,62 +2,63 @@
 
 namespace re {
 
-const float Screen::DESIGN_WIDTH = 614.0f;
-const float Screen::DESIGN_HEIGHT = 1024.0f;
-const float Screen::MIN_ASPECT_RATIO = 640 / 960.0;
-
-void Screen::init(float screenWidth, float screenHeight) {
-    _realWidth = screenWidth;
-    _realHeight = screenHeight;
+void Screen::setRealFrameSize(float screenWidth, float screenHeight) {
+    _realSize.width = screenWidth;
+    _realSize.height = screenHeight;
     _finalScale = 1;
 
-    float scaleX = screenWidth / DESIGN_WIDTH;
-    float scaleY = screenHeight / DESIGN_HEIGHT;
+    float scaleX = screenWidth / _designSize.width;
+    float scaleY = screenHeight / _designSize.height;
 
-    if (screenHeight / screenWidth > DESIGN_HEIGHT / DESIGN_WIDTH) {
+    if (screenHeight / screenWidth > _designSize.height / _designSize.width) {
         _finalScale = scaleX;
     } else {
         _finalScale = scaleY;
     }
 
-    _scaledDesignWidth = screenWidth / _finalScale;
-    _scaledDesignHeight = screenHeight / _finalScale;
+    _scaledSize.width = _realSize.width / _finalScale;
+    _scaledSize.height = _realSize.height / _finalScale;
 
-    _fitScreenScaleX = _scaledDesignWidth / DESIGN_WIDTH;
-    _fitScreenScaleY = _scaledDesignHeight / DESIGN_HEIGHT;
+    _fitScreenScale.x = _scaledSize.width / _designSize.width;
+    _fitScreenScale.y = _scaledSize.height / _designSize.height;
 }
 
 float Screen::getFinalScale() const {
     return _finalScale;
 }
 
+void Screen::setDesignSize(float width, float height)
+{
+    this->_designSize.width = width;
+    this->_designSize.height = height;
+}
+
+void Screen::setRealFrameSize(const Size &size)
+{
+    this->setRealFrameSize(size.width, size.height);
+}
+
 float Screen::getWidth() const {
-    return _realWidth;
+    return _scaledSize.width;
 }
 
 float Screen::getHeight() const {
-    return _realHeight;
+    return _scaledSize.height;
 }
 
-Size Screen::getSize() const
+const Size &Screen::getSize() const
 {
-    return Size(_realWidth, _realHeight);
+    return _scaledSize;
 }
 
-float Screen::getScaledDesignedWidth() const {
-    return _scaledDesignWidth;
+const Size &Screen::getRealSize() const
+{
+    return this->_realSize;
 }
 
-float Screen::getScaledDesignedHeight() const {
-    return _scaledDesignHeight;
-}
-
-float Screen::getFitScreenScaleX() const {
-    return _fitScreenScaleX;
-}
-
-float Screen::getFitScreenScaleY() const {
-    return _fitScreenScaleY;
+const Vec2 &Screen::getFitScreenScale() const
+{
+    return this->_fitScreenScale;
 }
 
 }
