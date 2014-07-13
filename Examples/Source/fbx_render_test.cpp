@@ -25,6 +25,8 @@
 #include "UI/Manager/UISceneManager.h"
 #include "UI/Window.h"
 #include "UI/Scene.h"
+#include "UI/Widget/Button.h"
+#include "Message/MessageManager.h"
 #include "Render/RenderQueue.h"
 
 #include "Platform/GameHub.h"
@@ -62,6 +64,8 @@ void FBXTestApp::onExitForeground()
 bool inited = false;
 void update(long dt) {
     if (inited) {
+        MessageManager::getInstance()->handleMessages();
+
         updateMatrix(false);
     } else {
         initResource();
@@ -697,6 +701,9 @@ void TestUI()
     ui->addChild(label);
     ui->addChild(label2);
 
+    auto button = CreateView<ImageButton>();
+    button->initView("rate.png", "rate_press.png", "rate.png");
+
 //    Quat quat;
 //    quat.fromAngles(Vec3(PI / 2.0f, 0, 0));
 //    ui->setLocalRotation(quat);
@@ -707,6 +714,7 @@ void TestUI()
 
     auto uiManager = CreateView<ui::UISceneManager>();
     SceneManager::getInstance().addRootNode(uiManager);
+    MessageManager::getInstance()->addHandler(uiManager.get());
 
     std::shared_ptr<ISceneFactory> factory = std::make_shared<SceneFactory>();
     uiManager->setSceneFactory(factory);
@@ -717,6 +725,9 @@ void TestUI()
     window->addChild(patch);
     window->addChild(label);
     window->addChild(label2);
+    window->addChild(button);
+
+    LayoutUtil::layoutParentCenter(button);
 
     label->setContentSize(Size(200, 50));
     label->setAnchorPoint(Vec2(0.5, 0.5));
