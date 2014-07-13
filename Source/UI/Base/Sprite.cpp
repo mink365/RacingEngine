@@ -39,6 +39,8 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 {
     this->frame = tex;
     this->rect = rect;
+
+    this->setContentSize(rect.size);
 }
 
 NodePtr Sprite::createCloneInstance() const
@@ -52,6 +54,7 @@ void Sprite::copyProperties(const Node *node)
 
     const Sprite* inst = dynamic_cast<const Sprite*>(node);
     if (inst) {
+        this->frame = inst->frame;
         this->rect = inst->rect;
     }
 }

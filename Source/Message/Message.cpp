@@ -69,7 +69,7 @@ int Message::getId()
     return this->id;
 }
 
-const void *Message::getData() const
+void *Message::getData()
 {
     return this->data.get();
 }

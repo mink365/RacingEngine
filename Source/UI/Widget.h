@@ -39,7 +39,7 @@ public:
     void setBlockTouch(bool value);
 
 public:
-    bool onTouchEvent(TouchEvent& event);
+    virtual bool onTouchEvent(TouchEvent& event);
     
 protected:
     bool emitWidgetTouchEvent(WidgetTouchState oldState, WidgetTouchState newState, TouchEvent& event);

@@ -5,11 +5,25 @@
 
 #include "Math/BoundingVolume.h"
 #include <string>
+#include "UI/TouchEvent.h"
+#include "Message/MessageManager.h"
+#include "Message/MessageConstant.h"
 
 namespace re {
 
+static bool _captured;
+static float _mouseX, _mouseY;
+
+static NativeWindow* nativeView;
+
 class GLFWEventHandler
 {
+//private:
+//    static bool _captured;
+//    static float _mouseX, _mouseY;
+
+//    static NativeWindow* nativeView;
+
 public:
     static void onGLFWError(int errorID, const char* errorDesc)
     {
@@ -18,11 +32,36 @@ public:
 
     static void onGLFWMouseCallBack(GLFWwindow* window, int button, int action, int modify)
     {
-
+        if(GLFW_MOUSE_BUTTON_LEFT == button)
+        {
+            if(GLFW_PRESS == action)
+            {
+                _captured = true;
+                if (getViewPortRect().containsPoint(Vec2(_mouseX,_mouseY)))
+                {
+                    dispatchTouchEvent(TouchEventType::DOWN, _mouseX, _mouseY);
+                }
+            }
+            else if(GLFW_RELEASE == action)
+            {
+                if (_captured)
+                {
+                    _captured = false;
+                    dispatchTouchEvent(TouchEventType::UP, _mouseX, _mouseY);
+                }
+            }
+        }
     }
 
     static void onGLFWMouseMoveCallBack(GLFWwindow* window, double x, double y)
     {
+        _mouseX = (float)x;
+        _mouseY = (float)y;
+
+        if (_captured)
+        {
+            dispatchTouchEvent(TouchEventType::MOVE, _mouseX, _mouseY);
+        }
 
     }
 
@@ -55,6 +94,22 @@ public:
     {
 
     }
+
+private:
+    static const Rect& getViewPortRect() {
+        return nativeView->viewRect;
+    }
+
+    static void dispatchTouchEvent(TouchEventType type, float x, float y) {
+        auto event = std::make_shared<TouchEvent>();
+
+        const Rect& rect = getViewPortRect();
+
+        event->setInfo(type, x - rect.origin.x,
+                       rect.size.height - (y - rect.origin.y));
+
+        MessageManager::getInstance()->sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
+    }
 };
 
 NativeWindow::NativeWindow()
@@ -72,7 +127,7 @@ bool NativeWindow::initView()
 
     glfwInit();
 
-//    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
 
     window = glfwCreateWindow(rect.size.width,
                                    rect.size.height,
@@ -80,6 +135,8 @@ bool NativeWindow::initView()
                                    _monitor,
                                    nullptr);
     glfwMakeContextCurrent(window);
+
+    nativeView = this;
 
     this->bindEventHandler();
 

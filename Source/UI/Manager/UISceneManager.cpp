@@ -40,7 +40,14 @@ void UISceneManager::setSceneFactory(std::shared_ptr<ISceneFactory> &factory) {
 }
 
 void UISceneManager::handleMessage(Message *message) {
-    LogicalScene::handleMessage(message);
+//    LogicalScene::handleMessage(message);
+
+    if (message->getType() == MessageConstant::MessageType::TOUCHSCREEN_MESSAGE) {
+        TouchEvent* event = static_cast<TouchEvent*>(message->getData());
+
+        event->setCurrPoint(event->getPoint() / Screen::getInstance().getFinalScale());
+        this->dispatchTouchEvent(*event);
+    }
 }
 
 void UISceneManager::addWidgets() {

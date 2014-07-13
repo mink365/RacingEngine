@@ -8,6 +8,17 @@ BaseButton::BaseButton()
 {
 }
 
+bool BaseButton::init()
+{
+    if (!Widget::init()) {
+        return false;
+    }
+
+    this->initTouchListener();
+
+    return true;
+}
+
 void BaseButton::switchState(WidgetState newState)
 {
     if (this->state == newState) {
@@ -46,6 +57,8 @@ void BaseButton::initTouchListener()
 
             this->isTouchDown = false;
         }
+
+        this->switchState(WidgetState::DEFAULT);
     };
 
     listener->onTouchUpOutside = [&](TouchEvent& event, WidgetPtr widget) {
@@ -59,6 +72,13 @@ void BaseButton::initTouchListener()
 
         this->isTouchDown = false;
     };
+
+    this->_onTouchListeners.push_back(listener);
+}
+
+bool BaseButton::onTouchEvent(TouchEvent &event)
+{
+    return Widget::onTouchEvent(event);
 }
 
 NodePtr BaseButton::createCloneInstance() const
@@ -75,6 +95,29 @@ void BaseButton::copyProperties(const Node *node)
         this->isTouchDown = false;
         this->touchDownTime = 0;
     }
+}
+
+void ImageButton::initView(const string &texDefault, const string &texPress, const string &texDis)
+{
+    this->defaultSprite = std::make_shared<Sprite>(texDefault);
+    this->pressedSprite = std::make_shared<Sprite>(texPress);
+    this->disabledSprite = std::make_shared<Sprite>(texDis);
+
+    this->defaultSprite->rebind();
+    this->pressedSprite->rebind();
+    this->disabledSprite->rebind();
+
+    this->setContentSize(this->defaultSprite->getContentSize());
+
+    this->addChild(defaultSprite);
+    this->addChild(pressedSprite);
+    this->addChild(disabledSprite);
+
+    this->defaultSprite->setVisible(true);
+    this->pressedSprite->setVisible(false);
+    this->disabledSprite->setVisible(false);
+
+    this->switchState(WidgetState::DEFAULT);
 }
 
 void ImageButton::switchState(WidgetState newState)

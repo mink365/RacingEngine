@@ -26,7 +26,7 @@ public:
     int getType();
     int getId();
 
-    const void* getData() const;
+    void *getData();
 
 protected:
     Message();

@@ -31,6 +31,8 @@ class TouchEvent
 public:
     TouchEvent();
 
+    void setInfo(TouchEventType type, float x, float y);
+
     const Vec2& getCurrPoint() const;
     void setCurrPoint(const Vec2& v);
 

@@ -1,4 +1,4 @@
-#ifndef RE_NATIVEWINDOW_H
+﻿#ifndef RE_NATIVEWINDOW_H
 #define RE_NATIVEWINDOW_H
 
 #include "Math/BoundingVolume.h"
@@ -10,6 +10,8 @@ namespace re {
 
 class NativeWindow : public NativeView
 {
+    friend class GLFWEventHandler;
+
 public:
     NativeWindow();
 

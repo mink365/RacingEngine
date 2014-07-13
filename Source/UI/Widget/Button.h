@@ -18,9 +18,13 @@ class BaseButton : public Widget
 public:
     BaseButton();
 
+    virtual bool init();
+
     virtual void switchState(WidgetState newState);
 
     virtual void initTouchListener();
+
+    virtual bool onTouchEvent(TouchEvent& event);
 
 protected:
     virtual NodePtr createCloneInstance() const;
@@ -36,6 +40,8 @@ protected:
 class ImageButton : public BaseButton
 {
 public:
+    virtual void initView(const string& texDefault, const string& texPress, const string& texDis);
+
     virtual void switchState(WidgetState newState);
 
 protected:

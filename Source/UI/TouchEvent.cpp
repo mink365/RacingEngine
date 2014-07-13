@@ -6,6 +6,12 @@ TouchEvent::TouchEvent()
 {
 }
 
+void TouchEvent::setInfo(TouchEventType type, float x, float y)
+{
+    this->type = type;
+    this->point.set(x, y);
+}
+
 const Vec2 &TouchEvent::getCurrPoint() const
 {
     return this->curr;
@@ -32,6 +38,7 @@ TouchEventListener::TouchEventListener()
     this->onTouchDownOutSide = [](TouchEvent&, WidgetPtr){};
     this->onTouchMoveEnter = [](TouchEvent&, WidgetPtr){};
     this->onTouchMoveInside = [](TouchEvent&, WidgetPtr){};
+    this->onTouchMoveOutside = [](TouchEvent&, WidgetPtr){};
     this->onTouchMoveOut = [](TouchEvent&, WidgetPtr){};
     this->onTouchUpInside = [](TouchEvent&, WidgetPtr){};
     this->onTouchUpOutside = [](TouchEvent&, WidgetPtr){};
