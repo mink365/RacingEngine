@@ -10,9 +10,9 @@
 
 namespace re {
 
-//void PrintVector(Vec3 *v) {
-//    std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
-//}
+inline void PrintVector(Vec3 *v) {
+    std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
+}
 
 template <typename T>
 void PrintArray(std::string head, T *value, int count, int split) {
