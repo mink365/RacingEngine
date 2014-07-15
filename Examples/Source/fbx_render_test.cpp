@@ -30,6 +30,12 @@
 #include "Render/RenderQueue.h"
 
 #include "Platform/GameHub.h"
+#include "Util/TypeUtil.h"
+#include "TweenManager.h"
+#include "Tween.h"
+#include "Timeline.h"
+
+using namespace TweenEngine;
 
 std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 
@@ -387,10 +393,13 @@ SkeletonControllerPtr manController;
 float y = 0, z = 0, zV = 1, rotation = 0;
 
 CameraPtr presCamera;
+TweenEngine::TweenManager* tweenManager = new TweenEngine::TweenManager();
 
 // blocks切换的次数记录
 int block_index = 0;
 void updateMatrix(bool isAnim) {
+    tweenManager->update(1 / 50.0);
+
     if (isAnim) {
         rotation += 40.0 / (1000 / 60);
 
@@ -440,7 +449,7 @@ void updateMatrix(bool isAnim) {
         rotation = 0;
     }
 
-    widget->setRotation(rotation * 20);
+//    widget->setRotation(rotation * 20);
 
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
@@ -667,6 +676,39 @@ void TestFont()
     SceneManager::getInstance().addRootNode(box);
 }
 
+template<typename T, typename S>
+bool IsBaseOf(T t, S t2) {
+    bool result = is_base_of<T, S>();
+
+//    auto identity = [](decltype(t) t){ return t;};
+//    std::cout << identity(t) << std::endl;
+
+    return result;
+}
+
+void func(std::shared_ptr<void> obj) {
+
+}
+
+void TestFunction() {
+    Node* p = nullptr;
+    Window* w = nullptr;
+
+    std::shared_ptr<void> pp = std::make_shared<Node>();
+
+    std::function<void(std::shared_ptr<void>)> ff = &(func);
+
+    auto delat = CreateIt<Window>(w, [](Window* obj, int type, int key){
+        int t = type;
+        int k = key;
+    });
+
+    std::map<int, MyFunctionDecl> map;
+    map[3] = delat;
+
+    (*map[3])(3, 7);
+}
+
 void TestUI()
 {
     SceneNodePtr ui = std::make_shared<SceneNode>();
@@ -676,13 +718,13 @@ void TestUI()
 
     SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
     sprite->rebind();
-    sprite->setPositionY(200);
+    sprite->setPosition(Vec2(300, 300 + 200));
 
     NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(200, 100));
     patch->rebind();
-    patch->setPositionY(80);
+    patch->setPosition(Vec2(300, 300 + 80));
     patch->setAnchorPoint(Vec2(0.5, 0.5));
 
     ui->addChild(sprite);
@@ -696,7 +738,7 @@ void TestUI()
     label2->init(font);
     label2->setText("xHtbo xx");
 
-    label2->setPositionY(40);
+    label2->setPosition(Vec2(300, 300 + 40));
 
     ui->addChild(label);
     ui->addChild(label2);
@@ -727,6 +769,8 @@ void TestUI()
     window->addChild(label2);
     window->addChild(button);
 
+//    window->setPosition(Vec2(300, 300));
+
     LayoutUtil::layoutParentCenter(button);
 
     label->setContentSize(Size(200, 50));
@@ -734,9 +778,78 @@ void TestUI()
     label->setRotation(300);
     label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
 
-    widget = patch;
-}
+    int Node2dRotateType = 1;
 
+    Tween::registerAccessor(Node2dRotateType, [=](std::shared_ptr<void> obj, int tweenType, int cmd, float *values)->int
+    {
+//        Node* p = nullptr;
+        // TODO: void* can't use dynamic_cast?
+//        Node* n = dynamic_cast<Node*>(p);
+
+//        std::shared_ptr<Node2d> node = std::dynamic_pointer_cast<Node2d>(obj);
+        Node2d* node = (Node2d*)(obj.get());
+
+        if (cmd == Tween::ACCESSOR_WRITE) {
+            if (tweenType == Node2dRotateType) {
+                node->setRotation(values[0]);
+            }
+        } else if (cmd == Tween::ACCESSOR_READ) {
+            if (tweenType == Node2dRotateType) {
+                values[0] = node->getRotation();
+            }
+        }
+
+        return 1;
+    });
+    Tween::to(label, Node2dRotateType, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
+
+    Timeline::createSequence()
+        // First, set all objects to their initial positions
+        .push(Tween::set(sprite, Node2dRotateType).target(10))
+        .push(Tween::set(label2, Node2dRotateType).target(20))
+        .push(Tween::set(patch, Node2dRotateType).target(30))
+
+        // Wait 1s
+        .pushPause(1.0f)
+
+        // Move the objects around, one after the other
+        .push(Tween::to(sprite, Node2dRotateType, 1.0).target(90))
+        .push(Tween::to(label2, Node2dRotateType, 2.0).target(90))
+        .push(Tween::to(patch, Node2dRotateType, 1.0).target(90))
+
+        // Then, move the objects around at the same time
+        .beginParallel()
+            .push(Tween::to(sprite, Node2dRotateType, 1.0).target(180))
+            .push(Tween::to(label2, Node2dRotateType, 1.0).target(160))
+            .push(Tween::to(patch, Node2dRotateType, 1.0).target(150))
+        .end()
+
+        // And repeat the whole sequence 2 times
+        // with a 0.5s pause between each iteration
+        .repeatYoyo(5, 0.5f)
+
+        // Let's go!
+        .start(*tweenManager);
+
+    widget = patch;
+
+    Node2d* p = new Node2d();
+    Node* b = label.get();
+    Node* c = dynamic_cast<Label*>(b);
+
+    const type_info& t = typeid(Node);
+    bool rv = t.__do_catch(&t, (void**)&b, 0);
+//    t.__do_upcast();
+
+    bool r = std::is_base_of<Node, Node2d>();
+    bool v = __is_base_of(Node, Node2d);
+
+    bool result = IsBaseOf(window, label);
+
+    bool test = IsBaseOf(window.get(), typeid(Node), typeid(TextureAtlas));
+
+    return;
+}
 
 std::shared_ptr<Window> WindowFactory::createView(const string& name)
 {

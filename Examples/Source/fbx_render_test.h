@@ -41,6 +41,23 @@ void updateMatrix(bool isAnim);
 void TestFont();
 void TestUI();
 
+typedef std::function<void(int type, int key)> MyFunc;
+typedef std::shared_ptr<MyFunc > MyFunctionDecl;
+
+template <class Functor>
+MyFunctionDecl CreateDelegate(Functor f) {
+    return MyFunctionDecl(new std::function<void(int)>(f));
+}
+
+template <class T>
+MyFunctionDecl CreateIt(T* obj, std::function<void(T*, int, int)> func) {
+    std::function<void(int, int)> f = [=](int type, int key){
+        func(obj, type, key);
+    };
+
+    return MyFunctionDecl(new std::function<void(int, int)>(f));
+}
+
 class WindowFactory : public IWindowFactory
 {
 public:
