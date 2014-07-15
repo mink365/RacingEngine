@@ -34,6 +34,7 @@
 #include "TweenManager.h"
 #include "Tween.h"
 #include "Timeline.h"
+#include "Util/PredefineTweenAccessor.h"
 
 using namespace TweenEngine;
 
@@ -778,50 +779,30 @@ void TestUI()
     label->setRotation(300);
     label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
 
-    int Node2dRotateType = 1;
 
-    Tween::registerAccessor(Node2dRotateType, [=](std::shared_ptr<void> obj, int tweenType, int cmd, float *values)->int
-    {
-//        Node* p = nullptr;
-        // TODO: void* can't use dynamic_cast?
-//        Node* n = dynamic_cast<Node*>(p);
+    PredefineTweenAccessor::registerAccessor();
 
-//        std::shared_ptr<Node2d> node = std::dynamic_pointer_cast<Node2d>(obj);
-        Node2d* node = (Node2d*)(obj.get());
-
-        if (cmd == Tween::ACCESSOR_WRITE) {
-            if (tweenType == Node2dRotateType) {
-                node->setRotation(values[0]);
-            }
-        } else if (cmd == Tween::ACCESSOR_READ) {
-            if (tweenType == Node2dRotateType) {
-                values[0] = node->getRotation();
-            }
-        }
-
-        return 1;
-    });
-    Tween::to(label, Node2dRotateType, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
+    Tween::to(label, FlatNodeAccessor::POSITION_X, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
 
     Timeline::createSequence()
         // First, set all objects to their initial positions
-        .push(Tween::set(sprite, Node2dRotateType).target(10))
-        .push(Tween::set(label2, Node2dRotateType).target(20))
-        .push(Tween::set(patch, Node2dRotateType).target(30))
+        .push(Tween::set(sprite, FlatNodeAccessor::ROTATION).target(10))
+        .push(Tween::set(label2, FlatNodeAccessor::ROTATION).target(20))
+        .push(Tween::set(patch, FlatNodeAccessor::ROTATION).target(30))
 
         // Wait 1s
         .pushPause(1.0f)
 
         // Move the objects around, one after the other
-        .push(Tween::to(sprite, Node2dRotateType, 1.0).target(90))
-        .push(Tween::to(label2, Node2dRotateType, 2.0).target(90))
-        .push(Tween::to(patch, Node2dRotateType, 1.0).target(90))
+        .push(Tween::to(sprite, FlatNodeAccessor::ROTATION, 1.0).target(90))
+        .push(Tween::to(label2, FlatNodeAccessor::ROTATION, 2.0).target(90))
+        .push(Tween::to(patch, FlatNodeAccessor::ROTATION, 1.0).target(90))
 
         // Then, move the objects around at the same time
         .beginParallel()
-            .push(Tween::to(sprite, Node2dRotateType, 1.0).target(180))
-            .push(Tween::to(label2, Node2dRotateType, 1.0).target(160))
-            .push(Tween::to(patch, Node2dRotateType, 1.0).target(150))
+            .push(Tween::to(sprite, FlatNodeAccessor::ROTATION, 1.0).target(180))
+            .push(Tween::to(label2, FlatNodeAccessor::ROTATION, 1.0).target(160))
+            .push(Tween::to(patch, FlatNodeAccessor::ROTATION, 1.0).target(150))
         .end()
 
         // And repeat the whole sequence 2 times
