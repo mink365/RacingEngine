@@ -1,0 +1,3 @@
+[submodule "Source/External/universal-tween-engine-cpp"]
+	path = Source/External/universal-tween-engine-cpp
+	url = https://github.com/mink365/universal-tween-engine-cpp.git
