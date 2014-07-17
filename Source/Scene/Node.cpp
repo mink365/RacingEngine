@@ -196,6 +196,15 @@ void Node::removeChild(NodePtr node)
     }
 }
 
+void Node::removeAllChildren()
+{
+    for (auto child : children) {
+        child->parent.reset();
+    }
+
+    this->children.clear();
+}
+
 NodePtr Node::clone() const
 {
     NodePtr cloned = this->createCloneInstance();

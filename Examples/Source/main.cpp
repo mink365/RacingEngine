@@ -1,11 +1,11 @@
 
-#include "fbx_render_test.h"
+#include "FeatureTestsApp.h"
 
 using namespace re;
 
 int main (int argc, char* argv[])
 {
-    FBXTestApp* app = new FBXTestApp();
+    Application* app = new FeatureTestsApp();
     app->run();
 
     return 0;

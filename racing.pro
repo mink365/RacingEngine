@@ -15,9 +15,7 @@ DEFINES += _LINUX
 
 SOURCES += \
     $$system("find Source/ -name '*.cpp'") \
-#    $$system("find Examples/ -name '*.cpp'") \
-    Examples/Source/fbx_render_test.cpp \
-    Examples/Source/main.cpp \
+    $$system("find Examples/ -name '*.cpp'") \
 
 SOURCES -= \
 #    Source/Animation/Animation.cpp
@@ -31,5 +29,6 @@ HEADERS += \
 INCLUDEPATH += \
     Source/ \
     Source/External/universal-tween-engine-cpp/ \
+    Examples/Source/ \
 
 INCLUDEPATH += "/usr/include/freetype2/"
