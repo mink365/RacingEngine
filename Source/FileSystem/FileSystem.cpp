@@ -57,15 +57,27 @@ FileList FileSystem::listFilesTree(const std::string &relativePath, const std::s
     return list;
 }
 
-FilePtr FileSystem::openFile(const std::string &path, fsMode mode)
+FilePtr FileSystem::openFile(const std::string &relativePath, fsMode mode)
 {
     // TODO: search and check it in android assert or osPath
+    for (auto search : this->searchPaths) {
+        if ( search.type == SearchPathType::Permanent ) {
+            std::string netpath = BuildOSPath( search.rootDir, relativePath );
 
-    FilePtr file = this->CreateFile(path, FileType::Permanent);
+            FILE* fp = this->OpenOSFile(netpath.c_str(), "rw");
+            if ( !fp ) {
+                continue;
+            }
 
-    this->openFile(file, mode);
+            FilePtr file = this->CreateFile(netpath, FileType::Permanent);
 
-    return file;
+            this->openFile(file, mode);
+
+            return file;
+        }
+    }
+
+    return nullptr;
 }
 
 void FileSystem::openFile(FilePtr &file, fsMode mode)
@@ -135,7 +147,7 @@ void FileSystem::GetExtensionList(const std::string& extension, StrList &extensi
 
 int FileSystem::GetFileList(const std::string &relativePath, const StrList &extensions, FileList &list, StrList* directories)
 {
-    if ( searchPaths.size() ) {
+    if ( !searchPaths.size() ) {
 //        common->FatalError( "Filesystem call made without initialization\n" );
     }
 

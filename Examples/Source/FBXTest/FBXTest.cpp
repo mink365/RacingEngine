@@ -1,6 +1,6 @@
 #include "FBXTest.h"
 
-#include "Tools/ModelLoader/fbx/FbxParser.h"
+#include "ModelLoader/fbx/FbxParser.h"
 #include "Animation/SkeletonController.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
@@ -25,8 +25,7 @@ void FBXTest::Init()
 
     FbxParser *parser = new FbxParser();
 
-    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
-    std::string assertDir = resDir + "Model/PAD/";
+    std::string assertDir = "Model/PAD/";
 
     FilePtr file = FileSystem::getInstance().openFile((assertDir + "black.data"));
     parser->parse(file);
@@ -38,7 +37,7 @@ void FBXTest::Init()
     SceneNodePtr wall = parser->getNodes()[0];
     SceneNodePtr floor = parser->getNodes()[1];
 
-    assertDir = resDir + "Model/Moto/";
+    assertDir = "Model/Moto/";
 
     TextureParser::getInstance().addTextures("Model/Moto/", "png|jpg");
     TextureParser::getInstance().addTextures("Model/Man/", "png|jpg");
@@ -91,7 +90,7 @@ void FBXTest::Init()
     rootNode->addChild(motoRoot);
     black_box = black;
 
-    assertDir = resDir + "Model/Man/";
+    assertDir = "Model/Man/";
     parser->parse(assertDir + "group_girl.data");
     manController = parser->getSkeletonController("girl");
 

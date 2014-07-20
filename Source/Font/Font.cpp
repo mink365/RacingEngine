@@ -2,19 +2,14 @@
 
 namespace re {
 
-Font::Font(Int size, const char *filename)
+Font::Font(Int size, const FilePtr &file)
 {
-    this->type = FontType::File;
-
     this->size = size;
-    this->filename = strdup(filename);
+    this->file = file;
 }
 
 Font::~Font()
 {
-    if (type == FontType::File && this->filename) {
-        free( this->filename );
-    }
 }
 
 Glyph::constPtr Font::getGlyph(const wchar_t &c) const
@@ -35,11 +30,6 @@ void Font::addGlyph(Glyph::ptr &glyph)
 Int Font::getSize() const
 {
     return size;
-}
-
-FontType Font::getType() const
-{
-    return type;
 }
 
 const std::map<wchar_t, Glyph::ptr> &Font::getAllGlyphs()

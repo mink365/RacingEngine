@@ -34,7 +34,7 @@ public:
     FileList listFiles(const std::string& relativePath, const std::string& extension="", bool sort=false, bool fullRelativePath=false);
     FileList listFilesTree(const std::string& relativePath, const std::string& extension="", bool sort=false);
 
-    FilePtr openFile(const std::string& path, fsMode mode=fsMode::Read);
+    FilePtr openFile(const std::string& relativePath, fsMode mode=fsMode::Read);
     void openFile(FilePtr &file, fsMode mode=fsMode::Read);
     void closeFile(ConstFilePtr& file);
 

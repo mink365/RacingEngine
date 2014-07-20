@@ -5,6 +5,7 @@
 #include FT_LCD_FILTER_H
 
 #include "FreeTypeUtil.h"
+#include "FileSystem/File.h"
 
 namespace re {
 
@@ -43,15 +44,9 @@ static int LoadFace(Font::ptr& font, float size, FT_Library *library, FT_Face *f
     }
 
     /* Load face */
-    switch (font->getType()) {
-    case FontType::File:
-        error = FT_New_Face(*library, font->filename, 0, face);
-        break;
-
-    case FontType::Memory:
-        error = FT_New_Memory_Face(*library, (const FT_Byte*)font->memory.base, font->memory.size, 0, face);
-        break;
-    }
+    // TODO: read every time? or cache the data?
+    Buffer::ptr buf = font->file->read();
+    error = FT_New_Memory_Face(*library, (const FT_Byte*)buf->getData(), buf->getSize(), 0, face);
 
     if(error) {
         fprintf(stderr, "FT_Error (line %d, code 0x%02x) : %s\n",

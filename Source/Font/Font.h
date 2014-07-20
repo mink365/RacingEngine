@@ -7,15 +7,10 @@
 
 namespace re {
 
-enum class FontType {
-    File,
-    Memory
-};
-
 class Font : public Named, public Shared<Font>
 {
 public:
-    Font(Int size, const char * filename);
+    Font(Int size, const FilePtr& file);
 
     ~Font();
 
@@ -24,7 +19,6 @@ public:
     void addGlyph(Glyph::ptr& glyph);
 
     Int getSize() const;
-    FontType getType() const;
 
     const std::map<wchar_t, Glyph::ptr>& getAllGlyphs();
 
@@ -44,23 +38,9 @@ protected:
      * font size
      */
     Int size;
-    FontType type;
 
 public:
-    union {
-        /**
-         * Font filename, for when location == TEXTURE_FONT_FILE
-         */
-        char *filename;
-
-        /**
-         * Font memory address, for when location == TEXTURE_FONT_MEMORY
-         */
-        struct {
-            const void *base;
-            size_t size;
-        } memory;
-    };
+    FilePtr file;
 };
 
 }

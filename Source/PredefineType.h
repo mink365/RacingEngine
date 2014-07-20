@@ -21,6 +21,7 @@ class Camera;
 class Light;
 
 class File;
+class Buffer;
 
 class Sprite;
 class Label;
@@ -45,6 +46,8 @@ typedef std::shared_ptr<Light> LightPtr;
 
 typedef std::shared_ptr<File> FilePtr;
 typedef std::shared_ptr<const File> ConstFilePtr;
+typedef std::shared_ptr<Buffer> BufferPtr;
+typedef std::shared_ptr<const Buffer> ConstBufferPtr;
 
 typedef std::shared_ptr<Sprite> SpritePtr;
 typedef std::shared_ptr<NinePatch> NinePatchPtr;

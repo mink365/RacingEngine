@@ -5,6 +5,7 @@
 #include "Font/TextureAtlas.h"
 #include "Font/FreeTypeUtil.h"
 #include "ShapeGenerater.h"
+#include "FileSystem/FileSystem.h"
 
 FontTest::FontTest()
 {
@@ -12,11 +13,10 @@ FontTest::FontTest()
 
 std::shared_ptr<TextureAtlas> CreateDefaultFont()
 {
-    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+    auto fontFile = "Fonts/ObelixPro.ttf";
+    FilePtr file = FileSystem::getInstance().openFile(fontFile);
 
-    auto fontFile = resDir + "Fonts/ObelixPro.ttf";
-
-    auto font = std::make_shared<Font>(128, fontFile.c_str());
+    auto font = std::make_shared<Font>(128, file);
     font->setName("default");
     FontManager::getInstance().registerFont(font);
 

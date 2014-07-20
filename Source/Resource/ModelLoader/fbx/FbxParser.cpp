@@ -1,5 +1,5 @@
 #include "FbxParser.h"
-#include "Tools/ModelLoader/ReadCommon.h"
+#include "ModelLoader/ReadCommon.h"
 #include "Math/Vector.h"
 #include "Scene/Node.h"
 #include "Animation/Animation.h"
@@ -12,6 +12,7 @@
 #include "Texture/TextureManager.h"
 #include "Util/ContainerUtil.h"
 #include "Base/Buffer.h"
+#include "FileSystem/FileSystem.h"
 
 namespace re {
 
@@ -22,12 +23,10 @@ FbxParser::FbxParser()
 
 void FbxParser::parse(const string &path)
 {
-    std::ifstream filestr;
-    filestr.open(path.c_str(), ios::binary);
+    FilePtr file = FileSystem::getInstance().openFile(path);
+    Buffer::ptr buf = file->read();
 
-    this->parseStream(&filestr);
-
-    filestr.close();
+    this->parseData(buf->getData(), buf->getSize());
 }
 
 void FbxParser::parse(FilePtr &file)

@@ -28,6 +28,9 @@ HEADERS += \
 
 INCLUDEPATH += \
     Source/ \
+    Source/Render \
+    Source/Scene \
+    Source/Resource \
     Source/External/universal-tween-engine-cpp/ \
     Examples/Source/ \
 

@@ -63,7 +63,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<UITest>());
     this->tests.push_back(test);
 
-    currIndex = 2;
+    currIndex = 1;
     this->onCurrentTestChanged();
 }
 
@@ -168,7 +168,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 }
 
 Camera camera;
-int LoadShaderData(std::string name, std::string vs, std::string fs) {
+int LoadShaderData(const std::string& name, const std::string& vs, const std::string& fs) {
     Shader::ptr shader = Shader::create();
     shader->setName(name);
 
@@ -201,18 +201,11 @@ int LoadShaderData(std::string name, std::string vs, std::string fs) {
 // size of file returned in fSize
 std::string loadFile(const char *fname)
 {
-    std::ifstream file(fname);
-    if(!file.is_open())
-    {
-        std::cout << "Unable to open file " << fname << std::endl;
-        exit(1);
-    }
+    FilePtr file = FileSystem::getInstance().openFile(fname);
+    Buffer::ptr buf = file->read();
 
-    std::stringstream fileData;
-    fileData << file.rdbuf();
-    file.close();
-
-    return fileData.str();
+    string data((char*)(buf->getData()), buf->getSize());
+    return data;
 }
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs)
@@ -295,10 +288,7 @@ void FeatureTestsApp::initResources()
     searchPath.type = FileType::Permanent;
     FileSystem::getInstance().addSearchPath(searchPath);
 
-    std::string resDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
-
-    std::string shaderDir = resDir + "Shaders/";
-    std::string assertDir = resDir + "Model/PAD/";
+    std::string shaderDir = "Shaders/";
 
     LoadShader("Shader_Default",
                         shaderDir + "light.vert",
