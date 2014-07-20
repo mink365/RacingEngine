@@ -135,13 +135,13 @@ MeshPtr ShapeGenerater::CreateBox(float side, Texture::ptr texture)
         mesh->getGeometry()->addFace(f);
     }
 
-    TextureUnitState &unit = mesh->getMaterial()->getTexture();
-    unit.setUVstate(0, 0, 1, 1, 0);
+    TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+    unit->setUVstate(0, 0, 1, 1, 0);
 
     if (texture == nullptr) {
         texture = TextureManager::getInstance().getTexture("girl");
     }
-    unit.addTextureFrame(texture);
+    unit->addTextureFrame(texture);
 
     return mesh;
 }
