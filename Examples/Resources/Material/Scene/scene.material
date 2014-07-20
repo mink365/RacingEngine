@@ -1,0 +1,368 @@
+
+// 地表 32
+// 路面 33
+// 道路影子 40
+// 隔离带42
+// 植物与装饰一般超过50
+
+// 车体等 50 (默认)
+
+// TODO：材质继承能力。。。
+
+// 城市
+material xiaozhen_dimian {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material shandi1 {
+	queue_id 10
+	
+ 	transparent false
+ 	
+ 	depth_write false
+ 	depth_test false
+}
+
+material xiaozhen_lumian {
+	queue_id 33
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material shandi_paodao {
+	queue_id 33
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material shamo_paodao {
+	queue_id 33
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material suidao_lumian {
+	queue_id 33
+	
+ 	transparent false
+ 	depth_write false
+}
+
+material qita {
+	queue_id 33
+	
+ 	transparent false
+ 	depth_write false
+}
+
+material xiaozhen_dizhuan {
+	queue_id 40
+	
+ 	transparent false
+ 	depth_write false
+}
+
+material langan {
+	queue_id 56
+	
+ 	transparent true
+ 	depth_write false
+ 	depth_test false
+}
+
+material wa {
+	queue_id 54
+	
+ 	transparent false
+}
+
+material xiaozhen_touying {
+	queue_id 40
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shamo_zhiwu {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shandi_cao {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shandi_kushu {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shu {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shukeng {
+	queue_id 41
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material songshu1 {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material songshu2 {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material songshulin {
+	queue_id 64
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material loufang_huang {
+	queue_id 64
+	
+ 	transparent false
+}
+
+material aishu {
+	queue_id 64
+	
+ 	transparent true
+}
+
+// 路面
+material lumian-gelidai {
+	queue_id 44
+	
+ 	transparent false
+ 	
+// 	depth_write false
+}
+
+material lumian-youxiang {
+	queue_id 64
+	
+ 	transparent false
+}
+
+material chengshi_yingzi {
+	queue_id 40
+	
+ 	transparent true
+}
+
+material chengshi_dimian {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material shandi_shachehen {
+	queue_id 40
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material xuedi_shachehen {
+	queue_id 40
+	
+ 	transparent true
+ 	depth_write false
+ 	depth_test false
+}
+
+material shamotouying-shachehen {
+	queue_id 40
+	
+ 	transparent true
+ 	depth_write false
+}
+
+material shamo {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material xuedi {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+// 沙滩
+material shatan_yingzi {
+	queue_id 40
+	
+ 	transparent true
+ 	
+ 	depth_write false
+}
+
+material shatan {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material yeshu {
+	queue_id 64
+	
+ 	transparent true
+}
+
+// 枫树
+material fengshu_dimian {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material fengshutouying-shachehen {
+	queue_id 40
+	
+ 	transparent true
+ 	
+ 	depth_write false
+}
+
+material fengshuye {
+	queue_id 64
+	
+ 	transparent true
+ 	
+ 	depth_write false
+}
+
+// TODO:阳光和枫树的顺序。。
+material yangguang {
+	queue_id 64
+	
+ 	transparent true
+ 	
+ 	depth_write false
+}
+
+// 吊桥
+material diaoqiao_touying-shachehen {
+	queue_id 40
+	
+ 	transparent true
+ 	
+ 	depth_write false
+}
+
+material diaoqiao_paodao_gelidun {
+	queue_id 44
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+material diaoqiao {
+	queue_id 32
+	
+ 	transparent false
+ 	
+ 	depth_write true
+}
+
+material diaoqiao_shidun {
+	queue_id 31
+	
+ 	transparent false
+ 	
+ 	depth_write true
+}
+
+material haishui {
+	queue_id 30
+	
+ 	transparent false
+}
+
+// 石头
+material st {
+	queue_id 31
+	
+ 	transparent false
+}
+
+material haishui_shang {
+	queue_id 32
+	
+ 	transparent true
+ 	depth_write false
+}
+
+// 起点-终点
+material qidian-zhongdian {
+	queue_id 45
+	
+ 	transparent false
+ 	
+ 	depth_write false
+}
+
+// 隧道,入口出口
+material suidao {
+	queue_id 32
+	
+ 	transparent false
+}
+
+material suidao_dutou {
+	queue_id 28
+	
+ 	transparent false
+}
+
+material suidao_lumian-guodu {
+	queue_id 42
+	
+ 	transparent true
+ 	//depth_test false
+}

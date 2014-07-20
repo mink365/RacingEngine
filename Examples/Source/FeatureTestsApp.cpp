@@ -20,6 +20,7 @@
 #include "FBXTest/FBXTest.h"
 #include "TweenTest/TweenTest.h"
 #include "UITest/UITest.h"
+#include "MotoSceneTest/SceneMaterialTest.h"
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -62,8 +63,10 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<UITest>());
     this->tests.push_back(test);
+    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<SceneMaterialTest>());
+    this->tests.push_back(test);
 
-    currIndex = 1;
+    currIndex = 4;
     this->onCurrentTestChanged();
 }
 
@@ -250,7 +253,8 @@ void InitGLStates() {
 
 void FeatureTestsApp::initResources()
 {
-    InitGLStates();
+//    InitGLStates();
+    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
 
     const Screen& screen = Screen::getInstance();
 
