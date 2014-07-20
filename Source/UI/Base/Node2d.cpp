@@ -389,9 +389,9 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
 
     mesh->getMaterial()->setQueueID(RENDER_QUEUE_UI);
     if (texture) {
-        TextureUnitState &unit = mesh->getMaterial()->getTexture();
-        unit.setUVstate(0, 0, 1, 1, 0);
-        unit.addTextureFrame(texture);
+        TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+        unit->setUVstate(0, 0, 1, 1, 0);
+        unit->addTextureFrame(texture);
     }
 
     Geometry::ptr geometry = mesh->getGeometry();

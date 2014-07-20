@@ -28,7 +28,6 @@ public:
     void setProjectionMatrix(const Mat4 &mat);
 
     void setTexture(int unit, bool enable, const Texture &texture);
-    void setTextureMatrix(int unit, const Mat4 &mat);
 
     void bindBuffer(const Geometry &geometry);
     void renderMesh(const Geometry &geometry);
@@ -36,7 +35,7 @@ public:
     void cleanBuffers(bool color, bool depth, bool stencil);
     void cleanBuffers(int flag);
 
-    void applyRenderState(const RenderState &state);
+    void applyRenderState(const RenderState &state, bool force=false);
 
     /**
      * @brief resetToRenderState
@@ -44,6 +43,10 @@ public:
      * 忽略本地的状态缓冲，直接置为指定状态
      */
     void resetToRenderState(const RenderState &state);
+
+private:
+    void activateTextureUnit(int unit);
+
 private:
     RenderContext context;
 

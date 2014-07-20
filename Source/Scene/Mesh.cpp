@@ -10,7 +10,9 @@ Mesh::Mesh()
 void Mesh::init()
 {
     this->geometry = Geometry::create();
+
     this->material = Material::create();
+    this->material->initDefaultPass();
 }
 
 Geometry::ptr Mesh::getGeometry()

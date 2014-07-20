@@ -7,13 +7,17 @@
 #include "Render/RenderState.h"
 #include "TextureUnitState.h"
 #include "Shader/Shader.h"
+#include "Pass.h"
 
 namespace re {
 
-class Material : public Shared<Material>, public Clonable<Material>
+class Material : public Shared<Material>,
+                 public Clonable<Material>,
+                 public enable_shared_from_this<Material>
 {
 public:
     Material();
+    void initDefaultPass();
 
     RenderState& getRenderState();
 
@@ -23,7 +27,10 @@ public:
     int getQueueID() const;
     void setQueueID(int id);
 
-    TextureUnitState& getTexture();
+    void addPass(Pass::ptr& pass);
+    Pass::ptr getPass(int index);
+    int getPassCount() const;
+    void clearPasses();
 
     Shader::ptr getShder() const;
     void setShder(Shader::ptr &value);
@@ -36,7 +43,7 @@ private:
 
     RenderState renderState;
 
-    TextureUnitState texture;
+    std::vector<Pass::ptr> passes;
 
     Shader::ptr shader;
 };

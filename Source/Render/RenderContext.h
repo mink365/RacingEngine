@@ -8,6 +8,9 @@
 #ifndef RENDERCONTEXT_H_
 #define RENDERCONTEXT_H_
 
+#include "RenderState.h"
+#include <vector>
+
 namespace re {
 
 class RenderContext {
@@ -17,10 +20,16 @@ public:
 	virtual ~RenderContext();
 
 private:
-    bool depthTestEnabled;
     int boundVBO;
     int boundIBO;
-    int textureID;
+
+    BlendState blendState;
+    AlphaState alphaState;
+    StencilState stencilState;
+    DepthState depthState;
+    FaceCullState faceCullState;
+
+    std::vector<TextureUnitContexState> textureUnits;
 };
 
 } // namespace re

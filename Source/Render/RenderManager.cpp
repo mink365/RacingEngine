@@ -68,12 +68,17 @@ void RenderManager::applyMaterial(Material &material)
     // shader
     ShaderUtil::getInstance().bindShader(material.getShder().get());
 
-    TextureUnitState state = material.getTexture();
+    // TODO: mult pass
+    Pass::ptr pass = material.getPass(0);
+    int size = pass->getTextureUnitCount();
+    for (int i = 0; i < size; ++i) {
+        TextureUnitState::ptr state = pass->getTextureUnit(i);
 
-    this->renderer.setTexture(0, true, *(state.getActivityTexture().get()));
+        this->renderer.setTexture(i, true, *(state->getActivityTexture().get()));
 
-    // TODO: 纹理矩阵
-    this->renderer.setTextureMatrix(0, Mat4().identity());
+        // TODO: set the matrix of textue in shader ?
+    //    this->renderer.setTextureMatrix(0, Mat4().identity());
+    }
 
     this->renderer.applyRenderState(material.getRenderState());
 }

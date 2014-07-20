@@ -17,6 +17,8 @@ class SceneNode;
 class NodeAttribute;
 class Mesh;
 
+class Material;
+
 class Camera;
 class Light;
 
@@ -40,6 +42,8 @@ typedef std::shared_ptr<BoneNode> BoneNodePtr;
 typedef std::shared_ptr<SceneNode> SceneNodePtr;
 typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
+
+typedef std::shared_ptr<Material> MaterialPtr;
 
 typedef std::shared_ptr<Camera> CameraPtr;
 typedef std::shared_ptr<Light> LightPtr;

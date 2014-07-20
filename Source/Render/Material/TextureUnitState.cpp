@@ -6,33 +6,23 @@ namespace re {
 
 TextureUnitState::TextureUnitState()
 {
-    this->currentIndex = 0;
-}
-
-float TextureUnitState::getScaleV() const
-{
-    return scaleV;
-}
-
-void TextureUnitState::setScaleV(float value)
-{
-    scaleV = value;
+    this->activeFrameIndex = 0;
 }
 
 void TextureUnitState::setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation)
 {
-    this->offsetU = offsetU;
-    this->offsetV = offsetV;
-    this->scaleU = scaleU;
-    this->scaleV = scaleV;
+    this->offset.x = offsetU;
+    this->offset.y = offsetV;
+    this->scale.x = scaleU;
+    this->scale.y = scaleV;
     this->rotation = rotation;
 }
 
 Texture::ptr TextureUnitState::getActivityTexture()
 {
-    assert(this->frames.size() > currentIndex);
+    assert(this->frames.size() > activeFrameIndex);
 
-    return this->frames[currentIndex];
+    return this->frames[activeFrameIndex];
 }
 
 void TextureUnitState::addTextureFrame(Texture::ptr texture)
@@ -40,34 +30,19 @@ void TextureUnitState::addTextureFrame(Texture::ptr texture)
     this->frames.push_back(texture);
 }
 
-float TextureUnitState::getScaleU() const
+TextureUnitState::ptr TextureUnitState::clone() const
 {
-    return scaleU;
-}
+    TextureUnitState::ptr inst = TextureUnitState::create();
 
-void TextureUnitState::setScaleU(float value)
-{
-    scaleU = value;
-}
+    inst->offset = this->offset;
+    inst->scale = this->scale;
+    inst->rotation = this->rotation;
+    inst->pass.reset();
+    inst->activeFrameIndex = 0;
 
-float TextureUnitState::getOffsetV() const
-{
-    return offsetV;
-}
+    inst->frames = this->frames;
 
-void TextureUnitState::setOffsetV(float value)
-{
-    offsetV = value;
-}
-
-float TextureUnitState::getOffsetU() const
-{
-    return offsetU;
-}
-
-void TextureUnitState::setOffsetU(float value)
-{
-    offsetU = value;
+    return inst;
 }
 
 float TextureUnitState::getRotation() const
@@ -78,6 +53,26 @@ float TextureUnitState::getRotation() const
 void TextureUnitState::setRotation(float value)
 {
     rotation = value;
+}
+
+const Vec2 &TextureUnitState::getOffset() const
+{
+    return this->offset;
+}
+
+void TextureUnitState::setOffset(float u, float v)
+{
+    this->offset.set(u, v);
+}
+
+const Vec2 &TextureUnitState::getScale() const
+{
+    return this->scale;
+}
+
+void TextureUnitState::setScale(float u, float v)
+{
+    this->scale.set(u, v);
 }
 
 }

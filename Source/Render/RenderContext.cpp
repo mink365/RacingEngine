@@ -10,10 +10,10 @@
 namespace re {
 
 RenderContext::RenderContext() {
-    this->depthTestEnabled = false;
     this->boundIBO = 0;
     this->boundVBO = 0;
-    this->textureID = 0;
+
+    this->textureUnits.resize(8);
 }
 
 RenderContext::~RenderContext() {

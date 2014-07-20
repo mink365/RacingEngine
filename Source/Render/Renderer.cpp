@@ -40,17 +40,23 @@ void Renderer::setProjectionMatrix(const Mat4 &mat)
 
 void Renderer::setTexture(int unit, bool enable, const Texture& texture)
 {
-    // TODO: unit
-    if (this->context.textureID != texture.getGlID()) {
+    // TODO: size assert
+
+    if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
         glBindTexture(GL_TEXTURE_2D, texture.getGlID());
 
-        this->context.textureID = texture.getGlID();
+        this->context.textureUnits[unit].textureId = texture.getGlID();
     }
 }
 
-void Renderer::setTextureMatrix(int unit, const Mat4 &mat)
+void Renderer::activateTextureUnit(int unit)
 {
-    // TODO:
+    // TODO: assert the texture unit size in hardware
+
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glClientActiveTexture(GL_TEXTURE0 + unit);
+
+    this->context.textureUnits[unit].unitEnabled = true;
 }
 
 void Renderer::bindBuffer(const Geometry &geometry)
@@ -89,18 +95,141 @@ void Renderer::cleanBuffers(int flag)
     glClear(flag);
 }
 
-void Renderer::applyRenderState(const RenderState &state)
+GLenum GetTestFunc(TestFunction func) {
+    switch(func) {
+    case TestFunction::Always:
+        return GL_ALWAYS;
+    case TestFunction::Equal:
+        return GL_EQUAL;
+    case TestFunction::Greater:
+        return GL_GREATER;
+    case TestFunction::GreaterOrEqual:
+        return GL_GEQUAL;
+    case TestFunction::Less:
+        return GL_LESS;
+    case TestFunction::LessOrEqual:
+        return GL_LEQUAL;
+    case TestFunction::Never:
+        return GL_NEVER;
+    case TestFunction::NotEqual:
+        return GL_NOTEQUAL;
+    }
+}
+
+void GetBlendMode(BlendMode mode, GLenum* result) {
+    switch(mode) {
+    case BlendMode::Additive:
+        result[0] = GL_ONE;
+        result[1] = GL_ONE;
+        break;
+    case BlendMode::Alpha:
+        result[0] = GL_SRC_ALPHA;
+        result[1] = GL_ONE_MINUS_SRC_ALPHA;
+        break;
+    case BlendMode::AlphaAdditive:
+        result[0] = GL_SRC_ALPHA;
+        result[1] = GL_ONE;
+        break;
+    case BlendMode::Color:
+        result[0] = GL_ONE;
+        result[1] = GL_ONE_MINUS_SRC_COLOR;
+        break;
+    case BlendMode::Modulate:
+        result[0] = GL_DST_COLOR;
+        result[1] = GL_ZERO;
+        break;
+    case BlendMode::ModulateX2:
+        result[0] = GL_DST_COLOR;
+        result[1] = GL_SRC_COLOR;
+        break;
+    case BlendMode::PremultAlpha:
+        result[0] = GL_ONE;
+        result[1] = GL_ONE_MINUS_SRC_ALPHA;
+        break;
+    }
+}
+
+GLenum GetFaceCullMode(FaceCullMode mode) {
+    switch(mode) {
+    case FaceCullMode::Back:
+        return GL_BACK;
+    case FaceCullMode::Front:
+        return GL_FRONT;
+    case FaceCullMode::FrontAndBack:
+        return GL_FRONT_AND_BACK;
+    }
+}
+
+void Renderer::applyRenderState(const RenderState &state, bool force)
 {
-    this->context.depthTestEnabled = state.getDepthTest();
+    if (force || this->context.depthState != state.depthState) {
+        if (state.depthState.depthTestEnable) {
+            glEnable(GL_DEPTH_TEST);
+            glDepthFunc(GetTestFunc(state.depthState.function));
+            glDepthMask(state.depthState.depthWrite);
+        } else {
+            glDisable(GL_DEPTH_TEST);
+        }
+        context.depthState = state.depthState;
+    }
+
+
+    if (force || context.alphaState != state.alphaState) {
+        if (state.alphaState.alphaTestEnable) {
+            glEnable(GL_ALPHA_TEST);
+
+            glAlphaFunc(GetTestFunc(state.alphaState.function), state.alphaState.alphaFallOff);
+        } else {
+            glDisable(GL_ALPHA_TEST);
+        }
+
+        context.alphaState = state.alphaState;
+    }
+
+    if (force || context.blendState != state.blendState) {
+        if (state.blendState.blendEnable) {
+            glEnable(GL_BLEND);
+
+            GLenum rgbFunc[2], alphaFunc[2];
+            GetBlendMode(state.blendState.blendModeRGB, rgbFunc);
+            GetBlendMode(state.blendState.blendModeAlpha, alphaFunc);
+
+            glBlendFuncSeparate(rgbFunc[0], rgbFunc[2], alphaFunc[0], alphaFunc[1]);
+        } else {
+            glDisable(GL_BLEND);
+        }
+
+        context.blendState = state.blendState;
+    }
+
+    if (force || context.faceCullState != state.faceCullState) {
+        if (state.faceCullState.faceCullEnable) {
+            glEnable(GL_CULL_FACE);
+
+            // glFrontFace(GL_CCW);
+            glCullFace(GetFaceCullMode(state.faceCullState.cullMode));
+        } else {
+            glDisable(GL_CULL_FACE);
+        }
+
+        context.faceCullState = state.faceCullState;
+    }
+
+    if (force || context.stencilState != state.stencilState) {
+        // TODO:
+        if (state.stencilState.stencilTestEnable) {
+
+        } else {
+
+        }
+
+        context.stencilState = state.stencilState;
+    }
 }
 
 void Renderer::resetToRenderState(const RenderState &state)
 {
-    this->context.depthTestEnabled = state.getDepthTest();
-
-//    this->context.textureID = state.
-
-    this->context.textureID = 0;
+    this->applyRenderState(state, true);
 }
 
 }
