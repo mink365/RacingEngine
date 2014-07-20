@@ -11,11 +11,15 @@ namespace re {
 template<class T>
 T To(const std::string& v);
 template<>
-int To<int>(const std::string& v) {
+inline int To<int>(const std::string& v) {
     return std::stoi(v);
 }
 template<>
-bool To<bool>(const std::string& v) {
+inline float To<float>(const std::string& v) {
+    return std::stof(v);
+}
+template<>
+inline bool To<bool>(const std::string& v) {
     if (v == "true") {
         return true;
     } else {
@@ -31,7 +35,7 @@ public:
     MaterialPtr Load(FilePtr& file);
 
 private:
-    void loadMaterial(Statement::ptr& statement);
+    MaterialPtr loadMaterial(Statement::ptr& statement);
     void loadPass(Statement::ptr& statement, Pass::ptr& pass);
     void loadTextureUnit(Statement::ptr& statement, TextureUnitState::ptr& unit);
 };

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include "Texture/TextureManager.h"
+#include "Material/MaterialManager.h"
 #include "Util/ContainerUtil.h"
 #include "Base/Buffer.h"
 #include "FileSystem/FileSystem.h"
@@ -263,7 +264,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     }
 
     // material and pass
-    this->readMaterial(st, mesh);
+    PassPtr pass = this->readMaterialPass(st);
 
     // bone and link
     len = reader->ReadInt(st);
@@ -284,6 +285,19 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
         }
 
         this->clusterColls.push_back(clusterColl);
+    }
+
+    if (pass != nullptr) {
+        MaterialPtr material = MaterialManager::getInstance().getMaterial(materialTextureKey);
+        if (material != nullptr) {
+            //TODO: if the pass is in material file ?
+            material->addPass(pass);
+
+            mesh->setMaterial(material);
+        }
+    } else {
+        // TODO: don't show the node with no material
+        node->setVisible(false);
     }
 
     std::cout << "mesh read done. " << std::endl;
@@ -389,7 +403,9 @@ FBXClusterPtr FbxParser::readCluster(istream *st)
     return cluster;
 }
 
-void FbxParser::readMaterial(std::istream *st, MeshPtr mesh) {
+PassPtr FbxParser::readMaterialPass(std::istream *st) {
+    PassPtr pass = nullptr;
+
     int id = -1;
 
     do {
@@ -405,16 +421,29 @@ void FbxParser::readMaterial(std::istream *st, MeshPtr mesh) {
             float scaleU = reader->ReadFloat(st);
             float scaleV = reader->ReadFloat(st);
 
-            TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+            TextureUnitState::ptr unit = TextureUnitState::create();
             unit->setUVstate(offsetU, offsetV, scaleU, scaleV, 0);
 
             Texture::ptr tex = TextureManager::getInstance().getTexture(name);
+            if (tex == nullptr) {
+                assert(false);
+            }
             unit->addTextureFrame(tex);
+
+            // TODO: fix the material name
+            materialTextureKey = name;
+
+            if (pass == nullptr) {
+                pass = Pass::create();
+            }
+            pass->addTextureUnit(unit);
 
             std::cout << "id: " << id << " " << name << " offset " << offsetU << " " << offsetV << " scale " << scaleU << " " << scaleV << std::endl;
         }
 
     } while (id != -1);
+
+    return pass;
 }
 
 void FbxParser::bindClusterData()

@@ -4,8 +4,9 @@ namespace re {
 
 RenderState::RenderState()
 {
-    this->blendState.blendModeAlpha = BlendMode::Additive;
-    this->blendState.blendModeRGB = BlendMode::Additive;
+    this->blendState.blendEnable = true;
+    this->blendState.blendModeAlpha = BlendMode::Alpha;
+    this->blendState.blendModeRGB = BlendMode::Alpha;
 
     this->depthState.depthTestEnable = false;
     this->depthState.depthWrite = false;

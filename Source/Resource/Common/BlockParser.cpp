@@ -1,6 +1,7 @@
 #include "BlockParser.h"
 
 #include <sstream>
+#include <regex>
 
 #include "FileSystem/File.h"
 #include "MemBuffer.h"
@@ -10,14 +11,23 @@ namespace re {
 static std::string BLOCK_BEGIN = "{";
 static std::string BLOCK_END = "}";
 
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-    std::stringstream ss(s);
-    std::string item;
-    while (std::getline(ss, item, delim)) {
-        if (!item.empty()) {
-            elems.push_back(item);
+std::vector<std::string> &Split(const std::string &line, const std::string& rgxExpression, std::vector<std::string> &elems) {
+    std::regex rgx(rgxExpression);
+    std::sregex_token_iterator iter(line.begin(),
+        line.end(),
+        rgx,
+        -1);
+    std::sregex_token_iterator end;
+
+    while(iter != end) {
+        const std::string& token = *iter;
+        if (token != "") {
+            elems.push_back(*iter);
         }
+
+        iter ++;
     }
+
     return elems;
 }
 
@@ -41,13 +51,14 @@ Statement::ptr BlockParser::parse(FilePtr &file)
             continue;
         }
 
-        split(line, ' ', parts);
+        parts.clear();
+        Split(line, "\\s+", parts);
         int num = parts.size();
         if (num == 0) {
             continue;
         }
 
-        if (num >= 2 && *(parts.end()) == BLOCK_BEGIN) {
+        if (num >= 2 && parts[num - 1] == BLOCK_BEGIN) {
             Statement::ptr state = nullptr;
 
             if (num > 2) {
@@ -74,33 +85,39 @@ void BlockParser::parseBlock(std::istream &stream, Statement::ptr &state)
             continue;
         }
 
-        split(line, ' ', parts);
+        parts.clear();
+        Split(line, "\\s+", parts);
         int num = parts.size();
         if (num == 0) {
             continue;
         }
 
-        if (num >= 1 && parts[0] == BLOCK_END) {
-
-        } else if (num >= 2 && *(parts.end()) == BLOCK_BEGIN) {
-            Statement::ptr state = nullptr;
-
-            if (num > 2) {
-                state = std::make_shared<Statement>(parts[0], parts[1]);
-            } else {
-                state = std::make_shared<Statement>(parts[0], "");
-            }
-
-            this->parseBlock(stream, state);
-
-            state->addStatement(state);
-        } else if (num > 1) {
-            // read the key value pairs
-            KeyValue::ptr kv = std::make_shared<KeyValue>(parts[0], parts[1]);
-
-            state->addKeyValue(kv);
+        const std::string& type = parts[0];
+        if (type == BLOCK_END) {
+            return;
+        } else if (type.find_first_of('/') == 0) {
+            continue;
         } else {
-            // error
+            if (num >= 2 && parts[num - 1] == BLOCK_BEGIN) {
+                Statement::ptr state = nullptr;
+
+                if (num > 2) {
+                    state = std::make_shared<Statement>(parts[0], parts[1]);
+                } else {
+                    state = std::make_shared<Statement>(parts[0], "");
+                }
+
+                this->parseBlock(stream, state);
+
+                state->addStatement(state);
+            } else if (num > 1) {
+                // read the key value pairs
+                KeyValue::ptr kv = std::make_shared<KeyValue>(parts[0], parts[1]);
+
+                state->addKeyValue(kv);
+            } else {
+                // error
+            }
         }
     }
 }
@@ -113,7 +130,7 @@ KeyValue::KeyValue(const std::string &key, const std::string &value)
 
 Statement::Statement(const std::string &key, const std::string &name)
 {
-    this->type = type;
+    this->type = key;
     this->name = name;
 }
 

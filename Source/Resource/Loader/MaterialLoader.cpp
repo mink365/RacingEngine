@@ -1,6 +1,7 @@
 #include "MaterialLoader.h"
 #include "Resource/Common/BlockParser.h"
 #include "Texture/TextureManager.h"
+#include "Material/MaterialManager.h"
 
 namespace re {
 
@@ -8,10 +9,26 @@ MaterialLoader::MaterialLoader()
 {
 }
 
-void MaterialLoader::loadMaterial(Statement::ptr &statement)
+MaterialPtr MaterialLoader::Load(FilePtr &file)
 {
+    auto root = BlockParser::getInstance().parse(file);
+
+    for (auto child : root->children) {
+        auto material = this->loadMaterial(child);
+
+        MaterialManager::getInstance().registerMaterial(material);
+    }
+
+    return nullptr;
+}
+
+MaterialPtr MaterialLoader::loadMaterial(Statement::ptr &statement)
+{
+    Material::ptr material = nullptr;
+
     if (statement->type == "material") {
-        Material::ptr material = Material::create();
+        material = Material::create();
+        material->setName(statement->name);
 
         for (auto kv : statement->keyValues) {
             if (kv->key == "queue_id") {
@@ -36,6 +53,8 @@ void MaterialLoader::loadMaterial(Statement::ptr &statement)
             }
         }
     }
+
+    return material;
 }
 
 void MaterialLoader::loadPass(Statement::ptr &statement, Pass::ptr &pass)

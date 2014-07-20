@@ -43,6 +43,8 @@ void Renderer::setTexture(int unit, bool enable, const Texture& texture)
     // TODO: size assert
 
     if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
+        this->activateTextureUnit(unit);
+
         glBindTexture(GL_TEXTURE_2D, texture.getGlID());
 
         this->context.textureUnits[unit].textureId = texture.getGlID();
@@ -194,7 +196,7 @@ void Renderer::applyRenderState(const RenderState &state, bool force)
             GetBlendMode(state.blendState.blendModeRGB, rgbFunc);
             GetBlendMode(state.blendState.blendModeAlpha, alphaFunc);
 
-            glBlendFuncSeparate(rgbFunc[0], rgbFunc[2], alphaFunc[0], alphaFunc[1]);
+            glBlendFuncSeparate(rgbFunc[0], rgbFunc[1], alphaFunc[0], alphaFunc[1]);
         } else {
             glDisable(GL_BLEND);
         }

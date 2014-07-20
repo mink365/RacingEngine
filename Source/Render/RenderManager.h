@@ -24,13 +24,17 @@ public:
 
     void render();
 
-    void setDefaultRenderEnv();
-
     void clear();
 
     RenderQueue &getRenderQueue();
 
     Renderer &getRenderer();
+
+    /**
+     * @brief initDefaultRenderState
+     * sync hw state and engine context
+     */
+    void initDefaultRenderState();
 
 protected:
     void renderList(const RenderableList &list);
@@ -39,12 +43,6 @@ protected:
     void renderMesh(const MeshPtr &mesh);
 
     void applyMaterial(Material &material);
-
-    /**
-     * @brief initDefaultRenderState
-     * 同步硬件/GPU的状态和状态缓冲的状态
-     */
-    void initDefaultRenderState();
 
     void activeCamera(CameraPtr camera);
 

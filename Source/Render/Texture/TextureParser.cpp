@@ -3,6 +3,7 @@
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
 #include "Texture/Frame/TextureFrameManager.h"
+#include <iostream>
 
 namespace re {
 
@@ -25,6 +26,7 @@ void TextureParser::parseSingle(FilePtr &file)
     texture->setFile(file);
 
     TextureManager::getInstance().registerTexture(texture);
+    std::cout << "register texture: " << texture->getName() << std::endl;
     // TODO: get the size of tex
     TextureManager::getInstance().loadTextures();
 

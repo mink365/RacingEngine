@@ -25,6 +25,11 @@ Material::ptr Mesh::getMaterial()
     return material;
 }
 
+void Mesh::setMaterial(MaterialPtr &m)
+{
+    this->material = m;
+}
+
 MeshPtr Mesh::clone()
 {
     NodeAttributePtr inst = NodeAttribute::clone();

@@ -113,8 +113,6 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
 void RenderManager::render()
 {
-    this->setDefaultRenderEnv();
-
     this->renderQueue.sortRenderableList();
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
@@ -132,12 +130,6 @@ void RenderManager::render()
             }
         }
     }
-}
-
-void RenderManager::setDefaultRenderEnv()
-{
-    // apply default
-    this->renderer.applyRenderState(defaultRenderState);
 }
 
 void RenderManager::activeCamera(CameraPtr camera)

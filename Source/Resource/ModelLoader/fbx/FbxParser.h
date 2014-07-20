@@ -79,7 +79,7 @@ private:
 
     void readNodeTransform(std::istream *st, NodePtr node);
 
-    void readMaterial(std::istream *st, MeshPtr mesh);
+    PassPtr readMaterialPass(std::istream *st);
 
     void bindClusterData();
 
@@ -90,6 +90,8 @@ private:
     std::vector<ClusterCollectionPtr> clusterColls;
 
     ReadCommon *reader;
+
+    std::string materialTextureKey;
 };
 
 } // namespace re

@@ -8,10 +8,12 @@
 #include "TextureUnitState.h"
 #include "Shader/Shader.h"
 #include "Pass.h"
+#include "Base/Named.h"
 
 namespace re {
 
-class Material : public Shared<Material>,
+class Material : public Named,
+                 public Shared<Material>,
                  public Clonable<Material>,
                  public enable_shared_from_this<Material>
 {

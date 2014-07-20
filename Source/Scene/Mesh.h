@@ -23,6 +23,7 @@ public:
     void init();
 
     Material::ptr getMaterial();
+    void setMaterial(MaterialPtr& m);
 
     Geometry::ptr getGeometry();
 
