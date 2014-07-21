@@ -35,7 +35,7 @@ public:
      * @param eye
      * @param up 大概的，整个世界的up向量
      */
-    void setView(const Vec3 &center, const Vec3 &eye, const Vec3 &up);
+    void setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up);
 
     /**
      * @brief setAxes

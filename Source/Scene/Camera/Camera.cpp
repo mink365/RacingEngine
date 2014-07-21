@@ -65,15 +65,16 @@ Size Camera::getOrthoSize() const
     return Size(orthoWidth, orthoHeight);
 }
 
-void Camera::setView(const Vec3 &center, const Vec3 &eye, const Vec3 &up)
+void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
 {
     this->center = center;
 
     if (this->getParent()) {
-        // TODO: right?
-        this->localTranslation = this->getParent()->getWorldMatrix().inverse() * center;
+        // TODO: only use the position of parent?
+        Vec3 p = this->getParent()->getWorldMatrix().inverse() * eye;
+        this->setLocalTranslation(p);
     } else {
-        this->localTranslation = eye;
+        this->setLocalTranslation(eye);
     }
 
     //       dir  up
@@ -96,6 +97,7 @@ void Camera::setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction)
     Quat quat;
     quat.fromAxes(left, up, direction);
 
+    // TODO: error, not need it
     this->setWorldRotation(quat);
 
     this->onChange();
