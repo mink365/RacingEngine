@@ -8,11 +8,13 @@ RenderState::RenderState()
     this->blendState.blendModeAlpha = BlendMode::Alpha;
     this->blendState.blendModeRGB = BlendMode::Alpha;
 
-    this->depthState.depthTestEnable = false;
-    this->depthState.depthWrite = false;
+    this->depthState.depthTestEnable = true;
+    this->depthState.depthWrite = true;
+    this->depthState.function = TestFunction::LessOrEqual;
 
     this->alphaState.alphaTestEnable = false;
     this->alphaState.alphaFallOff = 0;
+    this->alphaState.function = TestFunction::LessOrEqual;
 
     this->faceCullState.faceCullEnable = false;
     this->faceCullState.cullMode = FaceCullMode::Front;
@@ -38,8 +40,7 @@ bool DepthState::operator==(const DepthState &right) const
 
 bool DepthState::operator!=(const DepthState &right) const
 {
-    return !(this->depthTestEnable == right.depthTestEnable == false)
-            || !(*this == right);
+    return !(*this == right);
 }
 
 bool StencilState::operator==(const StencilState &right) const
@@ -59,7 +60,7 @@ bool StencilState::operator==(const StencilState &right) const
 bool StencilState::operator!=(const StencilState &right) const
 {
     return  !(this->stencilTestEnable == right.stencilTestEnable == false)
-            || !(*this == right);
+            && !(*this == right);
 }
 
 bool AlphaState::operator==(const AlphaState &right) const
@@ -73,7 +74,7 @@ bool AlphaState::operator==(const AlphaState &right) const
 bool AlphaState::operator!=(const AlphaState &right) const
 {
     return  !(this->alphaTestEnable == right.alphaTestEnable == false)
-            || !(*this == right);
+            && !(*this == right);
 }
 
 bool FaceCullState::operator==(const FaceCullState &right) const
@@ -86,7 +87,7 @@ bool FaceCullState::operator==(const FaceCullState &right) const
 bool FaceCullState::operator!=(const FaceCullState &right) const
 {
     return  !(this->faceCullEnable == right.faceCullEnable == false)
-            || !(*this == right);
+            && !(*this == right);
 }
 
 bool BlendState::operator==(const BlendState &right) const
@@ -99,7 +100,7 @@ bool BlendState::operator==(const BlendState &right) const
 bool BlendState::operator!=(const BlendState &right) const
 {
     return !(this->blendEnable == right.blendEnable == false)
-            || !(*this == right);
+            && !(*this == right);
 }
 
 }

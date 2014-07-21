@@ -168,10 +168,12 @@ void Renderer::applyRenderState(const RenderState &state, bool force)
         if (state.depthState.depthTestEnable) {
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GetTestFunc(state.depthState.function));
-            glDepthMask(state.depthState.depthWrite);
         } else {
             glDisable(GL_DEPTH_TEST);
         }
+
+        glDepthMask(state.depthState.depthWrite);
+
         context.depthState = state.depthState;
     }
 

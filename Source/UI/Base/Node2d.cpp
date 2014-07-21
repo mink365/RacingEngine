@@ -387,7 +387,11 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
 
-    mesh->getMaterial()->setQueueID(RENDER_QUEUE_UI);
+    MaterialPtr material = mesh->getMaterial();
+    material->setQueueID(RENDER_QUEUE_UI);
+    material->getRenderState().depthState.depthTestEnable = false;
+    material->getRenderState().depthState.depthWrite = false;
+    material->getRenderState().depthState.function = TestFunction::LessOrEqual;
     if (texture) {
         TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
         unit->setUVstate(0, 0, 1, 1, 0);
