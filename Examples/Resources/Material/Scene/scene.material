@@ -77,7 +77,7 @@ material langan {
 	
  	transparent true
  	depth_write false
- 	depth_test false
+ 	depth_test true
 }
 
 material wa {

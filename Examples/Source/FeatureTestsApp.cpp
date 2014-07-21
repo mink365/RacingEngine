@@ -261,7 +261,7 @@ void FeatureTestsApp::initResources()
     presCamera = std::make_shared<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     presCamera->setDepthField(10, 1320);
-    presCamera->setView(Vec3(0, 30, 20), Vec3(0, -340, 57), Vec3(0, 0, 1));
+    presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
     presCamera->setQueueCullFunc([](int queue) {
         if (queue == RENDER_QUEUE_UI) {
             return false;

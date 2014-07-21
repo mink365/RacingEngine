@@ -23,6 +23,9 @@ void InitNodeShader(SceneNodePtr& node) {
 
 void SceneMaterialTest::Init()
 {
+    this->camera->setDepthField(10, 3000);
+    this->camera->setView(Vec3(0, -1840, 557), Vec3(0, 30, 20), Vec3(0, 0, 1));
+
     TextureParser::getInstance().addTextures("Textures/Scenes/", "png|jpg");
     TextureManager::getInstance().loadTextures();
 
@@ -33,14 +36,25 @@ void SceneMaterialTest::Init()
     file = FileSystem::getInstance().openFile("Model/scene.data");
     parser->parse(file);
 
-    // TODO:
-    auto blockRootNode = parser->getNodes()[0];
+    auto blockRootNode = parser->getNodes()[8];
     InitNodeShader(blockRootNode);
 
     rootNode->addChild(blockRootNode);
 }
 
+static float s = 1;
+static float dir = -1;
 void SceneMaterialTest::Update(float dt)
 {
+    if (s < 0.1) {
+        dir = 1;
+    }
 
+    if (s > 1) {
+        dir = -1;
+    }
+
+    s += 1 / (60 * 7.0) * dir;
+
+    this->camera->setView(Vec3(0, -1840 * s, 557 * s), Vec3(0, 30, 20), Vec3(0, 0, 1));
 }
