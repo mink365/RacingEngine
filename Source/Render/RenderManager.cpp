@@ -102,6 +102,12 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     shader->getUniform("view")->setData((float*)currCamera->getViewMatrix());
     shader->getUniform("projection")->setData((float*)currCamera->getProjectionMatrix());
 
+    Mat4 textureMatrix;
+    auto unit = material->getPass(0)->getTextureUnit(0);
+    textureMatrix.setScaling(unit->getScale().x, unit->getScale().y, 0);
+
+    shader->getUniform("textureM")->setData((float*)textureMatrix);
+
     glUseProgram(material->getShder()->getProgram());
 
     this->renderer.bindBuffer(*(geometry.get()));

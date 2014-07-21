@@ -315,7 +315,6 @@ uint ShaderUtil::loadShader(const char *source, uint type)
 
         delete[] src;
 
-
         GLint logLength = 0, charsWritten = 0;
 
         glGetShaderiv(id, GL_INFO_LOG_LENGTH, &logLength);

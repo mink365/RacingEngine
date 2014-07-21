@@ -36,7 +36,7 @@ void SceneMaterialTest::Init()
     file = FileSystem::getInstance().openFile("Model/scene.data");
     parser->parse(file);
 
-    auto blockRootNode = parser->getNodes()[8];
+    auto blockRootNode = parser->getNodes()[0];
     InitNodeShader(blockRootNode);
 
     rootNode->addChild(blockRootNode);

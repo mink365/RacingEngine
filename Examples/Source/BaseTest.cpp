@@ -5,7 +5,7 @@ void InitMeshInHardward(MeshPtr mesh) {
     Geometry::ptr geometry = mesh->getGeometry();
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Default");
+    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_PTC_TM");
     mesh->getMaterial()->setShder(shader);
 }
 

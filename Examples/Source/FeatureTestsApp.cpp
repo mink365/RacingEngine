@@ -184,9 +184,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
 
     if (name == "Shader_Default") {
         setLightShaderAttribute(shader);
-    } else if (name == "Shader_PTC") {
-        setPTCShaderAttribute(shader);
-    } else if (name == "Shader_Font") {
+    } else {
         setPTCShaderAttribute(shader);
     }
 
@@ -199,9 +197,6 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
     return 1;
 }
 
-// loadFile - loads text file into char* fname
-// allocates memory - so need to delete after use
-// size of file returned in fSize
 std::string loadFile(const char *fname)
 {
     FilePtr file = FileSystem::getInstance().openFile(fname);
@@ -294,17 +289,16 @@ void FeatureTestsApp::initResources()
 
     std::string shaderDir = "Shaders/";
 
-    LoadShader("Shader_Default",
-                        shaderDir + "light.vert",
-                        shaderDir + "light.frag");
+    LoadShader("Shader_Default", shaderDir + "light.vert", shaderDir + "light.frag");
 
-    LoadShader("Shader_PTC",
-                        shaderDir + "position_texture_color.vert",
-                        shaderDir + "position_texture_color.frag");
+    LoadShader("Shader_PTC", shaderDir + "position_texture_color.vert",
+                             shaderDir + "position_texture_color.frag");
 
-    LoadShader("Shader_Font",
-                      shaderDir + "v3f-t2f-c4f.vert",
-                      shaderDir + "v3f-t2f-c4f.frag");
+    LoadShader("Shader_PTC_TM", shaderDir + "position_texture_color_texture_matrix.vert",
+                             shaderDir + "position_texture_color_texture_matrix.frag");
+
+    LoadShader("Shader_Font", shaderDir + "v3f-t2f-c4f.vert",
+                              shaderDir + "v3f-t2f-c4f.frag");
 
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 

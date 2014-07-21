@@ -45,22 +45,22 @@
 
 inline void Log__(const char * pszFormat, ...)
 {
-//    char szBuf[MAX_LEN];
+    char szBuf[MAX_LEN];
 
-//    va_list ap;
-//    va_start(ap, pszFormat);
-//    vsnprintf(szBuf, MAX_LEN, pszFormat, ap);
-//    va_end(ap);
+    va_list ap;
+    va_start(ap, pszFormat);
+    vsnprintf(szBuf, MAX_LEN, pszFormat, ap);
+    va_end(ap);
 
-//    // Strip any trailing newlines from log message.
-//    size_t len = strlen(szBuf);
-//    while (len && szBuf[len-1] == '\n')
-//    {
-//      szBuf[len-1] = '\0';
-//      len--;
-//    }
+    // Strip any trailing newlines from log message.
+    size_t len = strlen(szBuf);
+    while (len && szBuf[len-1] == '\n')
+    {
+      szBuf[len-1] = '\0';
+      len--;
+    }
 
-//    fprintf(stderr, "cocos2d-x debug info [%s]\n",  szBuf);
+    fprintf(stderr, "RE debug info [%s]\n",  szBuf);
 }
 
 #define LOG_V_T(tag, fmt, ...) Log__("[V] [" tag "] " fmt, ##__VA_ARGS__)
