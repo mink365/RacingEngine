@@ -294,6 +294,9 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
             material->addPass(pass);
 
             mesh->setMaterial(material);
+        } else {
+            mesh->getMaterial()->clearPasses();
+            mesh->getMaterial()->addPass(pass);
         }
     } else {
         // TODO: don't show the node with no material
