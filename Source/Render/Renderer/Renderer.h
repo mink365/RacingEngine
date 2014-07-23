@@ -18,21 +18,25 @@
 namespace re {
 
 class Shader;
+class RenderTarget;
 
 class Renderer {
 public:
 	Renderer();
 	virtual ~Renderer();
 
-    void setViewPort(int x, int y, int width, int height);
+    virtual void setViewPort(int x, int y, int width, int height);
+    void setViewPortRect(const Rect& viewport);
     void setWorldMatrix(const Mat4 &mat);
     void setViewMatrix(const Mat4 &mat);
     void setProjectionMatrix(const Mat4 &mat);
 
     virtual void setTexture(int unit, bool enable, const Texture &texture) = 0;
 
+    virtual void bindRenderTarget(const RenderTarget &target) = 0;
     virtual void bindShader(const Shader &shader) = 0;
     virtual void bindBuffer(const Geometry &geometry) = 0;
+
     virtual void renderMesh(const Geometry &geometry) = 0;
 
     virtual void cleanBuffers(bool color, bool depth, bool stencil) = 0;

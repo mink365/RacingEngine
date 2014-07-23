@@ -8,7 +8,9 @@
 #ifndef RENDERCONTEXT_H_
 #define RENDERCONTEXT_H_
 
+#include "platform.h"
 #include "RenderState.h"
+#include "Math/BoundingVolume.h"
 #include <vector>
 
 namespace re {
@@ -22,8 +24,11 @@ public:
 	virtual ~RenderContext();
 
 private:
-    int boundVBO;
-    int boundIBO;
+    GPU_ID boundVBO;
+    GPU_ID boundIBO;
+    GPU_ID boundFBO;
+
+    Rect viewport;
 
     BlendState blendState;
     AlphaState alphaState;

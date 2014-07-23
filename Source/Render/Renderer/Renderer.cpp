@@ -15,9 +15,14 @@ Renderer::Renderer() {
 Renderer::~Renderer() {
 }
 
+void Renderer::setViewPortRect(const Rect &viewport)
+{
+    this->setViewPort(viewport.getMidX(), viewport.getMinY(), viewport.getWidth(), viewport.getHeight());
+}
+
 void Renderer::setViewPort(int x, int y, int width, int height)
 {
-    this->viewport.set(x, y, width, height);
+    this->context.viewport.set(x, y, width, height);
 }
 
 void Renderer::setWorldMatrix(const Mat4 &mat)

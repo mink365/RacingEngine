@@ -3,11 +3,67 @@
 #include "opengl.h"
 
 #include "Shader/Shader.h"
+#include "RenderTarget.h"
 
 namespace re {
 
+GLuint CreateFrameBuffer() {
+    GLuint id;
+
+    glGenFramebuffers(1, &id);
+
+    return id;
+}
+
+GLuint CreateRenderBuffer() {
+    GLuint id;
+
+    glGenRenderbuffers(1, &id);
+
+    return id;
+}
+
+void SetupFrameBuffer(GLuint buffer, RenderTarget& target, GLenum textureTarget) {
+    glBindFramebuffer(GL_FRAMEBUFFER, buffer);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, textureTarget, target.getTexture()->getGlID(), 0);
+}
+
+void SetupRenderBuffer(GLuint buffer, RenderTarget& target) {
+    glBindRenderbuffer(GL_RENDERBUFFER, buffer);
+
+    if (target.getHasDepthBuffer() && ! target.getHasStencilBuffer()) {
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
+                              target.getTexture()->getWidth(),
+                              target.getTexture()->getHeight());
+
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, buffer);
+    } else if (target.getHasDepthBuffer() && target.getHasStencilBuffer()) {
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL,
+                              target.getTexture()->getWidth(),
+                              target.getTexture()->getHeight());
+
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, buffer);
+    } else {
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA4,
+                              target.getTexture()->getWidth(),
+                              target.getTexture()->getHeight());
+    }
+}
+
+extern const GLenum TextureInternalFormatToGL(Texture::InternalFormat format);
+extern const GLenum TexturePixelFormatToGL(Texture::PixelFormat format);
+extern const GLenum TextureDataTypeToGL(Texture::DataType type);
+
 GLES2Renderer::GLES2Renderer()
 {
+}
+
+void GLES2Renderer::setViewPort(int x, int y, int width, int height)
+{
+    Renderer::setViewPort(x, y, width, height);
+
+    glViewport(x, y, width, height);
 }
 
 void GLES2Renderer::setTexture(int unit, bool enable, const Texture& texture)
@@ -23,6 +79,36 @@ void GLES2Renderer::setTexture(int unit, bool enable, const Texture& texture)
     }
 }
 
+void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
+{
+    GPU_ID framebuffer = 0;
+    if (target.getType() == RenderTargetType::CUBE) {
+        const RenderTargetCube& cubeTarget = *(dynamic_cast<const RenderTargetCube*>(&target));
+
+        framebuffer = cubeTarget.framebuffers[cubeTarget.activeCubeFace];
+    } else {
+        framebuffer = target.framebuffer;
+    }
+
+    if (framebuffer != context.boundFBO) {
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+        this->setViewPort(0, 0, target.getTexture()->getWidth(), target.getTexture()->getHeight());
+
+        context.boundFBO = framebuffer;
+    }
+}
+
+void GLES2Renderer::resetRenderTarget()
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    // set to default/full screen viewport
+    this->setViewPortRect(this->viewport);
+
+    context.boundFBO = 0;
+}
+
 void GLES2Renderer::bindShader(const Shader &shader)
 {
     glUseProgram(shader.getProgram());
@@ -36,6 +122,79 @@ void GLES2Renderer::activateTextureUnit(int unit)
     glClientActiveTexture(GL_TEXTURE0 + unit);
 
     this->context.textureUnits[unit].unitEnabled = true;
+}
+
+void GLES2Renderer::setupRenderTarget(RenderTarget &target)
+{
+    // TODO: create the texture in GL
+
+    // TODO: pow of two
+    bool isTargetPowerOfTwo = true;
+    GLenum internalFormat = TextureInternalFormatToGL(target.getTexture()->getInternalFormat());
+    GLenum pixelFormat = TexturePixelFormatToGL(target.getTexture()->getPixelFormat());
+    GLenum dataType = TextureDataTypeToGL(target.getTexture()->getDataType());
+
+    if (target.getType() == RenderTargetType::CUBE) {
+        // TODO: bind texture and set param
+        glBindTexture(GL_TEXTURE_CUBE_MAP, target.getTexture()->getGlID());
+
+        RenderTargetCube& cubeTarget = *(dynamic_cast<RenderTargetCube*>(&target));
+
+        for (int i = 0; i < 6; ++i) {
+            cubeTarget.framebuffers[i] = CreateFrameBuffer();
+            cubeTarget.renderbuffers[i] = CreateRenderBuffer();
+
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
+                         target.getTexture()->getWidth(),target.getTexture()->getHeight(), 0,
+                         pixelFormat, dataType, NULL);
+
+            SetupFrameBuffer(cubeTarget.framebuffers[i], target, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+            SetupRenderBuffer(cubeTarget.renderbuffers[i], target);
+        }
+
+        if ( isTargetPowerOfTwo )
+            glGenerateMipmap( GL_TEXTURE_2D );
+    } else {
+        target.framebuffer = CreateFrameBuffer();
+
+        if (target.shareDepthFrom == nullptr) {
+            target.renderbuffer = CreateRenderBuffer();
+        } else {
+            target.renderbuffer = target.shareDepthFrom->renderbuffer;
+        }
+
+        glBindTexture(GL_TEXTURE_2D, target.getTexture()->getGlID());
+
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat,
+                     target.getTexture()->getWidth(),target.getTexture()->getHeight(), 0,
+                     pixelFormat, dataType, NULL);
+
+        SetupFrameBuffer(target.framebuffer, target, GL_TEXTURE_2D);
+
+        if (target.shareDepthFrom == nullptr) {
+            SetupRenderBuffer(target.renderbuffer, target);
+        } else {
+            // no need to allocate memory, just bind
+
+            if (target.getHasDepthBuffer() && ! target.getHasStencilBuffer()) {
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, target.renderbuffer);
+            } else if (target.getHasDepthBuffer() && target.getHasStencilBuffer()) {
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, target.renderbuffer);
+            }
+        }
+
+        if ( isTargetPowerOfTwo )
+            glGenerateMipmap( GL_TEXTURE_2D );
+    }
+
+    if (target.getType() == RenderTargetType::CUBE) {
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+    } else {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GLES2Renderer::bindBuffer(const Geometry &geometry)

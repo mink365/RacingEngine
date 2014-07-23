@@ -214,6 +214,18 @@ static const GLenum DataTypes[] {
     GL_FLOAT,
 };
 
+const GLenum TextureInternalFormatToGL(Texture::InternalFormat format) {
+    return InternalFormats[(int)format];
+}
+
+const GLenum TexturePixelFormatToGL(Texture::PixelFormat format) {
+    return PixelFormats[(int)format];
+}
+
+const GLenum TextureDataTypeToGL(Texture::DataType type) {
+    return DataTypes[(int)type];
+}
+
 TextureUtil::TextureUtil()
 {
 }
