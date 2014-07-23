@@ -20,6 +20,8 @@ class Mesh;
 class Renderer;
 class Material;
 class Pass;
+class Texture;
+class TextureFrame;
 
 class Camera;
 class Light;
@@ -48,6 +50,8 @@ typedef std::shared_ptr<Mesh> MeshPtr;
 typedef std::shared_ptr<Renderer> RendererPtr;
 typedef std::shared_ptr<Material> MaterialPtr;
 typedef std::shared_ptr<Pass> PassPtr;
+typedef std::shared_ptr<Texture> TexturePtr;
+typedef std::shared_ptr<TextureFrame> TextureFramePtr;
 
 typedef std::shared_ptr<Camera> CameraPtr;
 typedef std::shared_ptr<Light> LightPtr;

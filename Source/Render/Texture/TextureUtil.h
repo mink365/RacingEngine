@@ -1,18 +1,19 @@
 #ifndef TEXTUREUTIL_H
 #define TEXTUREUTIL_H
 
-#include "Image/Image.h"
-#include "Texture/Texture.h"
-
 namespace re {
+
+class Image;
+class Texture;
 
 class TextureUtil
 {
 public:
     TextureUtil();
 
-    void UploadTextureToHardware(Image &image, Texture &texture);
-    void DeleteTextureFromHardware(Texture &texture);
+    static void UploadTextureToHardware(Image &image, Texture &texture);
+    static void UploadTextureToHardware(unsigned char *data, Texture &texture);
+    static void DeleteTextureFromHardware(Texture &texture);
 };
 
 } // namespace re

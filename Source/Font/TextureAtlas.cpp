@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <limits.h>
 
-#include "opengl.h"
 #include "Image/Image.h"
+#include "Texture/TextureUtil.h"
 
 namespace re {
 
@@ -47,6 +47,25 @@ void TextureAtlas::init(Int width, Int height, Int depth)
     this->depth = depth;
 
     this->texture = std::make_shared<Texture>(width, height, 0);
+    this->texture->setWrapU(Texture::WrapValue::CLAMP_TO_EDGE);
+    this->texture->setWrapV(Texture::WrapValue::CLAMP_TO_EDGE);
+    this->texture->setMinFilter(Texture::FilterValue::LINEAR);
+    this->texture->setMagFilter(Texture::FilterValue::LINEAR);
+
+    if( this->depth == 4 )
+    {
+        this->texture->setPixelFormat(Texture::PixelFormat::RGBA);
+        this->texture->setInternalFormat(Texture::InternalFormat::RGBA);
+        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+    } else if( this->depth == 3 ) {
+        this->texture->setPixelFormat(Texture::PixelFormat::RGB);
+        this->texture->setInternalFormat(Texture::InternalFormat::RGB);
+        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+    } else {
+        this->texture->setPixelFormat(Texture::PixelFormat::RED);
+        this->texture->setInternalFormat(Texture::InternalFormat::RED);
+        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+    }
     // TODO: add to textureManager
 
     // TODO: memory release
@@ -195,40 +214,7 @@ void TextureAtlas::upload()
 {
     assert( this->data );
 
-    if( !this->texture->getGlID() )
-    {
-        GLuint id = 0;
-
-        glGenTextures( 1, &id );
-
-        this->texture->setGlID(id);
-    }
-
-    glBindTexture( GL_TEXTURE_2D, this->texture->getGlID() );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    if( this->depth == 4 )
-    {
-#ifdef GL_UNSIGNED_INT_8_8_8_8_REV
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height,
-                      0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, this->data );
-#else
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, self->width, self->height,
-                      0, GL_RGBA, GL_UNSIGNED_BYTE, self->data );
-#endif
-    }
-    else if( this->depth == 3 )
-    {
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, this->width, this->height,
-                      0, GL_RGB, GL_UNSIGNED_BYTE, this->data );
-    }
-    else
-    {
-        glTexImage2D( GL_TEXTURE_2D, 0, GL_RED, this->width, this->height,
-                      0, GL_RED, GL_UNSIGNED_BYTE, this->data );
-    }
+    TextureUtil::UploadTextureToHardware(this->data, *(this->texture));
 }
 
 Int TextureAtlas::fit(Int index, Int width, Int height) const

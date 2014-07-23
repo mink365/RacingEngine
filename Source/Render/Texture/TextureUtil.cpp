@@ -1,6 +1,8 @@
 #include "TextureUtil.h"
 
 #include "opengl.h"
+#include "Image/Image.h"
+#include "Texture/Texture.h"
 
 namespace re {
 
@@ -164,20 +166,79 @@ static const GLenum srcTypes[] = {
     0,
 };
 
+static const GLint FilterValues[] {
+    0,
+    GL_NEAREST,
+    GL_LINEAR,
+    GL_NEAREST_MIPMAP_NEAREST,
+    GL_LINEAR_MIPMAP_NEAREST,
+    GL_NEAREST_MIPMAP_LINEAR,
+    GL_LINEAR_MIPMAP_LINEAR,
+};
+
+static const GLint WrapValues[] {
+    0,
+    GL_CLAMP_TO_EDGE,
+    GL_MIRRORED_REPEAT,
+    GL_REPEAT,
+};
+
+static const GLint InternalFormats[] {
+    0,
+    GL_RED,
+    GL_RG,
+    GL_RGB,
+    GL_RGBA,
+    GL_RGBA16,
+};
+
+static const GLenum PixelFormats[] {
+    0,
+    GL_RED,
+    GL_RG,
+    GL_ALPHA,
+    GL_LUMINANCE,
+    GL_LUMINANCE_ALPHA,
+    GL_RGB,
+    GL_RGBA,
+};
+
+static const GLenum DataTypes[] {
+    0,
+    GL_UNSIGNED_BYTE,
+    GL_BYTE,
+    GL_UNSIGNED_SHORT,
+    GL_SHORT,
+    GL_UNSIGNED_INT,
+    GL_INT,
+    GL_FLOAT,
+};
+
 TextureUtil::TextureUtil()
 {
 }
 
 void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture)
 {
-    GLuint id = 0;
-    glGenTextures(1, &id);
+    if( !texture.getGlID() )
+    {
+        GLuint id = 0;
 
-    glBindTexture( GL_TEXTURE_2D, id );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+        glGenTextures( 1, &id );
+
+        texture.setGlID(id);
+    }
+    glBindTexture( GL_TEXTURE_2D, texture.getGlID() );
+
+    GLint wrapS = WrapValues[(int)texture.getWrapU()];
+    GLint wrapT = WrapValues[(int)texture.getWrapV()];
+    GLint minFilter = FilterValues[(int)texture.getMinFilter()];
+    GLint magFilter = FilterValues[(int)texture.getMagFilter()];
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
 
     FORMAT format = image.getFormat();
     GLenum srcFormat = srcFormats[getChannelCount(format)];
@@ -185,8 +246,35 @@ void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture)
     GLint internalFormat = internalFormats[format];
 
     glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, image.getPixels());
+}
 
-    texture.setGlID(id);
+void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture)
+{
+    if( !texture.getGlID() )
+    {
+        GLuint id = 0;
+
+        glGenTextures( 1, &id );
+
+        texture.setGlID(id);
+    }
+    glBindTexture( GL_TEXTURE_2D, texture.getGlID() );
+
+    GLint wrapS = WrapValues[(int)texture.getWrapU()];
+    GLint wrapT = WrapValues[(int)texture.getWrapV()];
+    GLint minFilter = FilterValues[(int)texture.getMinFilter()];
+    GLint magFilter = FilterValues[(int)texture.getMagFilter()];
+
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+
+    GLenum srcFormat = PixelFormats[(int)texture.getPixelFormat()];
+    GLenum srcType = DataTypes[(int)texture.getDataType()];
+    GLint internalFormat = InternalFormats[(int)texture.getInternalFormat()];
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);
 }
 
 void TextureUtil::DeleteTextureFromHardware(Texture &texture)
