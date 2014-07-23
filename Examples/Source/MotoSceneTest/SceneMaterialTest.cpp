@@ -3,6 +3,7 @@
 #include "Material/MaterialManager.h"
 #include "Loader/MaterialLoader.h"
 #include "Resource/ModelLoader/fbx/FbxParser.h"
+#include "Resource/ResourceManager.h"
 
 SceneMaterialTest::SceneMaterialTest()
 {
@@ -40,6 +41,12 @@ void SceneMaterialTest::Init()
     InitNodeShader(blockRootNode);
 
     rootNode->addChild(blockRootNode);
+
+//    auto& manager = TexManager::getInstance();
+//    manager.Hello();
+
+//    auto tex = TextureManager::getInstance().getTexture("tttt");
+//    manager.Register(tex);
 }
 
 static float s = 1;

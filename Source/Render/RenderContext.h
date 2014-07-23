@@ -15,6 +15,8 @@ namespace re {
 
 class RenderContext {
     friend class Renderer;
+    friend class GLES2Renderer;
+
 public:
 	RenderContext();
 	virtual ~RenderContext();

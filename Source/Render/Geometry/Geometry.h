@@ -16,6 +16,7 @@ namespace re {
 class Geometry : public Shared<Geometry>, public Clonable<Geometry>
 {
     friend class Renderer;
+    friend class GLES2Renderer;
     friend class BufferObjectUtil;
     friend class SkeletonController;
     friend class FbxParser;

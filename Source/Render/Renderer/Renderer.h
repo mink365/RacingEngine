@@ -17,6 +17,8 @@
 
 namespace re {
 
+class Shader;
+
 class Renderer {
 public:
 	Renderer();
@@ -27,15 +29,16 @@ public:
     void setViewMatrix(const Mat4 &mat);
     void setProjectionMatrix(const Mat4 &mat);
 
-    void setTexture(int unit, bool enable, const Texture &texture);
+    virtual void setTexture(int unit, bool enable, const Texture &texture) = 0;
 
-    void bindBuffer(const Geometry &geometry);
-    void renderMesh(const Geometry &geometry);
+    virtual void bindShader(const Shader &shader) = 0;
+    virtual void bindBuffer(const Geometry &geometry) = 0;
+    virtual void renderMesh(const Geometry &geometry) = 0;
 
-    void cleanBuffers(bool color, bool depth, bool stencil);
-    void cleanBuffers(int flag);
+    virtual void cleanBuffers(bool color, bool depth, bool stencil) = 0;
+    virtual void cleanBuffers(int flag) = 0;
 
-    void applyRenderState(const RenderState &state, bool force=false);
+    virtual void applyRenderState(const RenderState &state, bool force=false) = 0;
 
     /**
      * @brief resetToRenderState
@@ -44,10 +47,10 @@ public:
      */
     void resetToRenderState(const RenderState &state);
 
-private:
-    void activateTextureUnit(int unit);
+protected:
+    virtual void activateTextureUnit(int unit) = 0;
 
-private:
+protected:
     RenderContext context;
 
     Rect viewport;

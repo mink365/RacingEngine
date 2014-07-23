@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <limits.h>
 
+#include "opengl.h"
 #include "Image/Image.h"
 
 namespace re {

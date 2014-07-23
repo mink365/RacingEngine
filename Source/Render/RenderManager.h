@@ -11,9 +11,10 @@
 #include "Camera/Camera.h"
 #include "Scene/Mesh.h"
 #include "RenderQueue.h"
-#include "Renderer.h"
 
 namespace re {
+
+class Renderer;
 
 class RenderManager {
 public:
@@ -28,6 +29,7 @@ public:
 
     RenderQueue &getRenderQueue();
 
+    void setRenderer(std::shared_ptr<Renderer> &renderer);
     Renderer &getRenderer();
 
     /**
@@ -52,7 +54,7 @@ private:
 
     RenderQueue renderQueue;
 
-    Renderer renderer;
+    std::shared_ptr<Renderer> renderer;
 
     static const RenderState defaultRenderState;
 };

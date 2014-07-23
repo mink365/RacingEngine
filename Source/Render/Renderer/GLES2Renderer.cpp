@@ -1,44 +1,16 @@
-/*
- * Renderer.cpp
- *
- *  Created on: Mar 12, 2013
- *      Author: jk
- */
+#include "GLES2Renderer.h"
 
-#include "Renderer.h"
+#include "opengl.h"
+
+#include "Shader/Shader.h"
 
 namespace re {
 
-Renderer::Renderer() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Renderer::~Renderer() {
-    // TODO Auto-generated destructor stub
-}
-
-void Renderer::setViewPort(int x, int y, int width, int height)
+GLES2Renderer::GLES2Renderer()
 {
-    this->viewport.set(x, y, width, height);
 }
 
-void Renderer::setWorldMatrix(const Mat4 &mat)
-{
-
-}
-
-void Renderer::setViewMatrix(const Mat4 &mat)
-{
-    this->viewMatrix = mat;
-}
-
-void Renderer::setProjectionMatrix(const Mat4 &mat)
-{
-    this->projMatrix = mat;
-}
-
-void Renderer::setTexture(int unit, bool enable, const Texture& texture)
+void GLES2Renderer::setTexture(int unit, bool enable, const Texture& texture)
 {
     // TODO: size assert
 
@@ -51,7 +23,12 @@ void Renderer::setTexture(int unit, bool enable, const Texture& texture)
     }
 }
 
-void Renderer::activateTextureUnit(int unit)
+void GLES2Renderer::bindShader(const Shader &shader)
+{
+    glUseProgram(shader.getProgram());
+}
+
+void GLES2Renderer::activateTextureUnit(int unit)
 {
     // TODO: assert the texture unit size in hardware
 
@@ -61,15 +38,35 @@ void Renderer::activateTextureUnit(int unit)
     this->context.textureUnits[unit].unitEnabled = true;
 }
 
-void Renderer::bindBuffer(const Geometry &geometry)
+void GLES2Renderer::bindBuffer(const Geometry &geometry)
 {
     glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.vboIB);
 }
 
-void Renderer::renderMesh(const Geometry &geometry)
+void GLES2Renderer::renderMesh(const Geometry &geometry)
 {
     glDrawElements(GL_TRIANGLES, geometry.ibo.nIndices, GL_UNSIGNED_SHORT, NULL);
+}
+
+void GLES2Renderer::cleanBuffers(bool color, bool depth, bool stencil)
+{
+    int bits = 0;
+    if (color) {
+        bits |= GL_COLOR_BUFFER_BIT;
+    }
+
+    if (depth) {
+        bits |= GL_DEPTH_BUFFER_BIT;
+    }
+
+    if (stencil) {
+        bits |= GL_STENCIL_BUFFER_BIT;
+    }
+
+    if (bits != 0) {
+        this->cleanBuffers(bits);
+    }
 }
 
 void Renderer::cleanBuffers(bool color, bool depth, bool stencil)
@@ -92,7 +89,7 @@ void Renderer::cleanBuffers(bool color, bool depth, bool stencil)
     }
 }
 
-void Renderer::cleanBuffers(int flag)
+void GLES2Renderer::cleanBuffers(int flag)
 {
     glClear(flag);
 }
@@ -162,7 +159,7 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
     }
 }
 
-void Renderer::applyRenderState(const RenderState &state, bool force)
+void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 {
     if (force || this->context.depthState != state.depthState) {
         if (state.depthState.depthTestEnable) {
@@ -231,9 +228,4 @@ void Renderer::applyRenderState(const RenderState &state, bool force)
     }
 }
 
-void Renderer::resetToRenderState(const RenderState &state)
-{
-    this->applyRenderState(state, true);
-}
-
-}
+} // namespace re

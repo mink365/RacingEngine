@@ -10,11 +10,14 @@
 #include "Texture/TextureParser.h"
 #include "Shader/ShaderUtil.h"
 #include "Shader/ShaderManager.h"
+#include "Renderer/GLES2Renderer.h"
 #include "UI/Manager/UISceneManager.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include "opengl.h"
 
 #include "FontTest/FontTest.h"
 #include "FBXTest/FBXTest.h"
@@ -249,7 +252,11 @@ void InitGLStates() {
 void FeatureTestsApp::initResources()
 {
 //    InitGLStates();
-    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
+    auto& sceneManager = SceneManager::getInstance();
+    RendererPtr renderer = std::make_shared<GLES2Renderer>();
+
+    sceneManager.getRenderManager().setRenderer(renderer);
+    sceneManager.getRenderManager().initDefaultRenderState();
 
     const Screen& screen = Screen::getInstance();
 

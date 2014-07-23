@@ -1,5 +1,7 @@
 #include "BufferObjectUtil.h"
 
+#include "opengl.h"
+
 namespace re {
 
 BufferObjectUtil::BufferObjectUtil()

@@ -5,7 +5,6 @@
 #include <memory>
 #include <assert.h>
 
-#include "opengl.h"
 #include "Base/Uncopyable.h"
 #include "Base/Shared.h"
 #include "Base/Singleton.h"
@@ -18,7 +17,7 @@
 
 using namespace std;
 
-typedef GLuint GPU_ID;
+typedef uint GPU_ID;
 
 // TODO: 32 or 64
 typedef long OBJ_ID;

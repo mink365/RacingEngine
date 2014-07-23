@@ -8,6 +8,7 @@
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
 #include "Scene/NodeAttribute.h"
+#include "Renderer/Renderer.h"
 
 namespace re {
 
@@ -31,9 +32,14 @@ RenderQueue &RenderManager::getRenderQueue()
     return renderQueue;
 }
 
+void RenderManager::setRenderer(std::shared_ptr<Renderer>& renderer)
+{
+    this->renderer = renderer;
+}
+
 Renderer &RenderManager::getRenderer()
 {
-    return renderer;
+    return *renderer;
 }
 
 void RenderManager::renderList(const RenderableList &list)
@@ -48,7 +54,6 @@ void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
     switch(attribute->getType()) {
         case NodeAttributeType::Mesh:
     {
-        //TODO:
         MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
 
         this->renderMesh(mesh);
@@ -74,25 +79,25 @@ void RenderManager::applyMaterial(Material &material)
     for (int i = 0; i < size; ++i) {
         TextureUnitState::ptr state = pass->getTextureUnit(i);
 
-        this->renderer.setTexture(i, true, *(state->getActivityTexture().get()));
+        this->renderer->setTexture(i, true, *(state->getActivityTexture().get()));
 
         // TODO: set the matrix of textue in shader ?
-    //    this->renderer.setTextureMatrix(0, Mat4().identity());
+    //    this->renderer->setTextureMatrix(0, Mat4().identity());
     }
 
-    this->renderer.applyRenderState(material.getRenderState());
+    this->renderer->applyRenderState(material.getRenderState());
 }
 
 void RenderManager::initDefaultRenderState()
 {
-    this->renderer.resetToRenderState(defaultRenderState);
+    this->renderer->resetToRenderState(defaultRenderState);
 }
 
 void RenderManager::renderMesh(const MeshPtr& mesh)
 {
     SceneNodePtr node = mesh->getNode();
 
-    this->renderer.setWorldMatrix(node->getWorldMatrix());
+    this->renderer->setWorldMatrix(node->getWorldMatrix());
 
     Material::ptr material = mesh->getMaterial();
     Geometry::ptr geometry = mesh->getGeometry();
@@ -108,13 +113,13 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
     shader->getUniform("textureM")->setData((float*)textureMatrix);
 
-    glUseProgram(material->getShder()->getProgram());
+    this->renderer->bindShader(*(material->getShder()));
 
-    this->renderer.bindBuffer(*(geometry.get()));
+    this->renderer->bindBuffer(*(geometry));
 
     this->applyMaterial(*(material.get()));
 
-    this->renderer.renderMesh(*(geometry.get()));
+    this->renderer->renderMesh(*(geometry));
 }
 
 void RenderManager::render()
@@ -140,11 +145,11 @@ void RenderManager::render()
 
 void RenderManager::activeCamera(CameraPtr camera)
 {
-    this->renderer.setProjectionMatrix(camera->getProjectionMatrix());
-    this->renderer.setViewMatrix(camera->getViewMatrix());
+    this->renderer->setProjectionMatrix(camera->getProjectionMatrix());
+    this->renderer->setViewMatrix(camera->getViewMatrix());
 
     if (camera->getClearFlag()) {
-        this->renderer.cleanBuffers(camera->getClearFlag());
+        this->renderer->cleanBuffers(camera->getClearFlag());
     }
 
     this->currCamera = camera;
