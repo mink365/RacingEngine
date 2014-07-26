@@ -1,7 +1,7 @@
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-uniform mat4 textureM;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 textureMatrix;
 
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
@@ -12,9 +12,9 @@ varying vec4 vFragmentColor;
 
 void main()
 {
-    vec4 texCoord = textureM * vec4(aTexCoord, 1.0, 1.0);
+    vec4 texCoord = textureMatrix * vec4(aTexCoord, 1.0, 1.0);
 	vTexCoord = texCoord.xy;
     vFragmentColor = aColor;
 
-    gl_Position = projection*(view*(model*vec4(aPosition,1.0)));
+    gl_Position = projectionMatrix*(viewMatrix*(modelMatrix*vec4(aPosition,1.0)));
 }

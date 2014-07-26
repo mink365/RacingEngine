@@ -1,6 +1,6 @@
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 uniform float time;
 uniform vec2 resolution;
@@ -14,8 +14,8 @@ varying vec3 vNormal;
 varying vec3 vPos;
 
 void main() {
-    mat4 modelViewMatrix = view * model;
-    mat4 mvpMatrix = projection * modelViewMatrix;
+    mat4 modelViewMatrix = viewMatrix * modelMatrix;
+    mat4 mvpMatrix = projectionMatrix * modelViewMatrix;
 
     gl_Position = mvpMatrix * vec4(aPosition, 1.0);
     vTexCoord = aTexCoord;
