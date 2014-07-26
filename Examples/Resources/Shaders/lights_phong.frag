@@ -1,4 +1,12 @@
+
+#define MAX_DIR_LIGHTS 0
+#define MAX_HEMI_LIGHTS 0
+#define MAX_POINT_LIGHTS 2
+#define MAX_SPOT_LIGHTS 0
+
 uniform sampler2D textureSampler;
+
+uniform mat4 viewMatrix;
 
 varying vec2 vTexCoord;
 varying vec4 vFragmentColor;
@@ -64,6 +72,8 @@ uniform vec3 ambientLightColor;
 varying vec3 vViewPosition;
 varying vec3 vNormal;
 
+// -------- no specular now ---------------
+float specularStrength = 1.0;
 
 // ---------------------------- function ---------------------
 void main()
@@ -325,6 +335,9 @@ vec3 totalSpecular = vec3( 0.0 );
 
 #endif
 
+    gl_FragColor = vec4( vec3( 1.0 ), opacity );
+
+
 #ifdef METAL
 
     gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient + totalSpecular );
@@ -334,5 +347,10 @@ vec3 totalSpecular = vec3( 0.0 );
     gl_FragColor.xyz = gl_FragColor.xyz * ( emissive + totalDiffuse + ambientLightColor * ambient ) + totalSpecular;
 
 #endif
+
+    // ------------------------------ normal ---------------
+    vec4 textureColor = texture2D(textureSampler, vTexCoord);
+
+    gl_FragColor *= vFragmentColor * textureColor;
 
 }

@@ -87,7 +87,8 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
 
     CheckShaderLinkError(shader->getProgram());
 
-    if (name == "Lighting") {
+    if (name == "lights_lambert"
+        || name == "lights_phong") {
         setLightShaderAttribute(shader);
     } else {
         setPTCShaderAttribute(shader);

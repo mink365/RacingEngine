@@ -1,7 +1,7 @@
 
-#define MAX_DIR_LIGHTS 2
+#define MAX_DIR_LIGHTS 0
 #define MAX_HEMI_LIGHTS 0
-#define MAX_POINT_LIGHTS 0
+#define MAX_POINT_LIGHTS 2
 #define MAX_SPOT_LIGHTS 0
 
 
