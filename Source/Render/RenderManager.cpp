@@ -8,7 +8,10 @@
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
 #include "Scene/NodeAttribute.h"
+#include "Scene/Light/Light.h"
 #include "Renderer/Renderer.h"
+#include "RenderTarget.h"
+#include "Shader/ShaderManager.h"
 
 namespace re {
 
@@ -71,7 +74,7 @@ void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
 void RenderManager::applyMaterial(Material &material)
 {
     // shader
-    ShaderUtil::getInstance().bindShader(material.getShder().get());
+    ShaderUtil::getInstance().bindShader(material.getShader().get());
 
     // TODO: mult pass
     Pass::ptr pass = material.getPass(0);
@@ -93,6 +96,42 @@ void RenderManager::initDefaultRenderState()
     this->renderer->resetToRenderState(defaultRenderState);
 }
 
+void RenderManager::createRenderViews()
+{
+    this->renderViewList.clear();
+
+    for (auto light : this->lightList) {
+        if (light->getCastShadow()) {
+            auto renderView = RenderView::create();
+
+            renderView->init(light);
+
+            // set shader to shadowMap shader
+            renderView->forceShader = ShaderManager::getInstance().getShader("ShadowMap");
+
+            auto renderTarget = std::make_shared<RenderTarget>();
+            renderTarget->setHasDepthBuffer(true);
+            renderTarget->setHasStencilBuffer(false);
+
+            auto size = renderTarget->getSize();
+            renderView->viewport.set(-size.width / 2.0, -size.height/2.0, size.width, size.height);
+
+            this->renderer->setupRenderTarget(*renderTarget);
+            renderView->renderTarget = renderTarget;
+
+            this->renderViewList.push_back(renderView);
+        }
+    }
+
+    for (auto camera : this->cameraList) {
+        auto renderView = RenderView::create();
+
+        renderView->init(camera);
+
+        this->renderViewList.push_back(renderView);
+    }
+}
+
 void RenderManager::renderMesh(const MeshPtr& mesh)
 {
     SceneNodePtr node = mesh->getNode();
@@ -102,18 +141,18 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     Material::ptr material = mesh->getMaterial();
     Geometry::ptr geometry = mesh->getGeometry();
 
-    std::shared_ptr<Shader> shader = material->getShder();
-    shader->getUniform("model")->setData((float*)node->getWorldMatrix());
-    shader->getUniform("view")->setData((float*)currCamera->getViewMatrix());
-    shader->getUniform("projection")->setData((float*)currCamera->getProjectionMatrix());
+    std::shared_ptr<Shader> shader = material->getShader();
+    shader->getUniform("modelMatrix")->setData((float*)node->getWorldMatrix());
+    shader->getUniform("viewMatrix")->setData((float*)currRenderView->viewMatrix);
+    shader->getUniform("projectionMatrix")->setData((float*)currRenderView->projMatrix);
 
     Mat4 textureMatrix;
     auto unit = material->getPass(0)->getTextureUnit(0);
     textureMatrix.setScaling(unit->getScale().x, unit->getScale().y, 0);
 
-    shader->getUniform("textureM")->setData((float*)textureMatrix);
+    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
-    this->renderer->bindShader(*(material->getShder()));
+    this->renderer->bindShader(*(material->getShader()));
 
     this->renderer->bindBuffer(*(geometry));
 
@@ -128,10 +167,12 @@ void RenderManager::render()
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
 
-    for (auto camera : this->cameraList) {
-        this->activeCamera(camera);
+    this->createRenderViews();
 
-        auto func = camera->getQueueCullFunc();
+    for (auto renderView : this->renderViewList) {
+        this->activeRenderView(renderView);
+
+        auto& func = renderView->queueCullFunc;
 
         for (auto renderableList : lists) {
             int queueID = renderableList->listType;
@@ -143,16 +184,25 @@ void RenderManager::render()
     }
 }
 
-void RenderManager::activeCamera(CameraPtr camera)
+void RenderManager::activeRenderView(RenderView::ptr& view)
 {
-    this->renderer->setProjectionMatrix(camera->getProjectionMatrix());
-    this->renderer->setViewMatrix(camera->getViewMatrix());
+    this->renderer->setProjectionMatrix(view->projMatrix);
+    this->renderer->setViewMatrix(view->viewMatrix);
 
-    if (camera->getClearFlag()) {
-        this->renderer->cleanBuffers(camera->getClearFlag());
+    if (view->clearFlag) {
+        this->renderer->cleanBuffers(view->clearFlag);
     }
 
-    this->currCamera = camera;
+    // bind RenderTarget and viewport
+    this->renderer->setViewport(view->viewport);
+
+    if (view->renderTarget != nullptr) {
+        this->renderer->bindRenderTarget(*(view->renderTarget));
+    } else {
+        this->renderer->resetRenderTarget();
+    }
+
+    this->currRenderView = view;
 }
 
 void RenderManager::clear()

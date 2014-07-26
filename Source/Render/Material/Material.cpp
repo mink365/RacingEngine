@@ -64,7 +64,7 @@ RenderState& Material::getRenderState()
     return renderState;
 }
 
-Shader::ptr Material::getShder() const
+Shader::ptr Material::getShader() const
 {
     return shader;
 }

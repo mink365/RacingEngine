@@ -34,7 +34,7 @@ public:
     int getPassCount() const;
     void clearPasses();
 
-    Shader::ptr getShder() const;
+    Shader::ptr getShader() const;
     void setShder(Shader::ptr &value);
 
     Material::ptr clone() const override;

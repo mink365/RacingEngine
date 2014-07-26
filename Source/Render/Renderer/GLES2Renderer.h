@@ -10,7 +10,7 @@ class GLES2Renderer : public Renderer
 public:
     GLES2Renderer();
 
-    virtual void setViewPort(int x, int y, int width, int height);
+    virtual void setViewport(const Rect& viewport);
 
     virtual void setTexture(int unit, bool enable, const Texture &texture);
 
@@ -27,10 +27,9 @@ public:
 
     virtual void applyRenderState(const RenderState &state, bool force=false);
 
+    virtual void setupRenderTarget(RenderTarget &target);
 protected:
     virtual void activateTextureUnit(int unit);
-
-    void setupRenderTarget(RenderTarget &target);
 };
 
 } // namespace re

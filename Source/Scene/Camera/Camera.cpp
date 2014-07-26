@@ -31,6 +31,11 @@ void Camera::setViewport(Rect v)
     this->viewport = v;
 }
 
+const Rect &Camera::getViewport() const
+{
+    return this->viewport;
+}
+
 void Camera::setProjectionMode(CameraProjectionMode mode)
 {
     this->mode = mode;

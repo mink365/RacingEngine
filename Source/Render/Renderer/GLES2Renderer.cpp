@@ -4,6 +4,7 @@
 
 #include "Shader/Shader.h"
 #include "RenderTarget.h"
+#include "Texture/TextureUtil.h"
 
 namespace re {
 
@@ -59,11 +60,15 @@ GLES2Renderer::GLES2Renderer()
 {
 }
 
-void GLES2Renderer::setViewPort(int x, int y, int width, int height)
+void GLES2Renderer::setViewport(const Rect &viewport)
 {
-    Renderer::setViewPort(x, y, width, height);
+    if (this->context.viewport != viewport) {
 
-    glViewport(x, y, width, height);
+        glViewport(viewport.getMinX(), viewport.getMinY(),
+                   viewport.getWidth(), viewport.getHeight());
+
+        this->context.viewport = viewport;
+    }
 }
 
 void GLES2Renderer::setTexture(int unit, bool enable, const Texture& texture)
@@ -93,8 +98,6 @@ void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
     if (framebuffer != context.boundFBO) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-        this->setViewPort(0, 0, target.getTexture()->getWidth(), target.getTexture()->getHeight());
-
         context.boundFBO = framebuffer;
     }
 }
@@ -102,9 +105,6 @@ void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
 void GLES2Renderer::resetRenderTarget()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // set to default/full screen viewport
-    this->setViewPortRect(this->viewport);
 
     context.boundFBO = 0;
 }
@@ -126,7 +126,10 @@ void GLES2Renderer::activateTextureUnit(int unit)
 
 void GLES2Renderer::setupRenderTarget(RenderTarget &target)
 {
-    // TODO: create the texture in GL
+    auto texture = std::make_shared<Texture>(target.getSize().width, target.getSize().height, 0);
+    target.setTexture(texture);
+    // TODO: param base on POT
+    TextureUtil::UploadTextureToHardware(nullptr, *(target.getTexture()));
 
     // TODO: pow of two
     bool isTargetPowerOfTwo = true;
@@ -135,7 +138,7 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     GLenum dataType = TextureDataTypeToGL(target.getTexture()->getDataType());
 
     if (target.getType() == RenderTargetType::CUBE) {
-        // TODO: bind texture and set param
+        // TODO: create CUBE_MAP texture
         glBindTexture(GL_TEXTURE_CUBE_MAP, target.getTexture()->getGlID());
 
         RenderTargetCube& cubeTarget = *(dynamic_cast<RenderTargetCube*>(&target));

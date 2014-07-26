@@ -4,6 +4,7 @@
 #include "PredefineType.h"
 
 #include "Texture/Texture.h"
+#include "Math/BoundingVolume.h"
 
 namespace re {
 
@@ -19,6 +20,11 @@ public:
     virtual ~RenderTarget();
 
     RenderTargetType getType() const;
+
+    Size getSize() const;
+    void setSize(const Size &value);
+
+    void setTexture(TexturePtr texture);
     TexturePtr getTexture() const;
 
     bool getHasDepthBuffer() const;
@@ -37,6 +43,9 @@ public:
     std::shared_ptr<RenderTarget> shareDepthFrom;
 
 protected:
+    Size size;
+
+    // TODO: MRT
     TexturePtr texture;
 
     RenderTargetType type;

@@ -13,12 +13,15 @@ enum class CameraProjectionMode {
 
 class Camera : public SceneNode
 {
+    friend class RenderView;
+
 public:
     Camera();
 
     void setDepthField(float near, float far);
     void setViewport(float width, float height);
     void setViewport(Rect v);
+    const Rect& getViewport() const;
 
     void setProjectionMode(CameraProjectionMode mode);
     CameraProjectionMode getProjectionMode() const;

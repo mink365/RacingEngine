@@ -17,6 +17,7 @@ class SceneNode;
 class NodeAttribute;
 class Mesh;
 
+class RenderTarget;
 class Renderer;
 class Material;
 class Pass;
@@ -48,6 +49,7 @@ typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
 
 typedef std::shared_ptr<Renderer> RendererPtr;
+typedef std::shared_ptr<RenderTarget> RenderTargetPtr;
 typedef std::shared_ptr<Material> MaterialPtr;
 typedef std::shared_ptr<Pass> PassPtr;
 typedef std::shared_ptr<Texture> TexturePtr;

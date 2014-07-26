@@ -6,6 +6,8 @@ RenderTarget::RenderTarget()
 {
     this->type = RenderTargetType::FLAT;
 
+    this->size.set(Size(512, 512));
+
     this->generateMipmaps = true;
     this->hasDepthBuffer = true;
     this->hasStencilBuffer = true;
@@ -19,6 +21,11 @@ RenderTarget::~RenderTarget()
 RenderTargetType RenderTarget::getType() const
 {
     return this->type;
+}
+
+void RenderTarget::setTexture(TexturePtr texture)
+{
+    this->texture = texture;
 }
 
 TexturePtr RenderTarget::getTexture() const
@@ -52,6 +59,16 @@ void RenderTarget::setGenerateMipmaps(bool value)
 {
     generateMipmaps = value;
 }
+Size RenderTarget::getSize() const
+{
+    return size;
+}
+
+void RenderTarget::setSize(const Size &value)
+{
+    size = value;
+}
+
 
 RenderTargetCube::RenderTargetCube()
 {

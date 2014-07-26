@@ -11,6 +11,7 @@
 #include "Camera/Camera.h"
 #include "Scene/Mesh.h"
 #include "RenderQueue.h"
+#include "Render/Renderer/Renderer.h"
 
 namespace re {
 
@@ -39,6 +40,8 @@ public:
     void initDefaultRenderState();
 
 protected:
+    void createRenderViews();
+
     void renderList(const RenderableList &list);
 
     void renderAttribute(const NodeAttributePtr &attribute);
@@ -46,11 +49,14 @@ protected:
 
     void applyMaterial(Material &material);
 
-    void activeCamera(CameraPtr camera);
+    void activeRenderView(RenderView::ptr &view);
 
 private:
     std::vector<CameraPtr> cameraList;
-    CameraPtr currCamera;
+    std::vector<LightPtr> lightList;
+
+    std::vector<RenderView::ptr> renderViewList;
+    RenderView::ptr currRenderView;
 
     RenderQueue renderQueue;
 
