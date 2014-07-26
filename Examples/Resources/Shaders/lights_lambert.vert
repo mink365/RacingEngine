@@ -1,8 +1,8 @@
 
-#define MAX_DIR_LIGHTS 3
-#define MAX_HEMI_LIGHTS 3
-#define MAX_POINT_LIGHTS 3
-#define MAX_SPOT_LIGHTS 3
+#define MAX_DIR_LIGHTS 2
+#define MAX_HEMI_LIGHTS 0
+#define MAX_POINT_LIGHTS 0
+#define MAX_SPOT_LIGHTS 0
 
 
 uniform mat4 modelMatrix;
@@ -12,10 +12,22 @@ uniform mat3 normalMatrix;
 
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
+attribute vec3 aNormal;
 attribute vec4 aColor;
 
 varying vec2 vTexCoord;
 varying vec4 vFragmentColor;
+
+// ------------------------ light define ----------------------
+#define LAMBERT
+
+varying vec3 vLightFront;
+
+#ifdef DOUBLE_SIDED
+
+    varying vec3 vLightBack;
+
+#endif
 
 // ---------------- light attr -------------------------------------
 
@@ -89,7 +101,7 @@ void main()
 
     #if !defined( USE_SKINNING ) && ! defined( USE_MORPHNORMALS )
 
-        objectNormal = normal;
+        objectNormal = aNormal;
 
     #endif
 
@@ -99,6 +111,9 @@ void main()
 
     #endif
 
+    mat4 modelViewMatrix = viewMatrix * modelMatrix;
+
+    // mat3 normalMatrix = mat3(modelViewMatrix[0].xyz, modelViewMatrix[1].xyz, modelViewMatrix[2].xyz);
     vec3 transformedNormal = normalMatrix * objectNormal;
 
     vec4 mvPosition;
@@ -117,11 +132,14 @@ void main()
 
     #if !defined( USE_SKINNING ) && ! defined( USE_MORPHTARGETS )
 
-        mvPosition = modelViewMatrix * vec4( position, 1.0 );
+        mvPosition = modelViewMatrix * vec4( aPosition, 1.0 );
 
     #endif
 
+    vTexCoord = aTexCoord;
+    vFragmentColor = aColor;
     gl_Position = projectionMatrix * mvPosition;
+    // gl_Position = projectionMatrix*(viewMatrix*(modelMatrix*vec4(aPosition,1.0)));
 
     // -------------------------- light func ---------------------------
 
@@ -322,7 +340,7 @@ void main()
 
     #ifdef DOUBLE_SIDED
 
-    vLightBack = vLightBack * diffuse + ambient * ambientLightColor + emissive;
+        vLightBack = vLightBack * diffuse + ambient * ambientLightColor + emissive;
 
     #endif
 }

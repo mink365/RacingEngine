@@ -24,6 +24,8 @@
 #include "TweenTest/TweenTest.h"
 #include "UITest/UITest.h"
 #include "MotoSceneTest/SceneMaterialTest.h"
+#include "LightTest/LightTest.h"
+#include "ShadowTest/ShadowTest.h"
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -68,8 +70,12 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<SceneMaterialTest>());
     this->tests.push_back(test);
+    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<LightTest>());
+    this->tests.push_back(test);
+    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<ShadowTest>());
+    this->tests.push_back(test);
 
-    currIndex = 4;
+    currIndex = 5;
     this->onCurrentTestChanged();
 }
 
@@ -98,124 +104,6 @@ void FeatureTestsApp::onCurrentTestChanged()
     this->rootNode->removeAllChildren();
 
     this->current->init(*this);
-}
-
-int CheckShaderLinkError(GLint program) {
-    GLint IsLinked;
-    glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);
-    if(IsLinked==FALSE)
-    {
-        LOG_E("Failed to link shader.");
-
-        GLint maxLength;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-        if(maxLength > 0)
-        {
-            char *pLinkInfoLog = new char[maxLength];
-            glGetProgramInfoLog(program, maxLength, &maxLength, pLinkInfoLog);
-            LOG_E("shader log: %s\n", pLinkInfoLog);
-
-            delete [] pLinkInfoLog;
-        }
-
-        return -1;
-    }
-
-    return 0;
-}
-
-void setLightShaderAttribute(Shader::ptr& shader) {
-    // set vertex attribute
-    Attribute *vertAttr = shader->getAttribute("aPosition");
-    vertAttr->setType(ATTR_FORMAT_FLOAT);
-    vertAttr->setSize(3);
-    vertAttr->setStride(sizeof(Vertex));
-    vertAttr->setOffset(0);
-
-    Attribute *uvAttr = shader->getAttribute("aTexCoord");
-    uvAttr->setType(ATTR_FORMAT_FLOAT);
-    uvAttr->setSize(2);
-    uvAttr->setStride(sizeof(Vertex));
-    uvAttr->setOffset((3) * 4);
-
-//    Attribute *colorAttr = shader.getAttribute("color");
-//    colorAttr->setType(ATTR_FORMAT_FLOAT);
-//    colorAttr->setSize(4);
-//    colorAttr->setStride(sizeof(Vertex));
-//    colorAttr->setOffset((8) * 4);
-
-      // TODO:
-//    Attribute *normalAttr = shader.getAttribute("aNormal");
-//    normalAttr->setType(ATTR_FORMAT_FLOAT);
-//    normalAttr->setSize(3);
-//    normalAttr->setStride(sizeof(Vertex));
-//    normalAttr->setOffset((5) * 4);
-}
-
-void setPTCShaderAttribute(Shader::ptr& shader) {
-    // set vertex attribute
-    Attribute *vertAttr = shader->getAttribute("aPosition");
-    vertAttr->setType(ATTR_FORMAT_FLOAT);
-    vertAttr->setSize(3);
-    vertAttr->setStride(sizeof(Vertex));
-    vertAttr->setOffset(0);
-
-    Attribute *uvAttr = shader->getAttribute("aTexCoord");
-    uvAttr->setType(ATTR_FORMAT_FLOAT);
-    uvAttr->setSize(2);
-    uvAttr->setStride(sizeof(Vertex));
-    uvAttr->setOffset((3) * 4);
-
-    Attribute *colorAttr = shader->getAttribute("aColor");
-    colorAttr->setType(ATTR_FORMAT_FLOAT);
-    colorAttr->setSize(4);
-    colorAttr->setStride(sizeof(Vertex));
-    colorAttr->setOffset((8) * 4);
-}
-
-Camera camera;
-int LoadShaderData(const std::string& name, const std::string& vs, const std::string& fs) {
-    Shader::ptr shader = Shader::create();
-    shader->setName(name);
-
-    shader->setVertexSource(vs);
-    shader->setFragmentSource(fs);
-
-    ShaderUtil::getInstance().compileShader(shader.get());
-
-    CheckShaderLinkError(shader->getProgram());
-
-    if (name == "Shader_Default") {
-        setLightShaderAttribute(shader);
-    } else {
-        setPTCShaderAttribute(shader);
-    }
-
-//    shader.getUniform("model")->setData((float*)model);
-//    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
-//    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
-
-    ShaderManager::getInstance().registerShader(shader);
-
-    return 1;
-}
-
-std::string loadFile(const char *fname)
-{
-    FilePtr file = FileSystem::getInstance().openFile(fname);
-    Buffer::ptr buf = file->read();
-
-    string data((char*)(buf->getData()), buf->getSize());
-    return data;
-}
-
-int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs)
-{
-    // load shaders & get length of each
-    std::string vertexShaderString = loadFile(pfilePath_vs.c_str());
-    std::string fragmentShaderString = loadFile(pfilePath_fs.c_str());
-
-    return LoadShaderData(name, vertexShaderString, fragmentShaderString);
 }
 
 void InitGLStates() {
@@ -296,7 +184,7 @@ void FeatureTestsApp::initResources()
 
     std::string shaderDir = "Shaders/";
 
-    LoadShader("Shader_Default", shaderDir + "light.vert", shaderDir + "light.frag");
+//    LoadShader("Shader_Default", shaderDir + "light.vert", shaderDir + "light.frag");
 
     LoadShader("Shader_PTC", shaderDir + "position_texture_color.vert",
                              shaderDir + "position_texture_color.frag");
@@ -322,14 +210,14 @@ void FeatureTestsApp::initResources()
 
 void FeatureTestsApp::update(long dt)
 {
-        MessageManager::getInstance()->handleMessages();
+    MessageManager::getInstance()->handleMessages();
 
-        if (this->current) {
-            this->current->Update(dt / 1000.0f);
-        }
+    // must do this
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        // must do this
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    if (this->current) {
+        this->current->Update(dt / 1000.0f);
+    }
 }
 
 std::shared_ptr<Window> WindowFactory::createView(const string& name)

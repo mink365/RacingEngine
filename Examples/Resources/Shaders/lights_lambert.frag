@@ -1,3 +1,10 @@
+
+uniform sampler2D textureSampler;
+
+varying vec2 vTexCoord;
+varying vec4 vFragmentColor;
+
+// -----------------------------------------------
 uniform float opacity;
 
 varying vec3 vLightFront;
@@ -10,6 +17,8 @@ varying vec3 vLightFront;
 
 
 void main() {
+
+    // ----------------------- light ------------------
 
     gl_FragColor = vec4( vec3( 1.0 ), opacity );
 
@@ -28,5 +37,11 @@ void main() {
         gl_FragColor.xyz *= vLightFront;
 
     #endif
+
+    // ------------------------------ normal ---------------
+
+    vec4 textureColor = texture2D(textureSampler, vTexCoord);
+
+    gl_FragColor *= vFragmentColor * textureColor;
 
 }

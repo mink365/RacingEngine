@@ -67,7 +67,6 @@ void UITest::Init()
 
     label->setContentSize(Size(200, 50));
     label->setAnchorPoint(Vec2(0.5, 0.5));
-    label->setRotation(300);
     label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
 }
 

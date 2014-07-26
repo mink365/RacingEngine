@@ -26,6 +26,8 @@ using namespace re;
 
 class FeatureTestsApp;
 
+int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
+
 class BaseTest
 {
 public:
@@ -43,7 +45,7 @@ protected:
     std::shared_ptr<ui::UISceneManager> stage;
 };
 
-void InitMeshInHardward(MeshPtr mesh);
+void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC_TM");
 void AddMeshToNode(SceneNodePtr node, MeshPtr mesh);
 
 #endif // BASETEST_H
