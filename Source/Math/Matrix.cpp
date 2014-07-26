@@ -40,11 +40,6 @@ Mat4 Mat3::toMat4()
             0.0f,      0.0f,      0.0f,      1.0f);
 }
 
-Mat3::operator float *() const
-{
-    return (float *)this->mat[0];
-}
-
 float *Mat3::toFloatPtr()
 {
     return this->mat[0].toFloatPtr();

@@ -75,6 +75,11 @@ inline Vec3 &Mat3::operator[](int index)
     return mat[ index ];
 }
 
+inline Mat3::operator float *() const
+{
+    return (float *)mat[0];
+}
+
 /**
  * @brief The Mat4 class
  * 列主序(column major)
