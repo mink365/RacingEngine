@@ -149,6 +149,14 @@ void ShaderUtil::bindShader(Shader *shader)
 
         this->applyUniformToHardware(uniform);
     }
+
+    for (auto sampler : shader->samplers) {
+
+        for (int i=0; i < sampler->nElements; ++i) {
+            glUniform1i(sampler->location, sampler->unit + i);
+        }
+
+    }
 }
 
 void ShaderUtil::applyAttributeToHardware(Attribute *attr)
@@ -225,12 +233,13 @@ void ShaderUtil::fetchUniforms(Shader *shader)
         if (type >= GL_SAMPLER_1D && type <= GL_SAMPLER_2D_RECT_SHADOW){
             // Assign samplers to image units
             GLint location = glGetUniformLocation(shader->program, name);
-            glUniform1i(location, nSamplers);
 
-            Sampler *sampler = new Sampler(name, nSamplers);
+            Sampler *sampler = new Sampler(name, location, nSamplers);
+            sampler->nElements = size;
+
             shader->samplers.push_back(sampler);
 
-            nSamplers++;
+            nSamplers += size;
         } else {
             // Store all non-gl uniforms
             if (strncmp(name, "gl_", 3) != 0){

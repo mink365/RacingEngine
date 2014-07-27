@@ -9,11 +9,21 @@ class Sampler
 {
     friend class ShaderUtil;
 public:
-    Sampler(const char *name, uint index);
+    Sampler(const char *name, int location, int textureUnit);
 
     std::string name;
 
-    uint location;
+    int location;
+
+    /**
+     * @brief nElements
+     * for texture array, texture array will only have one
+     * name, shadowMap[0], so, we have to save the element size
+     * of it.
+     */
+    int nElements;
+
+    int unit;
 };
 
 } // namespace re
