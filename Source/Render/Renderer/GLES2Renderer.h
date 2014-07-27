@@ -12,7 +12,7 @@ public:
 
     virtual void setViewport(const Rect& viewport);
 
-    virtual void setTexture(int unit, bool enable, const Texture &texture);
+    virtual void bindTexture(int unit, bool enable, const Texture &texture);
 
     virtual void bindRenderTarget(const RenderTarget &target);
     virtual void resetRenderTarget();
@@ -23,7 +23,6 @@ public:
     virtual void renderMesh(const Geometry &geometry);
 
     virtual void cleanBuffers(bool color, bool depth, bool stencil);
-    virtual void cleanBuffers(int flag);
 
     virtual void applyRenderState(const RenderState &state, bool force=false);
 

@@ -23,4 +23,23 @@ inline float Fabs( float f ) {
     return *reinterpret_cast<float *>( &tmp );
 }
 
+inline int CeilPowerOfTwo( int x ) {
+    x--;
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    x++;
+    return x;
+}
+
+inline int FloorPowerOfTwo( int x ) {
+    return CeilPowerOfTwo( x ) >> 1;
+}
+
+inline bool IsPowerOfTwo( int x ) {
+    return ( x & ( x - 1 ) ) == 0 && x > 0;
+}
+
 #endif // MATHTOOL_H

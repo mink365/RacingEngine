@@ -13,7 +13,7 @@ class DirectionalLight : public Light
 public:
     DirectionalLight();
 
-protected:
+public:
     ShadowInfo shadow;
     Rect orthoRect;
 };

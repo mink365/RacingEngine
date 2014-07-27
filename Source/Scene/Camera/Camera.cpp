@@ -5,7 +5,9 @@ namespace re {
 Camera::Camera()
 {
     this->queueCullFunc = [](int){return false;};
-    this->clearFlag = 0;
+    this->clearFlag = ClearBufferBit::COLOR_BUFFER_BIT
+                     | ClearBufferBit::DEPTH_BUFFER_BIT
+                     | ClearBufferBit::STENCIL_BUFFER_BIT;
 
     this->fov = 45;
     this->orthoWidth = 0;

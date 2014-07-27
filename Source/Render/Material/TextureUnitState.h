@@ -30,7 +30,9 @@ public:
     void setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation);
 
     Texture::ptr getActivityTexture();
+    int getTextureFrameCount() const;
     void addTextureFrame(Texture::ptr texture);
+    void setActiveTextureFrame(int index);
 
     TextureUnitState::ptr clone() const override;
 

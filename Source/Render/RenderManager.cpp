@@ -25,9 +25,18 @@ RenderManager::~RenderManager()
 {
 }
 
-void RenderManager::addCamera(CameraPtr camera)
+void RenderManager::addCamera(CameraPtr &camera)
 {
     this->cameraList.push_back(camera);
+
+    this->renderViewDirty = true;
+}
+
+void RenderManager::addLight(LightPtr &light)
+{
+    this->lightList.push_back(light);
+
+    this->renderViewDirty = true;
 }
 
 RenderQueue &RenderManager::getRenderQueue()
@@ -74,7 +83,17 @@ void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
 void RenderManager::applyMaterial(Material &material)
 {
     // shader
-    ShaderUtil::getInstance().bindShader(material.getShader().get());
+    Shader* shader = nullptr;
+    if (this->currRenderView->forceShader) {
+        shader = this->currRenderView->forceShader.get();
+        shader->getUniform("modelMatrix")->setData((float*)renderer->getModelMatrix());
+        shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
+        shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
+    } else {
+        shader = material.getShader().get();
+    }
+
+    ShaderUtil::getInstance().bindShader(shader);
 
     // TODO: mult pass
     Pass::ptr pass = material.getPass(0);
@@ -82,7 +101,7 @@ void RenderManager::applyMaterial(Material &material)
     for (int i = 0; i < size; ++i) {
         TextureUnitState::ptr state = pass->getTextureUnit(i);
 
-        this->renderer->setTexture(i, true, *(state->getActivityTexture().get()));
+//        this->renderer->bindTexture(i, true, *(state->getActivityTexture().get()));
 
         // TODO: set the matrix of textue in shader ?
     //    this->renderer->setTextureMatrix(0, Mat4().identity());
@@ -107,17 +126,24 @@ void RenderManager::createRenderViews()
             renderView->init(light);
 
             // set shader to shadowMap shader
-            renderView->forceShader = ShaderManager::getInstance().getShader("ShadowMap");
+            renderView->forceShader = ShaderManager::getInstance().getShader("depth_rgba");
 
             auto renderTarget = std::make_shared<RenderTarget>();
             renderTarget->setHasDepthBuffer(true);
             renderTarget->setHasStencilBuffer(false);
 
             auto size = renderTarget->getSize();
-            renderView->viewport.set(-size.width / 2.0, -size.height/2.0, size.width, size.height);
+            renderView->viewport.set(0, 0, size.width, size.height);
 
             this->renderer->setupRenderTarget(*renderTarget);
             renderView->renderTarget = renderTarget;
+
+            renderView->queueCullFunc = [](int queue) {
+                    if (queue == RENDER_QUEUE_UI) {
+                        return false;
+                    }
+                    return true;
+                };
 
             this->renderViewList.push_back(renderView);
         }
@@ -130,29 +156,29 @@ void RenderManager::createRenderViews()
 
         this->renderViewList.push_back(renderView);
     }
+
+    this->renderViewDirty = false;
 }
 
 void RenderManager::renderMesh(const MeshPtr& mesh)
 {
     SceneNodePtr node = mesh->getNode();
 
-    this->renderer->setWorldMatrix(node->getWorldMatrix());
+    this->renderer->setModelMatrix(node->getWorldMatrix());
 
     Material::ptr material = mesh->getMaterial();
     Geometry::ptr geometry = mesh->getGeometry();
 
     std::shared_ptr<Shader> shader = material->getShader();
-    shader->getUniform("modelMatrix")->setData((float*)node->getWorldMatrix());
-    shader->getUniform("viewMatrix")->setData((float*)currRenderView->viewMatrix);
-    shader->getUniform("projectionMatrix")->setData((float*)currRenderView->projMatrix);
+    shader->getUniform("modelMatrix")->setData((float*)renderer->getModelMatrix());
+    shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
+    shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
 
     Mat4 textureMatrix;
     auto unit = material->getPass(0)->getTextureUnit(0);
     textureMatrix.setScaling(unit->getScale().x, unit->getScale().y, 0);
 
-    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
-
-    this->renderer->bindShader(*(material->getShader()));
+//    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
     this->renderer->bindBuffer(*(geometry));
 
@@ -167,17 +193,19 @@ void RenderManager::render()
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
 
-    this->createRenderViews();
+    if (this->renderViewDirty) {
+        this->createRenderViews();
+    }
 
     for (auto renderView : this->renderViewList) {
         this->activeRenderView(renderView);
 
-        auto& func = renderView->queueCullFunc;
+        auto func = renderView->queueCullFunc;
 
         for (auto renderableList : lists) {
             int queueID = renderableList->listType;
 
-            if (func(queueID)) {
+            if (!func || func(queueID)) {
                 this->renderList(*renderableList);
             }
         }
@@ -186,11 +214,14 @@ void RenderManager::render()
 
 void RenderManager::activeRenderView(RenderView::ptr& view)
 {
-    this->renderer->setProjectionMatrix(view->projMatrix);
-    this->renderer->setViewMatrix(view->viewMatrix);
+    if (view == this->renderViewList[0]) {
+        auto oldView = this->renderViewList[1];
 
-    if (view->clearFlag) {
-        this->renderer->cleanBuffers(view->clearFlag);
+        this->renderer->setProjectionMatrix(view->projMatrix);
+        this->renderer->setViewMatrix(view->viewMatrix);
+    } else {
+        this->renderer->setProjectionMatrix(view->projMatrix);
+        this->renderer->setViewMatrix(view->viewMatrix);
     }
 
     // bind RenderTarget and viewport
@@ -200,6 +231,10 @@ void RenderManager::activeRenderView(RenderView::ptr& view)
         this->renderer->bindRenderTarget(*(view->renderTarget));
     } else {
         this->renderer->resetRenderTarget();
+    }
+
+    if (view->clearFlag) {
+        this->renderer->cleanBuffers(view->clearFlag);
     }
 
     this->currRenderView = view;

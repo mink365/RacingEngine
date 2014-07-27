@@ -8,6 +8,8 @@
 
 namespace re {
 
+class Renderer;
+
 class GameHub : public Singleton<GameHub>
 {
 public:
@@ -17,6 +19,8 @@ public:
 
     void mainLoop(long dt);
     void bindUpdateFunc(std::function<void(long time)> func);
+
+    Renderer& GetRenderer();
 private:
     std::function<void(long time)> updateFunc;
 };

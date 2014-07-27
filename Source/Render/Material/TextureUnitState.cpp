@@ -25,9 +25,19 @@ Texture::ptr TextureUnitState::getActivityTexture()
     return this->frames[activeFrameIndex];
 }
 
+int TextureUnitState::getTextureFrameCount() const
+{
+    return this->frames.size();
+}
+
 void TextureUnitState::addTextureFrame(Texture::ptr texture)
 {
     this->frames.push_back(texture);
+}
+
+void TextureUnitState::setActiveTextureFrame(int index)
+{
+    this->activeFrameIndex = index;
 }
 
 TextureUnitState::ptr TextureUnitState::clone() const

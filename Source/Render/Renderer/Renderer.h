@@ -24,6 +24,8 @@ class RenderTarget;
 class RenderView : public Shared<RenderView>
 {
 public:
+    RenderView();
+
     void init(CameraPtr& camera);
     void init(LightPtr& light);
 
@@ -56,11 +58,14 @@ public:
 	virtual ~Renderer();
 
     virtual void setViewport(const Rect& viewport) = 0;
-    void setWorldMatrix(const Mat4 &mat);
+    void setModelMatrix(const Mat4 &mat);
     void setViewMatrix(const Mat4 &mat);
     void setProjectionMatrix(const Mat4 &mat);
+    const Mat4& getModelMatrix() const;
+    const Mat4& getViewMatrix() const;
+    const Mat4& getProjectionMatrix() const;
 
-    virtual void setTexture(int unit, bool enable, const Texture &texture) = 0;
+    virtual void bindTexture(int unit, bool enable, const Texture &texture) = 0;
 
     virtual void bindRenderTarget(const RenderTarget &target) = 0;
     virtual void resetRenderTarget() = 0;
@@ -72,7 +77,7 @@ public:
     virtual void renderMesh(const Geometry &geometry) = 0;
 
     virtual void cleanBuffers(bool color, bool depth, bool stencil) = 0;
-    virtual void cleanBuffers(int flag) = 0;
+    virtual void cleanBuffers(int flag);
 
     virtual void applyRenderState(const RenderState &state, bool force=false) = 0;
 
@@ -89,7 +94,7 @@ protected:
 protected:
     RenderContext context;
 
-    Mat4 viewMatrix, projMatrix;
+    Mat4 modelMatrix, viewMatrix, projMatrix;
 };
 
 } // namespace re

@@ -34,7 +34,7 @@ void SetupRenderBuffer(GLuint buffer, RenderTarget& target) {
     glBindRenderbuffer(GL_RENDERBUFFER, buffer);
 
     if (target.getHasDepthBuffer() && ! target.getHasStencilBuffer()) {
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,
                               target.getTexture()->getWidth(),
                               target.getTexture()->getHeight());
 
@@ -52,9 +52,7 @@ void SetupRenderBuffer(GLuint buffer, RenderTarget& target) {
     }
 }
 
-extern const GLenum TextureInternalFormatToGL(Texture::InternalFormat format);
-extern const GLenum TexturePixelFormatToGL(Texture::PixelFormat format);
-extern const GLenum TextureDataTypeToGL(Texture::DataType type);
+extern const GLenum TextureTargetTypeToGL(Texture::TargetType type);
 
 GLES2Renderer::GLES2Renderer()
 {
@@ -71,17 +69,17 @@ void GLES2Renderer::setViewport(const Rect &viewport)
     }
 }
 
-void GLES2Renderer::setTexture(int unit, bool enable, const Texture& texture)
+void GLES2Renderer::bindTexture(int unit, bool enable, const Texture& texture)
 {
-    // TODO: size assert
+    GLenum target = TextureTargetTypeToGL(texture.getTarget());
 
-    if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
+//    if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
         this->activateTextureUnit(unit);
 
-        glBindTexture(GL_TEXTURE_2D, texture.getGlID());
+        glBindTexture(target, texture.getGlID());
 
         this->context.textureUnits[unit].textureId = texture.getGlID();
-    }
+//    }
 }
 
 void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
@@ -95,11 +93,11 @@ void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
         framebuffer = target.framebuffer;
     }
 
-    if (framebuffer != context.boundFBO) {
+//    if (framebuffer != context.boundFBO) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
         context.boundFBO = framebuffer;
-    }
+//    }
 }
 
 void GLES2Renderer::resetRenderTarget()
@@ -116,10 +114,8 @@ void GLES2Renderer::bindShader(const Shader &shader)
 
 void GLES2Renderer::activateTextureUnit(int unit)
 {
-    // TODO: assert the texture unit size in hardware
-
-    glActiveTexture(GL_TEXTURE0 + unit);
-    glClientActiveTexture(GL_TEXTURE0 + unit);
+//    glActiveTexture(GL_TEXTURE0 + unit);
+//    glClientActiveTexture(GL_TEXTURE0 + unit);
 
     this->context.textureUnits[unit].unitEnabled = true;
 }
@@ -129,17 +125,14 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     auto texture = std::make_shared<Texture>(target.getSize().width, target.getSize().height, 0);
     target.setTexture(texture);
     // TODO: param base on POT
-    TextureUtil::UploadTextureToHardware(nullptr, *(target.getTexture()));
+    texture->setPixelFormat(Texture::PixelFormat::RGBA);
+    texture->setInternalFormat(Texture::InternalFormat::RGBA);
+    texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
 
-    // TODO: pow of two
-    bool isTargetPowerOfTwo = true;
-    GLenum internalFormat = TextureInternalFormatToGL(target.getTexture()->getInternalFormat());
-    GLenum pixelFormat = TexturePixelFormatToGL(target.getTexture()->getPixelFormat());
-    GLenum dataType = TextureDataTypeToGL(target.getTexture()->getDataType());
+    bool isTargetPowerOfTwo = IsPowerOfTwo(texture->getWidth()) && IsPowerOfTwo(texture->getHeight());
 
     if (target.getType() == RenderTargetType::CUBE) {
-        // TODO: create CUBE_MAP texture
-        glBindTexture(GL_TEXTURE_CUBE_MAP, target.getTexture()->getGlID());
+        texture->setTarget(Texture::TargetType::TEXTURE_CUBE_MAP);
 
         RenderTargetCube& cubeTarget = *(dynamic_cast<RenderTargetCube*>(&target));
 
@@ -147,9 +140,7 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
             cubeTarget.framebuffers[i] = CreateFrameBuffer();
             cubeTarget.renderbuffers[i] = CreateRenderBuffer();
 
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
-                         target.getTexture()->getWidth(),target.getTexture()->getHeight(), 0,
-                         pixelFormat, dataType, NULL);
+            TextureUtil::UploadTextureToHardware(nullptr, *texture, i);
 
             SetupFrameBuffer(cubeTarget.framebuffers[i], target, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
             SetupRenderBuffer(cubeTarget.renderbuffers[i], target);
@@ -166,11 +157,8 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
             target.renderbuffer = target.shareDepthFrom->renderbuffer;
         }
 
-        glBindTexture(GL_TEXTURE_2D, target.getTexture()->getGlID());
-
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat,
-                     target.getTexture()->getWidth(),target.getTexture()->getHeight(), 0,
-                     pixelFormat, dataType, NULL);
+        texture->setTarget(Texture::TargetType::TEXTURE_2D);
+        TextureUtil::UploadTextureToHardware(nullptr, *texture);
 
         SetupFrameBuffer(target.framebuffer, target, GL_TEXTURE_2D);
 
@@ -188,12 +176,6 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
 
         if ( isTargetPowerOfTwo )
             glGenerateMipmap( GL_TEXTURE_2D );
-    }
-
-    if (target.getType() == RenderTargetType::CUBE) {
-        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-    } else {
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -227,33 +209,8 @@ void GLES2Renderer::cleanBuffers(bool color, bool depth, bool stencil)
     }
 
     if (bits != 0) {
-        this->cleanBuffers(bits);
+        glClear(bits);
     }
-}
-
-void Renderer::cleanBuffers(bool color, bool depth, bool stencil)
-{
-    int bits = 0;
-    if (color) {
-        bits |= GL_COLOR_BUFFER_BIT;
-    }
-
-    if (depth) {
-        bits |= GL_DEPTH_BUFFER_BIT;
-    }
-
-    if (stencil) {
-        bits |= GL_STENCIL_BUFFER_BIT;
-    }
-
-    if (bits != 0) {
-        this->cleanBuffers(bits);
-    }
-}
-
-void GLES2Renderer::cleanBuffers(int flag)
-{
-    glClear(flag);
 }
 
 GLenum GetTestFunc(TestFunction func) {

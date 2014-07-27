@@ -22,7 +22,8 @@ public:
     RenderManager();
     virtual ~RenderManager();
 
-    void addCamera(CameraPtr camera);
+    void addCamera(CameraPtr& camera);
+    void addLight(LightPtr& light);
 
     void render();
 
@@ -51,9 +52,11 @@ protected:
 
     void activeRenderView(RenderView::ptr &view);
 
-private:
+public:
     std::vector<CameraPtr> cameraList;
     std::vector<LightPtr> lightList;
+
+    bool renderViewDirty;
 
     std::vector<RenderView::ptr> renderViewList;
     RenderView::ptr currRenderView;

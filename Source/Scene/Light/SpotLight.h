@@ -18,7 +18,7 @@ public:
     float getIntensity() const;
     void setIntensity(float value);
 
-protected:
+public:
     float spotAngle;
     float intensity;
 

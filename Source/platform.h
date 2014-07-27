@@ -31,4 +31,10 @@ typedef unsigned int uint;
 typedef int64_t Long;
 typedef int32_t Int;
 
+enum ClearBufferBit {
+    COLOR_BUFFER_BIT = 2,
+    DEPTH_BUFFER_BIT = 4,
+    STENCIL_BUFFER_BIT = 8,
+};
+
 #endif // PLATFORM_H
