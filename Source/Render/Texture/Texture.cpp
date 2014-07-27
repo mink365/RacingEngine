@@ -10,6 +10,7 @@ Texture::Texture()
 
     this->glID = 0;
 
+    this->target = TargetType::TEXTURE_2D;
     this->minFilter = FilterValue::LINEAR;
     this->magFilter = FilterValue::LINEAR;
     this->wrapU = WrapValue::REPEAT;
@@ -22,6 +23,7 @@ Texture::Texture(const int width, const int height, const int glID)
     this->height = height;
     this->glID = glID;
 
+    this->target = TargetType::TEXTURE_2D;
     this->minFilter = FilterValue::LINEAR;
     this->magFilter = FilterValue::LINEAR;
     this->wrapU = WrapValue::REPEAT;
@@ -145,5 +147,15 @@ void Texture::setDataType(const DataType &value)
 {
     dataType = value;
 }
+Texture::TargetType Texture::getTarget() const
+{
+    return target;
+}
+
+void Texture::setTarget(const TargetType &value)
+{
+    target = value;
+}
+
 
 }

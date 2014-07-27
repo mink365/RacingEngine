@@ -58,6 +58,11 @@ public:
         FLOAT,
     };
 
+    enum class TargetType {
+        TEXTURE_2D,
+        TEXTURE_CUBE_MAP,
+    };
+
 public:
     Texture();
     Texture(const int width, const int height, const int glID);
@@ -96,9 +101,14 @@ public:
     DataType getDataType() const;
     void setDataType(const DataType &value);
 
+    TargetType getTarget() const;
+    void setTarget(const TargetType &value);
+
 private:
     FilePtr file;
     std::string name;
+
+    TargetType target;
 
     int width;
     int height;

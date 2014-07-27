@@ -3,6 +3,8 @@
 #include "opengl.h"
 #include "Image/Image.h"
 #include "Texture/Texture.h"
+#include "GameHub.h"
+#include "Renderer/Renderer.h"
 
 namespace re {
 
@@ -214,6 +216,11 @@ static const GLenum DataTypes[] {
     GL_FLOAT,
 };
 
+static const GLenum TargetTypes[] {
+    GL_TEXTURE_2D,
+    GL_TEXTURE_CUBE_MAP,
+};
+
 const GLenum TextureInternalFormatToGL(Texture::InternalFormat format) {
     return InternalFormats[(int)format];
 }
@@ -226,11 +233,19 @@ const GLenum TextureDataTypeToGL(Texture::DataType type) {
     return DataTypes[(int)type];
 }
 
+const GLenum TextureTargetTypeToGL(Texture::TargetType type) {
+    return TargetTypes[(int)type];
+}
+
+Renderer& GetRenderer() {
+    return GameHub::getInstance().GetRenderer();
+}
+
 TextureUtil::TextureUtil()
 {
 }
 
-void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture)
+void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture, int index)
 {
     if( !texture.getGlID() )
     {
@@ -240,27 +255,36 @@ void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture)
 
         texture.setGlID(id);
     }
-    glBindTexture( GL_TEXTURE_2D, texture.getGlID() );
+
+    GLenum target = TextureTargetTypeToGL(texture.getTarget());
+
+    GetRenderer().bindTexture(0, true, texture);
 
     GLint wrapS = WrapValues[(int)texture.getWrapU()];
     GLint wrapT = WrapValues[(int)texture.getWrapV()];
     GLint minFilter = FilterValues[(int)texture.getMinFilter()];
     GLint magFilter = FilterValues[(int)texture.getMagFilter()];
 
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+    glTexParameteri( target, GL_TEXTURE_WRAP_S, wrapS );
+    glTexParameteri( target, GL_TEXTURE_WRAP_T, wrapT );
+    glTexParameteri( target, GL_TEXTURE_MIN_FILTER, minFilter );
+    glTexParameteri( target, GL_TEXTURE_MAG_FILTER, magFilter );
 
     FORMAT format = image.getFormat();
     GLenum srcFormat = srcFormats[getChannelCount(format)];
     GLenum srcType = srcTypes[format];
     GLint internalFormat = internalFormats[format];
 
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, image.getPixels());
+    unsigned char* data = image.getPixels();
+
+    if (target == GL_TEXTURE_CUBE_MAP) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+index, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, data);
+    } else {
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, data);
+    }
 }
 
-void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture)
+void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture, int index)
 {
     if( !texture.getGlID() )
     {
@@ -270,23 +294,29 @@ void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture)
 
         texture.setGlID(id);
     }
-    glBindTexture( GL_TEXTURE_2D, texture.getGlID() );
+    GLenum target = TextureTargetTypeToGL(texture.getTarget());
+
+    GetRenderer().bindTexture(0, true, texture);
 
     GLint wrapS = WrapValues[(int)texture.getWrapU()];
     GLint wrapT = WrapValues[(int)texture.getWrapV()];
     GLint minFilter = FilterValues[(int)texture.getMinFilter()];
     GLint magFilter = FilterValues[(int)texture.getMagFilter()];
 
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter );
+    glTexParameteri( target, GL_TEXTURE_WRAP_S, wrapS );
+    glTexParameteri( target, GL_TEXTURE_WRAP_T, wrapT );
+    glTexParameteri( target, GL_TEXTURE_MIN_FILTER, minFilter );
+    glTexParameteri( target, GL_TEXTURE_MAG_FILTER, magFilter );
 
     GLenum srcFormat = PixelFormats[(int)texture.getPixelFormat()];
     GLenum srcType = DataTypes[(int)texture.getDataType()];
     GLint internalFormat = InternalFormats[(int)texture.getInternalFormat()];
 
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);
+    if (target == GL_TEXTURE_CUBE_MAP) {
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+index, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);
+    } else {
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);
+    }
 }
 
 void TextureUtil::DeleteTextureFromHardware(Texture &texture)
