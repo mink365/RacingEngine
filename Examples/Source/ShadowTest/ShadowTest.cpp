@@ -46,7 +46,7 @@ void ShadowTest::Init()
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
     MeshPtr groundMesh = ShapeGenerater::getInstance().CreateBox(300, texture);
-    InitMeshInHardward(groundMesh, "multi_texture");
+    InitMeshInHardward(groundMesh, "shadow_map");
 
     ground = std::make_shared<SceneNode>();
     AddMeshToNode(ground, groundMesh);
@@ -65,15 +65,15 @@ void ShadowTest::Init()
     box->setLocalTranslation(Vec3(0, 0, 22));
     box->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
-//    rootNode->addChild(box);
+    rootNode->addChild(box);
     box->updateTransform();
 
     // TODO: Dir Light/Camera can't see the model?.....
 
     // light
     re::LightPtr light = std::make_shared<SpotLight>();
-//    SceneManager::getInstance().addRootNode(light);
-//    SceneManager::getInstance().getRenderManager().addLight(light);
+    SceneManager::getInstance().addRootNode(light);
+    SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
     light->setLocalTranslation(Vec3(0, 0, 200));
@@ -90,7 +90,7 @@ void ShadowTest::Init()
 
     auto scene = stage->pushTo("Scene1");
     auto window = scene->pushWindow("HelloWindow");
-//    window->addChild(sprite);
+    window->addChild(sprite);
 
     SetupShadowMapShader();
 
@@ -267,31 +267,14 @@ void ShadowTest::Update(float dt)
 //        RenderToFbo(view->renderTarget->framebuffer);
 
 //        DrawTexture(view->renderTarget->getTexture()->getGlID());
+
+        glActiveTexture(GL_TEXTURE0 + 1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, view->renderTarget->getTexture()->getGlID());
+        glActiveTexture(GL_TEXTURE0);
     }
 
     renderManager.initDefaultRenderState();
-
-    auto diffuseTex = TextureManager::getInstance().getTexture("diffuse");
-
-//    auto shader = ShaderManager::getInstance().getShader("multi_texture");
-//    GLuint program = shader->getProgram();
-//    glUseProgram(program);
-//    GLuint t1Location = glGetUniformLocation(program, "textureSampler");
-//    GLuint t2Location = glGetUniformLocation(program, "textureSampler2");
-//    GLuint t3Location = glGetUniformLocation(program, "textureSampler3");
-
-//    glUniform1i(t1Location, 0);
-//    glUniform1i(t2Location, 1);
-
-    glActiveTexture(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 2);
-    glActiveTexture(GL_TEXTURE0);
-
-    glActiveTexture(GL_TEXTURE0 + 1);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 1);
-    glActiveTexture(GL_TEXTURE0);
 }
 
 void DrawTexture(GLuint textureId)

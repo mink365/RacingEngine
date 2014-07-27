@@ -13,15 +13,15 @@ vec4 pack_depth( const in float depth ) {
 
 void main() {
 
-//#ifdef USE_LOGDEPTHBUF_EXT
+#ifdef USE_LOGDEPTHBUF_EXT
 
-//    gl_FragData[ 0 ] = pack_depth( gl_FragDepthEXT );
+    gl_FragData[ 0 ] = pack_depth( gl_FragDepthEXT );
 
-//#else
+#else
 
     gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );
 
-//#endif
+#endif
 
     //gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z / gl_FragCoord.w );
     //float z = ( ( gl_FragCoord.z / gl_FragCoord.w ) - 3.0 ) / ( 4000.0 - 3.0 );

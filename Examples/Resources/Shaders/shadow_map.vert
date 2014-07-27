@@ -1,9 +1,9 @@
 #define USE_SHADOWMAP
 #define MAX_SHADOWS 2
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
@@ -25,10 +25,10 @@ void main()
     vTexCoord = aTexCoord;
     vFragmentColor = aColor;
 
-    gl_Position = projection*(view*(model*vec4(aPosition,1.0)));
+    gl_Position = projectionMatrix*(viewMatrix*(modelMatrix*vec4(aPosition,1.0)));
 
 #ifdef USE_SHADOWMAP
-    vec4 worldPosition = model * vec4( aPosition, 1.0 );
+    vec4 worldPosition = modelMatrix * vec4( aPosition, 1.0 );
 
     for( int i = 0; i < MAX_SHADOWS; i ++ ) {
 

@@ -1,5 +1,7 @@
 
 #define USE_SHADOWMAP
+// #define SHADOWMAP_TYPE_PCF
+#define SHADOWMAP_DEBUG
 #define MAX_SHADOWS 2
 
 uniform sampler2D textureSampler;
@@ -214,15 +216,15 @@ void main()
                 vec4 rgbaDepth = texture2D( shadowMap[ i ], shadowCoord.xy );
                 float fDepth = unpackDepth( rgbaDepth );
 
-                if ( fDepth < shadowCoord.z )
+                if ( fDepth < shadowCoord.z ) {
+                    // spot with multiple shadows is darker
 
-                // spot with multiple shadows is darker
+                    shadowColor = shadowColor * vec3( 1.0 - shadowDarkness[ i ] );
 
-                shadowColor = shadowColor * vec3( 1.0 - shadowDarkness[ i ] );
+                    // spot with multiple shadows has the same color as single shadow spot
 
-                // spot with multiple shadows has the same color as single shadow spot
-
-                // shadowColor = min( shadowColor, vec3( shadowDarkness[ i ] ) );
+                    // shadowColor = min( shadowColor, vec3( shadowDarkness[ i ] ) );
+                }
 
             #endif
 
