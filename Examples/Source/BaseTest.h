@@ -45,7 +45,7 @@ protected:
     std::shared_ptr<ui::UISceneManager> stage;
 };
 
-void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC_TM");
+void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC");
 void AddMeshToNode(SceneNodePtr node, MeshPtr mesh);
 
 #endif // BASETEST_H

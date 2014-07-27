@@ -75,7 +75,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<ShadowTest>());
     this->tests.push_back(test);
 
-    currIndex = 5;
+    currIndex = 6;
     this->onCurrentTestChanged();
 }
 
@@ -106,37 +106,6 @@ void FeatureTestsApp::onCurrentTestChanged()
     this->current->init(*this);
 }
 
-void InitGLStates() {
-  //    glShadeModel(GL_SMOOTH);
-  //    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-  //    glReadBuffer(GL_BACK);
-  //    glDrawBuffer(GL_BACK);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LEQUAL);
-  glDepthMask(GL_TRUE);
-  //    glDisable(GL_STENCIL_TEST);
-  //    glStencilMask(0xFFFFFFFF);
-  //    glStencilFunc(GL_EQUAL, 0x00000000, 0x00000001);
-  //    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-  //    glFrontFace(GL_CCW);
-  ////    glCullFace(GL_BACK);
-  ////    glEnable(GL_CULL_FACE);
-  //    glDisable(GL_CULL_FACE);
-  //    glClearColor(0.0, 0.0, 0.0, 0.0);
-  glClearDepth(1.0);
-  //    glClearStencil(0);
-  //    glDisable(GL_BLEND);
-  glEnable(GL_BLEND);
-
-  // FIXME: if we use GL_ONE, font render may have color bg
-  //    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  //    glDisable(GL_ALPHA_TEST);
-  //    glDisable(GL_DITHER);
-
-  glActiveTexture(GL_TEXTURE0);
-}
-
 void FeatureTestsApp::initResources()
 {
 //    InitGLStates();
@@ -165,6 +134,8 @@ void FeatureTestsApp::initResources()
     uiCamera->setDepthField(-10, 10);
     uiCamera->setView(Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 0),
                         Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 1), Vec3(0, 1, 0));
+    // TODO: no need it, but depth not clear
+    uiCamera->setClearFlag(0);
     uiCamera->setQueueCullFunc([](int queue) {
         if (queue == RENDER_QUEUE_UI) {
             return true;
@@ -211,9 +182,6 @@ void FeatureTestsApp::initResources()
 void FeatureTestsApp::update(long dt)
 {
     MessageManager::getInstance()->handleMessages();
-
-    // must do this
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     if (this->current) {
         this->current->Update(dt / 1000.0f);

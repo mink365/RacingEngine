@@ -75,6 +75,14 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
     colorAttr->setOffset((8) * 4);
 }
 
+void setDepthRGBAAttribute(Shader::ptr& shader) {
+    Attribute *vertAttr = shader->getAttribute("aPosition");
+    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setSize(3);
+    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setOffset(0);
+}
+
 Camera camera;
 int LoadShaderData(const std::string& name, const std::string& vs, const std::string& fs) {
     Shader::ptr shader = Shader::create();
@@ -90,6 +98,8 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
     if (name == "lights_lambert"
         || name == "lights_phong") {
         setLightShaderAttribute(shader);
+    } else if (name == "depth_rgba") {
+        setDepthRGBAAttribute(shader);
     } else {
         setPTCShaderAttribute(shader);
     }
