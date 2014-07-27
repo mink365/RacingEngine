@@ -4,6 +4,7 @@ namespace re {
 
 DirectionalLight::DirectionalLight()
 {
+    this->type = LightType::Directional;
 }
 
 } // namespace re
