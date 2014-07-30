@@ -63,16 +63,20 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
     vertAttr->setOffset(0);
 
     Attribute *uvAttr = shader->getAttribute("aTexCoord");
-    uvAttr->setType(ATTR_FORMAT_FLOAT);
-    uvAttr->setSize(2);
-    uvAttr->setStride(sizeof(Vertex));
-    uvAttr->setOffset((3) * 4);
+    if (uvAttr) {
+        uvAttr->setType(ATTR_FORMAT_FLOAT);
+        uvAttr->setSize(2);
+        uvAttr->setStride(sizeof(Vertex));
+        uvAttr->setOffset((3) * 4);
+    }
 
     Attribute *colorAttr = shader->getAttribute("aColor");
-    colorAttr->setType(ATTR_FORMAT_FLOAT);
-    colorAttr->setSize(4);
-    colorAttr->setStride(sizeof(Vertex));
-    colorAttr->setOffset((8) * 4);
+    if (colorAttr) {
+        colorAttr->setType(ATTR_FORMAT_FLOAT);
+        colorAttr->setSize(4);
+        colorAttr->setStride(sizeof(Vertex));
+        colorAttr->setOffset((8) * 4);
+    }
 }
 
 void setDepthRGBAAttribute(Shader::ptr& shader) {
