@@ -12,6 +12,7 @@
 #include "Scene/Mesh.h"
 #include "RenderQueue.h"
 #include "Render/Renderer/Renderer.h"
+#include "RenderView.h"
 
 namespace re {
 

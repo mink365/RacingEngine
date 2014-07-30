@@ -17,7 +17,7 @@ RenderState::RenderState()
     this->alphaState.function = TestFunction::LessOrEqual;
 
     this->faceCullState.faceCullEnable = false;
-    this->faceCullState.cullMode = FaceCullMode::Front;
+    this->faceCullState.cullMode = FaceCullMode::Back;
 
     this->stencilState.stencilTestEnable = false;
     this->stencilState.frontStencilStencilFailOperation = StencilOperation::Keep;

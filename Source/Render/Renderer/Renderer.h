@@ -10,47 +10,15 @@
 
 #include "Math/Matrix.h"
 #include "Math/BoundingVolume.h"
-#include "Texture/Texture.h"
-#include "RenderState.h"
-#include "Geometry/Geometry.h"
 #include "RenderContext.h"
-#include "Scene/Camera/Camera.h"
 
 namespace re {
 
 class Shader;
 class RenderTarget;
-
-class RenderView : public Shared<RenderView>
-{
-public:
-    RenderView();
-
-    void init(CameraPtr& camera);
-    void init(LightPtr& light);
-
-public:
-    CameraProjectionMode mode;
-
-    Rect viewport;
-
-    Mat4 viewMatrix;
-    Mat4 projMatrix;
-
-    float zNear;
-    float zFar;
-
-    union {
-        float fov;
-        float orthoWidth;
-    };
-
-    int clearFlag;
-    std::function<bool(int queueID)> queueCullFunc;
-
-    std::shared_ptr<Shader> forceShader;
-    std::shared_ptr<RenderTarget> renderTarget;
-};
+class RenderState;
+class Shader;
+class Geometry;
 
 class Renderer {
 public:
@@ -84,7 +52,7 @@ public:
     /**
      * @brief resetToRenderState
      * @param state
-     * 忽略本地的状态缓冲，直接置为指定状态
+     * force sync hardward state to RenderState set here
      */
     void resetToRenderState(const RenderState &state);
 

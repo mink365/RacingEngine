@@ -4,6 +4,9 @@
 
 #include "Shader/Shader.h"
 #include "RenderTarget.h"
+#include "Texture/Texture.h"
+#include "RenderState.h"
+#include "Geometry/Geometry.h"
 #include "Texture/TextureUtil.h"
 
 namespace re {
