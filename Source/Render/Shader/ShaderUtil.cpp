@@ -170,10 +170,15 @@ void ShaderUtil::applyUniformToHardware(Uniform *uniform)
     if (uniform->type >= UNIFORM_MAT2){
         int cal = 2 + uniform->type - UNIFORM_MAT2;
         int size = cal * cal;
-        float mat[size];
-        for (int i = 0; i < cal; ++i) {
-            for (int j = 0; j < cal; ++j) {
-                mat[i * cal + j] = uniform->data[j * cal + i];
+        float mat[size * uniform->nElements];
+
+        for (int n = 0; n < uniform->nElements; ++n) {
+            int offset = n * size;
+
+            for (int i = 0; i < cal; ++i) {
+                for (int j = 0; j < cal; ++j) {
+                    mat[i * cal + j + offset] = uniform->data[j * cal + i + offset];
+                }
             }
         }
 
