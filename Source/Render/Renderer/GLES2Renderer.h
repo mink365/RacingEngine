@@ -22,6 +22,7 @@ public:
 
     virtual void renderMesh(const Geometry &geometry);
 
+    virtual void setClearColor(const Color& color);
     virtual void cleanBuffers(bool color, bool depth, bool stencil);
 
     virtual void applyRenderState(const RenderState &state, bool force=false);

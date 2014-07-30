@@ -9,6 +9,7 @@
 #define RENDERER_H_
 
 #include "Math/Matrix.h"
+#include "Math/Color.h"
 #include "Math/BoundingVolume.h"
 #include "RenderContext.h"
 
@@ -44,6 +45,7 @@ public:
 
     virtual void renderMesh(const Geometry &geometry) = 0;
 
+    virtual void setClearColor(const Color& color);
     virtual void cleanBuffers(bool color, bool depth, bool stencil) = 0;
     virtual void cleanBuffers(int flag);
 
@@ -63,6 +65,8 @@ protected:
     RenderContext context;
 
     Mat4 modelMatrix, viewMatrix, projMatrix;
+
+    Color _clearColor;
 };
 
 } // namespace re

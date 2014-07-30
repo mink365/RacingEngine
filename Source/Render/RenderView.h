@@ -6,6 +6,7 @@
 #include "PredefineType.h"
 #include "Math/Matrix.h"
 #include "Math/BoundingVolume.h"
+#include "Math/Color.h"
 #include "Scene/Camera/Camera.h"
 
 namespace re {
@@ -38,6 +39,8 @@ public:
     };
 
     int clearFlag;
+    Color _clearColor;
+
     std::function<bool(int queueID)> queueCullFunc;
 
     std::shared_ptr<Shader> forceShader;

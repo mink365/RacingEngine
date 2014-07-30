@@ -234,6 +234,7 @@ void RenderManager::activeRenderView(RenderView::ptr& view)
     }
 
     if (view->clearFlag) {
+        this->renderer->setClearColor(view->_clearColor);
         this->renderer->cleanBuffers(view->clearFlag);
     }
 

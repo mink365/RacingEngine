@@ -45,6 +45,11 @@ const Mat4 &Renderer::getProjectionMatrix() const
     return this->projMatrix;
 }
 
+void Renderer::setClearColor(const Color &color)
+{
+    this->_clearColor = color;
+}
+
 void Renderer::cleanBuffers(int flag)
 {
     bool color = flag & ClearBufferBit::COLOR_BUFFER_BIT;

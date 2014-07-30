@@ -196,6 +196,13 @@ void GLES2Renderer::renderMesh(const Geometry &geometry)
     glDrawElements(GL_TRIANGLES, geometry.ibo.nIndices, GL_UNSIGNED_SHORT, NULL);
 }
 
+void GLES2Renderer::setClearColor(const Color &color)
+{
+    Renderer::setClearColor(color);
+
+    glClearColor(color.r, color.g, color.b, color.a);
+}
+
 void GLES2Renderer::cleanBuffers(bool color, bool depth, bool stencil)
 {
     int bits = 0;
