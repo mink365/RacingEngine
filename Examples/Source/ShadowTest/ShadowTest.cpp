@@ -30,7 +30,7 @@ void ShadowTest::Init()
 {
     std::string shaderDir = "Shaders/";
 
-    LoadShader("depth_rgba", shaderDir + "position_texture_color.vert",
+    LoadShader("depth_rgba", shaderDir + "simple_shadow_map.vert",
                              shaderDir + "depth_rgba.frag");
 
     LoadShader("multi_texture", shaderDir + "position_texture_color.vert",
@@ -38,6 +38,9 @@ void ShadowTest::Init()
 
     LoadShader("shadow_map", shaderDir + "shadow_map.vert",
                              shaderDir + "shadow_map.frag");
+
+    LoadShader("simple_shadow_map", shaderDir + "simple_shadow_map.vert",
+                             shaderDir + "simple_shadow_map.frag");
 
     TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
 
@@ -87,6 +90,7 @@ void ShadowTest::Init()
 
     sprite = std::make_shared<Sprite>("diffuse.png");
     sprite->rebind();
+    sprite->setScale(Vec2(2, 2));
     sprite->setPosition(Vec2(0, 0));
 
     auto scene = stage->pushTo("Scene1");
@@ -107,6 +111,8 @@ static std::vector<float> shadowBias;
 // texture unit 2
 
 void SetupShadowMapShader() {
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+
     re::Mat4 biasMatrix(0.5, 0.0, 0.0, 0.5,
                         0.0, 0.5, 0.0, 0.5,
                         0.0, 0.0, 0.5, 0.5,
@@ -126,19 +132,6 @@ void SetupShadowMapShader() {
         shadowMatrix,
     };
 
-    re::Vec3 v(0, 0, -600);
-    re::Vec3 r = shadowMatrix * v;
-
-    re::Mat4 m;
-//    m.setTranslation(0,0,200);
-    m.fromRTS(Quat().fromAngles(Vec3(79,0,0)), Vec3(2, 1, 3), Vec3(0,0,200));
-
-    re::Vec3 v1(0, 0, 190);
-    re::Vec3 r1 = shadowCameraProjMatrix * v1;
-
-    re::Vec4 v2(0, 0, 190, 1.0);
-    re::Vec4 r2 = shadowCameraProjMatrix * v2;
-
     shadowMapSize = {
         re::Vec2(512, 512),
         re::Vec2(512, 512),
@@ -149,15 +142,18 @@ void SetupShadowMapShader() {
     };
 
     shadowBias = {
-        0.0001, 0.0001
+        0.000032, 0.000032
     };
 
     Shader::ptr shader = ShaderManager::getInstance().getShader("shadow_map");
 
     shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
-//    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
+    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
     shader->getUniform("shadowDarkness")->setData(shadowDarkness.data());
     shader->getUniform("shadowBias")->setData(shadowBias.data());
+
+    shader = ShaderManager::getInstance().getShader("depth_rgba");
+//    shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
 }
 
 static float rotateValue = 0;

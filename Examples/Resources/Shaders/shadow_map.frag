@@ -1,7 +1,7 @@
 
 #define USE_SHADOWMAP
-// #define SHADOWMAP_TYPE_PCF
-#define SHADOWMAP_DEBUG
+#define SHADOWMAP_TYPE_PCF
+// #define SHADOWMAP_DEBUG
 #define MAX_SHADOWS 2
 
 uniform sampler2D textureSampler;
