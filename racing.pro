@@ -7,12 +7,14 @@ CONFIG -= qt
 CONFIG += c++11
 
 LIBS += -lpng -ljpeg
-LIBS += -lGLEW -lglfw3
+LIBS += -lGLEW
 LIBS += -lfreetype
 
 macx {
+    LIBS += -lglfw3
     LIBS += -framework OpenGL
 } else {
+    LIBS += -lglfw
     LIBS += -lGL
 }
 
