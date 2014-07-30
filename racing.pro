@@ -4,11 +4,17 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 LIBS += -lpng -ljpeg
-LIBS += -lGL -lGLEW -lglfw
+LIBS += -lGLEW -lglfw3
 LIBS += -lfreetype
+
+macx {
+    LIBS += -framework OpenGL
+} else {
+    LIBS += -lGL
+}
 
 # 控制defined
 DEFINES += _LINUX
@@ -28,10 +34,19 @@ HEADERS += \
 
 INCLUDEPATH += \
     Source/ \
+    Source/Platform \
     Source/Render \
     Source/Scene \
     Source/Resource \
     Source/External/universal-tween-engine-cpp/ \
     Examples/Source/ \
 
-INCLUDEPATH += "/usr/include/freetype2/"
+macx {
+    LIBS += -L/usr/local/lib
+
+    INCLUDEPATH += /usr/local/include/ \
+                    /usr/local/include/freetype2/
+} else {
+    INCLUDEPATH += /usr/include/freetype2/
+}
+
