@@ -329,59 +329,43 @@ float Mat4::getDeterminant()
 }
 
 
-Mat4 &Mat4::lookAt(Vec3 eye, Vec3 center, Vec3 up)
+Mat4 &Mat4::lookAt(const Vec3 &eye, const Vec3 &center, const Vec3 &preUp)
 {
     // See the OpenGL GLUT documentation for gluLookAt for a description
     // of the algorithm. We implement it in a straightforward way:
 
-    // 视线向量
-    float fx = center.x - eye.x;
-    float fy = center.y - eye.y;
-    float fz = center.z - eye.z;
+    Vec3 forward = center - eye;
+    forward.normalize();
 
-    // Normalize f
-    float rlf = 1.0f / sqrt(fx * fx + fy * fy + fz * fz);
-    fx *= rlf;
-    fy *= rlf;
-    fz *= rlf;
+    // compute s = f x up (x means "cross product")
+    Vec3 side = forward.cross(preUp);
+    side.normalize();
 
-    // compute s = f x up (x means "cross product") 侧向向量，垂直于up与视线构成的面
-    float sx = fy * up.z - fz * up.y;
-    float sy = fz * up.x - fx * up.z;
-    float sz = fx * up.y - fy * up.x;
+    // compute u = s x f
+    Vec3 up = side.cross(forward);
+    up.normalize();
 
-    // and normalize s
-    float rls = 1.0f / sqrt(fx * fx + fy * fy + fz * fz);
-    sx *= rls;
-    sy *= rls;
-    sz *= rls;
-
-    // compute u = s x f 重新计算出一个up
-    float ux = sy * fz - sz * fy;
-    float uy = sz * fx - sx * fz;
-    float uz = sx * fy - sy * fx;
-
-    mat[0][0] = sx;
-    mat[1][0] = ux;
-    mat[2][0] = -fx;
-    mat[3][0] = 0.0f;
-
-    mat[0][1] = sy;
-    mat[1][1] = uy;
-    mat[2][1] = -fy;
-    mat[3][1] = 0.0f;
-
-    mat[0][2] = sz;
-    mat[1][2] = uz;
-    mat[2][2] = -fz;
-    mat[3][2] = 0.0f;
-
+    mat[0][0] = side.x;
+    mat[0][1] = side.y;
+    mat[0][2] = side.z;
     mat[0][3] = 0.0f;
+
+    mat[1][0] = up.x;
+    mat[1][1] = up.y;
+    mat[1][2] = up.z;
     mat[1][3] = 0.0f;
+
+    mat[2][0] = -forward.x;
+    mat[2][1] = -forward.y;
+    mat[2][2] = -forward.z;
     mat[2][3] = 0.0f;
+
+    mat[3][0] = 0.0f;
+    mat[3][1] = 0.0f;
+    mat[3][2] = 0.0f;
     mat[3][3] = 1.0f;
 
-    for (int i=0 ; i<4 ; i++) {
+    for (int i=0 ; i<3 ; i++) {
         int mi = i;
         mat[mi][3] += mat[mi][0] * -eye.x + mat[mi][1] * -eye.y + mat[mi][2] * -eye.z;
     }

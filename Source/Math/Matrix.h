@@ -105,7 +105,7 @@ public:
     Mat4 &setPerspectiveY(const float fovY, const float aspect, const float zNear, const float zFar);
     Mat4 &setFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
     Mat4 &setOrthoFrustum(const float left, const float right, const float bottom, const float top, const float near, const float far);
-    Mat4 &lookAt(Vec3 eye, Vec3 center, Vec3 up);
+    Mat4 &lookAt(const Vec3& eye, const Vec3& center, const Vec3& preUp);
 
     Mat4 &setRotationX(const float angle);
     Mat4 &setRotationY(const float angle);
