@@ -26,6 +26,7 @@
 #include "MotoSceneTest/SceneMaterialTest.h"
 #include "LightTest/LightTest.h"
 #include "ShadowTest/ShadowTest.h"
+#include "BulletTest/BulletTest.h"
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -74,8 +75,10 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<ShadowTest>());
     this->tests.push_back(test);
+    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
+    this->tests.push_back(test);
 
-    currIndex = 6;
+    currIndex = 7;
     this->onCurrentTestChanged();
 }
 

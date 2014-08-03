@@ -16,6 +16,11 @@ macx {
 } else {
     LIBS += -lglfw
     LIBS += -lGL
+
+    LIBS += -lBulletCollision \
+            -lBulletDynamics \
+            -lLinearMath \
+            -lConvexDecomposition
 }
 
 # 控制defined
@@ -50,5 +55,6 @@ macx {
                     /usr/local/include/freetype2/
 } else {
     INCLUDEPATH += /usr/include/freetype2/
+    INCLUDEPATH += /usr/include/bullet/
 }
 
