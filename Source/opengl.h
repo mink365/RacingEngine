@@ -1,20 +1,22 @@
 #ifndef OPENGL_H
 #define OPENGL_H
 
-#if defined(__APPLE__)
-#   include <GL/glew.h>
-#  ifdef GL_ES_VERSION_2_0
-#    include <OpenGLES/ES2/gl.h>
-#  else
-#    include <OpenGL/gl.h>
-#  endif
-#elif defined(_WIN32) || defined(_WIN64)
-#  include <Windows.h>
-#  include <GL/glew.h>
-#  include <GL/wglew.h>
-#elif defined(_LINUX)
-#  include <GL/glew.h>
-#  include <GL/gl.h>
+#if defined(RE_PLATFORM_MAC)
+    #include <GL/glew.h>
+    #ifdef GL_ES_VERSION_2_0
+        #include <OpenGLES/ES2/gl.h>
+    #else
+        #include <OpenGL/gl.h>
+    #endif
+#elif defined(RE_PLATFORM_WIN)
+    #include <Windows.h>
+    #include <GL/glew.h>
+    #include <GL/wglew.h>
+#elif defined(RE_PLATFORM_LINUX)
+    #include <GL/glew.h>
+    #include <GL/gl.h>
+#elif defined (RE_PLATFORM_ANDROID)
+    #include <GLES/gl.h>
 #else
     #include "CCGL.h"
 
