@@ -36,7 +36,7 @@ void Node2d::onExit()
 
 bool Node2d::isRunning()
 {
-
+    return true;
 }
 
 bool Node2d::isVisible()

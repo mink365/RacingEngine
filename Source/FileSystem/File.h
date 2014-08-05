@@ -33,19 +33,19 @@ public:
     File();
     virtual ~File();
 
-    virtual const std::string& getName() const;
+    virtual const std::string& getName() const = 0;
     /**
      * @brief getFullPath
      * @return
      *
      * full path is relative to the root of the resources
      */
-    virtual const std::string& getFullPath() const;
+    virtual const std::string& getFullPath() const = 0;
     virtual const std::string getExt() const;
 
     Buffer::ptr read();
-    virtual int read( void *buffer, int len );
-    virtual int write(const void *buffer, int len);
+    virtual int read( void *buffer, int len ) = 0;
+    virtual int write(const void *buffer, int len) = 0;
     virtual int length() const;
 
 protected:

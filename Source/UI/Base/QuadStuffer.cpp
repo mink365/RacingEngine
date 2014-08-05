@@ -27,6 +27,16 @@ Vec2 GetPoint(const Rect& rect, AlignType align) {
     return Vec2(rect.getMaxX(), rect.getMaxY());
   case AlignType::RIGHT_BOTTOM:
     return Vec2(rect.getMaxX(), rect.getMinY());
+  case AlignType::CENTER:
+      return Vec2(rect.getMidX(), rect.getMidY());
+  case AlignType::CENTER_BOTTOM:
+      return Vec2(rect.getMidX(), rect.getMinY());
+  case AlignType::CENTER_TOP:
+      return Vec2(rect.getMidX(), rect.getMaxY());
+  case AlignType::LEFT_CENTER:
+      return Vec2(rect.getMinX(), rect.getMidY());
+  case AlignType::RIGHT_CENTER:
+      return Vec2(rect.getMaxX(), rect.getMidY());
   }
 
   return Vec2();

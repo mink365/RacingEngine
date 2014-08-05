@@ -37,6 +37,7 @@ Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Ma
     if (this->linkMode == LinkMode::Additive) {
         // TODO:
         assert(false);
+        return Mat4();
     } else {
         this->updateMatrix();
 

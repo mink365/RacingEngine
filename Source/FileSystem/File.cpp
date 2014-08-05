@@ -16,16 +16,6 @@ File::~File()
 
 }
 
-const std::string &File::getName() const
-{
-
-}
-
-const std::string &File::getFullPath() const
-{
-
-}
-
 int File::length() const
 {
     return this->fileSize;
@@ -52,16 +42,6 @@ Buffer::ptr File::read()
     this->read(buf->getData(), this->length());
 
     return buf;
-}
-
-int File::read(void *buffer, int len)
-{
-
-}
-
-int File::write(const void *buffer, int len)
-{
-
 }
 
 FilePermanent::FilePermanent()

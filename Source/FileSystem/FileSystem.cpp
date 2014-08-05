@@ -102,6 +102,14 @@ void FileSystem::openFile(FilePtr &file, fsMode mode)
 
         break;
     }
+    case FileType::AndroidAsset:
+    {
+        break;
+    }
+    case FileType::PACK:
+    {
+        break;
+    }
     }
 }
 
