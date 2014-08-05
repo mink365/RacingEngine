@@ -5,6 +5,10 @@
 
 #include "Math/BoundingVolume.h"
 #include "Platform/NativeView.h"
+#include "UI/TouchEvent.h"
+
+#include <EGL/egl.h>
+#include <GLES/gl.h>
 
 namespace re {
 
@@ -18,13 +22,24 @@ public:
     void setFrameSize(float width, float height) override;
     Size getFrameSize() const override;
 
-    void initView();
-protected:
-    int initDisplay(engine* engine);
-    void termDisplay(engine* engine);
+    void initView(android_app* app);
+    int32_t handleInput(AInputEvent *event);
 
-    static int32_t handleInput(android_app* app, AInputEvent* event);
-    static void handleCmd(android_app* app, int32_t cmd);
+    int swapBuffers();
+public:
+    int initDisplay();
+    void termDisplay();
+
+private:
+    void dispatchTouchEvent(TouchEventType type, float x, float y);
+
+private:
+    android_app* __app;
+
+    EGLDisplay display;
+    EGLSurface surface;
+    EGLContext context;
+    Rect viewRect;
 };
 
 } // namespace re

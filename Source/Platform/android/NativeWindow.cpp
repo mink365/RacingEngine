@@ -1,55 +1,113 @@
 #include "NativeWindow.h"
 
+#include "Util/LogUtil.h"
+
 #include <jni.h>
 #include <errno.h>
 
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 
-#include <android/sensor.h>
-#include <android/log.h>
-
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "native-activity", __VA_ARGS__))
-#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "native-activity", __VA_ARGS__))
-
+#include "UI/TouchEvent.h"
+#include "Message/MessageManager.h"
+#include "Message/MessageConstant.h"
 
 namespace re {
-
-/**
- * Our saved state data.
- */
-struct saved_state {
-    float angle;
-    int32_t x;
-    int32_t y;
-};
-
-/**
- * Shared state for our app.
- */
-struct engine {
-    struct android_app* app;
-
-    ASensorManager* sensorManager;
-    const ASensor* accelerometerSensor;
-    ASensorEventQueue* sensorEventQueue;
-
-    int animating;
-    EGLDisplay display;
-    EGLSurface surface;
-    EGLContext context;
-    int32_t width;
-    int32_t height;
-    struct saved_state state;
-};
 
 NativeWindow::NativeWindow()
 {
 }
 
-void NativeWindow::initView()
+void NativeWindow::initView(android_app *app)
 {
+    this->__app = app;
+}
 
+void NativeWindow::dispatchTouchEvent(TouchEventType type, float x, float y)
+{
+    auto event = std::make_shared<TouchEvent>();
+
+    const Rect& rect = this->viewRect;
+
+    event->setInfo(type, x - rect.origin.x,
+                   rect.size.height - (y - rect.origin.y));
+
+    MessageManager::getInstance()->sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
+}
+
+int32_t NativeWindow::handleInput(AInputEvent *event)
+{
+    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
+        int32_t action = AMotionEvent_getAction(event);
+
+        size_t pointerIndex;
+        size_t pointerId;
+        size_t pointerCount;
+        int x;
+        int y;
+
+        switch ( action & AMOTION_EVENT_ACTION_MASK) {
+        case AMOTION_EVENT_ACTION_DOWN:
+        {
+            pointerId = AMotionEvent_getPointerId(event, 0);
+            x = AMotionEvent_getX(event, 0);
+            y = AMotionEvent_getY(event, 0);
+
+            dispatchTouchEvent(TouchEventType::DOWN, x, y);
+
+            break;
+        }
+        case AMOTION_EVENT_ACTION_MOVE:
+        {
+            // ACTION_MOVE events are batched, unlike the other events.
+            pointerCount = AMotionEvent_getPointerCount(event);
+            for (size_t i = 0; i < pointerCount; ++i) {
+                pointerId = AMotionEvent_getPointerId(event, i);
+                x = AMotionEvent_getX(event, i);
+                y = AMotionEvent_getY(event, i);
+
+                dispatchTouchEvent(TouchEventType::MOVE, x, y);
+            }
+
+            break;
+        }
+        case AMOTION_EVENT_ACTION_UP:
+        {
+            pointerId = AMotionEvent_getPointerId(event, 0);
+            x = AMotionEvent_getX(event, 0);
+            y = AMotionEvent_getY(event, 0);
+
+            dispatchTouchEvent(TouchEventType::UP, x, y);
+
+            break;
+        }
+        case AMOTION_EVENT_ACTION_CANCEL:
+        {
+            pointerId = AMotionEvent_getPointerId(event, 0);
+            x = AMotionEvent_getX(event, 0);
+            y = AMotionEvent_getY(event, 0);
+
+            dispatchTouchEvent(TouchEventType::CANCEL, x, y);
+
+            break;
+        }
+
+        }
+
+        return 1;
+    } else if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY) {
+
+        return 1;
+    }
+
+    return 1;
+}
+
+int NativeWindow::swapBuffers()
+{
+    int rc = eglSwapBuffers(display, surface);
+
+    return rc;
 }
 
 void NativeWindow::setFrameSize(float width, float height) {
@@ -57,10 +115,10 @@ void NativeWindow::setFrameSize(float width, float height) {
 }
 
 Size NativeWindow::getFrameSize() const {
-
+    return viewRect.size;
 }
 
-int NativeWindow::initDisplay(engine* engine)
+int NativeWindow::initDisplay()
 {
     // initialize OpenGL ES and EGL
 
@@ -97,106 +155,43 @@ int NativeWindow::initDisplay(engine* engine)
      * ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID. */
     eglGetConfigAttrib(display, config, EGL_NATIVE_VISUAL_ID, &format);
 
-    ANativeWindow_setBuffersGeometry(engine->app->window, 0, 0, format);
+    ANativeWindow_setBuffersGeometry(__app->window, 0, 0, format);
 
-    surface = eglCreateWindowSurface(display, config, engine->app->window, NULL);
+    surface = eglCreateWindowSurface(display, config, __app->window, NULL);
     context = eglCreateContext(display, config, NULL, NULL);
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-        LOGW("Unable to eglMakeCurrent");
+        LOG_D("Unable to eglMakeCurrent");
         return -1;
     }
 
     eglQuerySurface(display, surface, EGL_WIDTH, &w);
     eglQuerySurface(display, surface, EGL_HEIGHT, &h);
 
-    engine->display = display;
-    engine->context = context;
-    engine->surface = surface;
-    engine->width = w;
-    engine->height = h;
-    engine->state.angle = 0;
+    this->display = display;
+    this->context = context;
+    this->surface = surface;
 
-    // Initialize GL state.
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-    glEnable(GL_CULL_FACE);
-    glShadeModel(GL_SMOOTH);
-    glDisable(GL_DEPTH_TEST);
+    this->viewRect.set(0, 0, w, h);
 
     return 0;
 }
 
-void NativeWindow::termDisplay(engine* engine)
+void NativeWindow::termDisplay()
 {
-    if (engine->display != EGL_NO_DISPLAY) {
-        eglMakeCurrent(engine->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        if (engine->context != EGL_NO_CONTEXT) {
-            eglDestroyContext(engine->display, engine->context);
+    if (this->display != EGL_NO_DISPLAY) {
+        eglMakeCurrent(this->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+        if (this->context != EGL_NO_CONTEXT) {
+            eglDestroyContext(this->display, this->context);
         }
-        if (engine->surface != EGL_NO_SURFACE) {
-            eglDestroySurface(engine->display, engine->surface);
+        if (this->surface != EGL_NO_SURFACE) {
+            eglDestroySurface(this->display, this->surface);
         }
-        eglTerminate(engine->display);
+        eglTerminate(this->display);
     }
-    engine->animating = 0;
-    engine->display = EGL_NO_DISPLAY;
-    engine->context = EGL_NO_CONTEXT;
-    engine->surface = EGL_NO_SURFACE;
-}
-
-int32_t NativeWindow::handleInput(android_app *app, AInputEvent *event)
-{
-    struct engine* engine = (struct engine*)app->userData;
-    if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION) {
-        engine->animating = 1;
-        engine->state.x = AMotionEvent_getX(event, 0);
-        engine->state.y = AMotionEvent_getY(event, 0);
-        return 1;
-    }
-    return 0;
-}
-
-void NativeWindow::handleCmd(android_app *app, int32_t cmd)
-{
-    struct engine* engine = (struct engine*)app->userData;
-    switch (cmd) {
-        case APP_CMD_SAVE_STATE:
-            // The system has asked us to save our current state.  Do so.
-            engine->app->savedState = malloc(sizeof(struct saved_state));
-            *((struct saved_state*)engine->app->savedState) = engine->state;
-            engine->app->savedStateSize = sizeof(struct saved_state);
-            break;
-        case APP_CMD_INIT_WINDOW:
-            // The window is being shown, get it ready.
-            if (engine->app->window != NULL) {
-                initDisplay(engine);
-            }
-            break;
-        case APP_CMD_TERM_WINDOW:
-            // The window is being hidden or closed, clean it up.
-            termDisplay(engine);
-            break;
-        case APP_CMD_GAINED_FOCUS:
-            // When our app gains focus, we start monitoring the accelerometer.
-            if (engine->accelerometerSensor != NULL) {
-                ASensorEventQueue_enableSensor(engine->sensorEventQueue,
-                        engine->accelerometerSensor);
-                // We'd like to get 60 events per second (in us).
-                ASensorEventQueue_setEventRate(engine->sensorEventQueue,
-                        engine->accelerometerSensor, (1000L/60)*1000);
-            }
-            break;
-        case APP_CMD_LOST_FOCUS:
-            // When our app loses focus, we stop monitoring the accelerometer.
-            // This is to avoid consuming battery while not being used.
-            if (engine->accelerometerSensor != NULL) {
-                ASensorEventQueue_disableSensor(engine->sensorEventQueue,
-                        engine->accelerometerSensor);
-            }
-            // Also stop animating.
-            engine->animating = 0;
-            break;
-    }
+    this->display = EGL_NO_DISPLAY;
+    this->context = EGL_NO_CONTEXT;
+    this->surface = EGL_NO_SURFACE;
 }
 
 } // namespace re
