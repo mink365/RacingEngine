@@ -16,7 +16,20 @@
     #include <GL/glew.h>
     #include <GL/gl.h>
 #elif defined (RE_PLATFORM_ANDROID)
-    #include <GLES/gl.h>
+    #include <GLES2/gl2.h>
+    #include <GLES2/gl2ext.h>
+
+    #define GL_SAMPLER_1D 0x8B5D
+    #define GL_SAMPLER_3D 0x8B5F
+    #define GL_SAMPLER_2D_RECT_SHADOW 0x8B64
+
+    #define GL_RGBA16 0x805B
+    #define GL_RED 0x1903
+    #define GL_RG 0x8227
+
+    // TODO: No define in gles2
+    #define GL_DEPTH_STENCIL 1
+    #define GL_DEPTH_STENCIL_ATTACHMENT 1
 #else
     #include "CCGL.h"
 
