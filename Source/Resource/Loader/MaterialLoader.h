@@ -5,6 +5,7 @@
 #include "PredefineType.h"
 #include "Material/Material.h"
 #include "Resource/Common/BlockParser.h"
+#include <string>
 
 namespace re {
 

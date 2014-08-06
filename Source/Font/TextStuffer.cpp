@@ -396,6 +396,11 @@ void TextStuffer::tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup &m
             markup.size = tag->fontSize;
             break;
         }
+        case TagType::Root:
+        case TagType::Image:
+        case TagType::UnderLine:
+        case TagType::Link:
+            break;
         }
     }
 }
