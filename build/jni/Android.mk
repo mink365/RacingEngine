@@ -22,8 +22,23 @@ LOCAL_PATH := $(call my-dir)/../../Source
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := libracing
-LOCAL_SRC_FILES := $(call all-c-files-under,.) \
-	$(call all-cpp-files-under,.)
+LOCAL_SRC_FILES := \
+	$(call all-cpp-files-under, ./Animation/) \
+	$(call all-cpp-files-under, ./Base/) \
+	$(call all-cpp-files-under, ./Effect/) \
+	$(call all-cpp-files-under, ./External/) \
+	$(call all-cpp-files-under, ./FileSystem/) \
+	$(call all-cpp-files-under, ./Font/) \
+	$(call all-cpp-files-under, ./Math/) \
+	$(call all-cpp-files-under, ./Message/) \
+	$(call all-cpp-files-under, ./Render/) \
+	$(call all-cpp-files-under, ./Resource/) \
+	$(call all-cpp-files-under, ./Scene/) \
+	$(call all-cpp-files-under, ./UI/) \
+	$(call all-cpp-files-under, ./Util/) \
+	$(LOCAL_PATH)/Platform/GameHub.cpp \
+	$(call all-cpp-files-under, ./Platform/android/) \
+
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 	$(LOCAL_PATH)/Platform \
 	$(LOCAL_PATH)/Render \
@@ -33,8 +48,8 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
 
-LOCAL_CFLAGS    := -Werror
-LOCAL_LDLIBS    := -llog -landroid -lGLESv2 -lEGL -lGLESv1_CM
+# LOCAL_CFLAGS    := -Werror
+LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL -lGLESv1_CM
 
 EXTERANL_PATH = $(LOCAL_PATH)/../build/external/
 INCLUDE_EXT = include/android/
@@ -46,17 +61,20 @@ LOCAL_C_INCLUDES += \
 	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT)/freetype2/ \
 
-LOCAL_LDLIBS	+= \
+LOCAL_LDFLAGS	:= \
 	-L$(EXTERANL_PATH)/jpeg/$(LIB_EXT) \
 	-L$(EXTERANL_PATH)/png/$(LIB_EXT) \
 	-L$(EXTERANL_PATH)/freetype2/$(LIB_EXT) \
 
 LOCAL_STATIC_LIBRARIES := \
 	android_native_app_glue \
-	libjpeg \
-	libpng \
-	libfreetype \
+	cocos_jpeg_static \
+	cocos_png_static \
+	cocos_freetype2_static \
 
 include $(BUILD_SHARED_LIBRARY)
 
+$(call import-module,jpeg/prebuilt/android)
+$(call import-module,png/prebuilt/android)
+$(call import-module,freetype2/prebuilt/android)
 $(call import-module,android/native_app_glue)
