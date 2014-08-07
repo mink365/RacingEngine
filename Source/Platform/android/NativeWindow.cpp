@@ -16,6 +16,10 @@ namespace re {
 
 NativeWindow::NativeWindow()
 {
+    __app = 0;
+    display = 0;
+    context = 0;
+    surface = 0;
 }
 
 void NativeWindow::initView(android_app *app)
@@ -105,6 +109,10 @@ int32_t NativeWindow::handleInput(AInputEvent *event)
 
 int NativeWindow::swapBuffers()
 {
+    if (!display || !surface) {
+        return 1;
+    }
+
     int rc = eglSwapBuffers(display, surface);
 
     return rc;
@@ -118,6 +126,32 @@ Size NativeWindow::getFrameSize() const {
     return viewRect.size;
 }
 
+static EGLenum checkErrorEGL(const char* msg)
+{
+//    GP_ASSERT(msg);
+    static const char* errmsg[] =
+    {
+        "EGL function succeeded",
+        "EGL is not initialized, or could not be initialized, for the specified display",
+        "EGL cannot access a requested resource",
+        "EGL failed to allocate resources for the requested operation",
+        "EGL fail to access an unrecognized attribute or attribute value was passed in an attribute list",
+        "EGLConfig argument does not name a valid EGLConfig",
+        "EGLContext argument does not name a valid EGLContext",
+        "EGL current surface of the calling thread is no longer valid",
+        "EGLDisplay argument does not name a valid EGLDisplay",
+        "EGL arguments are inconsistent",
+        "EGLNativePixmapType argument does not refer to a valid native pixmap",
+        "EGLNativeWindowType argument does not refer to a valid native window",
+        "EGL one or more argument values are invalid",
+        "EGLSurface argument does not name a valid surface configured for rendering",
+        "EGL power management event has occurred",
+    };
+    EGLenum error = eglGetError();
+    LOG_E("%s: %s.", msg, errmsg[error - EGL_SUCCESS]);
+    return error;
+}
+
 int NativeWindow::initDisplay()
 {
     // initialize OpenGL ES and EGL
@@ -127,13 +161,34 @@ int NativeWindow::initDisplay()
      * Below, we select an EGLConfig with at least 8 bits per color
      * component compatible with on-screen windows
      */
-    const EGLint attribs[] = {
-            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-            EGL_BLUE_SIZE, 8,
-            EGL_GREEN_SIZE, 8,
-            EGL_RED_SIZE, 8,
-            EGL_NONE
+    int samples = 4;
+    EGLint eglConfigAttrs[] =
+    {
+        EGL_SAMPLE_BUFFERS,     samples > 0 ? 1 : 0,
+        EGL_SAMPLES,            samples,
+        EGL_DEPTH_SIZE,         24,
+        EGL_RED_SIZE,           8,
+        EGL_GREEN_SIZE,         8,
+        EGL_BLUE_SIZE,          8,
+        EGL_ALPHA_SIZE,         8,
+        EGL_STENCIL_SIZE,       8,
+        EGL_SURFACE_TYPE,       EGL_WINDOW_BIT,
+        EGL_RENDERABLE_TYPE,    EGL_OPENGL_ES2_BIT,
+        EGL_NONE
     };
+
+    const EGLint eglContextAttrs[] =
+    {
+        EGL_CONTEXT_CLIENT_VERSION,    2,
+        EGL_NONE
+    };
+
+    const EGLint eglSurfaceAttrs[] =
+    {
+        EGL_RENDER_BUFFER,    EGL_BACK_BUFFER,
+        EGL_NONE
+    };
+
     EGLint w, h, dummy, format;
     EGLint numConfigs;
     EGLConfig config;
@@ -147,7 +202,16 @@ int NativeWindow::initDisplay()
     /* Here, the application chooses the configuration it desires. In this
      * sample, we have a very simplified selection process, where we pick
      * the first EGLConfig that matches our criteria */
-    eglChooseConfig(display, attribs, &config, 1, &numConfigs);
+    eglChooseConfig(display, eglConfigAttrs, &config, 1, &numConfigs);
+
+    context = eglCreateContext(display, config, EGL_NO_CONTEXT, eglContextAttrs);
+
+    if (context == EGL_NO_CONTEXT)
+    {
+        checkErrorEGL("eglCreateContext");
+
+        return -1;
+    }
 
     /* EGL_NATIVE_VISUAL_ID is an attribute of the EGLConfig that is
      * guaranteed to be accepted by ANativeWindow_setBuffersGeometry().
@@ -157,16 +221,22 @@ int NativeWindow::initDisplay()
 
     ANativeWindow_setBuffersGeometry(__app->window, 0, 0, format);
 
-    surface = eglCreateWindowSurface(display, config, __app->window, NULL);
-    context = eglCreateContext(display, config, NULL, NULL);
+    surface = eglCreateWindowSurface(display, config, __app->window, eglSurfaceAttrs);
+    if (surface == EGL_NO_SURFACE)
+    {
+        checkErrorEGL("eglCreateWindowSurface");
+        return -1;
+    }
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-        LOG_D("Unable to eglMakeCurrent");
+        LOG_E("Unable to eglMakeCurrent");
         return -1;
     }
 
     eglQuerySurface(display, surface, EGL_WIDTH, &w);
     eglQuerySurface(display, surface, EGL_HEIGHT, &h);
+
+    LOG_D("EGL display: %p, context: %p, App: %p, WH: %d %d", display, context, __app, w, h);
 
     this->display = display;
     this->context = context;
