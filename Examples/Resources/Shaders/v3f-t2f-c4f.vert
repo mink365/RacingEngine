@@ -6,9 +6,13 @@ uniform mat4 projectionMatrix;
 attribute vec3 aPosition;
 attribute vec2 aTexCoord;
 attribute vec4 aColor;
+
+varying vec2 vTexCoord;
+varying vec4 vFragmentColor;
+
 void main()
 {
-    gl_TexCoord[0].xy = aTexCoord.xy;
-    gl_FrontColor     = aColor;
+    vTexCoord = aTexCoord;
+    vFragmentColor     = aColor;
     gl_Position       = projectionMatrix*(viewMatrix*(modelMatrix*vec4(aPosition,1.0)));
 }
