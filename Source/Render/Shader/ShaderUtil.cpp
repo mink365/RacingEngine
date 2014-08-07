@@ -190,7 +190,7 @@ void ShaderUtil::applyUniformToHardware(Uniform *uniform)
 
 void ShaderUtil::fetchAttributes(Shader *shader)
 {
-    GLint attributeCount, maxLength;
+    GLint attributeCount = 0, maxLength = 0;
     glGetProgramiv(shader->program, GL_ACTIVE_ATTRIBUTES, &attributeCount);
     glGetProgramiv(shader->program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &maxLength);
 
@@ -205,11 +205,6 @@ void ShaderUtil::fetchAttributes(Shader *shader)
 
         Attribute *attr = new Attribute();
 
-        // TODO: char *對string的赋值到底是复制还是直接指针指向？
-        // 从运行结果上说是复制啊！！
-//        char *attr_name = new char[length + 1];
-//        strncpy(attr_name, name, length);
-
         attr->name = name;
         attr->location = location;
         attr->type = getAttributeType(type);
@@ -223,7 +218,7 @@ void ShaderUtil::fetchAttributes(Shader *shader)
 
 void ShaderUtil::fetchUniforms(Shader *shader)
 {
-    GLint uniformCount, maxLength;
+    GLint uniformCount=0, maxLength=0;
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORMS, &uniformCount);
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
 
@@ -259,14 +254,8 @@ void ShaderUtil::fetchUniforms(Shader *shader)
                     }
 
                     Uniform *uniform = new Uniform();
-                    // TODO: 内存在堆还是栈上分配？是复制还是直接使用了原始的内存区？
-//                    uniform->name += name;
-//                    char *uniform_name = new char[length + 1];
-//                    strcpy(uniform_name, name);
-                    // 根据http://en.cppreference.com/w/cpp/string/basic_string/operator%3D的
-                    // 说法，直接使用char*替换了string的内存区，那么，内存会泄漏吗？
-                    uniform->name = name;
 
+                    uniform->name = name;
                     uniform->location = glGetUniformLocation(shader->program, name);
                     uniform->type = getUniformType(type);
                     uniform->nElements = size;
@@ -299,24 +288,33 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 
 uint ShaderUtil::loadShader(const char *source, uint type)
 {
+    std::string precision;
     uint id;
-
     switch (type) {
     case GL_VERTEX_SHADER:
+    {
+        precision = "precision highp float;\n";
+
         // create vertex shader
         id = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(id, 1, (const GLchar **)&source, 0);
-        glCompileShader(id);
         break;
+    }
     case GL_FRAGMENT_SHADER:
+    {
+        precision = "precision mediump float;\n";
+
         // create fragment shader
         id = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(id, 1, (const GLchar **)&source, 0);
-        glCompileShader(id);
         break;
+    }
     default:
         return -1;
     }
+
+    std::string code = "#ifdef GL_ES\n" + precision + "#endif\n" + source;
+    const char* sources = code.c_str();
+    glShaderSource(id, 1, (const GLchar **)&sources, 0);
+    glCompileShader(id);
 
     GLint status;
     glGetShaderiv(id, GL_COMPILE_STATUS, &status);
@@ -365,7 +363,7 @@ void ShaderUtil::linkPrograme(Shader *shader)
 
     glLinkProgram(programID);
 
-    GLint linked;
+    GLint linked = 0;
     glGetProgramiv(programID, GL_LINK_STATUS, &linked);
 
     if (!linked) {
