@@ -28,6 +28,8 @@
 #include "ShadowTest/ShadowTest.h"
 #include "BulletTest/BulletTest.h"
 
+#include "Util/LogUtil.h"
+
 FeatureTestsApp::FeatureTestsApp()
 {
 }
@@ -152,7 +154,11 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().addRootNode(uiCamera);
 
     SearchPath searchPath;
+#ifdef RE_PLATFORM_LINUX
     searchPath.rootDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+#elif RE_PLATFORM_ANDROID
+    searchPath.rootDir = "/sdcard/regame/assets/";
+#endif
     searchPath.type = FileType::Permanent;
     FileSystem::getInstance().addSearchPath(searchPath);
 
