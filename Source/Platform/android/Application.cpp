@@ -2,6 +2,7 @@
 
 #include "NativeWindow.h"
 #include "Platform/GameHub.h"
+#include "Util/LogUtil.h"
 
 #include <unistd.h>
 #include <sys/time.h>
@@ -34,6 +35,8 @@ static int32_t handle_input(android_app *app, AInputEvent *event)
 
 static void handle_cmd(android_app *app, int32_t cmd)
 {
+    LOG_V("handle_cmd: %d", cmd);
+
     switch (cmd) {
         case APP_CMD_INIT_WINDOW:
             // The window is being shown, get it ready.
@@ -95,41 +98,29 @@ static void handle_sensor() {
     float __gyroRawY;
     float __gyroRawZ;
 
-    // Read all pending events.
-    int ident;
-    int events;
-    struct android_poll_source* source;
-
-    while ((ident=ALooper_pollAll(!application->__suspended ? 0 : -1, NULL, &events, (void**)&source)) >= 0)
+    ASensorEventQueue_getEvents(__sensorEventQueue, &__sensorEvent, 1);
+    if (__sensorEvent.type == ASENSOR_TYPE_ACCELEROMETER)
     {
-        // Process this event.
-        if (source != NULL)
-            source->process(__state, source);
-
-        // If a sensor has data, process it now.
-        if (ident == LOOPER_ID_USER && __accelerometerSensor != NULL)
-        {
-            ASensorEventQueue_getEvents(__sensorEventQueue, &__sensorEvent, 1);
-            if (__sensorEvent.type == ASENSOR_TYPE_ACCELEROMETER)
-            {
-                __accelRawX = __sensorEvent.acceleration.x;
-                __accelRawY = __sensorEvent.acceleration.y;
-                __accelRawZ = __sensorEvent.acceleration.z;
-            }
-            else if (__sensorEvent.type == ASENSOR_TYPE_GYROSCOPE)
-            {
-                __gyroRawX = __sensorEvent.vector.x;
-                __gyroRawY = __sensorEvent.vector.y;
-                __gyroRawZ = __sensorEvent.vector.z;
-            }
-        }
+        __accelRawX = __sensorEvent.acceleration.x;
+        __accelRawY = __sensorEvent.acceleration.y;
+        __accelRawZ = __sensorEvent.acceleration.z;
+    }
+    else if (__sensorEvent.type == ASENSOR_TYPE_GYROSCOPE)
+    {
+        __gyroRawX = __sensorEvent.vector.x;
+        __gyroRawY = __sensorEvent.vector.y;
+        __gyroRawZ = __sensorEvent.vector.z;
     }
 }
 
 Application::Application()
 {
+    application = this;
+
     this->view = new NativeWindow();
 }
+
+static bool __envInited = false;
 
 void Application::run(android_app* state) {
     __state = state;
@@ -142,20 +133,40 @@ void Application::run(android_app* state) {
     GameHub& game = GameHub::getInstance();
     game.init();
 
-    if (!this->initEnvironment()) {
-        return;
-    }
-
     long lastTime, curTime, dt, oldTime;
     long _animationInterval = 1 / 60.0 * 1000;
 
     while (true)
     {
-        handle_sensor();
+        // Read all pending events.
+        int ident;
+        int events;
+        struct android_poll_source* source;
 
-        if (__state->destroyRequested != 0)
+        while ((ident=ALooper_pollAll(!application->__suspended ? 0 : -1, NULL, &events, (void**)&source)) >= 0)
         {
-            return;
+            // Process this event.
+            if (source != NULL) {
+                // process main and input event, this will call onAppCmd and onInputEvent
+                source->process(__state, source);
+            }
+
+            // If a sensor has data, process it now.
+            if (ident == LOOPER_ID_USER && __accelerometerSensor != NULL)
+            {
+                handle_sensor();
+            }
+
+            if (__state->destroyRequested != 0)
+            {
+                return;
+            }
+        }
+
+        if (__initialized && !__envInited) {
+            this->initEnvironment();
+
+            __envInited = true;
         }
 
         // Idle time (no events left to process) is spent rendering.
@@ -204,7 +215,7 @@ void Application::run(android_app* state) {
                 }
                 else
                 {
-                    perror("eglSwapBuffers");
+                    LOG_E("eglSwapBuffers");
                     break;
                 }
             }
