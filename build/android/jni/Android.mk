@@ -54,7 +54,7 @@ LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
 
 # LOCAL_CFLAGS    := -Werror
 LOCAL_CFLAGS 	:= -Wno-extern-c-compat
-LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL -lGLESv1_CM
+LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL
 
 EXTERANL_PATH = $(LOCAL_PATH)/../build/external/
 INCLUDE_EXT = include/android/
