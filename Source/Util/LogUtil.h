@@ -15,21 +15,13 @@
 #ifndef __LOG_TAG_H__
 #define __LOG_TAG_H__
 
-#ifndef MODULE_LOG_TAG
-#define MODULE_LOG_TAG ""
-#endif
-
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 
-#define LOG(fmt, ...) LOG_V(fmt, ##__VA_ARGS__)
-
-#define LOG_V(fmt, ...) LOG_V_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
-#define LOG_D(fmt, ...) LOG_D_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
-#define LOG_I(fmt, ...) LOG_I_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
-#define LOG_W(fmt, ...) LOG_W_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
-#define LOG_E(fmt, ...) LOG_E_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
+#ifndef MODULE_LOG_TAG
+#define MODULE_LOG_TAG "RacingEngine"
+#endif
 
 #ifdef RE_PLATFORM_ANDROID
 #include <android/log.h>
@@ -39,7 +31,7 @@
 #define LOG_W_T(tag, fmt, ...) __android_log_print(ANDROID_LOG_WARN, tag, fmt, ##__VA_ARGS__)
 #define LOG_E_T(tag, fmt, ...) __android_log_print(ANDROID_LOG_ERROR, tag, fmt, ##__VA_ARGS__)
 #else
-//#include "CCStdC.h"
+
 #define MAX_LEN         (16*1024 + 1)
 
 inline void Log__(const char * pszFormat, ...)
@@ -59,7 +51,7 @@ inline void Log__(const char * pszFormat, ...)
       len--;
     }
 
-    fprintf(stderr, "RE debug info [%s]\n",  szBuf);
+    fprintf(stderr, "[%s]\n",  szBuf);
 }
 
 #define LOG_V_T(tag, fmt, ...) Log__("[V] [" tag "] " fmt, ##__VA_ARGS__)
@@ -68,5 +60,13 @@ inline void Log__(const char * pszFormat, ...)
 #define LOG_W_T(tag, fmt, ...) Log__("[W] [" tag "] " fmt, ##__VA_ARGS__)
 #define LOG_E_T(tag, fmt, ...) Log__("[E] [" tag "] " fmt, ##__VA_ARGS__)
 #endif
+
+#define LOG(fmt, ...) LOG_V(fmt, __VA_ARGS__)
+
+#define LOG_V(fmt, ...) LOG_V_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
+#define LOG_D(fmt, ...) LOG_D_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
+#define LOG_I(fmt, ...) LOG_I_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
+#define LOG_W(fmt, ...) LOG_W_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
+#define LOG_E(fmt, ...) LOG_E_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
 
 #endif  // __LOG_TAG_H__
