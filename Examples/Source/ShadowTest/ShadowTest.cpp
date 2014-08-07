@@ -1,12 +1,12 @@
 #include "ShadowTest.h"
 
 #include "ShapeGenerater.h"
-#include "GLCheckUtil.h"
 #include "Scene/Light/DirectionalLight.h"
 #include "Scene/Light/SpotLight.h"
 #include "UI/Base/Sprite.h"
 #include "Render/RenderTarget.h"
 #include "Scene/SceneNode.h"
+#include "opengl.h"
 
 ShadowTest::ShadowTest()
 {
@@ -16,14 +16,6 @@ static SceneNodePtr box;
 static SceneNodePtr ground;
 static SpritePtr sprite;
 
-struct FboIDs {
-    GLuint textureId;
-    GLuint fboId;
-    GLuint rboId;
-};
-
-static FboIDs ids;
-FboIDs CreateRenderBuffer();
 void SetupShadowMapShader();
 
 void ShadowTest::Init()

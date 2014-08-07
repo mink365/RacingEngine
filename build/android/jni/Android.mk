@@ -17,7 +17,7 @@ endef
 
 # module
 
-LOCAL_PATH := $(call my-dir)/../../Source
+LOCAL_PATH := $(call my-dir)/../../../Source
 
 include $(CLEAR_VARS)
 
@@ -38,6 +38,8 @@ LOCAL_SRC_FILES := \
 	$(call all-cpp-files-under, ./Util/) \
 	$(LOCAL_PATH)/Platform/GameHub.cpp \
 	$(call all-cpp-files-under, ./Platform/android/) \
+	$(call all-cpp-files-under, ./../Examples/) \
+	../build/android/jni/main.cpp \
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 	$(LOCAL_PATH)/Platform \
@@ -45,10 +47,13 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 	$(LOCAL_PATH)/Scene \
 	$(LOCAL_PATH)/Resource \
 	$(LOCAL_PATH)/External/universal-tween-engine-cpp/ \
+	$(LOCAL_PATH)/Platform/android/ \
+	$(LOCAL_PATH)/../Examples/Source/ \
 
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
 
 # LOCAL_CFLAGS    := -Werror
+LOCAL_CFLAGS 	:= -Wno-extern-c-compat
 LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL -lGLESv1_CM
 
 EXTERANL_PATH = $(LOCAL_PATH)/../build/external/
@@ -71,10 +76,12 @@ LOCAL_STATIC_LIBRARIES := \
 	cocos_jpeg_static \
 	cocos_png_static \
 	cocos_freetype2_static \
+	bullet \
 
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,jpeg/prebuilt/android)
 $(call import-module,png/prebuilt/android)
 $(call import-module,freetype2/prebuilt/android)
+$(call import-module,bullet)
 $(call import-module,android/native_app_glue)

@@ -31,8 +31,7 @@
 #define LOG_W(fmt, ...) LOG_W_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
 #define LOG_E(fmt, ...) LOG_E_T(MODULE_LOG_TAG, fmt, ##__VA_ARGS__)
 
-//#include "cocos2d.h"
-#ifdef ANDROID
+#ifdef RE_PLATFORM_ANDROID
 #include <android/log.h>
 #define LOG_V_T(tag, fmt, ...) __android_log_print(ANDROID_LOG_VERBOSE, tag, fmt, ##__VA_ARGS__)
 #define LOG_D_T(tag, fmt, ...) __android_log_print(ANDROID_LOG_DEBUG, tag, fmt, ##__VA_ARGS__)

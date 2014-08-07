@@ -107,14 +107,24 @@ INCLUDEPATH += \
 RE_PLATFORM_MAC {
     LIBS += -L/usr/local/lib
 
+    SOURCES     += build/desktop/main.cpp
+
+    INCLUDEPATH += Source/Platform/linux/
+
     INCLUDEPATH += /usr/local/include/ \
                     /usr/local/include/freetype2/
-}
-RE_PLATFORM_LINUX {
+} RE_PLATFORM_LINUX {
+    SOURCES     += build/desktop/main.cpp
+
+    INCLUDEPATH += Source/Platform/linux/
+
     INCLUDEPATH += /usr/include/freetype2/
     INCLUDEPATH += /usr/include/bullet/
-}
-RE_PLATFORM_ANDROID {
+} RE_PLATFORM_ANDROID {
+    SOURCES     += build/android/jni/main.cpp
+
+    INCLUDEPATH += Source/Platform/android/
+
     INCLUDEPATH += $$(NDK_ROOT)/platforms/android-18/arch-arm/usr/include/
     INCLUDEPATH += $$(NDK_ROOT)/sources/android/native_app_glue/
 }

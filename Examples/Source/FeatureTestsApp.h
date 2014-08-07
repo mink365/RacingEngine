@@ -1,7 +1,7 @@
 #ifndef FEATURETESTSAPP_H
 #define FEATURETESTSAPP_H
 
-#include "Platform/linux/Application.h"
+#include "Application.h"
 #include "BaseTest.h"
 #include "PredefineType.h"
 
