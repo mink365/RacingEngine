@@ -80,7 +80,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
     this->tests.push_back(test);
 
-    currIndex = 7;
+    currIndex = 2;
     this->onCurrentTestChanged();
 }
 
@@ -137,8 +137,8 @@ void FeatureTestsApp::initResources()
     uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     uiCamera->setOrthoWidth(screen.getWidth());
     uiCamera->setDepthField(-10, 10);
-    uiCamera->setView(Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 0),
-                        Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 1), Vec3(0, 1, 0));
+    uiCamera->setView(Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 1),
+                        Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 0), Vec3(0, 1, 0));
     // TODO: no need it, but depth not clear
     uiCamera->setClearFlag(0);
     uiCamera->setQueueCullFunc([](int queue) {
