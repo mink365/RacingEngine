@@ -235,7 +235,11 @@ Int TextureAtlas::fit(Int index, Int width, Int height) const
     y = node->y;
     while( width_left > 0 )
     {
-        node = this->nodes[i];
+        if (i >= this->nodes.size()) {
+            return -1;
+        }
+
+        node = this->nodes.at(i);
         if( node->y > y )
         {
             y = node->y;

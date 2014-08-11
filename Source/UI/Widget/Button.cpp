@@ -16,6 +16,8 @@ bool BaseButton::init()
 
     this->initTouchListener();
 
+    this->onButtonClickFunc = nullptr;
+
     return true;
 }
 
@@ -51,8 +53,9 @@ void BaseButton::initTouchListener()
 
     listener->onTouchUpInside = [&](TouchEvent& event, WidgetPtr widget) {
         if (this->isTouchDown) {
-            if (this->_clickListener) {
-                this->_clickListener->onButtonClick(widget);
+            if (this->onButtonClickFunc) {
+                this->onButtonClickFunc(widget);
+
             }
 
             this->isTouchDown = false;
@@ -79,6 +82,11 @@ void BaseButton::initTouchListener()
 bool BaseButton::onTouchEvent(TouchEvent &event)
 {
     return Widget::onTouchEvent(event);
+}
+
+void BaseButton::setOnClickFunc(std::function<void (WidgetPtr &)> func)
+{
+    this->onButtonClickFunc = func;
 }
 
 NodePtr BaseButton::createCloneInstance() const

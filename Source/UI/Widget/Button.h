@@ -7,12 +7,6 @@
 
 namespace re {
 
-class ClickListener : public Shared<ClickListener>
-{
-public:
-    std::function<void(WidgetPtr& button)> onButtonClick;
-};
-
 class BaseButton : public Widget
 {
 public:
@@ -26,12 +20,13 @@ public:
 
     virtual bool onTouchEvent(TouchEvent& event);
 
+    void setOnClickFunc(std::function<void(WidgetPtr& button)> func);
 protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyProperties(const Node* node) override;
 
 protected:
-    ClickListener::ptr _clickListener;
+    std::function<void(WidgetPtr& button)> onButtonClickFunc;
 
     bool isTouchDown;
     int touchDownTime;
