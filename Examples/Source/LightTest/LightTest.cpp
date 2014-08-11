@@ -7,6 +7,7 @@
 
 LightTest::LightTest()
 {
+    this->name = "LightTest";
 }
 
 SceneNodePtr box = nullptr;

@@ -12,6 +12,10 @@
 #include "Shader/ShaderManager.h"
 #include "Renderer/GLES2Renderer.h"
 #include "UI/Manager/UISceneManager.h"
+#include "UI/Base/Label.h"
+#include "UI/Base/Node2d.h"
+#include "UI/Widget/Button.h"
+#include "UI/Layout/LayoutUtil.h"
 
 #include <iostream>
 #include <fstream>
@@ -29,6 +33,8 @@
 #include "BulletTest/BulletTest.h"
 
 #include "Util/LogUtil.h"
+
+extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -80,7 +86,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
     this->tests.push_back(test);
 
-    currIndex = 2;
+    currIndex = 6;
     this->onCurrentTestChanged();
 }
 
@@ -106,9 +112,62 @@ void FeatureTestsApp::onCurrentTestChanged()
 {
     this->current = tests[currIndex];
 
+    this->stage->getLastLayer()->popAllWindow();
     this->rootNode->removeAllChildren();
 
     this->current->init(*this);
+    this->labelTitle->setText(this->current->getName());
+}
+
+void FeatureTestsApp::createBaseUI()
+{
+    TextureParser::getInstance().addTextures("UI/", "png");
+    TextureManager::getInstance().loadTextures();
+
+    std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
+    if (font == nullptr) {
+        CreateDefaultFont();
+
+        font = FontManager::getInstance().getFont("default");
+    }
+
+    labelTitle = std::make_shared<Label>();
+    labelTitle->init(font);
+    labelTitle->setText("Hello");
+
+    labelFps = std::make_shared<Label>();
+    labelFps->init(font);
+    labelFps->setText("xHtbo xx");
+
+    labelFps->setPosition(Vec2(300, 300 + 40));
+
+    auto buttonNext = CreateView<ImageButton>();
+    buttonNext->initView("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateView<ImageButton>();
+    buttonPrev->initView("b_zuo.png", "b_zuo.png", "b_zuo.png");
+
+    auto buttonClickFunc = [=](WidgetPtr& widget) {
+        if (widget == buttonNext) {
+            this->nextTest();
+        } else if (widget == buttonPrev) {
+            this->lastTest();
+        }
+    };
+
+    buttonNext->setOnClickFunc(buttonClickFunc);
+    buttonPrev->setOnClickFunc(buttonClickFunc);
+
+    auto scene = stage->pushTo("Scene1");
+    scene->addChild(labelTitle);
+    scene->addChild(labelFps);
+    scene->addChild(buttonNext);
+    scene->addChild(buttonPrev);
+
+    LayoutUtil::layoutParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER);
+    LayoutUtil::layoutParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
+    LayoutUtil::layoutParent(labelFps, AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
+    LayoutUtil::layoutParent(buttonPrev, AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
+    LayoutUtil::layoutParent(buttonNext, AlignType::RIGHT_CENTER, AlignType::RIGHT_CENTER);
 }
 
 void FeatureTestsApp::initResources()
@@ -186,6 +245,8 @@ void FeatureTestsApp::initResources()
 
     std::shared_ptr<ISceneFactory> factory = std::make_shared<SceneFactory>();
     this->stage->setSceneFactory(factory);
+
+    this->createBaseUI();
 }
 
 void FeatureTestsApp::update(long dt)

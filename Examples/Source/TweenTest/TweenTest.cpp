@@ -16,6 +16,7 @@ TweenEngine::TweenManager* tweenManager = new TweenEngine::TweenManager();
 
 TweenTest::TweenTest()
 {
+    this->name = "TweenTest";
 }
 
 extern std::shared_ptr<TextureAtlas> CreateDefaultFont();

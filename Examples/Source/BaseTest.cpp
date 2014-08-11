@@ -169,6 +169,11 @@ void BaseTest::init(FeatureTestsApp &app)
     this->Init();
 }
 
+string BaseTest::getName() const
+{
+    return this->name;
+}
+
 void BaseTest::Init()
 {
 

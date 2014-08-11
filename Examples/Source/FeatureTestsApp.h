@@ -33,6 +33,8 @@ protected:
     void lastTest();
 
     void onCurrentTestChanged();
+
+    void createBaseUI();
 private:
     void initResources();
 
@@ -46,6 +48,9 @@ private:
     CameraPtr presCamera;
     SceneNodePtr rootNode;
     std::shared_ptr<ui::UISceneManager> stage;
+
+    LabelPtr labelTitle;
+    LabelPtr labelFps;
 };
 
 class WindowFactory : public IWindowFactory

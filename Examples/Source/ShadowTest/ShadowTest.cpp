@@ -10,6 +10,7 @@
 
 ShadowTest::ShadowTest()
 {
+    this->name = "ShadowTest";
 }
 
 static SceneNodePtr box;

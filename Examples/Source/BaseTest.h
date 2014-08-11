@@ -36,10 +36,14 @@ public:
 
     void init(FeatureTestsApp& app);
 
+    std::string getName() const;
+
     virtual void Init();
     virtual void Update(float dt);
 
 protected:
+    std::string name;
+
     SceneNodePtr rootNode;
     CameraPtr camera;
     std::shared_ptr<ui::UISceneManager> stage;

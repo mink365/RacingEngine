@@ -9,6 +9,7 @@
 
 FontTest::FontTest()
 {
+    this->name = "FontTest";
 }
 
 std::shared_ptr<TextureAtlas> CreateDefaultFont()
@@ -21,9 +22,10 @@ std::shared_ptr<TextureAtlas> CreateDefaultFont()
     FontManager::getInstance().registerFont(font);
 
     auto atlas = TextureAtlas::create();
-    atlas->init(512, 512, 1);
+    atlas->init(1024, 1024, 1);
 
-    FreeTypeUtil::LoadGlyphs(atlas, font, L"Hello People我xtb");
+//    FreeTypeUtil::LoadGlyphs(atlas, font, L" !\"#$%&'()*+,-./0123456789:;<=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+    FreeTypeUtil::LoadGlyphs(atlas, font, L" 0123456789:;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
     atlas->upload();
 

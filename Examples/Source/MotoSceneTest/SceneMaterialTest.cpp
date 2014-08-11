@@ -7,6 +7,7 @@
 
 SceneMaterialTest::SceneMaterialTest()
 {
+    this->name = "MaterialTest";
 }
 
 void InitNodeShader(SceneNodePtr& node) {

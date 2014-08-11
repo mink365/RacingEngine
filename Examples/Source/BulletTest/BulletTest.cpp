@@ -42,6 +42,7 @@ struct	MyOverlapCallback : public btBroadphaseAabbCallback
 
 BulletTest::BulletTest()
 {
+    this->name = "BulletTest";
 }
 
 void BulletTest::Init()

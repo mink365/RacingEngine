@@ -12,7 +12,7 @@
 
 UITest::UITest()
 {
-
+    this->name = "UITest";
 }
 
 extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
@@ -53,7 +53,7 @@ void UITest::Init()
     auto button = CreateView<ImageButton>();
     button->initView("rate.png", "rate_press.png", "rate.png");
 
-    auto scene = stage->pushTo("Scene1");
+    auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
     window->addChild(sprite);
     window->addChild(patch);

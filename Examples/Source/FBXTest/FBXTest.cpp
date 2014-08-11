@@ -10,6 +10,7 @@
 
 FBXTest::FBXTest()
 {
+    this->name = "FBXTest";
 }
 
 const static int BLOCK_LENGTH = 157;
