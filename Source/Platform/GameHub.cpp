@@ -5,6 +5,8 @@
 #include "Render/Renderer/Renderer.h"
 #include "SceneManager.h"
 #include "Render/RenderManager.h"
+#include "TweenManager.h"
+#include "Util/PredefineTweenAccessor.h"
 
 namespace re {
 
@@ -15,11 +17,22 @@ GameHub::GameHub()
     fps = 0;
 
     this->updateFunc = nullptr;
+    this->tweenManager = nullptr;
+}
+
+GameHub::~GameHub()
+{
+    if (tweenManager) {
+        delete tweenManager;
+    }
 }
 
 void GameHub::init()
 {
     TextureManager::getInstance().setImageLoader(new ImageLoader());
+
+    this->tweenManager = new TweenEngine::TweenManager();
+    PredefineTweenAccessor::registerAccessor();
 }
 
 void GameHub::mainLoop(long dt)
@@ -34,6 +47,9 @@ void GameHub::mainLoop(long dt)
     }
 
 //    this->updateFunc(dt);
+    if (tweenManager) {
+        tweenManager->update(dt/1000.0);
+    }
 
     SceneManager::getInstance().renderScene();
 
@@ -50,6 +66,11 @@ void GameHub::bindUpdateFunc(std::function<void (long)> func)
 Renderer &GameHub::GetRenderer()
 {
     return SceneManager::getInstance().getRenderManager().getRenderer();
+}
+
+TweenEngine::TweenManager& GameHub::getTweenManager()
+{
+    return *(this->tweenManager);
 }
 
 int GameHub::getFps()

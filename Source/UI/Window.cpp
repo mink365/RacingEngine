@@ -1,7 +1,13 @@
 #include "Window.h"
 #include "Manager/WindowManager.h"
 #include "Layout/Screen.h"
-#include <thread>
+#include "Tween.h"
+#include "Timeline.h"
+#include "TweenManager.h"
+#include "Util/PredefineTweenAccessor.h"
+#include "GameHub.h"
+
+using namespace TweenEngine;
 
 namespace re {
 
@@ -9,9 +15,10 @@ Window::Window()
 : isFullScreen(true)
 , isTransparent(false)
 , backgroundAlpha(0.67)
-, animStyle(AnimStyle::Immediately)
 , manager(NULL)
 {
+    this->showAnimFunc = nullptr;
+    this->hideAnimFunc = nullptr;
 }
 
 bool Window::init() {
@@ -23,6 +30,8 @@ bool Window::init() {
     this->setContentSize(Screen::getInstance().getSize());
     
     this->setAnchorPoint(Vec2(0.5, 0.5));
+
+    this->initAnimFunc();
     
     return true;
 }
@@ -39,57 +48,17 @@ float Window::getBackgroundAlpha() {
     return backgroundAlpha;
 }
 
-void Window::setAnimationStyle(Window::AnimStyle style) {
-    this->animStyle = style;
-}
 
 void Window::playShowAnim() {
     this->stopAllActions();
     
-    switch (animStyle) {
-        case AnimStyle::Immediately:
-            this->showImmed();
-            break;
-        case AnimStyle::JumpOut:
-        {        
-            this->setScale(0.9f);
-            this->setAlpha(0);
-            
-//            CCFiniteTimeAction *scaleAnim = CCScaleTo::create(0.20, 1.0);
-//            CCFiniteTimeAction *fadeAnim = CCFadeTo::create(0.20, 255);
-//            CCFiniteTimeAction *step = CCSpawn::create(scaleAnim, fadeAnim, NULL);
-            
-//            CCCallFunc *call = CCCallFunc::create(this, callfunc_selector(Window::actionCallback));
-//            CCFiniteTimeAction *seq = CCSequence::create(step, call, NULL);
-//            this->runAction(seq);
-        }
-        default:
-            break;
-    }
+    this->showAnimFunc();
 }
 
 void Window::playHideAnim() {
     this->stopAllActions();
     
-    switch (animStyle) {
-        case AnimStyle::Immediately:
-            this->hideImmed();
-            break;
-        case AnimStyle::JumpOut:
-        {
-            this->setScale(1.0f);
-            this->setAlpha(1);
-//            CCFiniteTimeAction *scaleAnim = CCScaleTo::create(0.20, 0.8);
-//            CCFiniteTimeAction *fadeAnim = CCFadeTo::create(0.20, 0);
-//            CCFiniteTimeAction *step = CCSpawn::create(scaleAnim, fadeAnim, NULL);
-            
-//            CCCallFunc *call = CCCallFunc::create(this, callfunc_selector(Window::actionCallback));
-//            CCFiniteTimeAction *seq = CCSequence::create(step, call, NULL);
-//            this->runAction(seq);
-        }
-        default:
-            break;
-    }
+    this->hideAnimFunc();
 }
 
 void Window::showImmed() {
@@ -127,6 +96,49 @@ bool Window::onBackKeyEvent() {
     this->popFromWindowManager();
     
     return true;
+}
+
+void Window::initAnimFunc()
+{
+    auto ptr = std::static_pointer_cast<Window>(this->shared_from_this());
+
+    std::function<void(TweenCallbackType type, BaseTween *source)> animCallback = [=](TweenCallbackType type, BaseTween *source) {
+        ptr->actionCallback();
+    };
+
+    this->showAnimFunc = [=]() {
+        Timeline::createSequence()
+            .beginParallel()
+                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(0.4f))
+                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(0.6f))
+            .end()
+
+            .beginParallel()
+                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(1.0f))
+                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(1.0f))
+            .end()
+
+            .setCallback(animCallback)
+            .setCallbackTriggers(TweenCallbackType::COMPLETE)
+            .start(GameHub::getInstance().getTweenManager());
+    };
+
+    this->hideAnimFunc = [=]() {
+        Timeline::createSequence()
+            .beginParallel()
+                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(1.0f))
+                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(1.0f))
+            .end()
+
+            .beginParallel()
+                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(0.4))
+                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(0.6))
+            .end()
+
+            .setCallback(animCallback)
+            .setCallbackTriggers(TweenCallbackType::COMPLETE)
+            .start(GameHub::getInstance().getTweenManager());
+    };
 }
 
 }

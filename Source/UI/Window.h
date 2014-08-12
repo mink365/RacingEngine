@@ -14,12 +14,6 @@ class Window : public Widget, public IAnimationView, public IBackKeyHandler
     friend class WindowManager;
     
 public:
-    enum class AnimStyle {
-        Immediately,
-        JumpOut,
-    };
-    
-public:
     Window();
     
     bool init();
@@ -28,8 +22,6 @@ public:
     bool getFullScreenState();
     bool getTransparentState();
     float getBackgroundAlpha();
-    
-    void setAnimationStyle(AnimStyle style);
     
     /*
      * 从窗口堆栈弹出自己
@@ -46,14 +38,18 @@ public:
     void hideImmed();
     
     virtual bool onBackKeyEvent();
+
+protected:
+    virtual void initAnimFunc();
         
 protected:
     bool isFullScreen;
     bool isTransparent;
     
     float backgroundAlpha;
-    
-    AnimStyle animStyle;
+
+    std::function<void()> showAnimFunc;
+    std::function<void()> hideAnimFunc;
     
     WindowManager* manager;
 };

@@ -33,6 +33,12 @@ void PredefineTweenAccessor::registerAccessor()
 
                 break;
             }
+            case FlatNodeAccessor::SCALE:
+            {
+                node->setScale(values[0]);
+
+                break;
+            }
             case FlatNodeAccessor::SCALE_X:
             {
                 node->setScaleX(values[0]);
@@ -125,6 +131,14 @@ void PredefineTweenAccessor::registerAccessor()
 
                 break;
             }
+            case FlatNodeAccessor::SCALE:
+            {
+                const Vec2& scale = node->getScale();
+
+                values[0] = scale.x;
+
+                break;
+            }
             case FlatNodeAccessor::SCALE_X:
             {
                 const Vec2& scale = node->getScale();
@@ -214,6 +228,7 @@ void PredefineTweenAccessor::registerAccessor()
                 FlatNodeAccessor::POSITION_X,
                 FlatNodeAccessor::POSITION_Y,
                 FlatNodeAccessor::POSITION_XY,
+                FlatNodeAccessor::SCALE,
                 FlatNodeAccessor::SCALE_X,
                 FlatNodeAccessor::SCALE_Y,
                 FlatNodeAccessor::SCALE_XY,
