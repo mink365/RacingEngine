@@ -240,6 +240,7 @@ Int TextureAtlas::fit(Int index, Int width, Int height) const
         }
 
         node = this->nodes.at(i);
+
         if( node->y > y )
         {
             y = node->y;

@@ -9,6 +9,8 @@
 #include "Message/MessageManager.h"
 #include "Message/MessageConstant.h"
 
+#include <stdlib.h>
+
 namespace re {
 
 static bool _captured;

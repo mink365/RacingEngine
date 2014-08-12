@@ -87,6 +87,7 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
 
     currIndex = 6;
+
     this->onCurrentTestChanged();
 }
 
@@ -217,6 +218,8 @@ void FeatureTestsApp::initResources()
     searchPath.rootDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 #elif RE_PLATFORM_ANDROID
     searchPath.rootDir = "/sdcard/regame/assets/";
+#elif RE_PLATFORM_MAC
+    searchPath.rootDir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
 #endif
     searchPath.type = FileType::Permanent;
     FileSystem::getInstance().addSearchPath(searchPath);

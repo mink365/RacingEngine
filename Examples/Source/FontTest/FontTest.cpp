@@ -17,15 +17,14 @@ std::shared_ptr<TextureAtlas> CreateDefaultFont()
     auto fontFile = "Fonts/ObelixPro.ttf";
     FilePtr file = FileSystem::getInstance().openFile(fontFile);
 
-    auto font = std::make_shared<Font>(128, file);
+    auto font = std::make_shared<Font>(32, file);
     font->setName("default");
     FontManager::getInstance().registerFont(font);
 
     auto atlas = TextureAtlas::create();
     atlas->init(1024, 1024, 1);
 
-//    FreeTypeUtil::LoadGlyphs(atlas, font, L" !\"#$%&'()*+,-./0123456789:;<=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
-    FreeTypeUtil::LoadGlyphs(atlas, font, L" 0123456789:;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    FreeTypeUtil::LoadGlyphs(atlas, font, L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 
     atlas->upload();
 
@@ -36,7 +35,7 @@ void FontTest::Init()
 {
     auto atlas = CreateDefaultFont();
 
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(50, atlas->getTexture());
+    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(150, atlas->getTexture());
     InitMeshInHardward(mesh);
 
     box = std::make_shared<SceneNode>();
@@ -50,7 +49,7 @@ void FontTest::Init()
 static float rotation = 0;
 void FontTest::Update(float dt)
 {
-    rotation += 0.04;
+    rotation += 0.04 * 0.3;
     if (rotation > 360) {
         rotation = 0;
     }
