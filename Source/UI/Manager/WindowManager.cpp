@@ -1,11 +1,3 @@
-//
-//  WindowManager.cpp
-//  MT
-//
-//  Created by 寇 瑞 on 7/8/13.
-//
-//
-
 #include "WindowManager.h"
 
 #include <algorithm>
@@ -162,7 +154,7 @@ void WindowManager::changeFocusedWindowToStackTop() {
     }
 }
 
-void WindowManager::update(float dt) {
+void WindowManager::tick() {
     auto iter = find_if(windowStack.begin(), windowStack.end(), [](std::shared_ptr<Window> win){
         return win->isHidden();
     });

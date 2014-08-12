@@ -1,13 +1,5 @@
-//
-//  AnimView.h
-//  MT
-//
-//  Created by 寇 瑞 on 7/8/13.
-//
-//
-
-#ifndef __MT__AnimView__
-#define __MT__AnimView__
+#ifndef __AnimView__
+#define __AnimView__
 
 #include <iostream>
 #include <vector>
@@ -81,4 +73,4 @@ public:
 
 }
 
-#endif /* defined(__MT__AnimView__) */
+#endif /* defined(__AnimView__) */

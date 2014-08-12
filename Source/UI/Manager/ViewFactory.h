@@ -1,13 +1,5 @@
-//
-//  ViewFactory.h
-//  FairyTails
-//
-//  Created by Rui Kou on 14-5-16.
-//
-//
-
-#ifndef FairyTails_ViewFactory_h
-#define FairyTails_ViewFactory_h
+#ifndef _ViewFactory_h
+#define _ViewFactory_h
 
 #include <string>
 #include <memory>

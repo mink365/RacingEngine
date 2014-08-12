@@ -1,9 +1,3 @@
-//
-//  AnimView.cpp
-//
-//  Created by 寇 瑞 on 7/8/13.
-//
-//
 
 #include "AnimView.h"
 

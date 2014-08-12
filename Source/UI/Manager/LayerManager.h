@@ -1,11 +1,3 @@
-//
-//  LayerManager.h
-//  MT
-//
-//  Created by 寇 瑞 on 4/26/13.
-//
-//
-
 #ifndef __LayerManager_h__
 #define __LayerManager_h__
 
@@ -48,7 +40,7 @@ public:
     
     std::shared_ptr<T> getLayerByName(const std::string& name);
     
-    void update(float dt);
+    void tick();
     
 private:
     void replaceCurLayer(std::shared_ptr<T>& old, std::shared_ptr<T>& target, bool immediately=false);
@@ -360,7 +352,7 @@ inline std::shared_ptr<T> LayerManager<T>::getLayerByName(const std::string& nam
 }
 
 template <class T>
-inline void LayerManager<T>::update(float dt) {
+inline void LayerManager<T>::tick() {
     auto iter = find_if(oldLayerList.begin(), oldLayerList.end(), [](std::shared_ptr<T> node) {
         return node->isHidden();
     });

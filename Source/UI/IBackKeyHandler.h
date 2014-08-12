@@ -1,13 +1,5 @@
-//
-//  IBackKeyHandler.h
-//  MT
-//
-//  Created by 寇 瑞 on 9/9/13.
-//
-//
-
-#ifndef __MT__IBackKeyHandler__
-#define __MT__IBackKeyHandler__
+#ifndef __IBackKeyHandler__
+#define __IBackKeyHandler__
 
 #include <iostream>
 
@@ -20,4 +12,4 @@ public:
 
 }
 
-#endif /* defined(__MT__IBackKeyHandler__) */
+#endif /* defined(__IBackKeyHandler__) */

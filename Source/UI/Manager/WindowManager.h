@@ -1,11 +1,3 @@
-//
-//  WindowManager.h
-//  MT
-//
-//  Created by 寇 瑞 on 7/8/13.
-//
-//
-
 #ifndef __WindowManager__
 #define __WindowManager__
 
@@ -49,7 +41,7 @@ protected:
     void changeFocusedWindow(std::shared_ptr<Window>& win);
     void changeFocusedWindowToStackTop();
     
-    void update(float dt);
+    void tick();
     
     void onWindowHidden(std::shared_ptr<Window>& win);
     

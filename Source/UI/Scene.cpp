@@ -1,12 +1,3 @@
-
-//
-//  Scene.cpp
-//  MT
-//
-//  Created by 寇 瑞 on 7/10/13.
-//
-//
-
 #include "Scene.h"
 #include "Layout/LayoutUtil.h"
 #include "Layout/Screen.h"
@@ -50,10 +41,9 @@ bool Scene::onBackKeyEvent() {
     }
 }
 
-void Scene::update(float dt) {
-    LogicalScene::update(dt);
-    
-    WindowManager::update(dt);
+void Scene::updateSelf(float delta)
+{
+    WindowManager::tick();
 }
 
 void Scene::onEnter() {

@@ -1,25 +1,16 @@
-//
-//  SceneManager.cpp
-//  MT
-//
-//  Created by 寇 瑞 on 7/23/13.
-//
-//
-
-#include "UISceneManager.h"
-
+#include "UIManager.h"
 #include "UI/Layout/LayoutUtil.h"
 
 namespace re {
     namespace ui {
 
-UISceneManager::UISceneManager()
+UIManager::UIManager()
 : factory(nullptr)
 , isKeyBackActive(false)
 {
 }
 
-bool UISceneManager::init() {
+bool UIManager::init() {
     if (!LogicalScene::init()) {
         return false;
     }
@@ -33,13 +24,13 @@ bool UISceneManager::init() {
     return true;
 }
 
-void UISceneManager::setSceneFactory(std::shared_ptr<ISceneFactory> &factory) {
+void UIManager::setSceneFactory(std::shared_ptr<ISceneFactory> &factory) {
     assert(this->factory == nullptr);
     
     this->factory = factory;
 }
 
-void UISceneManager::handleMessage(Message *message) {
+void UIManager::handleMessage(Message *message) {
 //    LogicalScene::handleMessage(message);
 
     if (message->getType() == MessageConstant::MessageType::TOUCHSCREEN_MESSAGE) {
@@ -50,21 +41,21 @@ void UISceneManager::handleMessage(Message *message) {
     }
 }
 
-void UISceneManager::addWidgets() {
+void UIManager::addWidgets() {
 
 }
 
-void UISceneManager::updateSelf(float delta) {
-    LayerManager::update(delta);
+void UIManager::updateSelf(float delta) {
+    LayerManager::tick();
 }
 
-std::shared_ptr<Scene> UISceneManager::createLayer(const std::string &name) {
+std::shared_ptr<Scene> UIManager::createLayer(const std::string &name) {
     std::shared_ptr<Scene> scene = this->factory->getView(name);
     
     return scene;
 }
 
-void UISceneManager::addLayerToScene(std::shared_ptr<Scene>& node) {
+void UIManager::addLayerToScene(std::shared_ptr<Scene>& node) {
     this->addChild(node);
     
     LayoutUtil::layoutParentCenter(node);
@@ -72,23 +63,23 @@ void UISceneManager::addLayerToScene(std::shared_ptr<Scene>& node) {
     return;
 }
 
-void UISceneManager::removeLayerFromScene(std::shared_ptr<Scene> &node) {
+void UIManager::removeLayerFromScene(std::shared_ptr<Scene> &node) {
     node->removeFromParent();
 }
 
-std::shared_ptr<Scene> UISceneManager::getDefaultLayer() {
+std::shared_ptr<Scene> UIManager::getDefaultLayer() {
     return NULL;
 }
 
-void UISceneManager::onEnter() {
+void UIManager::onEnter() {
     LogicalScene::onEnter();
 }
 
-void UISceneManager::onExit() {
+void UIManager::onExit() {
     LogicalScene::onExit();
 }
 
-void UISceneManager::keyBackClicked() {
+void UIManager::keyBackClicked() {
     if (!isKeyBackActive) {
         return;
     }
@@ -99,7 +90,7 @@ void UISceneManager::keyBackClicked() {
     }
 }
 
-void UISceneManager::setKeyBackActive(bool active){
+void UIManager::setKeyBackActive(bool active){
     isKeyBackActive = active;
 }
 

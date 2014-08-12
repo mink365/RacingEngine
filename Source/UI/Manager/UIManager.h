@@ -1,13 +1,5 @@
-//
-//  SceneManager.h
-//  MT
-//
-//  Created by 寇 瑞 on 7/23/13.
-//
-//
-
-#ifndef __MT__SceneManager__
-#define __MT__SceneManager__
+#ifndef __SceneManager__
+#define __SceneManager__
 
 #include <iostream>
 
@@ -18,9 +10,9 @@
 namespace re {
     namespace ui {
 
-class UISceneManager : public LogicalScene, public LayerManager<Scene> {
+class UIManager : public LogicalScene, public LayerManager<Scene> {
 public:
-    UISceneManager();
+    UIManager();
     bool init();
  
 public:
@@ -56,4 +48,4 @@ private:
     }
 }
 
-#endif /* defined(__MT__SceneManager__) */
+#endif /* defined(__SceneManager__) */

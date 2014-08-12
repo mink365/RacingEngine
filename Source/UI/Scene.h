@@ -1,13 +1,5 @@
-//
-//  Scene.h
-//  MT
-//
-//  Created by 寇 瑞 on 7/10/13.
-//
-//
-
-#ifndef __MT__Scene__
-#define __MT__Scene__
+#ifndef __Scene__
+#define __Scene__
 
 #include <iostream>
 
@@ -29,7 +21,7 @@ public:
     virtual bool onBackKeyEvent();
     
 protected:
-    void update(float dt);
+    virtual void updateSelf(float delta) override;
     
     virtual void onEnter();
     
@@ -45,4 +37,4 @@ private:
 
 }
 
-#endif /* defined(__MT__Scene__) */
+#endif /* defined(__Scene__) */
