@@ -10,6 +10,9 @@ public:
 
     virtual void Init();
     virtual void Update(float dt);
+
+private:
+    std::shared_ptr<Window> createWin();
 };
 
 #endif // UITEST_H

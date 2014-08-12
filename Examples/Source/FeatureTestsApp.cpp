@@ -11,7 +11,7 @@
 #include "Shader/ShaderUtil.h"
 #include "Shader/ShaderManager.h"
 #include "Renderer/GLES2Renderer.h"
-#include "UI/Manager/UISceneManager.h"
+#include "UI/Manager/UIManager.h"
 #include "UI/Base/Label.h"
 #include "UI/Base/Node2d.h"
 #include "UI/Widget/Button.h"
@@ -86,7 +86,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
     this->tests.push_back(test);
 
-    currIndex = 6;
+    currIndex = 3;
 
     this->onCurrentTestChanged();
 }
@@ -242,7 +242,7 @@ void FeatureTestsApp::initResources()
     rootNode = std::make_shared<SceneNode>();
     SceneManager::getInstance().addRootNode(rootNode);
 
-    this->stage = CreateView<ui::UISceneManager>();
+    this->stage = CreateView<ui::UIManager>();
     SceneManager::getInstance().addRootNode(this->stage);
     MessageManager::getInstance()->addHandler(this->stage.get());
 
@@ -259,6 +259,7 @@ void FeatureTestsApp::update(long dt)
     if (this->current) {
         this->current->Update(dt / 1000.0f);
     }
+    this->stage->update(dt/1000.0f);
 
     this->labelFps->setText(std::to_string(GameHub::getInstance().getFps()));
 }

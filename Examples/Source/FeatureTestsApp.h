@@ -12,7 +12,7 @@ using namespace re;
 
 namespace re {
 namespace ui {
-    class UISceneManager;
+    class UIManager;
 }
 }
 
@@ -47,7 +47,7 @@ private:
 
     CameraPtr presCamera;
     SceneNodePtr rootNode;
-    std::shared_ptr<ui::UISceneManager> stage;
+    std::shared_ptr<ui::UIManager> stage;
 
     LabelPtr labelTitle;
     LabelPtr labelFps;

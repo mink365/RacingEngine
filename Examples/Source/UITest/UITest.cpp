@@ -4,7 +4,7 @@
 #include "UI/Base/NinePatch.h"
 #include "UI/Base/Label.h"
 #include "UI/Base/Node2d.h"
-#include "UI/Manager/UISceneManager.h"
+#include "UI/Manager/UIManager.h"
 #include "UI/Widget/Button.h"
 #include "Font/FontManager.h"
 #include "Font/TextureAtlas.h"
@@ -19,9 +19,6 @@ extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
 
 void UITest::Init()
 {
-    TextureParser::getInstance().addTextures("UI/", "png");
-    TextureManager::getInstance().loadTextures();
-
     SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
     sprite->rebind();
     sprite->setPosition(Vec2(300, 300 + 200));
@@ -68,9 +65,46 @@ void UITest::Init()
     label->setContentSize(Size(200, 50));
     label->setAnchorPoint(Vec2(0.5, 0.5));
     label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
+
+    auto buttonClickFunc = [=](WidgetPtr& widget) {
+        auto win = this->createWin();
+
+        scene->pushWindow(win);
+    };
+
+    button->setOnClickFunc(buttonClickFunc);
 }
 
 void UITest::Update(float dt)
 {
 
+}
+
+std::shared_ptr<Window> UITest::createWin()
+{
+    auto win = CreateView<Window>();
+    win->setContentSize(Size(400, 500));
+
+    NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
+    patch->setStrethPadding(20, 20, 20, 20);
+    patch->setContentSize(Size(400, 500));
+    patch->rebind();
+    patch->setAnchorPoint(Vec2(0.5, 0.5));
+
+    auto button = CreateView<ImageButton>();
+    button->initView("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
+
+    win->addChild(patch);
+    win->addChild(button);
+
+    LayoutUtil::layoutParentCenter(patch);
+    LayoutUtil::layoutParentRightTop(button);
+
+    auto buttonClickFunc = [=](WidgetPtr& widget) {
+        win->popFromWindowManager();
+    };
+
+    button->setOnClickFunc(buttonClickFunc);
+
+    return win;
 }

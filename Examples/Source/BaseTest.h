@@ -20,7 +20,7 @@
 #include "FileSystem/FileSystem.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Shader/ShaderManager.h"
-#include "UI/Manager/UISceneManager.h"
+#include "UI/Manager/UIManager.h"
 
 using namespace re;
 
@@ -46,7 +46,7 @@ protected:
 
     SceneNodePtr rootNode;
     CameraPtr camera;
-    std::shared_ptr<ui::UISceneManager> stage;
+    std::shared_ptr<ui::UIManager> stage;
 };
 
 void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC");
