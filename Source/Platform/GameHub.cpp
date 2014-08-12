@@ -10,7 +10,11 @@ namespace re {
 
 GameHub::GameHub()
 {
-    this->updateFunc = [](long dt) {};
+    _time = 0;
+    _frame = 0;
+    fps = 0;
+
+    this->updateFunc = nullptr;
 }
 
 void GameHub::init()
@@ -20,11 +24,22 @@ void GameHub::init()
 
 void GameHub::mainLoop(long dt)
 {
+    _time += dt;
+    _frame += 1;
+    if (_time > 1000) {
+        this->fps = _frame;
+
+        _time = 0;
+        _frame = 0;
+    }
+
 //    this->updateFunc(dt);
 
     SceneManager::getInstance().renderScene();
 
-    this->updateFunc(dt);
+    if (this->updateFunc) {
+        this->updateFunc(dt);
+    }
 }
 
 void GameHub::bindUpdateFunc(std::function<void (long)> func)
@@ -35,6 +50,11 @@ void GameHub::bindUpdateFunc(std::function<void (long)> func)
 Renderer &GameHub::GetRenderer()
 {
     return SceneManager::getInstance().getRenderManager().getRenderer();
+}
+
+int GameHub::getFps()
+{
+    return this->fps;
 }
 
 } // namespace re

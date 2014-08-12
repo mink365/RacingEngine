@@ -21,8 +21,14 @@ public:
     void bindUpdateFunc(std::function<void(long time)> func);
 
     Renderer& GetRenderer();
+
+    int getFps();
 private:
     std::function<void(long time)> updateFunc;
+
+    int fps;
+    long _time;
+    int _frame;
 };
 
 } // namespace re

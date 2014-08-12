@@ -259,6 +259,8 @@ void FeatureTestsApp::update(long dt)
     if (this->current) {
         this->current->Update(dt / 1000.0f);
     }
+
+    this->labelFps->setText(std::to_string(GameHub::getInstance().getFps()));
 }
 
 std::shared_ptr<Window> WindowFactory::createView(const string& name)
