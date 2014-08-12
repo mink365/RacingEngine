@@ -54,11 +54,12 @@ void TweenTest::Init()
     label2->setText("xHtbo xx");
     label2->setPosition(Vec2(300, 300 + 40));
 
-    auto scene = stage->pushTo("Scene1");
-    scene->addChild(sprite);
-    scene->addChild(patch);
-    scene->addChild(label);
-    scene->addChild(label2);
+    auto scene = stage->getLastLayer();
+    auto window = scene->pushWindow("HelloWindow");
+    window->addChild(sprite);
+    window->addChild(patch);
+    window->addChild(label);
+    window->addChild(label2);
 
     PredefineTweenAccessor::registerAccessor();
 

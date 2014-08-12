@@ -86,7 +86,7 @@ void ShadowTest::Init()
     sprite->setScale(Vec2(2, 2));
     sprite->setPosition(Vec2(0, 0));
 
-    auto scene = stage->pushTo("Scene1");
+    auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
     window->addChild(sprite);
 
