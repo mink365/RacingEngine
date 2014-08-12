@@ -25,8 +25,12 @@ macx {
 RE_PLATFORM_MAC {
     LIBS += -lglfw3
     LIBS += -framework OpenGL
-}
-RE_PLATFORM_LINUX {
+
+    LIBS += -lBulletCollision \
+            -lBulletDynamics \
+            -lLinearMath \
+
+} RE_PLATFORM_LINUX {
     LIBS += -lglfw
     LIBS += -lGL
 
@@ -112,7 +116,8 @@ RE_PLATFORM_MAC {
     INCLUDEPATH += Source/Platform/linux/
 
     INCLUDEPATH += /usr/local/include/ \
-                    /usr/local/include/freetype2/
+                    /usr/local/include/freetype2/ \
+                    /usr/local/include/bullet/
 } RE_PLATFORM_LINUX {
     SOURCES     += build/desktop/main.cpp
 
