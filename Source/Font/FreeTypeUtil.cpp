@@ -23,6 +23,7 @@ const struct {
 } FT_Errors[] =
 #include FT_ERRORS_H
 
+static Buffer::ptr buf = nullptr;
 static int LoadFace(Font::ptr& font, float size, FT_Library *library, FT_Face *face)
 {
     FT_Error error;
@@ -44,8 +45,7 @@ static int LoadFace(Font::ptr& font, float size, FT_Library *library, FT_Face *f
     }
 
     /* Load face */
-    // TODO: read every time? or cache the data?
-    Buffer::ptr buf = font->file->read();
+    buf = font->file->read();
     error = FT_New_Memory_Face(*library, (const FT_Byte*)buf->getData(), buf->getSize(), 0, face);
 
     if(error) {
@@ -134,6 +134,7 @@ void FreeTypeUtil::GenerateKerning(Font::ptr& font)
 
     FT_Done_Face( face );
     FT_Done_FreeType( library );
+    buf.reset();
 }
 
 size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const wchar_t *charcodes)
@@ -194,6 +195,7 @@ size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const
                      __LINE__, FT_Errors[error].code, FT_Errors[error].message );
             FT_Done_Face( face );
             FT_Done_FreeType( library );
+            buf.reset();
             return wcslen(charcodes)-i;
         }
 
@@ -241,6 +243,7 @@ size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const
     }
     FT_Done_Face( face );
     FT_Done_FreeType( library );
+    buf.reset();
 
     GenerateKerning(font);
 
