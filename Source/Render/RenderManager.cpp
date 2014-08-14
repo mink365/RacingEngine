@@ -15,8 +15,6 @@
 #include "RenderTarget.h"
 #include "Shader/ShaderManager.h"
 
-#include "opengl.h"
-
 namespace re {
 
 const RenderState RenderManager::defaultRenderState = RenderState();
@@ -213,11 +211,6 @@ void RenderManager::render()
 //    if (this->renderViewDirty) {
         this->createRenderViews();
 //    }
-
-    // TODO: can't clear the depth?
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearDepth(1.0);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     for (auto renderView : this->renderViewList) {
         this->activeRenderView(renderView);
