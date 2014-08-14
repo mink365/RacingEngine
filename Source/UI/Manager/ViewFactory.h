@@ -36,7 +36,7 @@ inline std::shared_ptr<T> ViewFactory<T>::getView(const string& name)
         view = this->createView(name);
 
         if (view != nullptr) {
-            this->registerView(view);
+//            this->registerView(view);
         }
     }
 

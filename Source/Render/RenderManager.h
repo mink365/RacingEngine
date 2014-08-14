@@ -41,6 +41,8 @@ public:
      */
     void initDefaultRenderState();
 
+    void markRenderViewDirty();
+
 protected:
     void createRenderViews();
 

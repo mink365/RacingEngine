@@ -115,6 +115,11 @@ void RenderManager::initDefaultRenderState()
     this->renderer->resetToRenderState(defaultRenderState);
 }
 
+void RenderManager::markRenderViewDirty()
+{
+    this->renderViewDirty = true;
+}
+
 void RenderManager::createRenderViews()
 {
     this->renderViewList.clear();
