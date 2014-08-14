@@ -8,10 +8,14 @@
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
 #include "Scene/NodeAttribute.h"
-#include "Scene/Light/Light.h"
+#include "Light/Light.h"
+#include "Light/DirectionalLight.h"
+#include "Light/SpotLight.h"
 #include "Renderer/Renderer.h"
 #include "RenderTarget.h"
 #include "Shader/ShaderManager.h"
+
+#include "opengl.h"
 
 namespace re {
 
@@ -133,15 +137,23 @@ void RenderManager::createRenderViews()
             // set shader to shadowMap shader
             renderView->forceShader = ShaderManager::getInstance().getShader("depth_rgba");
 
-            auto renderTarget = std::make_shared<RenderTarget>();
-            renderTarget->setHasDepthBuffer(true);
-            renderTarget->setHasStencilBuffer(false);
+            if (renderView->renderTarget == nullptr) {
+                auto renderTarget = std::make_shared<RenderTarget>();
+                renderTarget->setHasDepthBuffer(true);
+                renderTarget->setHasStencilBuffer(false);
 
-            auto size = renderTarget->getSize();
-            renderView->viewport.set(0, 0, size.width, size.height);
+                auto size = renderTarget->getSize();
+                renderView->viewport.set(0, 0, size.width, size.height);
 
-            this->renderer->setupRenderTarget(*renderTarget);
-            renderView->renderTarget = renderTarget;
+                this->renderer->setupRenderTarget(*renderTarget);
+
+                renderView->renderTarget = renderTarget;
+                if (light->getType() == LightType::Spot) {
+                    std::static_pointer_cast<SpotLight>(light)->shadow.renderTarget = renderTarget;
+                } else if (light->getType() == LightType::Directional) {
+                    std::static_pointer_cast<DirectionalLight>(light)->shadow.renderTarget = renderTarget;
+                }
+            }
 
             renderView->queueCullFunc = [](int queue) {
                     if (queue == RENDER_QUEUE_UI) {
@@ -198,9 +210,14 @@ void RenderManager::render()
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
 
-    if (this->renderViewDirty) {
+//    if (this->renderViewDirty) {
         this->createRenderViews();
-    }
+//    }
+
+    // TODO: can't clear the depth?
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glClearDepth(1.0);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     for (auto renderView : this->renderViewList) {
         this->activeRenderView(renderView);

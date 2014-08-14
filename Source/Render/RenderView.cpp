@@ -1,5 +1,6 @@
 #include "RenderView.h"
 
+#include "RenderTarget.h"
 #include "Light/Light.h"
 #include "Light/DirectionalLight.h"
 #include "Light/SpotLight.h"
@@ -47,8 +48,7 @@ void RenderView::init(LightPtr &light)
 
         this->mode = CameraProjectionMode::Orthographic;
 
-        this->zNear = dirLight->shadow.shadowCameraNear;
-        this->zFar = dirLight->shadow.shadowCameraFar;
+        this->setupShadowInfo(dirLight->shadow);
 
         this->orthoWidth = dirLight->orthoRect.getWidth();
 
@@ -70,8 +70,7 @@ void RenderView::init(LightPtr &light)
 
         this->mode = CameraProjectionMode::Perspective;
 
-        this->zNear = spotLight->shadow.shadowCameraNear;
-        this->zFar = spotLight->shadow.shadowCameraFar;
+        this->setupShadowInfo(spotLight->shadow);
 
         this->fov = spotLight->spotAngle;
 
@@ -82,10 +81,24 @@ void RenderView::init(LightPtr &light)
         this->viewMatrix.lookAt(light->worldMatrix.getTranslation(), center, up);
 
         this->projMatrix.setPerspective(fov, zNear, zFar);
+
     } else if (light->getType() == LightType::Point) {
         assert(false);
     } else {
         assert(false);
+    }
+}
+
+void RenderView::setupShadowInfo(const ShadowInfo &shadowInfo)
+{
+    this->zNear = shadowInfo.shadowCameraNear;
+    this->zFar = shadowInfo.shadowCameraFar;
+
+    if (shadowInfo.renderTarget != nullptr) {
+        this->renderTarget = shadowInfo.renderTarget;
+
+        auto size = this->renderTarget->getSize();
+        this->viewport.set(0, 0, size.width, size.height);
     }
 }
 

@@ -13,6 +13,7 @@ namespace re {
 
 class Shader;
 class RenderTarget;
+class ShadowInfo;
 
 class RenderView : public Shared<RenderView>
 {
@@ -21,6 +22,8 @@ public:
 
     void init(CameraPtr& camera);
     void init(LightPtr& light);
+
+    void setupShadowInfo(const ShadowInfo &shadowInfo);
 
 public:
     CameraProjectionMode mode;

@@ -125,12 +125,12 @@ const Mat4 &Camera::getViewProjectionMatrix() const
     return this->viewProjectionMatrix;
 }
 
-void Camera::setClearFlag(int flag)
+void Camera::setBuffersClearFlag(int flag)
 {
     this->clearFlag = flag;
 }
 
-int Camera::getClearFlag() const
+int Camera::getBuffersClearFlag() const
 {
     return this->clearFlag;
 }

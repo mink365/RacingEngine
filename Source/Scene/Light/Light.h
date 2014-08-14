@@ -13,19 +13,20 @@ enum class LightType {
     Area,
 };
 
+class ShadowInfo {
+public:
+    float shadowCameraNear;
+    float shadowCameraFar;
+
+    float shadowBias;
+    float shadowDarkness;
+
+    std::shared_ptr<RenderTarget> renderTarget;
+};
+
 class Light : public SceneNode
 {
     friend class RenderView;
-
-public:
-    class ShadowInfo {
-    public:
-        float shadowCameraNear;
-        float shadowCameraFar;
-
-        float shadowBias;
-        float shadowDarkness;
-    };
 
 public:
     Light();

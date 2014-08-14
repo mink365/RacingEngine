@@ -54,8 +54,8 @@ public:
     const Mat4 &getProjectionMatrix() const;
     const Mat4 &getViewProjectionMatrix() const;
 
-    void setClearFlag(int flag);
-    int getClearFlag() const;
+    void setBuffersClearFlag(int flag);
+    int getBuffersClearFlag() const;
     void setQueueCullFunc(std::function<bool(int queueID)> func);
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
