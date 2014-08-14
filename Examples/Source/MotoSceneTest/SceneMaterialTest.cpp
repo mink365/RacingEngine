@@ -27,6 +27,12 @@ void SceneMaterialTest::Init()
 {
     this->camera->setDepthField(10, 3000);
     this->camera->setView(Vec3(0, -1840, 557), Vec3(0, 30, 20), Vec3(0, 0, 1));
+    this->camera->setQueueCullFunc([](int queue) {
+        if (queue == RENDER_QUEUE_UI) {
+            return false;
+        }
+        return true;
+    });
 
     TextureParser::getInstance().addTextures("Textures/Scenes/", "png|jpg");
     TextureManager::getInstance().loadTextures();

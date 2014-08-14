@@ -118,6 +118,8 @@ void FeatureTestsApp::onCurrentTestChanged()
 
     this->current->init(*this);
     this->labelTitle->setText(this->current->getName());
+
+    SceneManager::getInstance().getRenderManager().markRenderViewDirty();
 }
 
 void FeatureTestsApp::createBaseUI()

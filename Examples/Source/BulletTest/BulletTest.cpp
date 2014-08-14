@@ -43,10 +43,17 @@ struct	MyOverlapCallback : public btBroadphaseAabbCallback
 BulletTest::BulletTest()
 {
     this->name = "BulletTest";
+
+    this->m_dynamicsWorld = nullptr;
+    this->m_collisionConfiguration = nullptr;
 }
 
 void BulletTest::Init()
 {
+    if (this->m_dynamicsWorld) {
+        this->exitPhysics();
+    }
+
     this->initPhysics();
 
     this->initView();
@@ -213,21 +220,29 @@ void BulletTest::exitPhysics()
     delete m_dispatcher;
 
     delete m_collisionConfiguration;
+
+    boxList.clear();
 }
 
 void BulletTest::initView()
 {
     TextureParser::getInstance().addTextures("Textures/Box", "png|jpg");
-
     auto texture = TextureManager::getInstance().getTexture("cube2");
+
+    this->camera->setView(Vec3(0, 100, 170), Vec3(0, 0, 0), Vec3(0, 1, 0));
+    this->camera->setDepthField(10, 1320);
+    this->camera->setQueueCullFunc([](int queue) {
+        if (queue == RENDER_QUEUE_UI) {
+            return false;
+        }
+        return true;
+    });
 
     MeshPtr boxMesh = ShapeGenerater::getInstance().CreateBox(6, texture);
     InitMeshInHardward(boxMesh);
 
     auto boxNode = std::make_shared<SceneNode>();
     AddMeshToNode(boxNode, boxMesh);
-
-    this->camera->setView(Vec3(0, 100, 170), Vec3(0, 0, 0), Vec3(0, 1, 0));
 
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {
