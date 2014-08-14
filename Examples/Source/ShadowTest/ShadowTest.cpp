@@ -76,7 +76,7 @@ void ShadowTest::Init()
 
     // light
     re::LightPtr light = std::make_shared<SpotLight>();
-    SceneManager::getInstance().addRootNode(light);
+    rootNode->addChild(light);
     SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
@@ -90,7 +90,7 @@ void ShadowTest::Init()
 
     sprite = std::make_shared<Sprite>("diffuse.png");
     sprite->rebind();
-    sprite->setScale(Vec2(2, 2));
+    sprite->setScale(Vec2(1, 1));
     sprite->setPosition(Vec2(0, 0));
 
     auto scene = stage->getLastLayer();

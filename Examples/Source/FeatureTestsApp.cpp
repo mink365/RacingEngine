@@ -111,6 +111,9 @@ void FeatureTestsApp::lastTest()
 
 void FeatureTestsApp::onCurrentTestChanged()
 {
+    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
+    SceneManager::getInstance().getRenderManager().lightList.clear();
+
     this->current = tests[currIndex];
 
     this->stage->getLastLayer()->popAllWindow();
@@ -120,6 +123,7 @@ void FeatureTestsApp::onCurrentTestChanged()
     this->labelTitle->setText(this->current->getName());
 
     SceneManager::getInstance().getRenderManager().markRenderViewDirty();
+    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
 }
 
 void FeatureTestsApp::createBaseUI()
@@ -201,8 +205,9 @@ void FeatureTestsApp::initResources()
     uiCamera->setDepthField(-10, 10);
     uiCamera->setView(Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 1),
                         Vec3(screen.getWidth()/2.0, screen.getHeight()/2.0, 0), Vec3(0, 1, 0));
-    // TODO: no need it, but depth not clear
-    uiCamera->setClearFlag(0);
+    // TODO: why need this? or no depth clear for all 3d scene
+    uiCamera->setBuffersClearFlag(ClearBufferBit::DEPTH_BUFFER_BIT
+                                  | ClearBufferBit::STENCIL_BUFFER_BIT);
     uiCamera->setQueueCullFunc([](int queue) {
         if (queue == RENDER_QUEUE_UI) {
             return true;
