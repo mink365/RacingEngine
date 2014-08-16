@@ -16,6 +16,7 @@ class BoneNode;
 class SceneNode;
 class NodeAttribute;
 class Mesh;
+class Geometry;
 
 class RenderTarget;
 class Renderer;
@@ -47,6 +48,7 @@ typedef std::shared_ptr<BoneNode> BoneNodePtr;
 typedef std::shared_ptr<SceneNode> SceneNodePtr;
 typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
+typedef std::shared_ptr<Geometry> GeometryPtr;
 
 typedef std::shared_ptr<Renderer> RendererPtr;
 typedef std::shared_ptr<RenderTarget> RenderTargetPtr;

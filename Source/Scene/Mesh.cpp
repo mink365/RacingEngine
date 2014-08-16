@@ -20,6 +20,11 @@ Geometry::ptr Mesh::getGeometry()
     return geometry;
 }
 
+void Mesh::setGeometry(GeometryPtr &g)
+{
+    this->geometry = g;
+}
+
 Material::ptr Mesh::getMaterial()
 {
     return material;

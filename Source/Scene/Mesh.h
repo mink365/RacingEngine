@@ -26,6 +26,7 @@ public:
     void setMaterial(MaterialPtr& m);
 
     Geometry::ptr getGeometry();
+    void setGeometry(GeometryPtr& g);
 
     MeshPtr clone();
 
