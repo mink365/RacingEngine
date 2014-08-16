@@ -23,7 +23,7 @@ void ShadowTest::Init()
 {
     std::string shaderDir = "Shaders/";
 
-    LoadShader("depth_rgba", shaderDir + "simple_shadow_map.vert",
+    LoadShader("depth_rgba", shaderDir + "position_texture_color.vert",
                              shaderDir + "depth_rgba.frag");
 
     LoadShader("multi_texture", shaderDir + "position_texture_color.vert",
@@ -48,14 +48,19 @@ void ShadowTest::Init()
 
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
-    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateBox(300, texture);
+//    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateBox(300, texture);
+    GeometryPtr geometry = nullptr;
+    geometry = ShapeGenerater::getInstance().CreatePlane(200, 200, 30, 30);
+//     geometry = ShapeGenerater::getInstance().CreateRing(50, 200);
+    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
     InitMeshInHardward(groundMesh, "shadow_map");
     groundMesh->getMaterial()->setQueueID(51);
 
     ground = std::make_shared<SceneNode>();
     AddMeshToNode(ground, groundMesh);
 
-    ground->setLocalTranslation(Vec3(0, 0, -200));
+    // TODO: if the plane z > 100, shadow will be cull ?
+    ground->setLocalTranslation(Vec3(0, 0, 0));
 
     rootNode->addChild(ground);
     ground->updateTransform();
@@ -164,7 +169,7 @@ void ShadowTest::Update(float dt)
         rotateValue = 0;
     }
 
-    box->setLocalRotation(Quat().fromAngles(Vec3(0, 20, rotateValue)));
+    box->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
     auto mesh = std::dynamic_pointer_cast<re::Mesh>(sprite->getNodeAttribute());
     TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
