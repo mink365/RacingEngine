@@ -57,7 +57,8 @@ public:
 
     float			length( void ) const;
     float			lengthSqr( void ) const;
-    Vec2&			normalize( void );			// returns length
+    Vec2			normalize( void ) const;
+    Vec2&           normalizeSelf( void );
 
     operator float *() const;
     const float *	toFloatPtr( void ) const;
@@ -222,16 +223,16 @@ inline float Vec2::lengthSqr() const
     return (x * x + y * y);
 }
 
-inline Vec2 &Vec2::normalize()
+inline Vec2 &Vec2::normalizeSelf()
 {
-    float sqrLength, invLength;
-
-    sqrLength = x * x + y * y;
-    invLength = 1.0f / sqrt(sqrLength);
-    x *= invLength;
-    y *= invLength;
+    *this = *this / length();
 
     return *this;
+}
+
+inline Vec2 Vec2::normalize() const
+{
+    return *this / length();
 }
 
 inline const float *Vec2::toFloatPtr() const
@@ -276,10 +277,13 @@ public:
 
     float operator *(const Vec3 &v) const;
 
-    Vec3 cross(const Vec3 &v) const;
-    Vec3 &cross(const Vec3 &a, const Vec3 &b);
+    Vec3            cross(const Vec3 &v) const;
+    Vec3&           cross(const Vec3 &a, const Vec3 &b);
 
-    Vec3 &normalize();
+    float			length( void ) const;
+    float			lengthSqr( void ) const;
+    Vec3            normalize() const;
+    Vec3&           normalizeSelf();
 
     operator float *() const;
     float *toFloatPtr();
@@ -327,9 +331,11 @@ inline Vec3 &Vec3::operator *=(const float a)
 
 inline Vec3 &Vec3::operator /=(const float a)
 {
-    this->x /= a;
-    this->y /= a;
-    this->z /= a;
+    float inva = 1.0f / a;
+
+    this->x *= inva;
+    this->y *= inva;
+    this->z *= inva;
 
     return *this;
 }
@@ -375,15 +381,24 @@ inline Vec3 &Vec3::cross(const Vec3 &a, const Vec3 &b)
     return *this;
 }
 
-inline Vec3 &Vec3::normalize()
+inline float Vec3::length() const
 {
-    float sqrLength, invLength;
+    return sqrt(x * x + y * y + z * z);
+}
 
-    sqrLength = x * x + y * y + z * z;
-    invLength = 1.0f / sqrt(sqrLength);
-    x *= invLength;
-    y *= invLength;
-    z *= invLength;
+inline float Vec3::lengthSqr() const
+{
+    return (x * x + y * y + z * z);
+}
+
+inline Vec3 Vec3::normalize() const
+{
+    return *this / length();
+}
+
+inline Vec3 &Vec3::normalizeSelf()
+{
+    *this = *this / length();
 
     return *this;
 }

@@ -31,9 +31,17 @@ public:
     float operator [](int index) const;
     float &operator [](int index);
 
-    Quat inverse() const;
-    float  getLength() const;
-    Quat &normalize();
+    Quat operator *(const float a) const;
+    Quat operator /(const float a) const;
+
+    Quat &operator *=(const float a);
+    Quat &operator /=(const float a);
+
+    Quat            inverse() const;
+    float           length() const;
+    float           lengthSqr() const;
+    Quat            normalize() const;
+    Quat&           normalizeSelf();
 
     float *toFloatPtr();
     const float *toFloatPtr () const;
@@ -61,12 +69,46 @@ inline float &Quat::operator [](int index)
     return (&x)[index];
 }
 
+inline Quat Quat::operator *(const float a) const
+{
+    return Quat(x * a, y * a, z * a, w * a);
+}
+
+inline Quat Quat::operator /(const float a) const
+{
+    float inva = 1.0f / a;
+
+    return Quat(x * inva, y * inva, z * inva, w * inva);
+}
+
+inline Quat &Quat::operator *=(const float a)
+{
+    this->x *= a;
+    this->y *= a;
+    this->z *= a;
+    this->w *= a;
+
+    return *this;
+}
+
+inline Quat &Quat::operator /=(const float a)
+{
+    float inva = 1.0f / a;
+
+    this->x *= inva;
+    this->y *= inva;
+    this->z *= inva;
+    this->w *= inva;
+
+    return *this;
+}
+
 inline Quat Quat::inverse() const
 {
     return Quat(-x, -y, -z, w);
 }
 
-inline float Quat::getLength() const
+inline float Quat::length() const
 {
     float len;
 
@@ -74,12 +116,22 @@ inline float Quat::getLength() const
     return std::sqrt(len);
 }
 
-inline Quat &Quat::normalize()
+inline float Quat::lengthSqr() const
+{
+    return (x * x + y * y + z * z + w * w);
+}
+
+inline Quat Quat::normalize() const
+{
+    return *this / length();
+}
+
+inline Quat &Quat::normalizeSelf()
 {
     float len;
     float ilength;
 
-    len = this->getLength();
+    len = this->length();
 
     if (len) {
         ilength = 1 / len;

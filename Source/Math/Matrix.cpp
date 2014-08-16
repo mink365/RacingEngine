@@ -334,16 +334,13 @@ Mat4 &Mat4::lookAt(const Vec3 &eye, const Vec3 &center, const Vec3 &preUp)
     // See the OpenGL GLUT documentation for gluLookAt for a description
     // of the algorithm. We implement it in a straightforward way:
 
-    Vec3 forward = center - eye;
-    forward.normalize();
+    Vec3 forward = (center - eye).normalize();
 
     // compute s = f x up (x means "cross product")
-    Vec3 side = forward.cross(preUp);
-    side.normalize();
+    Vec3 side = forward.cross(preUp).normalize();
 
     // compute u = s x f
-    Vec3 up = side.cross(forward);
-    up.normalize();
+    Vec3 up = side.cross(forward).normalize();
 
     mat[0][0] = side.x;
     mat[0][1] = side.y;
