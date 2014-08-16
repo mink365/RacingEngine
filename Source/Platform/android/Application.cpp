@@ -133,7 +133,8 @@ void Application::run(android_app* state) {
     GameHub& game = GameHub::getInstance();
     game.init();
 
-    long lastTime, curTime, dt, oldTime;
+    long lastTime = getCurrentMillSecond();
+    long curTime, dt, oldTime;
     long _animationInterval = 1 / 60.0 * 1000;
 
     while (true)
