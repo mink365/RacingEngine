@@ -249,7 +249,7 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
             Vertex vertex;
             vertex.xyz.x = radius * cos(u * PI * 2);
             vertex.xyz.y = radius * sin(u * PI * 2);
-            vertex.xyz.z = -v * height + halfHeight;
+            vertex.xyz.z = v * height - halfHeight;
 
             vertex.uv.u = u;
             vertex.uv.v = 1 - v;
@@ -268,29 +268,29 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
     for (int ir = 0; ir < radialSegments; ++ir) {
 
         uint nai, nbi;
-        if (radiusTop != 0) {
+        if (radiusBottom != 0) {
             nai = vertexIndexes[0][ir];
-            nbi = vertexIndexes[0][ir];
+            nbi = vertexIndexes[0][ir + 1];
         } else {
             nai = vertexIndexes[1][ir];
-            nbi = vertexIndexes[1][ir];
+            nbi = vertexIndexes[1][ir + 1];
         }
 
         na = geometry.getVertices()[nai].xyz;
         nb = geometry.getVertices()[nbi].xyz;
 
         na.z = sqrt(na.x * na.x + na.y * na.y) * tanTheta;
-        na.normalize();
+        na.normalizeSelf();
 
         nb.z = sqrt(nb.x * nb.x + nb.y * nb.y) * tanTheta;
-        nb.normalize();
+        nb.normalizeSelf();
 
         for (int iz = 0; iz < heightSegments; ++iz) {
 
-            uint a = vertexIndexes[iz][ir];
-            uint b = vertexIndexes[iz + 1][ir];
-            uint c = vertexIndexes[iz + 1][ir + 1];
-            uint d = vertexIndexes[iz][ir + 1];
+            uint a = vertexIndexes[iz + 1][ir];
+            uint b = vertexIndexes[iz][ir];
+            uint c = vertexIndexes[iz][ir + 1];
+            uint d = vertexIndexes[iz + 1][ir + 1];
 
             geometry.addFace(Face(a, b, d));
             geometry.addFace(Face(b, c, d));
@@ -309,12 +309,13 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
     if (!openEnded && radiusTop > 0) {
         Vertex center;
         center.xyz = Vec3(0, 0, halfHeight);
-
+        center.uv = Uv(1, 1);
         geometry.addVertex(center);
 
         for (int ir = 0; ir < radialSegments; ++ir) {
-            uint a = vertexIndexes[0][ir];
-            uint b = vertexIndexes[0][ir + 1];
+            int rowIndex = vertexIndexes.size() - 1;
+            uint a = vertexIndexes[rowIndex][ir];
+            uint b = vertexIndexes[rowIndex][ir + 1];
             uint c = geometry.getVertices().size() - 1;
 
             // TODO: uv of face?
@@ -334,12 +335,12 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
     if (!openEnded && radiusBottom > 0) {
         Vertex center;
         center.xyz = Vec3(0, 0, -halfHeight);
+        center.uv = Uv(0, 0);
         geometry.addVertex(center);
 
         for (int ir = 0; ir < radialSegments; ++ir) {
-            int rowIndex = vertexIndexes.size() - 1;
-            uint a = vertexIndexes[rowIndex][ir];
-            uint b = vertexIndexes[rowIndex][ir + 1];
+            uint a = vertexIndexes[0][ir + 1];
+            uint b = vertexIndexes[0][ir];
             uint c = geometry.getVertices().size() - 1;
 
             // TODO: uv of face?
@@ -430,12 +431,12 @@ GeometryPtr ShapeGenerater::CreateTorus(float radius, float tubularRadius, int r
     }
 
     for (int rs=0; rs < radialSegments; ++rs) {
-        for (int ts; ts < tubularSegments; ++ts) {
+        for (int ts=0; ts < tubularSegments; ++ts) {
 
-            uint a = ( tubularSegments + 1 ) * rs + ts - 1;
-            uint b = ( tubularSegments + 1 ) * ( rs - 1 ) + ts - 1;
-            uint c = ( tubularSegments + 1 ) * ( rs - 1 ) + ts;
-            uint d = ( tubularSegments + 1 ) * rs + ts;
+            uint a = ( tubularSegments + 1 ) * (rs + 1) + ts;
+            uint b = ( tubularSegments + 1 ) * rs + ts;
+            uint c = ( tubularSegments + 1 ) * rs + ts + 1;
+            uint d = ( tubularSegments + 1 ) * (rs + 1) + ts + 1;
 
             geometry.addFace(Face(a, b, d));
             geometry.addFace(Face(b, c, d));
@@ -477,12 +478,11 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
     for (int sy=0; sy < heightSegments; ++sy) {
         for (int sx=0; sx < widthSegments; ++sx) {
 
-            uint a = vertexIndexes[sy][sx];
-            uint b = vertexIndexes[sy][sx + 1];
+            uint a = vertexIndexes[sy][sx + 1];
+            uint b = vertexIndexes[sy][sx];
             uint c = vertexIndexes[sy + 1][sx];
             uint d = vertexIndexes[sy + 1][sx + 1];
 
-            // TODO: normalize self or out
             Vec3 na = geometry.getVertices()[a].xyz.normalize();
             Vec3 nb = geometry.getVertices()[b].xyz.normalize();
             Vec3 nc = geometry.getVertices()[c].xyz.normalize();
@@ -499,7 +499,6 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
             } else if (abs(geometry.getVertices()[c].xyz.y) == radius) {
                 geometry.addFace(Face(a, b, c));
             } else {
-                // normal
                 geometry.addFace(Face(a, b, d));
                 geometry.addFace(Face(b, c, d));
             }
@@ -514,8 +513,8 @@ MeshPtr ShapeGenerater::CreateBox(float side, Texture::ptr texture)
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
 
-//    GeometryPtr geometry = this->CreateBox(side, side, side);
-    GeometryPtr geometry = this->CreateCylinder(side, side, side);
+    GeometryPtr geometry;
+    geometry = this->CreateBox(side, side, side);
     mesh->setGeometry(geometry);
 
     TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
