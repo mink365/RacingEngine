@@ -387,12 +387,10 @@ GeometryPtr ShapeGenerater::CreateRing(float innerRadius, float outerRadius, int
     for (int ps=0; ps < phiSegments; ++ps) {
         for (int ts=0; ts < thetaSegments; ++ts) {
 
-            int index = ts + ps * (thetaSegments + 1);
-
-            uint a = index + (thetaSegments + 1);
-            uint b = index;
-            uint c = b + 1;
-            uint d = a + 1;
+            uint a = (thetaSegments + 1) * ps + ts + 1;
+            uint c = (thetaSegments + 1) * (ps + 1) + ts;
+            uint b = (thetaSegments + 1) * ps + ts;
+            uint d = (thetaSegments + 1) * (ps + 1) + ts + 1;
 
             geometry.addFace(Face(a, b, d));
             geometry.addFace(Face(b, c, d));
