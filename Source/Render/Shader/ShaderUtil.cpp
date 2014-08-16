@@ -134,19 +134,11 @@ void ShaderUtil::bindShader(Shader *shader)
 {
     glUseProgram(shader->getProgram());
 
-    std::vector<Attribute *> attributes = shader->getAttributes();
-    std::vector<Attribute *>::iterator iter;
-    for (iter = attributes.begin(); iter != attributes.end(); ++iter) {
-        Attribute* attribute = *iter;
-
+    for (Attribute* attribute : shader->getAttributes()) {
         this->applyAttributeToHardware(attribute);
     }
 
-    std::vector<Uniform *> uniforms = shader->getUniforms();
-    std::vector<Uniform *>::iterator iter_uniform;
-    for (iter_uniform = uniforms.begin(); iter_uniform != uniforms.end(); ++iter_uniform) {
-        Uniform* uniform = *iter_uniform;
-
+    for (Uniform* uniform : shader->getUniforms()) {
         this->applyUniformToHardware(uniform);
     }
 
@@ -162,7 +154,7 @@ void ShaderUtil::bindShader(Shader *shader)
 void ShaderUtil::applyAttributeToHardware(Attribute *attr)
 {
     glEnableVertexAttribArray(attr->location);
-    glVertexAttribPointer(attr->location, attr->size, glTypes[attr->type], attr->normalized, attr->stride, (void *)attr->offset);
+    glVertexAttribPointer(attr->location, attr->size, glTypes[attr->type], attr->normalized, attr->stride, (GLvoid *)attr->offset);
 }
 
 void ShaderUtil::applyUniformToHardware(Uniform *uniform)
@@ -301,7 +293,7 @@ uint ShaderUtil::loadShader(const char *source, uint type)
     }
     case GL_FRAGMENT_SHADER:
     {
-        precision = "precision mediump float;\n";
+        precision = "precision highp float;\n";
 
         // create fragment shader
         id = glCreateShader(GL_FRAGMENT_SHADER);

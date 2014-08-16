@@ -106,8 +106,6 @@ std::vector<Uniform *> Shader::getUniforms() const
 
 Uniform *Shader::getUniform(const std::string name)
 {
-    //TODO:内存分配区域，指针可用性？容器内部只是一个个拷贝？如果容器产生了整理等等，
-    //指向容器内容物的指针是否还可用？
     std::vector<Uniform *>::iterator iter;
     for (iter = this->uniforms.begin(); iter != this->uniforms.end(); ++iter) {
         Uniform* uniform = *iter;
