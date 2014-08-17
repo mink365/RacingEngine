@@ -28,6 +28,7 @@ typedef unsigned long int ulong;
 typedef unsigned short int ushort;
 typedef unsigned int uint;
 
+typedef char byte;
 typedef int64_t Long;
 typedef int32_t Int;
 

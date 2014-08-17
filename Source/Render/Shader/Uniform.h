@@ -28,16 +28,31 @@ enum UniformType {
 class Uniform
 {
     friend class Shader;
-    friend class ShaderUtil;
 public:
     Uniform();
     Uniform(const std::string name);
+    ~Uniform();
+
+    void init(const char *name, UniformType type, int location, int n);
+
+    int getElementCount() const;
+    void setElementCount(int size);
+
+    int getLocation() const;
+    UniformType getType() const;
 
     float* getData() const;
     void setData(float* value);
 
 protected:
     void init();
+
+    void initData();
+    void initMatrixData(int dimension);
+
+    int getDataByteSize();
+    void allocData();
+    void freeData();
 
 private:
     std::string name;
@@ -61,6 +76,26 @@ private:
      */
     float *data;
 };
+
+inline int Uniform::getElementCount() const
+{
+    return this->nElements;
+}
+
+inline int Uniform::getLocation() const
+{
+    return this->location;
+}
+
+inline UniformType Uniform::getType() const
+{
+    return this->type;
+}
+
+inline float *Uniform::getData() const
+{
+    return data;
+}
 
 } // namespace re
 

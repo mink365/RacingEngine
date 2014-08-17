@@ -159,24 +159,10 @@ void ShaderUtil::applyAttributeToHardware(Attribute *attr)
 
 void ShaderUtil::applyUniformToHardware(Uniform *uniform)
 {
-    if (uniform->type >= UNIFORM_MAT2){
-        int cal = 2 + uniform->type - UNIFORM_MAT2;
-        int size = cal * cal;
-        float mat[size * uniform->nElements];
-
-        for (int n = 0; n < uniform->nElements; ++n) {
-            int offset = n * size;
-
-            for (int i = 0; i < cal; ++i) {
-                for (int j = 0; j < cal; ++j) {
-                    mat[i * cal + j + offset] = uniform->data[j * cal + i + offset];
-                }
-            }
-        }
-
-        ((UNIFORM_MAT_FUNC) uniformFuncs[uniform->type])(uniform->location, uniform->nElements, GL_FALSE, mat);
+    if (uniform->getType() >= UNIFORM_MAT2){
+        ((UNIFORM_MAT_FUNC) uniformFuncs[uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), GL_FALSE, uniform->getData());
     } else {
-        ((UNIFORM_FUNC) uniformFuncs[uniform->type])(uniform->location, uniform->nElements, (float *) uniform->data);
+        ((UNIFORM_FUNC) uniformFuncs[uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), uniform->getData());
     }
 }
 
@@ -237,9 +223,10 @@ void ShaderUtil::fetchUniforms(Shader *shader)
             if (strncmp(name, "gl_", 3) != 0){
                 char *bracket = strchr(name, '[');
 
-                // 非数组/array或者是数组的第一个元素
+                // not a array or just array[0]
                 if (bracket == NULL
-                        || (bracket[1] == '0' && bracket[2] == ']')){
+                        || (bracket[1] == '0' && bracket[2] == ']'))
+                {
                     if (bracket){
                         *bracket = '\0';
                         length = (GLint) (bracket - name);
@@ -247,28 +234,25 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 
                     Uniform *uniform = new Uniform();
 
-                    uniform->name = name;
-                    uniform->location = glGetUniformLocation(shader->program, name);
-                    uniform->type = getUniformType(type);
-                    uniform->nElements = size;
+                    uniform->init(name, getUniformType(type), glGetUniformLocation(shader->program, name), size);
 
                     shader->addUniform(uniform);
 
                     nUniforms++;
-                } else if (bracket != NULL && bracket[1] > '0'){
-                    // 处理uniform数组的其他元素
+                } else if (bracket != NULL && bracket[1] > '0') {
+                    // not array[0], this will not happen normally
 
-                    *bracket = '\0'; // 直接给出一个字符串结束符号，以截断字符串，只保留名字
+                    *bracket = '\0';
 
                     Uniform *uniform = shader->getUniform(name);
 
                     if (uniform != NULL) {
                         int count = atoi(bracket + 1) + 1;
-                        if (count > uniform->nElements){
-                            uniform->nElements = count;
+                        if (count > uniform->getElementCount()){
+                            uniform->setElementCount(count);
                         }
                     } else {
-                        // 这其实是个错误
+                        assert(false);
                     }
                 }
             }
