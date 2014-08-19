@@ -512,7 +512,8 @@ MeshPtr ShapeGenerater::CreateBox(float side, Texture::ptr texture)
     mesh->init();
 
     GeometryPtr geometry;
-    geometry = this->CreateBox(side, side, side);
+    geometry = this->CreateBox(side, side, side, 10, 10, 10);
+//    geometry = this->CreateTorus(40, 20, 40, 40);
     mesh->setGeometry(geometry);
 
     TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);

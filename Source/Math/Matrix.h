@@ -82,7 +82,7 @@ inline Mat3::operator float *() const
 
 /**
  * @brief The Mat4 class
- * 列主序(column major)
+ * row-major
  */
 class Mat4 {
 public:

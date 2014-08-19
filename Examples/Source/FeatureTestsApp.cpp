@@ -86,7 +86,7 @@ void FeatureTestsApp::createTests()
     test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
     this->tests.push_back(test);
 
-    currIndex = 3;
+    currIndex = 6;
 
     this->onCurrentTestChanged();
 }

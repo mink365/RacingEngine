@@ -238,6 +238,15 @@ void BulletTest::initView()
         return true;
     });
 
+    auto geometry = ShapeGenerater::getInstance().CreatePlane(100, 100, 30, 30);
+    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
+    InitMeshInHardward(groundMesh);
+    auto groundNode = std::make_shared<SceneNode>();
+    AddMeshToNode(groundNode, groundMesh);
+    groundNode->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
+    rootNode->addChild(groundNode);
+
+    texture = TextureManager::getInstance().getTexture("cube3");
     MeshPtr boxMesh = ShapeGenerater::getInstance().CreateBox(6, texture);
     InitMeshInHardward(boxMesh);
 

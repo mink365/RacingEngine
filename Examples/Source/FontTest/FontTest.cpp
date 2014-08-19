@@ -14,7 +14,7 @@ FontTest::FontTest()
 
 std::shared_ptr<TextureAtlas> CreateDefaultFont()
 {
-    auto fontFile = "Fonts/ObelixPro.ttf";
+    auto fontFile = "Fonts/Arial Rounded MT Bold.ttf";
     FilePtr file = FileSystem::getInstance().openFile(fontFile);
 
     auto font = std::make_shared<Font>(32, file);
