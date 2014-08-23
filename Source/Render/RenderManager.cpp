@@ -88,12 +88,13 @@ void RenderManager::applyMaterial(Material &material)
     Shader* shader = nullptr;
     if (this->currRenderView->forceShader) {
         shader = this->currRenderView->forceShader.get();
-        shader->getUniform("modelMatrix")->setData((float*)renderer->getModelMatrix());
-        shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
-        shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
     } else {
         shader = material.getShader().get();
     }
+
+    shader->getUniform("modelMatrix")->setData((float*)renderer->getModelMatrix());
+    shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
+    shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
 
     ShaderUtil::getInstance().bindShader(shader);
 
@@ -185,14 +186,9 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     Material::ptr material = mesh->getMaterial();
     Geometry::ptr geometry = mesh->getGeometry();
 
-    std::shared_ptr<Shader> shader = material->getShader();
-    shader->getUniform("modelMatrix")->setData((float*)renderer->getModelMatrix());
-    shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
-    shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
-
-    Mat4 textureMatrix;
-    auto unit = material->getPass(0)->getTextureUnit(0);
-    textureMatrix.setScaling(unit->getScale().x, unit->getScale().y, 0);
+//    Mat4 textureMatrix;
+//    auto unit = material->getPass(0)->getTextureUnit(0);
+//    textureMatrix.setScaling(unit->getScale().x, unit->getScale().y, 0);
 
 //    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
