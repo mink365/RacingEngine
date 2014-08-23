@@ -31,6 +31,7 @@
 #include "LightTest/LightTest.h"
 #include "ShadowTest/ShadowTest.h"
 #include "BulletTest/BulletTest.h"
+#include "RenderToTextureTest/RenderToTextureTest.h"
 
 #include "Util/LogUtil.h"
 
@@ -69,21 +70,23 @@ void FeatureTestsApp::createTests()
 {
     // TODO:
     std::shared_ptr<BaseTest> test;
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<FBXTest>());
+    test = std::make_shared<FBXTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<FontTest>());
+    test = std::make_shared<FontTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<TweenTest>());
+    test = std::make_shared<TweenTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<UITest>());
+    test = std::make_shared<UITest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<SceneMaterialTest>());
+    test = std::make_shared<SceneMaterialTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<LightTest>());
+    test = std::make_shared<LightTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<ShadowTest>());
+    test = std::make_shared<ShadowTest>();
     this->tests.push_back(test);
-    test = std::dynamic_pointer_cast<BaseTest>(std::make_shared<BulletTest>());
+    test = std::make_shared<BulletTest>();
+    this->tests.push_back(test);
+    test = std::make_shared<RenderToTextureTest>();
     this->tests.push_back(test);
 
     currIndex = 6;
