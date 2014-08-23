@@ -24,7 +24,7 @@ std::shared_ptr<TextureAtlas> CreateDefaultFont()
     auto atlas = TextureAtlas::create();
     atlas->init(1024, 1024, 1);
 
-    FreeTypeUtil::LoadGlyphs(atlas, font, L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+    FreeTypeUtil::LoadGlyphs(atlas, font, L" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 
     atlas->upload();
 
