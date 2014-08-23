@@ -8,9 +8,9 @@ RenderTarget::RenderTarget()
 
     this->size.set(Size(512, 512));
 
-    this->generateMipmaps = true;
+    this->generateMipmaps = false;
     this->hasDepthBuffer = true;
-    this->hasStencilBuffer = true;
+    this->hasStencilBuffer = false;
 }
 
 RenderTarget::~RenderTarget()

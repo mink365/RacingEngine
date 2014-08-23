@@ -209,7 +209,7 @@ static const GLenum DataTypes[] {
     0,
     GL_UNSIGNED_BYTE,
     GL_BYTE,
-    GL_UNSIGNED_SHORT,
+    GL_UNSIGNED_SHORT_5_6_5,
     GL_SHORT,
     GL_UNSIGNED_INT,
     GL_INT,

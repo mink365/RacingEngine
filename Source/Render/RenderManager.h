@@ -43,7 +43,7 @@ public:
 
     void markRenderViewDirty();
 
-protected:
+public:
     void createRenderViews();
 
     void renderList(const RenderableList &list);

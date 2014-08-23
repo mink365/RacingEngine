@@ -37,7 +37,7 @@ void SetupRenderBuffer(GLuint buffer, RenderTarget& target) {
     glBindRenderbuffer(GL_RENDERBUFFER, buffer);
 
     if (target.getHasDepthBuffer() && ! target.getHasStencilBuffer()) {
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT,
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16,
                               target.getTexture()->getWidth(),
                               target.getTexture()->getHeight());
 
@@ -128,9 +128,9 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     auto texture = std::make_shared<Texture>(target.getSize().width, target.getSize().height, 0);
     target.setTexture(texture);
     // TODO: param base on POT
-    texture->setPixelFormat(Texture::PixelFormat::RGBA);
-    texture->setInternalFormat(Texture::InternalFormat::RGBA);
-    texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+    texture->setPixelFormat(Texture::PixelFormat::RGB);
+    texture->setInternalFormat(Texture::InternalFormat::RGB);
+    texture->setDataType(Texture::DataType::UNSIGNED_SHORT);
 
     bool isTargetPowerOfTwo = IsPowerOfTwo(texture->getWidth()) && IsPowerOfTwo(texture->getHeight());
 
@@ -149,7 +149,7 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
             SetupRenderBuffer(cubeTarget.renderbuffers[i], target);
         }
 
-        if ( isTargetPowerOfTwo )
+        if ( isTargetPowerOfTwo && target.getGenerateMipmaps() )
             glGenerateMipmap( GL_TEXTURE_2D );
     } else {
         target.framebuffer = CreateFrameBuffer();
@@ -177,7 +177,7 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
             }
         }
 
-        if ( isTargetPowerOfTwo )
+        if ( isTargetPowerOfTwo && target.getGenerateMipmaps() )
             glGenerateMipmap( GL_TEXTURE_2D );
     }
 
