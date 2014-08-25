@@ -15,6 +15,10 @@
 #elif defined(RE_PLATFORM_LINUX)
     #include <GL/glew.h>
     #include <GL/gl.h>
+    #include <GL/glext.h>
+
+    #define GL_HALF_FLOAT_OES GL_FLOAT
+    #define GL_ETC1_RGB8_OES 0
 #elif defined (RE_PLATFORM_ANDROID)
     #include <GLES2/gl2.h>
     #include <GLES2/gl2ext.h>
