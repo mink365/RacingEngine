@@ -7,6 +7,7 @@
 #include "Scene/SceneNode.h"
 #include "Camera/Camera.h"
 #include "UI/Scene.h"
+#include "UI/Layout/LayoutUtil.h"
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
 #include "Texture/TextureParser.h"

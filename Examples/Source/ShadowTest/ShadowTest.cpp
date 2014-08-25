@@ -102,6 +102,8 @@ void ShadowTest::Init()
     auto window = scene->pushWindow("HelloWindow");
     window->addChild(sprite);
 
+    LayoutUtil::layoutParent(sprite, AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
+
     SetupShadowMapShader();
 
     // what the fuck ?????? can't create renderbuffer here ? and will break the env?
@@ -153,7 +155,7 @@ void SetupShadowMapShader() {
     Shader::ptr shader = ShaderManager::getInstance().getShader("shadow_map");
 
     shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
-    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
+//    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
     shader->getUniform("shadowDarkness")->setData(shadowDarkness.data());
     shader->getUniform("shadowBias")->setData(shadowBias.data());
 

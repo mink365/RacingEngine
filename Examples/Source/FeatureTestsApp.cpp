@@ -68,7 +68,6 @@ void FeatureTestsApp::onExitForeground()
 
 void FeatureTestsApp::createTests()
 {
-    // TODO:
     std::shared_ptr<BaseTest> test;
     test = std::make_shared<FBXTest>();
     this->tests.push_back(test);
@@ -89,7 +88,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<RenderToTextureTest>();
     this->tests.push_back(test);
 
-    currIndex = 6;
+    currIndex = 0;
 
     this->onCurrentTestChanged();
 }
