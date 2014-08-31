@@ -54,11 +54,11 @@ void TextureAtlas::init(Int width, Int height, Int depth)
 
     if( this->depth == 4 )
     {
-        this->texture->setPixelFormat(Texture::PixelFormat::RGBA8);
+        this->texture->setPixelFormat(TextureFormat::RGBA8);
     } else if( this->depth == 3 ) {
-        this->texture->setPixelFormat(Texture::PixelFormat::RGB8);
+        this->texture->setPixelFormat(TextureFormat::RGB8);
     } else {
-        this->texture->setPixelFormat(Texture::PixelFormat::RED);
+        this->texture->setPixelFormat(TextureFormat::RED);
     }
     // TODO: add to textureManager
 

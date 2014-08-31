@@ -119,12 +119,12 @@ void Texture::setWrapV(const WrapValue &value)
     wrapV = value;
 }
 
-Texture::PixelFormat Texture::getPixelFormat() const
+TextureFormat Texture::getPixelFormat() const
 {
     return pixelFormat;
 }
 
-void Texture::setPixelFormat(const PixelFormat &value)
+void Texture::setPixelFormat(const TextureFormat &value)
 {
     pixelFormat = value;
 }

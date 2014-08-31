@@ -7,6 +7,54 @@
 
 namespace re {
 
+enum class TextureFormat {
+    NONE,
+    RED,
+    RG,
+
+    RGB565,
+    RGBA4444,
+    RGBA5551,
+
+    Alpha8,
+    Luminance8,
+    LuminanceAlpha8,
+    RGB8,
+    RGBA8,
+    BGRA8,
+
+    Alpha16,
+    Luminance16,
+    LuminanceAlpha16,
+    RGB16,
+    RGBA16,
+
+    Alpha32,
+    Luminance32,
+    LuminanceAlpha32,
+    RGB32,
+    RGBA32,
+
+    // Depth formats
+    D16,
+    D24,
+
+    // Compressed formats
+    PVRTC_RGB2,
+    PVRTC_RGBA2,
+    PVRTC_RGB4,
+    PVRTC_RGBA4,
+
+    PVRTC2_RGBA2,
+    PVRTC2_RGBA4,
+
+    ETC_RGB4,
+
+    S3TC_DXT1,
+    S3TC_DXT3,
+    S3TC_DXT5,
+};
+
 class Texture : public Shared<Texture>
 {
 public:
@@ -25,54 +73,6 @@ public:
         CLAMP_TO_EDGE,
         MIRRORED_REPEAT,
         REPEAT,
-    };
-
-    enum class PixelFormat {
-        NONE,
-        RED,
-        RG,
-
-        RGB565,
-        RGBA4444,
-        RGBA5551,
-
-        Alpha8,
-        Luminance8,
-        LuminanceAlpha8,
-        RGB8,
-        RGBA8,
-        BGRA8,
-
-        Alpha16,
-        Luminance16,
-        LuminanceAlpha16,
-        RGB16,
-        RGBA16,
-
-        Alpha32,
-        Luminance32,
-        LuminanceAlpha32,
-        RGB32,
-        RGBA32,
-
-        // Depth formats
-        D16,
-        D24,
-
-        // Compressed formats
-        PVRTC2,
-        PVRTC2A,
-        PVRTC4,
-        PVRTC4A,
-
-        PVRTCII2,
-        PVRTCII4,
-
-        ETC,
-
-        S3TC_DXT1,
-        S3TC_DXT3,
-        S3TC_DXT5,
     };
 
     enum class TargetType {
@@ -111,8 +111,8 @@ public:
     WrapValue getWrapV() const;
     void setWrapV(const WrapValue &value);
 
-    PixelFormat getPixelFormat() const;
-    void setPixelFormat(const PixelFormat &value);
+    TextureFormat getPixelFormat() const;
+    void setPixelFormat(const TextureFormat &value);
 
     TargetType getTarget() const;
     void setTarget(const TargetType &value);
@@ -132,7 +132,7 @@ private:
     WrapValue wrapU;
     WrapValue wrapV;
 
-    PixelFormat pixelFormat;
+    TextureFormat pixelFormat;
 };
 
 } // namespace re

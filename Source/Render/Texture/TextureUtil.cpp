@@ -33,50 +33,50 @@ static const GLenum TargetTypes[] {
     GL_TEXTURE_CUBE_MAP,
 };
 
-Texture::PixelFormat ImageFormatToPixelFormat(FORMAT format) {
+TextureFormat ImageFormatToPixelFormat(FORMAT format) {
     switch(format) {
     case FORMAT_R8:
-        return Texture::PixelFormat::RED;
+        return TextureFormat::RED;
     case FORMAT_RG8:
-        return Texture::PixelFormat::RG;
+        return TextureFormat::RG;
     case FORMAT_RGB8:
-        return Texture::PixelFormat::RGB8;
+        return TextureFormat::RGB8;
     case FORMAT_RGBA8:
-        return Texture::PixelFormat::RGBA8;
+        return TextureFormat::RGBA8;
     case FORMAT_RGB16:
-        return Texture::PixelFormat::RGB16;
+        return TextureFormat::RGB16;
     case FORMAT_RGBA16:
-        return Texture::PixelFormat::RGBA16;
+        return TextureFormat::RGBA16;
     case FORMAT_RGB32F:
-        return Texture::PixelFormat::RGB32;
+        return TextureFormat::RGB32;
     case FORMAT_RGBA32F:
-        return Texture::PixelFormat::RGBA32;
+        return TextureFormat::RGBA32;
     case FORMAT_RGB565:
-        return Texture::PixelFormat::RGB565;
+        return TextureFormat::RGB565;
     case FORMAT_RGBA4:
-        return Texture::PixelFormat::RGBA4444;
+        return TextureFormat::RGBA4444;
     case FORMAT_D16:
-        return Texture::PixelFormat::D16;
+        return TextureFormat::D16;
     case FORMAT_D24:
-        return Texture::PixelFormat::D24;
+        return TextureFormat::D24;
     case FORMAT_DXT1:
-        return Texture::PixelFormat::S3TC_DXT1;
+        return TextureFormat::S3TC_DXT1;
     case FORMAT_DXT3:
-        return Texture::PixelFormat::S3TC_DXT3;
+        return TextureFormat::S3TC_DXT3;
     case FORMAT_DXT5:
-        return Texture::PixelFormat::S3TC_DXT5;
+        return TextureFormat::S3TC_DXT5;
     default:
         assert(false);
     }
 }
 
-void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, GLenum& glformat, GLenum& gltype) {
+void TexturePixelFormatToGL(TextureFormat format, GLint& internalFormat, GLenum& glformat, GLenum& gltype) {
     switch(format) {
-    case Texture::PixelFormat::NONE:
+    case TextureFormat::NONE:
     {
         assert(false);
     }
-    case Texture::PixelFormat::RED:
+    case TextureFormat::RED:
     {
         internalFormat = GL_RED;
         glformat = GL_RED;
@@ -84,7 +84,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RG:
+    case TextureFormat::RG:
     {
         internalFormat = GL_RG;
         glformat = GL_RG;
@@ -92,7 +92,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGB565:
+    case TextureFormat::RGB565:
     {
         internalFormat = GL_RGB;
         glformat = GL_RGB;
@@ -100,7 +100,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGBA4444:
+    case TextureFormat::RGBA4444:
     {
         internalFormat = GL_RGBA;
         glformat = GL_RGBA;
@@ -108,7 +108,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGBA5551:
+    case TextureFormat::RGBA5551:
     {
         internalFormat = GL_RGBA;
         glformat = GL_RGBA;
@@ -116,7 +116,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Alpha8:
+    case TextureFormat::Alpha8:
     {
         internalFormat = GL_ALPHA;
         glformat = GL_ALPHA;
@@ -124,7 +124,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Luminance8:
+    case TextureFormat::Luminance8:
     {
         internalFormat = GL_LUMINANCE;
         glformat = GL_LUMINANCE;
@@ -132,7 +132,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::LuminanceAlpha8:
+    case TextureFormat::LuminanceAlpha8:
     {
         internalFormat = GL_LUMINANCE_ALPHA;
         glformat = GL_LUMINANCE_ALPHA;
@@ -140,7 +140,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGB8:
+    case TextureFormat::RGB8:
     {
         internalFormat = GL_RGB;
         glformat = GL_RGB;
@@ -148,7 +148,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGBA8:
+    case TextureFormat::RGBA8:
     {
         internalFormat = GL_RGBA;
         glformat = GL_RGBA;
@@ -156,7 +156,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::BGRA8:
+    case TextureFormat::BGRA8:
     {
         internalFormat = GL_BGRA;
         glformat = GL_BGRA;
@@ -164,7 +164,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Alpha16:
+    case TextureFormat::Alpha16:
     {
         internalFormat = GL_ALPHA;
         glformat = GL_ALPHA;
@@ -172,7 +172,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Luminance16:
+    case TextureFormat::Luminance16:
     {
         internalFormat = GL_LUMINANCE;
         glformat = GL_LUMINANCE;
@@ -180,7 +180,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::LuminanceAlpha16:
+    case TextureFormat::LuminanceAlpha16:
     {
         internalFormat = GL_LUMINANCE_ALPHA;
         glformat = GL_LUMINANCE_ALPHA;
@@ -188,7 +188,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGB16:
+    case TextureFormat::RGB16:
     {
         internalFormat = GL_RGB;
         glformat = GL_RGB;
@@ -196,7 +196,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGBA16:
+    case TextureFormat::RGBA16:
     {
         internalFormat = GL_RGBA;
         glformat = GL_RGBA;
@@ -204,7 +204,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Alpha32:
+    case TextureFormat::Alpha32:
     {
         internalFormat = GL_ALPHA;
         glformat = GL_ALPHA;
@@ -212,7 +212,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::Luminance32:
+    case TextureFormat::Luminance32:
     {
         internalFormat = GL_LUMINANCE;
         glformat = GL_LUMINANCE;
@@ -220,7 +220,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::LuminanceAlpha32:
+    case TextureFormat::LuminanceAlpha32:
     {
         internalFormat = GL_LUMINANCE_ALPHA;
         glformat = GL_LUMINANCE_ALPHA;
@@ -228,7 +228,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGB32:
+    case TextureFormat::RGB32:
     {
         internalFormat = GL_RGB;
         glformat = GL_RGB;
@@ -236,7 +236,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::RGBA32:
+    case TextureFormat::RGBA32:
     {
         internalFormat = GL_RGBA;
         glformat = GL_RGBA;
@@ -244,7 +244,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::D16:
+    case TextureFormat::D16:
     {
         internalFormat = GL_DEPTH_COMPONENT16;
         glformat = GL_LUMINANCE;
@@ -252,7 +252,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::D24:
+    case TextureFormat::D24:
     {
         internalFormat = GL_DEPTH_COMPONENT24;
         glformat = GL_LUMINANCE;
@@ -260,7 +260,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::PVRTC2:
+    case TextureFormat::PVRTC_RGB2:
     {
         internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
         glformat = 0;
@@ -268,7 +268,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::PVRTC2A:
+    case TextureFormat::PVRTC_RGBA2:
     {
         internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
         glformat = 0;
@@ -276,7 +276,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::PVRTC4:
+    case TextureFormat::PVRTC_RGB4:
     {
         internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
         glformat = 0;
@@ -284,7 +284,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::PVRTC4A:
+    case TextureFormat::PVRTC_RGBA4:
     {
         internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
         glformat = 0;
@@ -292,15 +292,15 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::PVRTCII2:
+    case TextureFormat::PVRTC2_RGBA2:
     {
-        internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+        internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG;
         glformat = 0;
         gltype = 0;
 
         break;
     }
-    case Texture::PixelFormat::PVRTCII4:
+    case TextureFormat::PVRTC2_RGBA4:
     {
         internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG;
         glformat = 0;
@@ -308,7 +308,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::ETC:
+    case TextureFormat::ETC_RGB4:
     {
         internalFormat = GL_ETC1_RGB8_OES;
         glformat = 0;
@@ -316,7 +316,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::S3TC_DXT1:
+    case TextureFormat::S3TC_DXT1:
     {
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
         glformat = 0;
@@ -324,7 +324,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::S3TC_DXT3:
+    case TextureFormat::S3TC_DXT3:
     {
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
         glformat = 0;
@@ -332,7 +332,7 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
-    case Texture::PixelFormat::S3TC_DXT5:
+    case TextureFormat::S3TC_DXT5:
     {
         internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
         glformat = 0;
@@ -359,7 +359,7 @@ TextureUtil::TextureUtil()
 
 void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture, int index)
 {
-    Texture::PixelFormat format = ImageFormatToPixelFormat(image.getFormat());
+    TextureFormat format = ImageFormatToPixelFormat(image.getFormat());
     texture.setPixelFormat(format);
 
     UploadTextureToHardware(image.getPixels(), texture, index);
