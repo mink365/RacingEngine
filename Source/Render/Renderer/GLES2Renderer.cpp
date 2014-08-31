@@ -128,9 +128,7 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     auto texture = std::make_shared<Texture>(target.getSize().width, target.getSize().height, 0);
     target.setTexture(texture);
     // TODO: param base on POT
-    texture->setPixelFormat(Texture::PixelFormat::RGBA);
-    texture->setInternalFormat(Texture::InternalFormat::RGBA);
-    texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+    texture->setPixelFormat(Texture::PixelFormat::RGBA8);
 
     bool isTargetPowerOfTwo = IsPowerOfTwo(texture->getWidth()) && IsPowerOfTwo(texture->getHeight());
 

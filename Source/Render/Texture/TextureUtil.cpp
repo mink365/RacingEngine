@@ -5,6 +5,7 @@
 #include "Texture/Texture.h"
 #include "GameHub.h"
 #include "Renderer/Renderer.h"
+#include "gl2extimg.h"
 
 namespace re {
 
@@ -185,52 +186,246 @@ static const GLint WrapValues[] {
     GL_REPEAT,
 };
 
-static const GLint InternalFormats[] {
-    0,
-    GL_RED,
-    GL_RG,
-    GL_RGB,
-    GL_RGBA,
-    GL_RGBA16,
-};
-
-static const GLenum PixelFormats[] {
-    0,
-    GL_RED,
-    GL_RG,
-    GL_ALPHA,
-    GL_LUMINANCE,
-    GL_LUMINANCE_ALPHA,
-    GL_RGB,
-    GL_RGBA,
-};
-
-static const GLenum DataTypes[] {
-    0,
-    GL_UNSIGNED_BYTE,
-    GL_BYTE,
-    GL_UNSIGNED_SHORT_5_6_5,
-    GL_SHORT,
-    GL_UNSIGNED_INT,
-    GL_INT,
-    GL_FLOAT,
-};
-
 static const GLenum TargetTypes[] {
+    GL_TEXTURE_1D,
     GL_TEXTURE_2D,
+    GL_TEXTURE_3D,
     GL_TEXTURE_CUBE_MAP,
 };
 
-const GLenum TextureInternalFormatToGL(Texture::InternalFormat format) {
-    return InternalFormats[(int)format];
-}
+void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, GLenum& glformat, GLenum& gltype) {
+    switch(format) {
+    case Texture::PixelFormat::NONE:
+    {
+        assert(false);
+    }
+    case Texture::PixelFormat::RED:
+    {
+        internalFormat = GL_RED;
+        glformat = GL_RED;
+        gltype = GL_UNSIGNED_BYTE;
 
-const GLenum TexturePixelFormatToGL(Texture::PixelFormat format) {
-    return PixelFormats[(int)format];
-}
+        break;
+    }
+    case Texture::PixelFormat::RG:
+    {
+        internalFormat = GL_RG;
+        glformat = GL_RG;
+        gltype = GL_UNSIGNED_BYTE;
 
-const GLenum TextureDataTypeToGL(Texture::DataType type) {
-    return DataTypes[(int)type];
+        break;
+    }
+    case Texture::PixelFormat::RGB565:
+    {
+        internalFormat = GL_RGB;
+        glformat = GL_RGB;
+        gltype = GL_UNSIGNED_SHORT_5_6_5;
+
+        break;
+    }
+    case Texture::PixelFormat::RGBA4444:
+    {
+        internalFormat = GL_RGBA;
+        glformat = GL_RGBA;
+        gltype = GL_UNSIGNED_SHORT_4_4_4_4;
+
+        break;
+    }
+    case Texture::PixelFormat::RGBA5551:
+    {
+        internalFormat = GL_RGBA;
+        glformat = GL_RGBA;
+        gltype = GL_UNSIGNED_SHORT_5_5_5_1;
+
+        break;
+    }
+    case Texture::PixelFormat::Alpha8:
+    {
+        internalFormat = GL_ALPHA;
+        glformat = GL_ALPHA;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::Luminance8:
+    {
+        internalFormat = GL_LUMINANCE;
+        glformat = GL_LUMINANCE;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::LuminanceAlpha8:
+    {
+        internalFormat = GL_LUMINANCE_ALPHA;
+        glformat = GL_LUMINANCE_ALPHA;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::RGB8:
+    {
+        internalFormat = GL_RGB;
+        glformat = GL_RGB;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::RGBA8:
+    {
+        internalFormat = GL_RGBA;
+        glformat = GL_RGBA;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::BGRA8:
+    {
+        internalFormat = GL_BGRA;
+        glformat = GL_BGRA;
+        gltype = GL_UNSIGNED_BYTE;
+
+        break;
+    }
+    case Texture::PixelFormat::Alpha16:
+    {
+        internalFormat = GL_ALPHA;
+        glformat = GL_ALPHA;
+        gltype = GL_HALF_FLOAT_OES;
+
+        break;
+    }
+    case Texture::PixelFormat::Luminance16:
+    {
+        internalFormat = GL_LUMINANCE;
+        glformat = GL_LUMINANCE;
+        gltype = GL_HALF_FLOAT_OES;
+
+        break;
+    }
+    case Texture::PixelFormat::LuminanceAlpha16:
+    {
+        internalFormat = GL_LUMINANCE_ALPHA;
+        glformat = GL_LUMINANCE_ALPHA;
+        gltype = GL_HALF_FLOAT_OES;
+
+        break;
+    }
+    case Texture::PixelFormat::RGB16:
+    {
+        internalFormat = GL_RGB;
+        glformat = GL_RGB;
+        gltype = GL_HALF_FLOAT_OES;
+
+        break;
+    }
+    case Texture::PixelFormat::RGBA16:
+    {
+        internalFormat = GL_RGBA;
+        glformat = GL_RGBA;
+        gltype = GL_HALF_FLOAT_OES;
+
+        break;
+    }
+    case Texture::PixelFormat::Alpha32:
+    {
+        internalFormat = GL_ALPHA;
+        glformat = GL_ALPHA;
+        gltype = GL_FLOAT;
+
+        break;
+    }
+    case Texture::PixelFormat::Luminance32:
+    {
+        internalFormat = GL_LUMINANCE;
+        glformat = GL_LUMINANCE;
+        gltype = GL_FLOAT;
+
+        break;
+    }
+    case Texture::PixelFormat::LuminanceAlpha32:
+    {
+        internalFormat = GL_LUMINANCE_ALPHA;
+        glformat = GL_LUMINANCE_ALPHA;
+        gltype = GL_FLOAT;
+
+        break;
+    }
+    case Texture::PixelFormat::RGB32:
+    {
+        internalFormat = GL_RGB;
+        glformat = GL_RGB;
+        gltype = GL_FLOAT;
+
+        break;
+    }
+    case Texture::PixelFormat::RGBA32:
+    {
+        internalFormat = GL_RGBA;
+        glformat = GL_RGBA;
+        gltype = GL_FLOAT;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTC2:
+    {
+        internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTC2A:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTC4:
+    {
+        internalFormat = GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTC4A:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTCII2:
+    {
+        internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::PVRTCII4:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::ETC:
+    {
+        internalFormat = GL_ETC1_RGB8_OES;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    default:
+        assert(false);
+    }
 }
 
 const GLenum TextureTargetTypeToGL(Texture::TargetType type) {
@@ -308,9 +503,10 @@ void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture,
     glTexParameteri( target, GL_TEXTURE_MIN_FILTER, minFilter );
     glTexParameteri( target, GL_TEXTURE_MAG_FILTER, magFilter );
 
-    GLenum srcFormat = PixelFormats[(int)texture.getPixelFormat()];
-    GLenum srcType = DataTypes[(int)texture.getDataType()];
-    GLint internalFormat = InternalFormats[(int)texture.getInternalFormat()];
+    GLenum srcFormat;
+    GLenum srcType;
+    GLint internalFormat;
+    TexturePixelFormatToGL(texture.getPixelFormat(), internalFormat, srcFormat, srcType);
 
     if (target == GL_TEXTURE_CUBE_MAP) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+index, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);

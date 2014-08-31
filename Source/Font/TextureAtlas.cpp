@@ -54,17 +54,11 @@ void TextureAtlas::init(Int width, Int height, Int depth)
 
     if( this->depth == 4 )
     {
-        this->texture->setPixelFormat(Texture::PixelFormat::RGBA);
-        this->texture->setInternalFormat(Texture::InternalFormat::RGBA);
-        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+        this->texture->setPixelFormat(Texture::PixelFormat::RGBA8);
     } else if( this->depth == 3 ) {
-        this->texture->setPixelFormat(Texture::PixelFormat::RGB);
-        this->texture->setInternalFormat(Texture::InternalFormat::RGB);
-        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
+        this->texture->setPixelFormat(Texture::PixelFormat::RGB8);
     } else {
         this->texture->setPixelFormat(Texture::PixelFormat::RED);
-        this->texture->setInternalFormat(Texture::InternalFormat::RED);
-        this->texture->setDataType(Texture::DataType::UNSIGNED_BYTE);
     }
     // TODO: add to textureManager
 

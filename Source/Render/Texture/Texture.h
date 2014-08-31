@@ -1,4 +1,4 @@
-﻿#ifndef TEXTURE_H
+#ifndef TEXTURE_H
 #define TEXTURE_H
 
 #include "platform.h"
@@ -27,39 +27,49 @@ public:
         REPEAT,
     };
 
-    enum class InternalFormat {
-        NONE,
-        RED,
-        RG,
-        RGB,
-        RGBA,
-        RGBA16,
-    };
-
     enum class PixelFormat {
         NONE,
         RED,
         RG,
-        Alpha,
-        Luminance,
-        LuminanceAlpha,
-        RGB,
-        RGBA,
-    };
 
-    enum class DataType {
-        NONE,
-        UNSIGNED_BYTE,
-        BYTE,
-        UNSIGNED_SHORT,
-        SHORT,
-        UNSIGNED_INT,
-        INT,
-        FLOAT,
+        RGB565,
+        RGBA4444,
+        RGBA5551,
+
+        Alpha8,
+        Luminance8,
+        LuminanceAlpha8,
+        RGB8,
+        RGBA8,
+        BGRA8,
+
+        Alpha16,
+        Luminance16,
+        LuminanceAlpha16,
+        RGB16,
+        RGBA16,
+
+        Alpha32,
+        Luminance32,
+        LuminanceAlpha32,
+        RGB32,
+        RGBA32,
+
+        PVRTC2,
+        PVRTC2A,
+        PVRTC4,
+        PVRTC4A,
+
+        PVRTCII2,
+        PVRTCII4,
+
+        ETC,
     };
 
     enum class TargetType {
+        TEXTURE_1D,
         TEXTURE_2D,
+        TEXTURE_3D,
         TEXTURE_CUBE_MAP,
     };
 
@@ -92,14 +102,8 @@ public:
     WrapValue getWrapV() const;
     void setWrapV(const WrapValue &value);
 
-    InternalFormat getInternalFormat() const;
-    void setInternalFormat(const InternalFormat &value);
-
     PixelFormat getPixelFormat() const;
     void setPixelFormat(const PixelFormat &value);
-
-    DataType getDataType() const;
-    void setDataType(const DataType &value);
 
     TargetType getTarget() const;
     void setTarget(const TargetType &value);
@@ -119,9 +123,7 @@ private:
     WrapValue wrapU;
     WrapValue wrapV;
 
-    InternalFormat internalFormat;
     PixelFormat pixelFormat;
-    DataType dataType;
 };
 
 } // namespace re

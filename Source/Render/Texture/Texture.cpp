@@ -119,15 +119,6 @@ void Texture::setWrapV(const WrapValue &value)
     wrapV = value;
 }
 
-Texture::InternalFormat Texture::getInternalFormat() const
-{
-    return internalFormat;
-}
-
-void Texture::setInternalFormat(const InternalFormat &value)
-{
-    internalFormat = value;
-}
 Texture::PixelFormat Texture::getPixelFormat() const
 {
     return pixelFormat;
@@ -138,15 +129,6 @@ void Texture::setPixelFormat(const PixelFormat &value)
     pixelFormat = value;
 }
 
-Texture::DataType Texture::getDataType() const
-{
-    return dataType;
-}
-
-void Texture::setDataType(const DataType &value)
-{
-    dataType = value;
-}
 Texture::TargetType Texture::getTarget() const
 {
     return target;
