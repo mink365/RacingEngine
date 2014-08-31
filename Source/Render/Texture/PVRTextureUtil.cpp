@@ -8,8 +8,6 @@
 
 #include "PVRTTexture.h"
 #include "PVRTDecompress.h"
-#include <map>
-#define CPVRTMap std::map
 
 //#include "GLES2/gl2ext.h"
 #include "gl2extimg.h"
