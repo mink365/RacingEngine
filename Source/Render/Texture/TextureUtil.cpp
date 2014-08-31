@@ -9,166 +9,6 @@
 
 namespace re {
 
-static const GLint internalFormats[] = {
-    0,
-    // Unsigned formats
-    0, // GL_INTENSITY8,
-    0, // GL_LUMINANCE8_ALPHA8,
-    GL_RGB, // GL_RGB8,
-    GL_RGBA, // GL_RGBA8,
-
-    0, // GL_INTENSITY16,
-    0, // GL_LUMINANCE16_ALPHA16,
-    0, // GL_RGB16,
-    GL_RGBA16, // GL_RGBA16,
-
-    // Signed formats
-    0,
-    0,
-    0,
-    0,
-
-    0,
-    0,
-    0,
-    0,
-
-    // Float formats
-    0, // GL_INTENSITY_FLOAT16_ATI,
-    0, // GL_LUMINANCE_ALPHA_FLOAT16_ATI,
-    0, // GL_RGB_FLOAT16_ATI,
-    0, // GL_RGBA_FLOAT16_ATI,
-
-    0, // GL_INTENSITY_FLOAT32_ATI,
-    0, // GL_LUMINANCE_ALPHA_FLOAT32_ATI,
-    0, // GL_RGB_FLOAT32_ATI,
-    0, // GL_RGBA_FLOAT32_ATI,
-
-    // Signed integer formats
-    0, // GL_INTENSITY16I_EXT,
-    0, // GL_LUMINANCE_ALPHA16I_EXT,
-    0, // GL_RGB16I_EXT,
-    0, // GL_RGBA16I_EXT,
-
-    0, // GL_INTENSITY32I_EXT,
-    0, // GL_LUMINANCE_ALPHA32I_EXT,
-    0, // GL_RGB32I_EXT,
-    0, // GL_RGBA32I_EXT,
-
-    // Unsigned integer formats
-    0, // GL_INTENSITY16UI_EXT,
-    0, // GL_LUMINANCE_ALPHA16UI_EXT,
-    0, // GL_RGB16UI_EXT,
-    0, // GL_RGBA16UI_EXT,
-
-    0, // GL_INTENSITY32UI_EXT,
-    0, // GL_LUMINANCE_ALPHA32UI_EXT,
-    0, // GL_RGB32UI_EXT,
-    0, // GL_RGBA32UI_EXT,
-
-    // Packed formats
-    0, // RGBE8 not directly supported
-    0, // GL_RGB9_E5,
-    0, // GL_R11F_G11F_B10F,
-    GL_RGB, // GL_RGB5,
-    GL_RGBA, // GL_RGBA4,
-    0, // GL_RGB10_A2,
-
-    // Depth formats
-    GL_DEPTH_COMPONENT16,
-    0, // GL_DEPTH_COMPONENT24,
-    0, // GL_DEPTH24_STENCIL8_EXT,
-    0, // GL_DEPTH_COMPONENT32F,
-
-    // Compressed formats
-    GL_COMPRESSED_RGB_S3TC_DXT1_EXT,
-    0, // GL_COMPRESSED_RGBA_S3TC_DXT3_EXT,
-    0, // GL_COMPRESSED_RGBA_S3TC_DXT5_EXT,
-    0, // ATI1N not yet supported
-    0, // GL_COMPRESSED_LUMINANCE_ALPHA_3DC_ATI,
-};
-
-static const GLenum srcFormats[] = { 0, GL_LUMINANCE, GL_LUMINANCE_ALPHA, GL_RGB, GL_RGBA };
-
-static const GLenum srcTypes[] = {
-    0,
-    // Unsigned formats
-    GL_UNSIGNED_BYTE,
-    GL_UNSIGNED_BYTE,
-    GL_UNSIGNED_BYTE,
-    GL_UNSIGNED_BYTE,
-
-    GL_UNSIGNED_SHORT,
-    GL_UNSIGNED_SHORT,
-    GL_UNSIGNED_SHORT,
-    GL_UNSIGNED_SHORT,
-
-    // Signed formats
-    0,
-    0,
-    0,
-    0,
-
-    0,
-    0,
-    0,
-    0,
-
-    // Float formats
-    0,//GL_HALF_FLOAT_ARB,
-    0,//GL_HALF_FLOAT_ARB,
-    0,//GL_HALF_FLOAT_ARB,
-    0,//GL_HALF_FLOAT_ARB,
-
-    GL_FLOAT,
-    GL_FLOAT,
-    GL_FLOAT,
-    GL_FLOAT,
-
-    // Signed integer formats
-    0,
-    0,
-    0,
-    0,
-
-    0,
-    0,
-    0,
-    0,
-
-    // Unsigned integer formats
-    0,
-    0,
-    0,
-    0,
-
-    0,
-    0,
-    0,
-    0,
-
-    // Packed formats
-    0, // RGBE8 not directly supported
-    0, // RGBE9E5 not supported
-    0, // RG11B10F not supported
-    GL_UNSIGNED_SHORT_5_6_5,
-    GL_UNSIGNED_SHORT_4_4_4_4, // GL_UNSIGNED_SHORT_4_4_4_4_REV,
-    0, // GL_UNSIGNED_INT_2_10_10_10_REV,
-
-    // Depth formats
-    GL_UNSIGNED_SHORT,
-    GL_UNSIGNED_INT,
-    0, // GL_UNSIGNED_INT_24_8_EXT,
-    0, // D32F not supported
-
-    // Compressed formats
-    0,
-    0,
-    0,
-    0,
-    0,
-};
-
 static const GLint FilterValues[] {
     0,
     GL_NEAREST,
@@ -192,6 +32,43 @@ static const GLenum TargetTypes[] {
     GL_TEXTURE_3D,
     GL_TEXTURE_CUBE_MAP,
 };
+
+Texture::PixelFormat ImageFormatToPixelFormat(FORMAT format) {
+    switch(format) {
+    case FORMAT_R8:
+        return Texture::PixelFormat::RED;
+    case FORMAT_RG8:
+        return Texture::PixelFormat::RG;
+    case FORMAT_RGB8:
+        return Texture::PixelFormat::RGB8;
+    case FORMAT_RGBA8:
+        return Texture::PixelFormat::RGBA8;
+    case FORMAT_RGB16:
+        return Texture::PixelFormat::RGB16;
+    case FORMAT_RGBA16:
+        return Texture::PixelFormat::RGBA16;
+    case FORMAT_RGB32F:
+        return Texture::PixelFormat::RGB32;
+    case FORMAT_RGBA32F:
+        return Texture::PixelFormat::RGBA32;
+    case FORMAT_RGB565:
+        return Texture::PixelFormat::RGB565;
+    case FORMAT_RGBA4:
+        return Texture::PixelFormat::RGBA4444;
+    case FORMAT_D16:
+        return Texture::PixelFormat::D16;
+    case FORMAT_D24:
+        return Texture::PixelFormat::D24;
+    case FORMAT_DXT1:
+        return Texture::PixelFormat::S3TC_DXT1;
+    case FORMAT_DXT3:
+        return Texture::PixelFormat::S3TC_DXT3;
+    case FORMAT_DXT5:
+        return Texture::PixelFormat::S3TC_DXT5;
+    default:
+        assert(false);
+    }
+}
 
 void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, GLenum& glformat, GLenum& gltype) {
     switch(format) {
@@ -367,6 +244,22 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
+    case Texture::PixelFormat::D16:
+    {
+        internalFormat = GL_DEPTH_COMPONENT16;
+        glformat = GL_LUMINANCE;
+        gltype = GL_UNSIGNED_SHORT;
+
+        break;
+    }
+    case Texture::PixelFormat::D24:
+    {
+        internalFormat = GL_DEPTH_COMPONENT24;
+        glformat = GL_LUMINANCE;
+        gltype = GL_UNSIGNED_INT;
+
+        break;
+    }
     case Texture::PixelFormat::PVRTC2:
     {
         internalFormat = GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
@@ -423,12 +316,36 @@ void TexturePixelFormatToGL(Texture::PixelFormat format, GLint& internalFormat, 
 
         break;
     }
+    case Texture::PixelFormat::S3TC_DXT1:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::S3TC_DXT3:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
+    case Texture::PixelFormat::S3TC_DXT5:
+    {
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        glformat = 0;
+        gltype = 0;
+
+        break;
+    }
     default:
         assert(false);
     }
 }
 
-const GLenum TextureTargetTypeToGL(Texture::TargetType type) {
+GLenum TextureTargetTypeToGL(Texture::TargetType type) {
     return TargetTypes[(int)type];
 }
 
@@ -442,41 +359,10 @@ TextureUtil::TextureUtil()
 
 void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture, int index)
 {
-    if( !texture.getGlID() )
-    {
-        GLuint id = 0;
+    Texture::PixelFormat format = ImageFormatToPixelFormat(image.getFormat());
+    texture.setPixelFormat(format);
 
-        glGenTextures( 1, &id );
-
-        texture.setGlID(id);
-    }
-
-    GLenum target = TextureTargetTypeToGL(texture.getTarget());
-
-    GetRenderer().bindTexture(0, true, texture);
-
-    GLint wrapS = WrapValues[(int)texture.getWrapU()];
-    GLint wrapT = WrapValues[(int)texture.getWrapV()];
-    GLint minFilter = FilterValues[(int)texture.getMinFilter()];
-    GLint magFilter = FilterValues[(int)texture.getMagFilter()];
-
-    glTexParameteri( target, GL_TEXTURE_WRAP_S, wrapS );
-    glTexParameteri( target, GL_TEXTURE_WRAP_T, wrapT );
-    glTexParameteri( target, GL_TEXTURE_MIN_FILTER, minFilter );
-    glTexParameteri( target, GL_TEXTURE_MAG_FILTER, magFilter );
-
-    FORMAT format = image.getFormat();
-    GLenum srcFormat = srcFormats[getChannelCount(format)];
-    GLenum srcType = srcTypes[format];
-    GLint internalFormat = internalFormats[format];
-
-    unsigned char* data = image.getPixels();
-
-    if (target == GL_TEXTURE_CUBE_MAP) {
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+index, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, data);
-    } else {
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image.getWidth(), image.getHeight(), 0, srcFormat, srcType, data);
-    }
+    UploadTextureToHardware(image.getPixels(), texture, index);
 }
 
 void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture, int index)
@@ -503,8 +389,7 @@ void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture,
     glTexParameteri( target, GL_TEXTURE_MIN_FILTER, minFilter );
     glTexParameteri( target, GL_TEXTURE_MAG_FILTER, magFilter );
 
-    GLenum srcFormat;
-    GLenum srcType;
+    GLenum srcFormat, srcType;
     GLint internalFormat;
     TexturePixelFormatToGL(texture.getPixelFormat(), internalFormat, srcFormat, srcType);
 

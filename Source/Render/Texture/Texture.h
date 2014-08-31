@@ -55,6 +55,11 @@ public:
         RGB32,
         RGBA32,
 
+        // Depth formats
+        D16,
+        D24,
+
+        // Compressed formats
         PVRTC2,
         PVRTC2A,
         PVRTC4,
@@ -64,6 +69,10 @@ public:
         PVRTCII4,
 
         ETC,
+
+        S3TC_DXT1,
+        S3TC_DXT3,
+        S3TC_DXT5,
     };
 
     enum class TargetType {
