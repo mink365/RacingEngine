@@ -3,14 +3,18 @@
 #include "FileSystem/FileSystem.h"
 #include "Util/LogUtil.h"
 
+#include "GameHub.h"
+#include "Renderer/Renderer.h"
+
 #include "opengl.h"
 #include <cstring>
 
 #include "PVRTTexture.h"
-#include "PVRTDecompress.h"
 
 //#include "GLES2/gl2ext.h"
 #include "gl2extimg.h"
+
+#include "Texture.h"
 
 #define CPVRTgles2Ext::IsGLExtensionSupported(X) true
 #define PVRTErrorOutputDebug LOG_E
@@ -21,31 +25,17 @@
 
 namespace re {
 
-PVRTextureUtil::PVRTextureUtil()
-{
-}
+extern Renderer& GetRenderer();
+extern void TexturePixelFormatToGL(TextureFormat format, GLint& internalFormat, GLenum& glformat, GLenum& gltype);
 
-/*!***********************************************************************
-    @Function:		PVRTGetOGLESTextureFormat
-    @Input:			sTextureHeader
-    @Modified:		internalformat
-    @Modified:		format
-    @Modified:		type
-    @Description:	Gets the OpenGLES equivalent values of internal format,
-                    format and type for this texture header. This will return
-                    any supported OpenGLES texture values, it is up to the user
-                    to decide if these are valid for their current platform.
-*************************************************************************/
-static const void PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureHeader, PVRTuint32& internalformat, PVRTuint32& format, PVRTuint32& type)
+static TextureFormat PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureHeader)
 {
     PVRTuint64 PixelFormat = sTextureHeader.u64PixelFormat;
     EPVRTVariableType ChannelType = (EPVRTVariableType)sTextureHeader.u32ChannelType;
     EPVRTColourSpace ColourSpace = (EPVRTColourSpace)sTextureHeader.u32ColourSpace;
 
-    //Initialisation. Any invalid formats will return 0 always.
-    format = 0;
-    type = 0;
-    internalformat=0;
+    // no support non-linear texture
+    assert(ColourSpace != ePVRTCSpacesRGB);
 
     //Get the last 32 bits of the pixel format.
     PVRTuint64 PixelFormatPartHigh = PixelFormat&PVRTEX_PFHIGHMASK;
@@ -57,86 +47,23 @@ static const void PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureH
         switch (PixelFormat)
         {
         case ePVRTPF_PVRTCI_2bpp_RGB:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_PVRTC_2BPPV1_EXT;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC_RGB2;
         case ePVRTPF_PVRTCI_2bpp_RGBA:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_ALPHA_PVRTC_2BPPV1_EXT;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC_RGBA2;
         case ePVRTPF_PVRTCI_4bpp_RGB:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_PVRTC_4BPPV1_EXT;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC_RGB4;
         case ePVRTPF_PVRTCI_4bpp_RGBA:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_ALPHA_PVRTC_4BPPV1_EXT;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC_RGBA4;
 #ifndef RE_PLATFORM_IOS
         case ePVRTPF_PVRTCII_2bpp:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_ALPHA_PVRTC_2BPPV2_IMG;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC2_RGBA2;
         case ePVRTPF_PVRTCII_4bpp:
-            {
-                if (ColourSpace == ePVRTCSpacesRGB)
-                {
-                    internalformat=GL_COMPRESSED_SRGB_ALPHA_PVRTC_4BPPV2_IMG;
-                }
-                else
-                {
-                    internalformat=GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG;
-                }
-                return;
-            }
+            return TextureFormat::PVRTC2_RGBA4;
         case ePVRTPF_ETC1:
-            {
-                internalformat=GL_ETC1_RGB8_OES;
-                return;
-            }
+            return TextureFormat::ETC_RGB4;
 #endif
         default:
-            return;
+            return TextureFormat::NONE;
         }
     }
     else
@@ -149,114 +76,45 @@ static const void PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureH
                 {
                     //HALF_FLOAT_OES
                 case PVRTGENPIXELID4('r','g','b','a',16,16,16,16):
-                    {
-                        type=GL_HALF_FLOAT_OES;
-                        format = GL_RGBA;
-                        internalformat=GL_RGBA;
-                        return;
-                    }
+                    return TextureFormat::RGBA16;
                 case PVRTGENPIXELID3('r','g','b',16,16,16):
-                    {
-                        type=GL_HALF_FLOAT_OES;
-                        format = GL_RGB;
-                        internalformat=GL_RGB;
-                        return;
-                    }
+                    return TextureFormat::RGB16;
                 case PVRTGENPIXELID2('l','a',16,16):
-                    {
-                        type=GL_HALF_FLOAT_OES;
-                        format = GL_LUMINANCE_ALPHA;
-                        internalformat=GL_LUMINANCE_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::LuminanceAlpha16;
                 case PVRTGENPIXELID1('l',16):
-                    {
-                        type=GL_HALF_FLOAT_OES;
-                        format = GL_LUMINANCE;
-                        internalformat=GL_LUMINANCE;
-                        return;
-                    }
+                    return TextureFormat::Luminance16;
                 case PVRTGENPIXELID1('a',16):
-                    {
-                        type=GL_HALF_FLOAT_OES;
-                        format = GL_ALPHA;
-                        internalformat=GL_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::Alpha16;
                     //FLOAT (OES)
                 case PVRTGENPIXELID4('r','g','b','a',32,32,32,32):
-                    {
-                        type=GL_FLOAT;
-                        format = GL_RGBA;
-                        internalformat=GL_RGBA;
-                        return;
-                    }
+                    return TextureFormat::RGBA32;
                 case PVRTGENPIXELID3('r','g','b',32,32,32):
-                    {
-                        type=GL_FLOAT;
-                        format = GL_RGB;
-                        internalformat=GL_RGB;
-                        return;
-                    }
+                    return TextureFormat::RGB32;
                 case PVRTGENPIXELID2('l','a',32,32):
-                    {
-                        type=GL_FLOAT;
-                        format = GL_LUMINANCE_ALPHA;
-                        internalformat=GL_LUMINANCE_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::LuminanceAlpha32;
                 case PVRTGENPIXELID1('l',32):
-                    {
-                        type=GL_FLOAT;
-                        format = GL_LUMINANCE;
-                        internalformat=GL_LUMINANCE;
-                        return;
-                    }
+                    return TextureFormat::Luminance32;
                 case PVRTGENPIXELID1('a',32):
-                    {
-                        type=GL_FLOAT;
-                        format = GL_ALPHA;
-                        internalformat=GL_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::Alpha32;
                 }
                 break;
             }
         case ePVRTVarTypeUnsignedByteNorm:
             {
-                type = GL_UNSIGNED_BYTE;
                 switch (PixelFormat)
                 {
                 case PVRTGENPIXELID4('r','g','b','a',8,8,8,8):
-                    {
-                        format = internalformat = GL_RGBA;
-                        return;
-                    }
+                    return TextureFormat::RGBA8;
                 case PVRTGENPIXELID3('r','g','b',8,8,8):
-                    {
-                        format = internalformat = GL_RGB;
-                        return;
-                    }
+                    return TextureFormat::RGB8;
                 case PVRTGENPIXELID2('l','a',8,8):
-                    {
-                        format = internalformat = GL_LUMINANCE_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::LuminanceAlpha8;
                 case PVRTGENPIXELID1('l',8):
-                    {
-                        format = internalformat = GL_LUMINANCE;
-                        return;
-                    }
+                    return TextureFormat::Luminance8;
                 case PVRTGENPIXELID1('a',8):
-                    {
-                        format = internalformat = GL_ALPHA;
-                        return;
-                    }
+                    return TextureFormat::Alpha8;
                 case PVRTGENPIXELID4('b','g','r','a',8,8,8,8):
-                    {
-                        format = internalformat = GL_BGRA;
-                        return;
-                    }
+                    return TextureFormat::BGRA8;
                 }
                 break;
             }
@@ -265,51 +123,30 @@ static const void PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureH
                 switch (PixelFormat)
                 {
                 case PVRTGENPIXELID4('r','g','b','a',4,4,4,4):
-                    {
-                        type = GL_UNSIGNED_SHORT_4_4_4_4;
-                        format = internalformat = GL_RGBA;
-                        return;
-                    }
+                    return TextureFormat::RGBA4444;
                 case PVRTGENPIXELID4('r','g','b','a',5,5,5,1):
-                    {
-                        type = GL_UNSIGNED_SHORT_5_5_5_1;
-                        format = internalformat = GL_RGBA;
-                        return;
-                    }
+                    return TextureFormat::RGBA5551;
                 case PVRTGENPIXELID3('r','g','b',5,6,5):
-                    {
-                        type = GL_UNSIGNED_SHORT_5_6_5;
-                        format = internalformat = GL_RGB;
-                        return;
-                    }
+                    return TextureFormat::RGB565;
                 }
                 break;
             }
         default:
-            return;
+            return TextureFormat::NONE;
         }
     }
 }
 
-bool PVRTTextureLoadFromPointer(	const void* pointer,
-                                        GLuint *const texName,
+bool PVRTTextureLoadFromPointer( const void* pointer,
+                                        Texture &texture,
                                         const void *psTextureHeader,
-                                        bool bAllowDecompress,
                                         const unsigned int nLoadFromLevel,
                                         const void * const texPtr,
                                         CPVRTMap<unsigned int, CPVRTMap<unsigned int, MetaDataBlock> > *pMetaData)
 {
-    //Compression bools
-    bool bIsCompressedFormatSupported=false;
-    bool bIsCompressedFormat=false;
-
     //Texture setup
     PVRTextureHeaderV3 sTextureHeader;
     PVRTuint8* pTextureData=NULL;
-
-    //Just in case header and pointer for decompression.
-    PVRTextureHeaderV3 sTextureHeaderDecomp;
-    void* pDecompressedData=NULL;
 
     //Check if it's an old header format
     _ASSERT((*(PVRTuint32*)pointer)==PVRTEX3_IDENT);
@@ -371,11 +208,12 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
 
     //Setup GL Texture format values.
     GLenum eTextureFormat = 0;
-    GLenum eTextureInternalFormat = 0;	// often this is the same as textureFormat, but not for BGRA8888 on iOS, for instance
+    GLint eTextureInternalFormat = 0;	// often this is the same as textureFormat, but not for BGRA8888 on iOS, for instance
     GLenum eTextureType = 0;
 
-    //Get the OGLES format values.
-    PVRTGetOGLES2TextureFormat(sTextureHeader,eTextureInternalFormat,eTextureFormat,eTextureType);
+    TextureFormat format = PVRTGetOGLES2TextureFormat(sTextureHeader);
+    texture.setFormat(format);
+    TexturePixelFormatToGL(texture.getFormat(), eTextureInternalFormat, eTextureFormat, eTextureType);
 
 //    //Check supported texture formats.
 //    bool bIsPVRTCSupported = CPVRTgles2Ext::IsGLExtensionSupported("GL_IMG_texture_compression_pvrtc");
@@ -392,10 +230,10 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
 //#endif
     bool bIsPVRTCSupported = true;
     bool bIsPVRTC2Supported = true;
-    bool bIsFloat16Supported = true;
-    bool bIsFloat32Supported = true;
-    bool bIsBGRA8888Supported = true;
     bool bIsETCSupported = true;
+
+    bool bIsCompressedFormatSupported = false;
+    bool bIsCompressedFormat = false;
 
     //Check for compressed formats
     if (eTextureFormat==0 && eTextureType==0 && eTextureInternalFormat!=0)
@@ -409,79 +247,11 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
             }
             else
             {
-                //Try to decompress the texture.
-                if(bAllowDecompress)
-                {
-                    //Output a warning.
-                    PVRTErrorOutputDebug("PVRTTextureLoadFromPointer warning: PVRTC not supported. Converting to RGBA8888 instead.\n");
-
-                    //Modify boolean values.
-                    bIsCompressedFormatSupported = false;
-                    bIsCompressedFormat = true;
-
-                    //Check if it's 2bpp.
-                    bool bIs2bppPVRTC = (eTextureInternalFormat==GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG || eTextureInternalFormat==GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG);
-
-                    //Change texture format.
-                    eTextureFormat = eTextureInternalFormat = GL_RGBA;
-                    eTextureType = GL_UNSIGNED_BYTE;
-
-                    //Create a near-identical texture header for the decompressed header.
-                    sTextureHeaderDecomp = sTextureHeader;
-                    sTextureHeaderDecomp.u32ChannelType=ePVRTVarTypeUnsignedByteNorm;
-                    sTextureHeaderDecomp.u32ColourSpace=ePVRTCSpacelRGB;
-                    sTextureHeaderDecomp.u64PixelFormat=PVRTGENPIXELID4('r','g','b','a',8,8,8,8);
-
-                    //Allocate enough memory for the decompressed data. OGLES2, so only decompress one surface, but all faces.
-                    pDecompressedData = malloc(PVRTGetTextureDataSize(sTextureHeaderDecomp, PVRTEX_ALLMIPLEVELS, false, true) );
-
-                    //Check the malloc.
-                    if (!pDecompressedData)
-                    {
-                        PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: Unable to allocate memory to decompress texture.\n");
-                        return PVR_FAIL;
-                    }
-
-                    //Get the dimensions for the current MIP level.
-                    PVRTuint32 uiMIPWidth = sTextureHeaderDecomp.u32Width>>nLoadFromLevel;
-                    PVRTuint32 uiMIPHeight = sTextureHeaderDecomp.u32Height>>nLoadFromLevel;
-
-                    //Setup temporary variables.
-                    PVRTuint8* pTempDecompData = (PVRTuint8*)pDecompressedData;
-                    PVRTuint8* pTempCompData = (PVRTuint8*)pTextureData;
-
-                    {
-                        //Decompress all the MIP levels.
-                        for (PVRTuint32 uiMIPMap=nLoadFromLevel;uiMIPMap<sTextureHeader.u32MIPMapCount;++uiMIPMap)
-                        {
-                            //Get the face offset. Varies per MIP level.
-                            PVRTuint32 decompressedFaceOffset = PVRTGetTextureDataSize(sTextureHeaderDecomp, uiMIPMap, false, false);
-                            PVRTuint32 compressedFaceOffset = PVRTGetTextureDataSize(sTextureHeader, uiMIPMap, false, false);
-
-                            for (PVRTuint32 uiFace=0;uiFace<sTextureHeader.u32NumFaces;++uiFace)
-                            {
-                                //Decompress the texture data.
-                                PVRTDecompressPVRTC(pTempCompData,bIs2bppPVRTC?1:0,uiMIPWidth,uiMIPHeight,pTempDecompData);
-
-                                //Move forward through the pointers.
-                                pTempDecompData+=decompressedFaceOffset;
-                                pTempCompData+=compressedFaceOffset;
-                            }
-
-                            //Work out the current MIP dimensions.
-                            uiMIPWidth=PVRT_MAX(1,uiMIPWidth>>1);
-                            uiMIPHeight=PVRT_MAX(1,uiMIPHeight>>1);
-                        }
-                    }
-                }
-                else
-                {
-                    PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: PVRTC not supported.\n");
-                    return PVR_FAIL;
-                }
+                PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: PVRTC not supported.\n");
+                return PVR_FAIL;
             }
         }
-#ifndef RE_PLATFORM_IOS //TODO
+#ifndef TARGET_OS_IPHONE //TODO
         else if (eTextureInternalFormat==GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG || eTextureInternalFormat==GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG)
         {
             //Check for PVRTCI support.
@@ -503,108 +273,11 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
             }
             else
             {
-                if(bAllowDecompress)
-                {
-                    //Output a warning.
-                    PVRTErrorOutputDebug("PVRTTextureLoadFromPointer warning: ETC not supported. Converting to RGBA8888 instead.\n");
-
-                    //Modify boolean values.
-                    bIsCompressedFormatSupported = false;
-                    bIsCompressedFormat = true;
-
-                    //Change texture format.
-                    eTextureFormat = eTextureInternalFormat = GL_RGBA;
-                    eTextureType = GL_UNSIGNED_BYTE;
-
-                    //Create a near-identical texture header for the decompressed header.
-                    sTextureHeaderDecomp = sTextureHeader;
-                    sTextureHeaderDecomp.u32ChannelType=ePVRTVarTypeUnsignedByteNorm;
-                    sTextureHeaderDecomp.u32ColourSpace=ePVRTCSpacelRGB;
-                    sTextureHeaderDecomp.u64PixelFormat=PVRTGENPIXELID4('r','g','b','a',8,8,8,8);
-
-                    //Allocate enough memory for the decompressed data. OGLES1, so only decompress one surface/face.
-                    pDecompressedData = malloc(PVRTGetTextureDataSize(sTextureHeaderDecomp, PVRTEX_ALLMIPLEVELS, false, true) );
-
-                    //Check the malloc.
-                    if (!pDecompressedData)
-                    {
-                        PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: Unable to allocate memory to decompress texture.\n");
-                        return PVR_FAIL;
-                    }
-
-                    //Get the dimensions for the current MIP level.
-                    PVRTuint32 uiMIPWidth = sTextureHeaderDecomp.u32Width>>nLoadFromLevel;
-                    PVRTuint32 uiMIPHeight = sTextureHeaderDecomp.u32Height>>nLoadFromLevel;
-
-                    //Setup temporary variables.
-                    PVRTuint8* pTempDecompData = (PVRTuint8*)pDecompressedData;
-                    PVRTuint8* pTempCompData = (PVRTuint8*)pTextureData;
-
-                    {
-                        //Decompress all the MIP levels.
-                        for (PVRTuint32 uiMIPMap=nLoadFromLevel;uiMIPMap<sTextureHeader.u32MIPMapCount;++uiMIPMap)
-                        {
-                            //Get the face offset. Varies per MIP level.
-                            PVRTuint32 decompressedFaceOffset = PVRTGetTextureDataSize(sTextureHeaderDecomp, uiMIPMap, false, false);
-                            PVRTuint32 compressedFaceOffset = PVRTGetTextureDataSize(sTextureHeader, uiMIPMap, false, false);
-
-                            for (PVRTuint32 uiFace=0;uiFace<sTextureHeader.u32NumFaces;++uiFace)
-                            {
-                                //Decompress the texture data.
-                                PVRTDecompressETC(pTempCompData,uiMIPWidth,uiMIPHeight,pTempDecompData,0);
-
-                                //Move forward through the pointers.
-                                pTempDecompData+=decompressedFaceOffset;
-                                pTempCompData+=compressedFaceOffset;
-                            }
-
-                            //Work out the current MIP dimensions.
-                            uiMIPWidth=PVRT_MAX(1,uiMIPWidth>>1);
-                            uiMIPHeight=PVRT_MAX(1,uiMIPHeight>>1);
-                        }
-                    }
-                }
-                else
-                {
-                    PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: ETC not supported.\n");
-                    return PVR_FAIL;
-                }
+                PVRTErrorOutputDebug("PVRTTextureLoadFromPointer error: ETC not supported.\n");
+                return PVR_FAIL;
             }
         }
 #endif
-    }
-
-    //Check for BGRA support.
-    if(eTextureFormat==GL_BGRA)
-    {
-#ifdef RE_PLATFORM_IOS
-        eTextureInternalFormat = GL_RGBA;
-#endif
-        if(!bIsBGRA8888Supported)
-        {
-#ifdef RE_PLATFORM_IOS
-            PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_BGRA texture as extension GL_APPLE_texture_format_BGRA8888 is unsupported.\n");
-#else
-            PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_BGRA texture as extension GL_IMG_texture_format_BGRA8888 is unsupported.\n");
-#endif
-            return PVR_FAIL;
-        }
-    }
-
-    //Check for floating point textures
-    if (eTextureType==GL_HALF_FLOAT_OES)
-    {
-        if(!bIsFloat16Supported)
-        {
-            PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_HALF_FLOAT_OES texture as extension GL_OES_texture_half_float is unsupported.\n");
-        }
-    }
-    if (eTextureType==GL_FLOAT)
-    {
-        if(!bIsFloat32Supported)
-        {
-            PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_FLOAT texture as extension GL_OES_texture_float is unsupported.\n");
-        }
     }
 
     //Deal with unsupported texture formats
@@ -618,7 +291,14 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
     //Generate a texture
-    glGenTextures(1, texName);
+    if( !texture.getGlID() )
+    {
+        GLuint id = 0;
+
+        glGenTextures( 1, &id );
+
+        texture.setGlID(id);
+    }
 
     //Initialise a texture target.
     GLint eTarget=GL_TEXTURE_2D;
@@ -626,6 +306,8 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     if(sTextureHeader.u32NumFaces>1)
     {
         eTarget=GL_TEXTURE_CUBE_MAP;
+
+        texture.setTarget(Texture::TargetType::TEXTURE_CUBE_MAP);
     }
 
     //Check if this is a texture array.
@@ -637,7 +319,7 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     }
 
     //Bind the 2D texture
-    glBindTexture(eTarget, *texName);
+    GetRenderer().bindTexture(0, true, texture);
 
     if(glGetError())
     {
@@ -662,12 +344,6 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     //Temporary data to save on if statements within the load loops.
     PVRTuint8* pTempData=NULL;
     PVRTextureHeaderV3 *psTempHeader=NULL;
-    if (bIsCompressedFormat && !bIsCompressedFormatSupported)
-    {
-        pTempData=(PVRTuint8*)pDecompressedData;
-        psTempHeader=&sTextureHeaderDecomp;
-    }
-    else
     {
         pTempData=pTextureData;
         psTempHeader=&sTextureHeader;
@@ -707,14 +383,11 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
             //Error check
             if(glGetError())
             {
-                FREE(pDecompressedData);
                 PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: glTexImage2D() failed.\n");
                 return PVR_FAIL;
             }
         }
     }
-
-    FREE(pDecompressedData);
 
     if (eTarget!=GL_TEXTURE_2D)
     {
@@ -781,16 +454,13 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     return PVR_SUCCESS;
 }
 
-bool PVRTTextureLoadFromPVR(	const char * const filename,
-                                    GLuint * const texName,
+bool PVRTextureUtil::LoadFromPVR(Texture &texture,
                                     const void *psTextureHeader,
-                                    bool bAllowDecompress,
                                     const unsigned int nLoadFromLevel,
                                     CPVRTMap<unsigned int, CPVRTMap<unsigned int, MetaDataBlock> > *pMetaData)
 {
     //Attempt to open file.
-    FilePtr texFile = FileSystem::getInstance().openFile(filename);
-    Buffer::ptr buf = texFile->read();
+    Buffer::ptr buf = texture.getFile()->read();
 
 //    //Check file opened successfully.
 //    if (!TexFile.IsOpen())
@@ -811,37 +481,7 @@ bool PVRTTextureLoadFromPVR(	const char * const filename,
     EPVRTVariableType u32CurrentChannelType=ePVRTVarTypeUnsignedByte;
 
     //Check the first word of the file and see if it's equal to the current identifier (or reverse identifier)
-    if(*(PVRTuint32*)buf->getData()!=PVRTEX_CURR_IDENT
-            && *(PVRTuint32*)buf->getData()!=PVRTEX_CURR_IDENT_REV)
-    {
-        //Swap the header bytes if necessary.
-        if(!PVRTIsLittleEndian())
-        {
-            bSwapDataEndianness=true;
-            PVRTuint32 u32HeaderSize=PVRTByteSwap32(*(PVRTuint32*)buf->getData());
-
-            for (PVRTuint32 i=0; i<u32HeaderSize; ++i)
-            {
-                PVRTByteSwap( (PVRTuint8*)( ( (PVRTuint32*)buf->getData() )+i),sizeof(PVRTuint32) );
-            }
-        }
-
-        //Get a pointer to the header.
-        PVR_Texture_Header* sLegacyTextureHeader=(PVR_Texture_Header*)buf->getData();
-
-        //Set the header size.
-        u32HeaderSize=sLegacyTextureHeader->dwHeaderSize;
-
-        //We only really need the channel type.
-        PVRTuint64 tempFormat;
-        EPVRTColourSpace tempColourSpace;
-        bool tempIsPreMult;
-
-        //Map the enum to get the channel type.
-        PVRTMapLegacyTextureEnumToNewFormat( (PVRTPixelType)( sLegacyTextureHeader->dwpfFlags&0xff),tempFormat,tempColourSpace, u32CurrentChannelType, tempIsPreMult);
-    }
-    // If the header file has a reverse identifier, then we need to swap endianness
-    else if(*(PVRTuint32*)buf->getData()==PVRTEX_CURR_IDENT_REV)
+    if(*(PVRTuint32*)buf->getData()==PVRTEX_CURR_IDENT_REV)
     {
         //Setup the texture header
         sTextureHeader=*(PVRTextureHeaderV3*)buf->getData();
@@ -927,7 +567,7 @@ bool PVRTTextureLoadFromPVR(	const char * const filename,
         }
     }
 
-    return PVRTTextureLoadFromPointer(buf->getData(), texName, psTextureHeader, bAllowDecompress, nLoadFromLevel,NULL,pMetaData);
+    return PVRTTextureLoadFromPointer(buf->getData(), texture, psTextureHeader, nLoadFromLevel,NULL,pMetaData);
 }
 
 } // namespace re

@@ -13,14 +13,11 @@ static SceneNodePtr skybox;
 
 void CubemapTest::Init()
 {
-
-
-    uint id = 0;
-    bool state = PVRTTextureLoadFromPVR("Textures/Cubemap/FishermansBastion_rgba8888.pvr",
-                                        &id, NULL, true, true, NULL);
+    auto file = FileSystem::getInstance().openFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
 
     TexturePtr tex = Texture::create();
-    tex->setGlID(id);
+    tex->setFile(file);
+    bool state = PVRTextureUtil::LoadFromPVR(*tex.get(), NULL, 0);
 
     LoadShader("cubemap", "Shaders/cubemap.vert", "Shaders/cubemap.frag");
 

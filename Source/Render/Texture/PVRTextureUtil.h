@@ -8,18 +8,15 @@
 
 namespace re {
 
+class Texture;
+
 class PVRTextureUtil
 {
 public:
-    PVRTextureUtil();
-};
+    static bool LoadFromPVR(Texture &texture, const void *psTextureHeader, const unsigned int nLoadFromLevel,
+                            CPVRTMap<unsigned int, CPVRTMap<unsigned int, MetaDataBlock> > *pMetaData=nullptr);
 
-bool PVRTTextureLoadFromPVR(	const char * const filename,
-                                    uint * const texName,
-                                    const void *psTextureHeader,
-                                    bool bAllowDecompress,
-                                    const unsigned int nLoadFromLevel,
-                                    CPVRTMap<unsigned int, CPVRTMap<unsigned int, MetaDataBlock> > *pMetaData);
+};
 
 } // namespace re
 
