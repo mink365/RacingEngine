@@ -32,6 +32,7 @@
 #include "ShadowTest/ShadowTest.h"
 #include "BulletTest/BulletTest.h"
 #include "RenderToTextureTest/RenderToTextureTest.h"
+#include "CubemapTest/CubemapTest.h"
 
 #include "Util/LogUtil.h"
 
@@ -87,8 +88,10 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::make_shared<RenderToTextureTest>();
     this->tests.push_back(test);
+    test = std::make_shared<CubemapTest>();
+    this->tests.push_back(test);
 
-    currIndex = 0;
+    currIndex = this->tests.size() - 1;
 
     this->onCurrentTestChanged();
 }
