@@ -104,7 +104,7 @@ static const void PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextureH
                 }
                 return;
             }
-#ifndef TARGET_OS_IPHONE
+#ifndef RE_PLATFORM_IOS
         case ePVRTPF_PVRTCII_2bpp:
             {
                 if (ColourSpace == ePVRTCSpacesRGB)
@@ -380,14 +380,14 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
 //    //Check supported texture formats.
 //    bool bIsPVRTCSupported = CPVRTgles2Ext::IsGLExtensionSupported("GL_IMG_texture_compression_pvrtc");
 //    bool bIsPVRTC2Supported = CPVRTgles2Ext::IsGLExtensionSupported("GL_IMG_texture_compression_pvrtc2");
-//#ifndef TARGET_OS_IPHONE
+//#ifndef RE_PLATFORM_IOS
 //    bool bIsBGRA8888Supported  = CPVRTgles2Ext::IsGLExtensionSupported("GL_IMG_texture_format_BGRA8888");
 //#else
 //    bool bIsBGRA8888Supported  = CPVRTgles2Ext::IsGLExtensionSupported("GL_APPLE_texture_format_BGRA8888");
 //#endif
 //    bool bIsFloat16Supported = CPVRTgles2Ext::IsGLExtensionSupported("GL_OES_texture_half_float");
 //    bool bIsFloat32Supported = CPVRTgles2Ext::IsGLExtensionSupported("GL_OES_texture_float");
-//#ifndef TARGET_OS_IPHONE
+//#ifndef RE_PLATFORM_IOS
 //    bool bIsETCSupported = CPVRTgles2Ext::IsGLExtensionSupported("GL_OES_compressed_ETC1_RGB8_texture");
 //#endif
     bool bIsPVRTCSupported = true;
@@ -481,7 +481,7 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
                 }
             }
         }
-#ifndef TARGET_OS_IPHONE //TODO
+#ifndef RE_PLATFORM_IOS //TODO
         else if (eTextureInternalFormat==GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG || eTextureInternalFormat==GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG)
         {
             //Check for PVRTCI support.
@@ -577,12 +577,12 @@ bool PVRTTextureLoadFromPointer(	const void* pointer,
     //Check for BGRA support.
     if(eTextureFormat==GL_BGRA)
     {
-#ifdef TARGET_OS_IPHONE
+#ifdef RE_PLATFORM_IOS
         eTextureInternalFormat = GL_RGBA;
 #endif
         if(!bIsBGRA8888Supported)
         {
-#ifdef TARGET_OS_IPHONE
+#ifdef RE_PLATFORM_IOS
             PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_BGRA texture as extension GL_APPLE_texture_format_BGRA8888 is unsupported.\n");
 #else
             PVRTErrorOutputDebug("PVRTTextureLoadFromPointer failed: Unable to load GL_BGRA texture as extension GL_IMG_texture_format_BGRA8888 is unsupported.\n");
