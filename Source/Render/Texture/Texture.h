@@ -111,8 +111,8 @@ public:
     WrapValue getWrapV() const;
     void setWrapV(const WrapValue &value);
 
-    TextureFormat getPixelFormat() const;
-    void setPixelFormat(const TextureFormat &value);
+    TextureFormat getFormat() const;
+    void setFormat(const TextureFormat &value);
 
     TargetType getTarget() const;
     void setTarget(const TargetType &value);
@@ -122,6 +122,7 @@ private:
     std::string name;
 
     TargetType target;
+    TextureFormat format;
 
     int width;
     int height;
@@ -131,8 +132,6 @@ private:
     FilterValue magFilter;
     WrapValue wrapU;
     WrapValue wrapV;
-
-    TextureFormat pixelFormat;
 };
 
 } // namespace re

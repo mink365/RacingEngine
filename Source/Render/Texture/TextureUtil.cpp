@@ -360,7 +360,7 @@ TextureUtil::TextureUtil()
 void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture, int index)
 {
     TextureFormat format = ImageFormatToPixelFormat(image.getFormat());
-    texture.setPixelFormat(format);
+    texture.setFormat(format);
 
     UploadTextureToHardware(image.getPixels(), texture, index);
 }
@@ -391,7 +391,7 @@ void TextureUtil::UploadTextureToHardware(unsigned char *data, Texture &texture,
 
     GLenum srcFormat, srcType;
     GLint internalFormat;
-    TexturePixelFormatToGL(texture.getPixelFormat(), internalFormat, srcFormat, srcType);
+    TexturePixelFormatToGL(texture.getFormat(), internalFormat, srcFormat, srcType);
 
     if (target == GL_TEXTURE_CUBE_MAP) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+index, 0, internalFormat, texture.getWidth(), texture.getHeight(), 0, srcFormat, srcType, data);
