@@ -6,7 +6,6 @@ namespace re {
 
 TextureUnitState::TextureUnitState()
 {
-    this->activeFrameIndex = 0;
 }
 
 void TextureUnitState::setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation)
@@ -18,41 +17,14 @@ void TextureUnitState::setUVstate(float offsetU, float offsetV, float scaleU, fl
     this->rotation = rotation;
 }
 
-Texture::ptr TextureUnitState::getActivityTexture()
+Texture::ptr TextureUnitState::getTexture()
 {
-    assert(this->frames.size() > activeFrameIndex);
-
-    return this->frames[activeFrameIndex];
+    return texture;
 }
 
-int TextureUnitState::getTextureFrameCount() const
+void TextureUnitState::setTexture(TexturePtr &tex)
 {
-    return this->frames.size();
-}
-
-void TextureUnitState::addTextureFrame(Texture::ptr texture)
-{
-    this->frames.push_back(texture);
-}
-
-void TextureUnitState::setActiveTextureFrame(int index)
-{
-    this->activeFrameIndex = index;
-}
-
-TextureUnitState::ptr TextureUnitState::clone() const
-{
-    TextureUnitState::ptr inst = TextureUnitState::create();
-
-    inst->offset = this->offset;
-    inst->scale = this->scale;
-    inst->rotation = this->rotation;
-    inst->pass.reset();
-    inst->activeFrameIndex = 0;
-
-    inst->frames = this->frames;
-
-    return inst;
+    this->texture = tex;
 }
 
 float TextureUnitState::getRotation() const
@@ -83,6 +55,20 @@ const Vec2 &TextureUnitState::getScale() const
 void TextureUnitState::setScale(float u, float v)
 {
     this->scale.set(u, v);
+}
+
+TextureUnitState::ptr TextureUnitState::clone() const
+{
+    TextureUnitState::ptr inst = TextureUnitState::create();
+
+    inst->offset = this->offset;
+    inst->scale = this->scale;
+    inst->rotation = this->rotation;
+    inst->pass.reset();
+
+    inst->texture = this->texture;
+
+    return inst;
 }
 
 }

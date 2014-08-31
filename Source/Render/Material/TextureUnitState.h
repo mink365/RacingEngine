@@ -18,8 +18,7 @@ class TextureUnitState : public Shared<TextureUnitState>, public Clonable<Textur
 public:
     TextureUnitState();
 
-    float getRotation() const;
-    void setRotation(float value);
+    void setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation);
 
     const Vec2& getOffset() const;
     void setOffset(float u, float v);
@@ -27,20 +26,18 @@ public:
     const Vec2& getScale() const;
     void setScale(float u, float v);
 
-    void setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation);
+    float getRotation() const;
+    void setRotation(float value);
 
-    Texture::ptr getActivityTexture();
-    int getTextureFrameCount() const;
-    void addTextureFrame(Texture::ptr texture);
-    void setActiveTextureFrame(int index);
+    Texture::ptr getTexture();
+    void setTexture(TexturePtr& tex);
 
     TextureUnitState::ptr clone() const override;
 
 private:
     std::weak_ptr<Pass> pass;
-    std::vector<Texture::ptr> frames;
 
-    int activeFrameIndex;
+    Texture::ptr texture;
 
     Vec2 offset;
     Vec2 scale;

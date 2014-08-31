@@ -178,16 +178,11 @@ void ShadowTest::Update(float dt)
 
     auto& renderManager = SceneManager::getInstance().getRenderManager();
 
-    if (unit->getTextureFrameCount() <= 1 && renderManager.renderViewList.size() > 2) {
-        auto view = renderManager.renderViewList[0];
-        auto texture = view->renderTarget->getTexture();
-
-        unit->addTextureFrame(texture);
-        unit->setActiveTextureFrame(1);
-    }
-
     if (renderManager.renderViewList.size() > 2) {
         auto view = renderManager.renderViewList[0];
+
+        auto texture = view->renderTarget->getTexture();
+        unit->setTexture(texture);
 
         glActiveTexture(GL_TEXTURE0 + 1);
         glEnable(GL_TEXTURE_2D);

@@ -1,4 +1,4 @@
-﻿#include "Node2d.h"
+#include "Node2d.h"
 
 #include "Scene/Mesh.h"
 
@@ -395,7 +395,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     if (texture) {
         TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
         unit->setUVstate(0, 0, 1, 1, 0);
-        unit->addTextureFrame(texture);
+        unit->setTexture(texture);
     }
 
     Geometry::ptr geometry = mesh->getGeometry();

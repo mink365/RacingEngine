@@ -431,7 +431,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
             if (tex == nullptr) {
                 assert(false);
             }
-            unit->addTextureFrame(tex);
+            unit->setTexture(tex);
 
             // TODO: fix the material name
             materialTextureKey = name;

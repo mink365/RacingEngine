@@ -76,7 +76,7 @@ void MaterialLoader::loadTextureUnit(Statement::ptr &statement, TextureUnitState
                 if (kv->key == "texture") {
                     Texture::ptr frame = TextureManager::getInstance().getTexture(kv->value);
 
-                    unit->addTextureFrame(frame);
+                    unit->setTexture(frame);
                 }
             }
         }

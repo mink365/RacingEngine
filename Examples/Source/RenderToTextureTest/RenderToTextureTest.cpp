@@ -1,4 +1,4 @@
-﻿#include "RenderToTextureTest.h"
+#include "RenderToTextureTest.h"
 
 #include "opengl.h"
 
@@ -83,7 +83,7 @@ void RenderToTextureTest::RenderScene1() {
     renderer->setProjectionMatrix(camera->getProjectionMatrix());
 
 //    renderer->renderMesh(*(mesh->getGeometry()));
-    mesh->getMaterial()->getPass(0)->getTextureUnit(0)->getActivityTexture()->setGlID(texID);
+    mesh->getMaterial()->getPass(0)->getTextureUnit(0)->getTexture()->setGlID(texID);
     renderManager->renderMesh(mesh);
 
     renderer->resetRenderTarget();
@@ -96,7 +96,7 @@ void RenderToTextureTest::RenderScene1() {
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &fbo);
     LOG_E("FBO3: %d", fbo);
 
-    mesh->getMaterial()->getPass(0)->getTextureUnit(0)->getActivityTexture()->setGlID(renderTarget->getTexture()->getGlID());
+    mesh->getMaterial()->getPass(0)->getTextureUnit(0)->getTexture()->setGlID(renderTarget->getTexture()->getGlID());
 //     mesh->getMaterial()->getPass(0)->getTextureUnit(0)->getActivityTexture()->setGlID(m_uiTextureToRenderTo);
     renderManager->renderMesh(mesh);
 }

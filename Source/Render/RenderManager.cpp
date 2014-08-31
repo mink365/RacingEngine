@@ -104,7 +104,7 @@ void RenderManager::applyMaterial(Material &material)
     for (int i = 0; i < size; ++i) {
         TextureUnitState::ptr state = pass->getTextureUnit(i);
 
-        this->renderer->bindTexture(i, true, *(state->getActivityTexture().get()));
+        this->renderer->bindTexture(i, true, *(state->getTexture().get()));
 
         // TODO: set the matrix of textue in shader ?
     //    this->renderer->setTextureMatrix(0, Mat4().identity());

@@ -522,7 +522,7 @@ MeshPtr ShapeGenerater::CreateBox(float side, Texture::ptr texture)
     if (texture == nullptr) {
         texture = TextureManager::getInstance().getTexture("girl");
     }
-    unit->addTextureFrame(texture);
+    unit->setTexture(texture);
 
     return mesh;
 }
@@ -550,7 +550,7 @@ MeshPtr ShapeGenerater::CreateMesh(GeometryPtr &geometry, Texture::ptr texture)
     if (texture == nullptr) {
         texture = TextureManager::getInstance().getTexture("girl");
     }
-    unit->addTextureFrame(texture);
+    unit->setTexture(texture);
 
     return mesh;
 }
