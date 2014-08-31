@@ -59,7 +59,7 @@ bool StencilState::operator==(const StencilState &right) const
 
 bool StencilState::operator!=(const StencilState &right) const
 {
-    return  !(this->stencilTestEnable == right.stencilTestEnable == false)
+    return  !(this->stencilTestEnable == false && right.stencilTestEnable == false)
             && !(*this == right);
 }
 
@@ -73,7 +73,7 @@ bool AlphaState::operator==(const AlphaState &right) const
 
 bool AlphaState::operator!=(const AlphaState &right) const
 {
-    return  !(this->alphaTestEnable == right.alphaTestEnable == false)
+    return  !(this->alphaTestEnable == false && right.alphaTestEnable == false)
             && !(*this == right);
 }
 
@@ -86,7 +86,7 @@ bool FaceCullState::operator==(const FaceCullState &right) const
 
 bool FaceCullState::operator!=(const FaceCullState &right) const
 {
-    return  !(this->faceCullEnable == right.faceCullEnable == false)
+    return  !(this->faceCullEnable == false && right.faceCullEnable == false)
             && !(*this == right);
 }
 
@@ -99,7 +99,7 @@ bool BlendState::operator==(const BlendState &right) const
 
 bool BlendState::operator!=(const BlendState &right) const
 {
-    return !(this->blendEnable == right.blendEnable == false)
+    return !(this->blendEnable == false && right.blendEnable == false)
             && !(*this == right);
 }
 
