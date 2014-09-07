@@ -23,16 +23,16 @@
 
 #include "opengl.h"
 
-#include "FontTest/FontTest.h"
-#include "FBXTest/FBXTest.h"
-#include "TweenTest/TweenTest.h"
-#include "UITest/UITest.h"
-#include "MotoSceneTest/SceneMaterialTest.h"
-#include "LightTest/LightTest.h"
-#include "ShadowTest/ShadowTest.h"
-#include "BulletTest/BulletTest.h"
-#include "RenderToTextureTest/RenderToTextureTest.h"
-#include "CubemapTest/CubemapTest.h"
+#include "Font/FontTest.h"
+#include "FBX/FBXTest.h"
+#include "Tween/TweenTest.h"
+#include "UI/UITest.h"
+#include "MotoScene/SceneMaterialTest.h"
+#include "Light/LightTest.h"
+#include "Shadow/ShadowTest.h"
+#include "Bullet/BulletTest.h"
+#include "RenderToTexture/RenderToTextureTest.h"
+#include "Cubemap/CubemapTest.h"
 
 #include "Util/LogUtil.h"
 
@@ -91,7 +91,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<CubemapTest>();
     this->tests.push_back(test);
 
-    currIndex = this->tests.size() - 1;
+    currIndex = 8;
 
     this->onCurrentTestChanged();
 }

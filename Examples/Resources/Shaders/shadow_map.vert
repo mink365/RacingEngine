@@ -1,5 +1,5 @@
 #define USE_SHADOWMAP
-#define MAX_SHADOWS 2
+#define MAX_SHADOWS 1
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
