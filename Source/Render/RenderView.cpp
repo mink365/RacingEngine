@@ -30,11 +30,19 @@ void RenderView::init(CameraPtr &camera)
         this->fov = camera->fov;
     }
 
-    this->viewport = camera->viewport;
     this->viewMatrix = camera->viewMatrix;
     this->projMatrix = camera->projectionMatrix;
 
+    if (camera->getRenderTarget()) {
+        this->renderTarget = camera->getRenderTarget();
+        auto size = this->renderTarget->getSize();
+        this->viewport.set(0, 0, size.width, size.height);
+    } else {
+        this->viewport = camera->viewport;
+    }
+
     this->clearFlag = camera->clearFlag;
+    this->_clearColor = camera->getClearColor();
     this->queueCullFunc = camera->queueCullFunc;
 }
 

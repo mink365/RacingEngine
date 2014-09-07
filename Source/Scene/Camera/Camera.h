@@ -3,6 +3,7 @@
 
 #include "Scene/SceneNode.h"
 #include "Math/BoundingVolume.h"
+#include "Math/Color.h"
 
 namespace re {
 
@@ -54,8 +55,13 @@ public:
     const Mat4 &getProjectionMatrix() const;
     const Mat4 &getViewProjectionMatrix() const;
 
+    RenderTargetPtr getRenderTarget() const;
+    void setRenderTarget(RenderTargetPtr target);
+
     void setBuffersClearFlag(int flag);
     int getBuffersClearFlag() const;
+    void setClearColor(const Color& color);
+    const Color& getClearColor() const;
     void setQueueCullFunc(std::function<bool(int queueID)> func);
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
@@ -83,7 +89,10 @@ private:
 
     Rect viewport;
 
+    RenderTargetPtr renderTarget;
+
     int clearFlag;
+    Color clearColor;
     std::function<bool(int queueID)> queueCullFunc;
 };
 

@@ -9,6 +9,8 @@ Camera::Camera()
                      | ClearBufferBit::DEPTH_BUFFER_BIT
                      | ClearBufferBit::STENCIL_BUFFER_BIT;
 
+    this->clearColor = Color::BLACK;
+
     this->fov = 45;
     this->orthoWidth = 0;
     this->zNear = 0;
@@ -125,6 +127,16 @@ const Mat4 &Camera::getViewProjectionMatrix() const
     return this->viewProjectionMatrix;
 }
 
+RenderTargetPtr Camera::getRenderTarget() const
+{
+    return this->renderTarget;
+}
+
+void Camera::setRenderTarget(RenderTargetPtr target)
+{
+    this->renderTarget = target;
+}
+
 void Camera::setBuffersClearFlag(int flag)
 {
     this->clearFlag = flag;
@@ -133,6 +145,16 @@ void Camera::setBuffersClearFlag(int flag)
 int Camera::getBuffersClearFlag() const
 {
     return this->clearFlag;
+}
+
+void Camera::setClearColor(const Color &color)
+{
+    this->clearColor = color;
+}
+
+const Color &Camera::getClearColor() const
+{
+    return this->clearColor;
 }
 
 void Camera::setQueueCullFunc(std::function<bool (int)> func)
