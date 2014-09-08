@@ -77,6 +77,14 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         colorAttr->setStride(sizeof(Vertex));
         colorAttr->setOffset((8) * 4);
     }
+
+    Attribute *normalAttr = shader->getAttribute("aNormal");
+    if (normalAttr) {
+        normalAttr->setType(ATTR_FORMAT_FLOAT);
+        normalAttr->setSize(3);
+        normalAttr->setStride(sizeof(Vertex));
+        normalAttr->setOffset((5) * 4);
+    }
 }
 
 void setDepthRGBAAttribute(Shader::ptr& shader) {
@@ -166,12 +174,28 @@ void BaseTest::init(FeatureTestsApp &app)
     this->rootNode = app.rootNode;
     this->stage = app.stage;
 
+    this->setDefaultEnv();
+
     this->Init();
 }
 
 string BaseTest::getName() const
 {
     return this->name;
+}
+
+void BaseTest::setDefaultEnv()
+{
+    this->camera->setDepthField(10, 1320);
+    this->camera->setView(Vec3(100, 0, 300), Vec3(0, 0, 0), Vec3(0, 1, 0));
+    this->camera->setQueueCullFunc([](int queue) {
+        if (queue == RENDER_QUEUE_UI) {
+            return false;
+        }
+        return true;
+    });
+
+
 }
 
 void BaseTest::Init()

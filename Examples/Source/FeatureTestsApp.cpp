@@ -32,7 +32,9 @@
 #include "Shadow/ShadowTest.h"
 #include "Bullet/BulletTest.h"
 #include "RenderToTexture/RenderToTextureTest.h"
-#include "Cubemap/CubemapTest.h"
+#include "Skybox/Skybox.h"
+#include "Reflection/Reflection.h"
+#include "Refraction/Refraction.h"
 
 #include "Util/LogUtil.h"
 
@@ -88,10 +90,14 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::make_shared<RenderToTextureTest>();
     this->tests.push_back(test);
-    test = std::make_shared<CubemapTest>();
+    test = std::make_shared<Skybox>();
+    this->tests.push_back(test);
+    test = std::make_shared<Reflection>();
+    this->tests.push_back(test);
+    test = std::make_shared<Refraction>();
     this->tests.push_back(test);
 
-    currIndex = 8;
+    currIndex = 11;
 
     this->onCurrentTestChanged();
 }

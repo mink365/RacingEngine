@@ -39,6 +39,8 @@ public:
 
     std::string getName() const;
 
+    void setDefaultEnv();
+
     virtual void Init();
     virtual void Update(float dt);
 

@@ -1,17 +1,18 @@
-#include "CubemapTest.h"
+#include "Skybox.h"
+
 #include "Texture/PVRTextureUtil.h"
 
 #include "ShapeGenerater.h"
 
-CubemapTest::CubemapTest()
+Skybox::Skybox()
 {
-    this->name = "CubemapTest";
+    this->name = "SkyboxTest";
 }
 
 static SceneNodePtr box;
 static SceneNodePtr skybox;
 
-void CubemapTest::Init()
+void Skybox::Init()
 {
     auto file = FileSystem::getInstance().openFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
 
@@ -59,7 +60,7 @@ void CubemapTest::Init()
 
 static Quat quat;
 static float r = 0;
-void CubemapTest::Update(float dt)
+void Skybox::Update(float dt)
 {
     r += 0.02;
 
