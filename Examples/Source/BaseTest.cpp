@@ -55,35 +55,66 @@ void setLightShaderAttribute(Shader::ptr& shader) {
 }
 
 void setPTCShaderAttribute(Shader::ptr& shader) {
-    // set vertex attribute
-    Attribute *vertAttr = shader->getAttribute("aPosition");
-    vertAttr->setType(ATTR_FORMAT_FLOAT);
-    vertAttr->setSize(3);
-    vertAttr->setStride(sizeof(Vertex));
-    vertAttr->setOffset(0);
+    if (shader->getAttribute("aPosition")) {
+        Attribute *vertAttr = shader->getAttribute("aPosition");
+        vertAttr->setType(ATTR_FORMAT_FLOAT);
+        vertAttr->setSize(3);
+        vertAttr->setStride(sizeof(Vertex));
+        vertAttr->setOffset(0);
 
-    Attribute *uvAttr = shader->getAttribute("aTexCoord");
-    if (uvAttr) {
-        uvAttr->setType(ATTR_FORMAT_FLOAT);
-        uvAttr->setSize(2);
-        uvAttr->setStride(sizeof(Vertex));
-        uvAttr->setOffset((3) * 4);
-    }
+        Attribute *uvAttr = shader->getAttribute("aTexCoord");
+        if (uvAttr) {
+            uvAttr->setType(ATTR_FORMAT_FLOAT);
+            uvAttr->setSize(2);
+            uvAttr->setStride(sizeof(Vertex));
+            uvAttr->setOffset((3) * 4);
+        }
 
-    Attribute *colorAttr = shader->getAttribute("aColor");
-    if (colorAttr) {
-        colorAttr->setType(ATTR_FORMAT_FLOAT);
-        colorAttr->setSize(4);
-        colorAttr->setStride(sizeof(Vertex));
-        colorAttr->setOffset((8) * 4);
-    }
+        Attribute *normalAttr = shader->getAttribute("aNormal");
+        if (normalAttr) {
+            normalAttr->setType(ATTR_FORMAT_FLOAT);
+            normalAttr->setSize(3);
+            normalAttr->setStride(sizeof(Vertex));
+            normalAttr->setOffset((5) * 4);
+        }
 
-    Attribute *normalAttr = shader->getAttribute("aNormal");
-    if (normalAttr) {
-        normalAttr->setType(ATTR_FORMAT_FLOAT);
-        normalAttr->setSize(3);
-        normalAttr->setStride(sizeof(Vertex));
-        normalAttr->setOffset((5) * 4);
+        Attribute *colorAttr = shader->getAttribute("aColor");
+        if (colorAttr) {
+            colorAttr->setType(ATTR_FORMAT_FLOAT);
+            colorAttr->setSize(4);
+            colorAttr->setStride(sizeof(Vertex));
+            colorAttr->setOffset((8) * 4);
+        }
+    } else {
+        Attribute *vertAttr = shader->getAttribute("inVertex");
+        vertAttr->setType(ATTR_FORMAT_FLOAT);
+        vertAttr->setSize(3);
+        vertAttr->setStride(sizeof(Vertex));
+        vertAttr->setOffset(0);
+
+        Attribute *uvAttr = shader->getAttribute("inTexCoord");
+        if (uvAttr) {
+            uvAttr->setType(ATTR_FORMAT_FLOAT);
+            uvAttr->setSize(2);
+            uvAttr->setStride(sizeof(Vertex));
+            uvAttr->setOffset((3) * 4);
+        }
+
+        Attribute *normalAttr = shader->getAttribute("inNormal");
+        if (normalAttr) {
+            normalAttr->setType(ATTR_FORMAT_FLOAT);
+            normalAttr->setSize(3);
+            normalAttr->setStride(sizeof(Vertex));
+            normalAttr->setOffset((5) * 4);
+        }
+
+        Attribute *colorAttr = shader->getAttribute("inColor");
+        if (colorAttr) {
+            colorAttr->setType(ATTR_FORMAT_FLOAT);
+            colorAttr->setSize(4);
+            colorAttr->setStride(sizeof(Vertex));
+            colorAttr->setOffset((8) * 4);
+        }
     }
 }
 
@@ -115,10 +146,6 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
     } else {
         setPTCShaderAttribute(shader);
     }
-
-//    shader.getUniform("model")->setData((float*)model);
-//    shader->getUniform("view")->setData((float*)camera.getViewMatrix());
-//    shader->getUniform("projection")->setData((float*)camera.getProjectionMatrix());
 
     ShaderManager::getInstance().registerShader(shader);
 

@@ -10,6 +10,9 @@ public:
 
     virtual void Init();
     virtual void Update(float dt);
+
+private:
+    void setupShader();
 };
 
 #endif // LIGHTMAP_H

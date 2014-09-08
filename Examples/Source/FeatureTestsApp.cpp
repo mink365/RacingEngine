@@ -35,6 +35,7 @@
 #include "Skybox/Skybox.h"
 #include "Reflection/Reflection.h"
 #include "Refraction/Refraction.h"
+#include "Lightmap/Lightmap.h"
 
 #include "Util/LogUtil.h"
 
@@ -96,8 +97,10 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::make_shared<Refraction>();
     this->tests.push_back(test);
+    test = std::make_shared<Lightmap>();
+    this->tests.push_back(test);
 
-    currIndex = 11;
+    currIndex = 12;
 
     this->onCurrentTestChanged();
 }
