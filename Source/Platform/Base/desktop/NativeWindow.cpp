@@ -129,7 +129,10 @@ bool NativeWindow::initView()
 
     glfwInit();
 
-    glfwWindowHint(GLFW_RESIZABLE,GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+//    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 
     window = glfwCreateWindow(rect.size.width,
                                    rect.size.height,
@@ -144,6 +147,8 @@ bool NativeWindow::initView()
 
     // check OpenGL version at first
     const GLubyte* glVersion = glGetString(GL_VERSION);
+    const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    printf("GL version: %s, GLSL version: %s", glVersion, glslVersion);
 
     if ( atof((const char*)glVersion) < 1.5 )
     {

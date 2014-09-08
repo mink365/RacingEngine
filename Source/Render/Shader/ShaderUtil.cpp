@@ -264,31 +264,33 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 
 uint ShaderUtil::loadShader(const char *source, uint type)
 {
+
+#if GLSL
     std::string precision;
-    uint id;
     switch (type) {
     case GL_VERTEX_SHADER:
     {
         precision = "precision highp float;\n";
-
-        // create vertex shader
-        id = glCreateShader(GL_VERTEX_SHADER);
         break;
     }
     case GL_FRAGMENT_SHADER:
     {
         precision = "precision highp float;\n";
-
-        // create fragment shader
-        id = glCreateShader(GL_FRAGMENT_SHADER);
         break;
     }
     default:
         return -1;
     }
 
-    std::string code = "#ifdef GL_ES\n" + precision + "#endif\n" + source;
+//    std::string code = "#ifdef GL_ES\n" + precision + "#else\n#version 120\n#endif\n" + source;
+#else
+    std::string code = "#version 130\n";
+    code += source;
+#endif
+
     const char* sources = code.c_str();
+
+    uint id = glCreateShader(type);
     glShaderSource(id, 1, (const GLchar **)&sources, 0);
     glCompileShader(id);
 

@@ -19,7 +19,7 @@ class Pass : public Shared<Pass>,
 public:
     Pass();
 
-    void addTextureUnit(TextureUnitState::ptr& unit);
+    void addTextureUnit(const TextureUnitState::ptr& unit);
     TextureUnitState::ptr getTextureUnit(int index);
     int getTextureUnitCount() const;
     void clearTextureUnits();

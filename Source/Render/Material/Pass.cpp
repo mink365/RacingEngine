@@ -6,7 +6,7 @@ Pass::Pass()
 {
 }
 
-void Pass::addTextureUnit(TextureUnitState::ptr &unit)
+void Pass::addTextureUnit(const TextureUnitState::ptr &unit)
 {
     this->units.push_back(unit);
     unit->pass = this->shared_from_this();

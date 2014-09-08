@@ -8,10 +8,14 @@
     #else
         #include <OpenGL/gl.h>
     #endif
+
+    #define GLES 0
 #elif defined(RE_PLATFORM_WIN)
     #include <Windows.h>
     #include <GL/glew.h>
     #include <GL/wglew.h>
+
+    #define GLES 0
 #elif defined(RE_PLATFORM_LINUX)
     #include <GL/glew.h>
     #include <GL/gl.h>
@@ -19,7 +23,11 @@
 
     #define GL_HALF_FLOAT_OES GL_FLOAT
     #define GL_ETC1_RGB8_OES 0
+
+    #define GLES 0
 #elif defined (RE_PLATFORM_ANDROID)
+    #define GLES 1
+
     #include <GLES2/gl2.h>
     #include <GLES2/gl2ext.h>
 
