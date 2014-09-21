@@ -77,7 +77,7 @@ void Lightmap::setupShader()
     shader->getUniform("EyePosModel")->setData(eyePosModel);
 
     // light map projection matrix
-    Vec3 vLightFrom = Vec3( 85, -85, 100);
+    Vec3 vLightFrom = Vec3( 85, -85, 3000);
     Vec3 vLightTo = Vec3(0, 0, -25);
     Vec3 vLightUp = Vec3(0, 1, 0);
 
@@ -85,7 +85,7 @@ void Lightmap::setupShader()
     viewMatrix.lookAt(vLightFrom, vLightTo, vLightUp);
 
     re::Mat4 projMatrix;
-    projMatrix.setPerspective(PI/6, 1, 2);
+    projMatrix.setPerspective(PI/2, 1, 2);
 
     re::Mat4 shadowViewPorj = projMatrix * viewMatrix;
 

@@ -7,24 +7,59 @@
 
 namespace re {
 
-class Buffer : public Shared<Buffer>
+template<class T>
+class Buffer
 {
 public:
-    Buffer(size_t capacity);
-    virtual ~Buffer();
+    Buffer(size_t capacity) {
+        this->_data = nullptr;
+        this->_size = 0;
 
-    void allocate(size_t capacity);
-    void clear();
+        this->allocate(capacity);
+    }
 
-    unsigned char* getData();
-    size_t getSize();
+    ~Buffer() {
+        this->clear();
+    };
 
-    bool isNull();
+    void allocate(size_t capacity) {
+        this->clear();
 
+        this->_data = (T*)malloc(capacity);
+        this->_size = capacity;
+    };
+    void clear() {
+        if (this->_data) {
+            free(_data);
+        }
+        _data = nullptr;
+        _size = 0;
+    };
+
+    T* getData() {
+        return _data;
+    };
+
+    void setData(T* data, size_t size) {
+        this->clear();
+
+        this->_size = size;
+        this->_data = data;
+    }
+
+    size_t getSize() {
+        return _size;
+    };
+
+    bool isNull() {
+        return (this->_size == 0) || (this->_data == nullptr);
+    };
 private:
     size_t _size;
-    unsigned char* _bytes;
+    T* _data;
 };
+
+typedef Buffer<unsigned char> ByteBuffer;
 
 } // namespace re
 

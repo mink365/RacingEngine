@@ -2,6 +2,7 @@
 #define PREDEFINETYPE_H
 
 #include <memory>
+#include "Base/Buffer.h"
 
 namespace re {
 
@@ -16,6 +17,8 @@ class BoneNode;
 class SceneNode;
 class NodeAttribute;
 class Mesh;
+class MeshData;
+class SkinnedMeshData;
 class Geometry;
 
 class RenderTarget;
@@ -29,7 +32,6 @@ class Camera;
 class Light;
 
 class File;
-class Buffer;
 
 class Sprite;
 class Label;
@@ -48,6 +50,8 @@ typedef std::shared_ptr<BoneNode> BoneNodePtr;
 typedef std::shared_ptr<SceneNode> SceneNodePtr;
 typedef std::shared_ptr<NodeAttribute> NodeAttributePtr;
 typedef std::shared_ptr<Mesh> MeshPtr;
+typedef std::shared_ptr<MeshData> MeshDataPtr;
+typedef std::shared_ptr<SkinnedMeshData> SkinnedMeshDataPtr;
 typedef std::shared_ptr<Geometry> GeometryPtr;
 
 typedef std::shared_ptr<Renderer> RendererPtr;
@@ -62,8 +66,8 @@ typedef std::shared_ptr<Light> LightPtr;
 
 typedef std::shared_ptr<File> FilePtr;
 typedef std::shared_ptr<const File> ConstFilePtr;
-typedef std::shared_ptr<Buffer> BufferPtr;
-typedef std::shared_ptr<const Buffer> ConstBufferPtr;
+
+typedef std::shared_ptr<ByteBuffer> ByteBufferPtr;
 
 typedef std::shared_ptr<Sprite> SpritePtr;
 typedef std::shared_ptr<NinePatch> NinePatchPtr;

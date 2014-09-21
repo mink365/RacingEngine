@@ -7,17 +7,17 @@ ShapeGenerater::ShapeGenerater()
 
 static void AppendVertexNormal(Geometry& geometry, std::map<uint, Vec3> normals) {
     for (auto pair : normals) {
-        Vertex& v = geometry.getVertices()[pair.first];
+        Vec3& normal = geometry.getVertexNormals()[pair.first];
 
-        v.normal = pair.second;
+        normal = pair.second;
     }
 }
 
 static void AppendVertexUv(Geometry& geometry, std::map<uint, Uv> uvs) {
     for (auto pair : uvs) {
-        Vertex& v = geometry.getVertices()[pair.first];
+        Uv& uv = geometry.getUvs()[pair.first];
 
-        v.uv = pair.second;
+        uv = pair.second;
     }
 }
 
@@ -81,7 +81,7 @@ GeometryPtr ShapeGenerater::CreateBox(float width, float height, float depth, in
         float segmentWidth = width / gridX;
         float segmentHeight = height / gridY;
 
-        int offset = geometry.getVertices().size();
+        int offset = geometry.getVertexCount();
 
         for (int iy = 0; iy < vertexCountY; ++iy) {
             for (int ix = 0; ix < vertexCountX; ++ix) {
@@ -256,7 +256,7 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
 
             geometry.addVertex(vertex);
 
-            vertexRow.push_back(geometry.getVertices().size() - 1);
+            vertexRow.push_back(geometry.getVertexCount() - 1);
         }
 
         vertexIndexes.push_back(vertexRow);
@@ -276,8 +276,8 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
             nbi = vertexIndexes[1][ir + 1];
         }
 
-        na = geometry.getVertices()[nai].xyz;
-        nb = geometry.getVertices()[nbi].xyz;
+        na = geometry.getPositions()[nai];
+        nb = geometry.getPositions()[nbi];
 
         na.z = sqrt(na.x * na.x + na.y * na.y) * tanTheta;
         na.normalizeSelf();
@@ -316,7 +316,7 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
             int rowIndex = vertexIndexes.size() - 1;
             uint a = vertexIndexes[rowIndex][ir];
             uint b = vertexIndexes[rowIndex][ir + 1];
-            uint c = geometry.getVertices().size() - 1;
+            uint c = geometry.getVertexCount() - 1;
 
             // TODO: uv of face?
 
@@ -341,7 +341,7 @@ GeometryPtr ShapeGenerater::CreateCylinder(float radiusTop, float radiusBottom, 
         for (int ir = 0; ir < radialSegments; ++ir) {
             uint a = vertexIndexes[0][ir + 1];
             uint b = vertexIndexes[0][ir];
-            uint c = geometry.getVertices().size() - 1;
+            uint c = geometry.getVertexCount() - 1;
 
             // TODO: uv of face?
 
@@ -467,7 +467,7 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
 
             geometry.addVertex(vertex);
 
-            vertexRow.push_back(geometry.getVertices().size() - 1);
+            vertexRow.push_back(geometry.getVertexCount() - 1);
         }
 
         vertexIndexes.push_back(vertexRow);
@@ -481,10 +481,10 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
             uint c = vertexIndexes[sy + 1][sx];
             uint d = vertexIndexes[sy + 1][sx + 1];
 
-            Vec3 na = geometry.getVertices()[a].xyz.normalize();
-            Vec3 nb = geometry.getVertices()[b].xyz.normalize();
-            Vec3 nc = geometry.getVertices()[c].xyz.normalize();
-            Vec3 nd = geometry.getVertices()[d].xyz.normalize();
+            Vec3 na = geometry.getPositions()[a].normalize();
+            Vec3 nb = geometry.getPositions()[b].normalize();
+            Vec3 nc = geometry.getPositions()[c].normalize();
+            Vec3 nd = geometry.getPositions()[d].normalize();
 
             std::map<uint, Vec3> normals = {{a, na},
                                            {b, nb},
@@ -492,9 +492,9 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
                                            {d, nd}};
             AppendVertexNormal(geometry, normals);
 
-            if (abs(geometry.getVertices()[a].xyz.y) == radius) {
+            if (abs(geometry.getPositions()[a].y) == radius) {
                 geometry.addFace(Face(a, c, d));
-            } else if (abs(geometry.getVertices()[c].xyz.y) == radius) {
+            } else if (abs(geometry.getPositions()[c].y) == radius) {
                 geometry.addFace(Face(a, b, c));
             } else {
                 geometry.addFace(Face(a, b, d));

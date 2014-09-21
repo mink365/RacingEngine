@@ -5,10 +5,10 @@
 
 namespace re {
 
-enum AttributeFormat {
-    ATTR_FORMAT_FLOAT = 0,
-    ATTR_FORMAT_HALF  = 1,
-    ATTR_FORMAT_UBYTE = 2
+enum class AttributeFormat {
+    FLOAT = 0,
+    HALF  = 1,
+    UBYTE = 2
 };
 
 class Attribute

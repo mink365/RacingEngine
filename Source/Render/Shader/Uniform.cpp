@@ -22,7 +22,7 @@ Uniform::~Uniform()
 void Uniform::init()
 {
     this->location = -1;
-    this->type = UNIFORM_FLOAT;
+    this->type = UniformType::FLOAT;
     this->nElements = 0;
     this->data = NULL;
 }
@@ -50,11 +50,11 @@ void Uniform::initData()
 
     memset(data, 0, getDataByteSize());
 
-    if (type == UNIFORM_MAT2) {
+    if (type == UniformType::MAT2) {
         this->initMatrixData(2);
-    } else if (type == UNIFORM_MAT3) {
+    } else if (type == UniformType::MAT3) {
         this->initMatrixData(3);
-    } else if (type == UNIFORM_MAT4) {
+    } else if (type == UniformType::MAT4) {
         this->initMatrixData(4);
     }
 }
@@ -74,22 +74,22 @@ void Uniform::initMatrixData(int dimension)
 
 uint GetUniformSize(UniformType type) {
     switch (type) {
-        case UNIFORM_BOOL: return 1;
-        case UNIFORM_BVEC2: return 2;
-        case UNIFORM_BVEC3: return 3;
-        case UNIFORM_BVEC4: return 4;
-        case UNIFORM_FLOAT: return 4;
-        case UNIFORM_INT: return 4;
-        case UNIFORM_IVEC2: return 4 * 2;
-        case UNIFORM_IVEC3: return 4 * 3;
-        case UNIFORM_IVEC4: return 4 * 4;
-        case UNIFORM_MAT2: return 4 * 2 * 2;
-        case UNIFORM_MAT3: return 4 * 3 * 3;
-        case UNIFORM_MAT4: return 4 * 4 * 4;
-        case UNIFORM_VEC2: return 4 * 2;
-        case UNIFORM_VEC3: return 4 * 3;
-        case UNIFORM_VEC4: return 4 * 4;
-        case UNIFORM_TYPE_COUNT: return 0;
+        case UniformType::BOOL: return 1;
+        case UniformType::BVEC2: return 2;
+        case UniformType::BVEC3: return 3;
+        case UniformType::BVEC4: return 4;
+        case UniformType::FLOAT: return 4;
+        case UniformType::INT: return 4;
+        case UniformType::IVEC2: return 4 * 2;
+        case UniformType::IVEC3: return 4 * 3;
+        case UniformType::IVEC4: return 4 * 4;
+        case UniformType::MAT2: return 4 * 2 * 2;
+        case UniformType::MAT3: return 4 * 3 * 3;
+        case UniformType::MAT4: return 4 * 4 * 4;
+        case UniformType::VEC2: return 4 * 2;
+        case UniformType::VEC3: return 4 * 3;
+        case UniformType::VEC4: return 4 * 4;
+        case UniformType::_COUNT: return 0;
     }
 
     return 0;
@@ -99,10 +99,10 @@ void Uniform::setData(float *value)
 {
     int dataSize = getDataByteSize();
 
-    if (type == UNIFORM_MAT2 || type == UNIFORM_MAT4 || type == UNIFORM_MAT3) {
+    if (type == UniformType::MAT2 || type == UniformType::MAT4 || type == UniformType::MAT3) {
         // row-major to column-major
 
-        int cal = 2 + type - UNIFORM_MAT2;
+        int cal = 2 + (int)type - (int)UniformType::MAT2;
         int size = cal * cal;
         float mat[dataSize];
 

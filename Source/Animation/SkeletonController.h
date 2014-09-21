@@ -39,6 +39,7 @@ private:
     AnimationPtr animation;
     SceneNodePtr sceneNode;
     MeshPtr mesh;
+    SkinnedMeshDataPtr meshData;
 
     std::vector<Mat4> boneDeformations;
     std::vector<float> boneWeights;

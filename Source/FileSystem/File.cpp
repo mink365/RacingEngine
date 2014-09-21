@@ -31,13 +31,13 @@ const std::string File::getExt() const
     return ext;
 }
 
-Buffer::ptr File::read()
+ByteBufferPtr File::read()
 {
     FilePtr p = this->shared_from_this();
 
     FileSystem::getInstance().openFile(p, fsMode::Read);
 
-    Buffer::ptr buf = std::make_shared<Buffer>(this->length());
+    ByteBufferPtr buf = std::make_shared<ByteBuffer>(this->length());
 
     this->read(buf->getData(), this->length());
 

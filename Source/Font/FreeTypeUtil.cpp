@@ -23,7 +23,7 @@ const struct {
 } FT_Errors[] =
 #include FT_ERRORS_H
 
-static Buffer::ptr buf = nullptr;
+static ByteBufferPtr buf = nullptr;
 static int LoadFace(Font::ptr& font, float size, FT_Library *library, FT_Face *face)
 {
     FT_Error error;

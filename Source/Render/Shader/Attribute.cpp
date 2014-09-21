@@ -28,7 +28,7 @@ void Attribute::init()
     this->location = -1;
     this->size = 0;
     this->normalized = false;
-    this->type = ATTR_FORMAT_FLOAT;
+    this->type = AttributeFormat::FLOAT;
     this->stride = 0;
     this->offset = 0;
 }

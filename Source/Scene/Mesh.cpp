@@ -55,12 +55,28 @@ void Mesh::copyProperties(const NodeAttribute *att)
     if (inst) {
         this->material = inst->material;
 
-        if (!inst->geometry->isStatic()) {
-            // only dynamic geometry need to be copy
-            this->geometry = inst->geometry;
-        } else {
-            this->geometry = inst->geometry;
+//        if (!inst->geometry->isStatic()) {
+//            // only dynamic geometry need to be copy
+//            this->geometry = inst->geometry;
+//        } else {
+//            this->geometry = inst->geometry;
+//        }
+    }
+}
+
+void re::ControlPoints::cacheVertex() {
+    for (int i = 0; i < this->controlPoints.size(); ++i) {
+      std::vector<int> vertexIndexList;
+
+      for (int j = 0; j < this->vertexToControl.size(); ++j) {
+        int &controlIndex = vertexToControl[j];
+
+        if (controlIndex == i) {
+          vertexIndexList.push_back(j);
         }
+      }
+
+      this->controlToVertex.push_back(vertexIndexList);
     }
 }
 

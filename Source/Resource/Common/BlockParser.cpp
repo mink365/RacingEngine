@@ -37,7 +37,7 @@ BlockParser::BlockParser()
 
 Statement::ptr BlockParser::parse(FilePtr &file)
 {
-    Buffer::ptr data = file->read();
+    ByteBufferPtr data = file->read();
 
     membuf mb((char*)(data->getData()), data->getSize());
     std::istream stream(&mb);

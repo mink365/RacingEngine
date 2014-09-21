@@ -142,8 +142,7 @@ void FBXTest::Update(float dt)
     manController->update();
     MeshPtr mesh = manController->getMesh();
 
-    Geometry::ptr geometry = mesh->getGeometry();
-    BufferObjectUtil::getInstance().updateGeometryToHardware(*(geometry.get()));
+    BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh.get()));
 
     mesh->getNode()->setLocalRotation(quat);
 }

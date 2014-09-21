@@ -3,87 +3,106 @@
 
 #include <vector>
 #include <array>
+
+#include "Math/Vector.h"
+#include "Math/Color.h"
+#include "Math/UV.h"
+
 #include "Base/Shared.h"
 #include "Base/Clonable.h"
-#include "Vertex.h"
-#include "Face.h"
-#include "ControlPoints.h"
-#include "Render/BufferObject/VertexBuffer.h"
-#include "Render/BufferObject/IndexBuffer.h"
 
 namespace re {
 
+class Vertex {
+public:
+    Vec3 xyz;
+    Uv uv;
+    Uv uv2;
+    Vec3 normal;
+    Vec4 tangent;
+    Color color;
+};
+
+class Face
+{
+public:
+    uint a;
+    uint b;
+    uint c;
+
+    Face(uint a, uint b, uint c);
+};
+
 class Geometry : public Shared<Geometry>, public Clonable<Geometry>
 {
-    friend class Renderer;
-    friend class GLES2Renderer;
-    friend class BufferObjectUtil;
     friend class SkeletonController;
     friend class FbxParser;
 
 public:
     Geometry();
 
-    void addVertex(const Vertex &v);
+    void addVertex(const Vertex& v);
+    uint getVertexCount();
+    Vertex getVertex(uint index);
+
+    void addPosition(const Vec3 &v);
+    std::vector<Vec3>& getPositions();
+    void setPositions(const std::vector<Vec3>& value);
+
     void addFace(const Face &face);
-
-    std::vector<Vertex> &getVertices();
-    void setVertices(const std::vector<Vertex> &value);
-
     std::vector<Face> &getFaces();
     void setFaces(const std::vector<Face> &value);
 
+    void addUv(const Uv& uv);
+    void addVertexNormal(const Vec3& normal);
+    void addVertexUvColor(const Vec3& v, const Uv& uv, const Color& color);
+
+    std::vector<Uv>& getUvs();
+    std::vector<Vec3>& getVertexNormals();
+    std::vector<Color>& getDiffuseColors();
+
     void clear();
-
-    VertexBuffer &getVbo();
-    IndexBuffer &getIbo();
-
-    bool isDirty() const;
-    void setDirty();
-
-    /**
-     * @brief isStatic
-     * @return
-     *
-     * this is a static geometry or not.static geometry cann't be modify in runtime.
-     */
-    bool isStatic() const;
-
-    bool isLoaded() const;
 
     Geometry::ptr clone() const override;
 
 private:
-    ControlPoints controlPointsData;
+    std::vector<Vec3> positions;
+    std::vector<Vec3> vertexNormals;
+    std::vector<Color> colors;
+    std::vector<Uv> uvs;
+    std::vector<Uv> uv2s;
+    std::vector<Vec4> tangents;
 
-    std::vector<Vertex> vertices;
+    // surface normal
+    std::vector<Vec3> normals;
     std::vector<Face> faces;
-
-    VertexBuffer vbo;
-    IndexBuffer ibo;
-
-    bool dirtyFlag;
-    bool staticGeometry;
 };
 
-inline bool Geometry::isDirty() const
+inline uint Geometry::getVertexCount()
 {
-    return this->dirtyFlag;
+    return this->positions.size();
 }
 
-inline void Geometry::setDirty()
+inline std::vector<Vec3> &Geometry::getPositions()
 {
-    this->dirtyFlag = true;
+    return positions;
 }
 
-inline bool Geometry::isStatic() const
-{
-    return this->staticGeometry;
+inline std::vector<Uv>& Geometry::getUvs() {
+    return this->uvs;
 }
 
-inline bool Geometry::isLoaded() const
+inline std::vector<Vec3>& Geometry::getVertexNormals() {
+    return this->vertexNormals;
+}
+
+inline std::vector<Color>& Geometry::getDiffuseColors() {
+    return this->colors;
+}
+
+inline std::vector<Face> &Geometry::getFaces()
 {
-    return this->vbo.vbo != 0;
+    return faces;
 }
 
 } // namespace re

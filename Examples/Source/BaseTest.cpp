@@ -30,25 +30,25 @@ int CheckShaderLinkError(GLint program) {
 void setLightShaderAttribute(Shader::ptr& shader) {
     // set vertex attribute
     Attribute *vertAttr = shader->getAttribute("aPosition");
-    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setType(AttributeFormat::FLOAT);
     vertAttr->setSize(3);
     vertAttr->setStride(sizeof(Vertex));
     vertAttr->setOffset(0);
 
     Attribute *uvAttr = shader->getAttribute("aTexCoord");
-    uvAttr->setType(ATTR_FORMAT_FLOAT);
+    uvAttr->setType(AttributeFormat::FLOAT);
     uvAttr->setSize(2);
     uvAttr->setStride(sizeof(Vertex));
     uvAttr->setOffset((3) * 4);
 
     Attribute *colorAttr = shader->getAttribute("aColor");
-    colorAttr->setType(ATTR_FORMAT_FLOAT);
+    colorAttr->setType(AttributeFormat::FLOAT);
     colorAttr->setSize(4);
     colorAttr->setStride(sizeof(Vertex));
     colorAttr->setOffset((8) * 4);
 
     Attribute *normalAttr = shader->getAttribute("aNormal");
-    normalAttr->setType(ATTR_FORMAT_FLOAT);
+    normalAttr->setType(AttributeFormat::FLOAT);
     normalAttr->setSize(3);
     normalAttr->setStride(sizeof(Vertex));
     normalAttr->setOffset((5) * 4);
@@ -57,14 +57,14 @@ void setLightShaderAttribute(Shader::ptr& shader) {
 void setPTCShaderAttribute(Shader::ptr& shader) {
     if (shader->getAttribute("aPosition")) {
         Attribute *vertAttr = shader->getAttribute("aPosition");
-        vertAttr->setType(ATTR_FORMAT_FLOAT);
+        vertAttr->setType(AttributeFormat::FLOAT);
         vertAttr->setSize(3);
         vertAttr->setStride(sizeof(Vertex));
         vertAttr->setOffset(0);
 
         Attribute *uvAttr = shader->getAttribute("aTexCoord");
         if (uvAttr) {
-            uvAttr->setType(ATTR_FORMAT_FLOAT);
+            uvAttr->setType(AttributeFormat::FLOAT);
             uvAttr->setSize(2);
             uvAttr->setStride(sizeof(Vertex));
             uvAttr->setOffset((3) * 4);
@@ -72,7 +72,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 
         Attribute *normalAttr = shader->getAttribute("aNormal");
         if (normalAttr) {
-            normalAttr->setType(ATTR_FORMAT_FLOAT);
+            normalAttr->setType(AttributeFormat::FLOAT);
             normalAttr->setSize(3);
             normalAttr->setStride(sizeof(Vertex));
             normalAttr->setOffset((5) * 4);
@@ -80,21 +80,21 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 
         Attribute *colorAttr = shader->getAttribute("aColor");
         if (colorAttr) {
-            colorAttr->setType(ATTR_FORMAT_FLOAT);
+            colorAttr->setType(AttributeFormat::FLOAT);
             colorAttr->setSize(4);
             colorAttr->setStride(sizeof(Vertex));
             colorAttr->setOffset((8) * 4);
         }
     } else {
         Attribute *vertAttr = shader->getAttribute("inVertex");
-        vertAttr->setType(ATTR_FORMAT_FLOAT);
+        vertAttr->setType(AttributeFormat::FLOAT);
         vertAttr->setSize(3);
         vertAttr->setStride(sizeof(Vertex));
         vertAttr->setOffset(0);
 
         Attribute *uvAttr = shader->getAttribute("inTexCoord");
         if (uvAttr) {
-            uvAttr->setType(ATTR_FORMAT_FLOAT);
+            uvAttr->setType(AttributeFormat::FLOAT);
             uvAttr->setSize(2);
             uvAttr->setStride(sizeof(Vertex));
             uvAttr->setOffset((3) * 4);
@@ -102,7 +102,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 
         Attribute *normalAttr = shader->getAttribute("inNormal");
         if (normalAttr) {
-            normalAttr->setType(ATTR_FORMAT_FLOAT);
+            normalAttr->setType(AttributeFormat::FLOAT);
             normalAttr->setSize(3);
             normalAttr->setStride(sizeof(Vertex));
             normalAttr->setOffset((5) * 4);
@@ -110,7 +110,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 
         Attribute *colorAttr = shader->getAttribute("inColor");
         if (colorAttr) {
-            colorAttr->setType(ATTR_FORMAT_FLOAT);
+            colorAttr->setType(AttributeFormat::FLOAT);
             colorAttr->setSize(4);
             colorAttr->setStride(sizeof(Vertex));
             colorAttr->setOffset((8) * 4);
@@ -120,7 +120,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
 
 void setDepthRGBAAttribute(Shader::ptr& shader) {
     Attribute *vertAttr = shader->getAttribute("aPosition");
-    vertAttr->setType(ATTR_FORMAT_FLOAT);
+    vertAttr->setType(AttributeFormat::FLOAT);
     vertAttr->setSize(3);
     vertAttr->setStride(sizeof(Vertex));
     vertAttr->setOffset(0);
@@ -155,7 +155,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
 std::string loadFile(const char *fname)
 {
     FilePtr file = FileSystem::getInstance().openFile(fname);
-    Buffer::ptr buf = file->read();
+    ByteBufferPtr buf = file->read();
 
     string data((char*)(buf->getData()), buf->getSize());
     return data;
@@ -171,8 +171,7 @@ int LoadShader(const std::string& name, const std::string& pfilePath_vs, const s
 }
 
 void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
-    Geometry::ptr geometry = mesh->getGeometry();
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
     mesh->getMaterial()->setShder(shader);

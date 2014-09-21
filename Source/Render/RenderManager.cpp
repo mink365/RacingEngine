@@ -184,7 +184,6 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
     this->renderer->setModelMatrix(node->getWorldMatrix());
 
     Material::ptr material = mesh->getMaterial();
-    Geometry::ptr geometry = mesh->getGeometry();
 
 //    Mat4 textureMatrix;
 //    auto unit = material->getPass(0)->getTextureUnit(0);
@@ -192,11 +191,11 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
 //    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
-    this->renderer->bindBuffer(*(geometry));
+    this->renderer->bindBuffer(*(mesh));
 
     this->applyMaterial(*(material.get()));
 
-    this->renderer->renderMesh(*(geometry));
+    this->renderer->renderMesh(*(mesh));
 }
 
 void RenderManager::render()

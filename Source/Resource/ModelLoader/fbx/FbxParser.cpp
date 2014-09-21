@@ -25,14 +25,14 @@ FbxParser::FbxParser()
 void FbxParser::parse(const string &path)
 {
     FilePtr file = FileSystem::getInstance().openFile(path);
-    Buffer::ptr buf = file->read();
+    ByteBufferPtr buf = file->read();
 
     this->parseData(buf->getData(), buf->getSize());
 }
 
 void FbxParser::parse(FilePtr &file)
 {
-    Buffer::ptr buf = file->read();
+    ByteBufferPtr buf = file->read();
 
     this->parseData(buf->getData(), buf->getSize());
 }
@@ -140,6 +140,8 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     node->setNodeAttribute(mesh);
     mesh->name = node->name;
 
+    SkinnedMeshDataPtr meshData = std::dynamic_pointer_cast<SkinnedMeshData>(mesh->getMeshData());
+
     // controller points
     int len = reader->ReadInt(st);
     float points[len * 3];
@@ -150,7 +152,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     for (int i = 0; i < len; ++i) {
         Vec3 xyz(points[i * 3 + 0], points[i * 3 + 1], points[i * 3 + 2]);
 
-        mesh->getGeometry()->controlPointsData.controlPoints.push_back(xyz);
+        meshData->controlPointsData.controlPoints.push_back(xyz);
     }
 
     PrintArray("points ", points, len * 3, 3);
@@ -162,21 +164,22 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     PrintArray(" vertex to control ", vertexToControl, len, 1);
 
     // TODO: give the data to mesh
-    VectorCopy(vertexToControl, 0, len, mesh->getGeometry()->controlPointsData.vertexToControl);
+    VectorCopy(vertexToControl, 0, len, meshData->controlPointsData.vertexToControl);
 
     len = reader->ReadInt(st);
-    short index[len];
+    uint index[len];
     st->read((char*)index, len * 2);
 
     PrintArray("index ", index, len, 1);
 
     int num_of_indices = len;
 
-    // push face data
+    auto& indices = mesh->getMeshData()->indices;
+    auto facePointer = Map<Face>(indices);
     for (int i = 0; i < num_of_indices; i += 3) {
-        Face f(index[i], index[i + 1], index[i + 2]);
+        Face face(index[i], index[i + 1], index[i + 2]);
 
-        mesh->getGeometry()->addFace(f);
+        facePointer[i/3] = face;
     }
 
     std::cout << " num of indices " << len << std::endl;
@@ -231,9 +234,11 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     std::cout << " normal " << len << std::endl;
 
     // push data
+    auto& vertices = mesh->getMeshData()->vertices;
+    auto vertexPointer = Map<FbxVertex>(vertices);
     int vertexCount = num_of_vertex / 3;
     for (int i = 0; i < vertexCount; ++i) {
-        Vertex v;
+        FbxVertex v;
         v.xyz.set(vertex[i * 3], vertex[i * 3 + 1], vertex[i * 3 + 2]);
 
         if (colorArray != NULL) {
@@ -248,7 +253,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
             v.normal.set(normalArray[i * 3], normalArray[i * 3 + 1], normalArray[i * 3 + 2]);
         }
 
-        mesh->getGeometry()->addVertex(v);
+        vertexPointer[i] = v;
     }
 
     if (colorArray != NULL) {
@@ -271,7 +276,8 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     if (len > 0) {
         // have some bone, is a dynamic mesh
 
-        mesh->getGeometry()->staticGeometry = false;
+        // TODO: Dynamic
+//        mesh->getGeometry()->staticGeometry = false;
 
         ClusterCollectionPtr clusterColl = std::make_shared<ClusterCollection>();
         clusterColl->meshId = node->id;

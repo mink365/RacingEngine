@@ -27,7 +27,7 @@ void Label::setText(const string &text)
 
 //    // TODO: set the size and anchorPoint pixel
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 NodePtr Label::createCloneInstance() const

@@ -460,7 +460,7 @@ bool PVRTextureUtil::LoadFromPVR(Texture &texture,
                                     CPVRTMap<unsigned int, CPVRTMap<unsigned int, MetaDataBlock> > *pMetaData)
 {
     //Attempt to open file.
-    Buffer::ptr buf = texture.getFile()->read();
+    ByteBufferPtr buf = texture.getFile()->read();
 
 //    //Check file opened successfully.
 //    if (!TexFile.IsOpen())

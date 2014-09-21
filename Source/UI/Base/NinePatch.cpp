@@ -96,7 +96,7 @@ void NinePatch::rebind()
     this->addQuad(AlignType::CENTER_BOTTOM);
     this->addQuad(AlignType::CENTER);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 void NinePatch::addQuad(AlignType type)

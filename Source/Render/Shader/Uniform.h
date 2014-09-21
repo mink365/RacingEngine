@@ -5,24 +5,24 @@
 
 namespace re {
 
-enum UniformType {
-    UNIFORM_FLOAT,
-    UNIFORM_VEC2,
-    UNIFORM_VEC3,
-    UNIFORM_VEC4,
-    UNIFORM_INT,
-    UNIFORM_IVEC2,
-    UNIFORM_IVEC3,
-    UNIFORM_IVEC4,
-    UNIFORM_BOOL,
-    UNIFORM_BVEC2,
-    UNIFORM_BVEC3,
-    UNIFORM_BVEC4,
-    UNIFORM_MAT2,
-    UNIFORM_MAT3,
-    UNIFORM_MAT4,
+enum class UniformType {
+    FLOAT,
+    VEC2,
+    VEC3,
+    VEC4,
+    INT,
+    IVEC2,
+    IVEC3,
+    IVEC4,
+    BOOL,
+    BVEC2,
+    BVEC3,
+    BVEC4,
+    MAT2,
+    MAT3,
+    MAT4,
 
-    UNIFORM_TYPE_COUNT
+    _COUNT
 };
 
 class Uniform

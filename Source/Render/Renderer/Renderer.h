@@ -19,7 +19,7 @@ class Shader;
 class RenderTarget;
 class RenderState;
 class Shader;
-class Geometry;
+class Mesh;
 
 class Renderer {
 public:
@@ -41,9 +41,9 @@ public:
     virtual void setupRenderTarget(RenderTarget &target) = 0;
 
     virtual void bindShader(const Shader &shader) = 0;
-    virtual void bindBuffer(const Geometry &geometry) = 0;
+    virtual void bindBuffer(const Mesh &mesh) = 0;
 
-    virtual void renderMesh(const Geometry &geometry) = 0;
+    virtual void renderMesh(const Mesh &mesh) = 0;
 
     virtual void setClearColor(const Color& color);
     virtual void cleanBuffers(bool color, bool depth, bool stencil) = 0;

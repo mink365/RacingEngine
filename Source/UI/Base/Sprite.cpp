@@ -32,7 +32,7 @@ void Sprite::rebind()
 
     QuadStuffer::FillQuad(frame, rect.size, this->getGeometry());
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getGeometry().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)

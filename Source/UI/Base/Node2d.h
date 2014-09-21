@@ -108,6 +108,7 @@ public:
 
 protected:
     Geometry::ptr getGeometry() const;
+    MeshPtr getMesh() const;
 
     virtual void updateLocalMatrix();
     virtual void updateColor();

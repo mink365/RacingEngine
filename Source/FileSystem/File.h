@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "Base/Buffer.h"
+#include "PredefineType.h"
 
 namespace re {
 
@@ -43,7 +43,7 @@ public:
     virtual const std::string& getFullPath() const = 0;
     virtual const std::string getExt() const;
 
-    Buffer::ptr read();
+    ByteBufferPtr read();
     virtual int read( void *buffer, int len ) = 0;
     virtual int write(const void *buffer, int len) = 0;
     virtual int length() const;

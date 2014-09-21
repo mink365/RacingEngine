@@ -1,4 +1,5 @@
 #include "BufferObjectUtil.h"
+#include "Scene/Mesh.h"
 
 #include "opengl.h"
 
@@ -8,8 +9,11 @@ BufferObjectUtil::BufferObjectUtil()
 {
 }
 
-void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
+void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
 {
+    Geometry& geometry = *mesh.getGeometry();
+    MeshDataPtr meshData = mesh.getMeshData();
+
     int face_count = geometry.getFaces().size();
 
     GLushort    pindex_buffer[face_count * 3];
@@ -21,43 +25,53 @@ void BufferObjectUtil::loadGeometryToHardware(Geometry &geometry)
         pindex_buffer[i * 3 + 2] = face.c;
     }
 
-    geometry.ibo.nIndices = face_count * 3;
-    geometry.ibo.indexSize = face_count * 3 *sizeof(GLushort);
+    meshData->indexStream.nIndices = face_count * 3;
+    meshData->indexStream.indexSize = face_count * 3 *sizeof(GLushort);
 
     GLint mode;
-    if (geometry.isStatic()) {
-        mode = GL_STATIC_DRAW;
-    } else {
+//    if (geometry.isStatic()) {
+//        mode = GL_STATIC_DRAW;
+//    } else {
         mode = GL_DYNAMIC_DRAW;
+//    }
+
+    if (meshData->indexStream.vboIB == 0) {
+        glGenBuffers(1, &(meshData->indexStream.vboIB));
     }
 
-    if (geometry.ibo.vboIB == 0) {
-        glGenBuffers(1, &(geometry.ibo.vboIB));
-    }
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.vboIB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.indexSize, pindex_buffer, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.vboIB);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.indexSize, pindex_buffer, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    int vertex_count = geometry.getVertices().size();
-    geometry.vbo.size = vertex_count *sizeof(Vertex);
+    for (auto& unit : meshData->vertexStreams) {
+        VertexBuffer& stream = unit.stream;
 
-    if (geometry.vbo.vbo == 0) {
-        glGenBuffers(1, &(geometry.vbo.vbo));
+        int vertex_count = face_count * 3;
+        stream.size = vertex_count * unit.getVertexSize();
+
+        if (stream.vbo == 0) {
+            glGenBuffers(1, &(stream.vbo));
+        }
+
+        glBindBuffer(GL_ARRAY_BUFFER, stream.vbo);
+        glBufferData(GL_ARRAY_BUFFER, stream.size, (GLvoid*)mesh.getMeshData()->vertices.getData(), mode);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
-
-    glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
-    glBufferData(GL_ARRAY_BUFFER, geometry.vbo.size, (GLvoid*)geometry.getVertices().data(), mode);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void BufferObjectUtil::updateGeometryToHardware(Geometry &geometry)
+void BufferObjectUtil::updateGeometryToHardware(Mesh &mesh)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, geometry.vbo.size, (GLvoid*)geometry.getVertices().data());
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    MeshDataPtr meshData = mesh.getMeshData();
+
+    for (auto& unit : meshData->vertexStreams) {
+        VertexBuffer& stream = unit.stream;
+
+        glBindBuffer(GL_ARRAY_BUFFER, stream.vbo);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, stream.size, (GLvoid*)mesh.getMeshData()->vertices.getData());
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
 }
 
 }

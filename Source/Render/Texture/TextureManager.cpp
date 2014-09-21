@@ -63,7 +63,7 @@ void ImageLoader::loadImage(Texture *texture, Image &image)
 {
     std::string ext = texture->getFile()->getExt();
 
-    Buffer::ptr buf = texture->getFile()->read();
+    ByteBufferPtr buf = texture->getFile()->read();
 
     if (ext == "png") {
         image.loadPNG(buf->getData(), buf->getSize());

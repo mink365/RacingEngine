@@ -7,6 +7,7 @@
 #include "Texture/Texture.h"
 #include "RenderState.h"
 #include "Geometry/Geometry.h"
+#include "Scene/Mesh.h"
 #include "Texture/TextureUtil.h"
 
 namespace re {
@@ -183,15 +184,21 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GLES2Renderer::bindBuffer(const Geometry &geometry)
+void GLES2Renderer::bindBuffer(const Mesh &mesh)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo.vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ibo.vboIB);
+    const MeshDataPtr& meshData = mesh.getMeshData();
+
+    for (auto& stream : meshData->vertexStreams) {
+        glBindBuffer(GL_ARRAY_BUFFER, stream.stream.vbo);
+    }
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.vboIB);
 }
 
-void GLES2Renderer::renderMesh(const Geometry &geometry)
+void GLES2Renderer::renderMesh(const Mesh &mesh)
 {
-    glDrawElements(GL_TRIANGLES, geometry.ibo.nIndices, GL_UNSIGNED_SHORT, NULL);
+    const MeshDataPtr& meshData = mesh.getMeshData();
+
+    glDrawElements(GL_TRIANGLES, meshData->indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
 }
 
 void GLES2Renderer::setClearColor(const Color &color)

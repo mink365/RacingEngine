@@ -240,10 +240,20 @@ Vec2 Node2d::convertNodeToParentSpace(const Vec2 &point) const
 
 Geometry::ptr Node2d::getGeometry() const
 {
+    auto mesh = this->getMesh();
+    if (mesh) {
+        return mesh->getGeometry();
+    }
+
+    return nullptr;
+}
+
+MeshPtr Node2d::getMesh() const
+{
     if (this->attribute != nullptr && this->attribute->getType() == NodeAttributeType::Mesh) {
         auto mesh = std::dynamic_pointer_cast<Mesh>(this->attribute);
 
-        return mesh->getGeometry();
+        return mesh;
     }
 
     return nullptr;
@@ -398,8 +408,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
         unit->setTexture(texture);
     }
 
-    Geometry::ptr geometry = mesh->getGeometry();
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(geometry.get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
     mesh->getMaterial()->setShder(shader);

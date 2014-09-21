@@ -23,12 +23,12 @@ const static GLenum glTypes[] = {
 
 typedef GLvoid (APIENTRY *UNIFORM_FUNC)(GLint location, GLsizei count, const void *value);
 typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
-void *uniformFuncs[UNIFORM_TYPE_COUNT];
+void *uniformFuncs[(int)UniformType::_COUNT];
 
 AttributeFormat getAttributeType(GLenum type) {
     switch(type) {
-        case GL_FLOAT: return ATTR_FORMAT_FLOAT;
-        case GL_UNSIGNED_BYTE: return ATTR_FORMAT_UBYTE;
+        case GL_FLOAT: return AttributeFormat::FLOAT;
+        case GL_UNSIGNED_BYTE: return AttributeFormat::UBYTE;
     }
 
     return (AttributeFormat) - 1;
@@ -36,21 +36,21 @@ AttributeFormat getAttributeType(GLenum type) {
 
 UniformType getUniformType(GLenum type) {
     switch (type){
-        case GL_FLOAT:          return UNIFORM_FLOAT;
-        case GL_FLOAT_VEC2: return UNIFORM_VEC2;
-        case GL_FLOAT_VEC3: return UNIFORM_VEC3;
-        case GL_FLOAT_VEC4: return UNIFORM_VEC4;
-        case GL_INT:            return UNIFORM_INT;
-        case GL_INT_VEC2:   return UNIFORM_IVEC2;
-        case GL_INT_VEC3:   return UNIFORM_IVEC3;
-        case GL_INT_VEC4:   return UNIFORM_IVEC4;
-        case GL_BOOL:       return UNIFORM_BOOL;
-        case GL_BOOL_VEC2:  return UNIFORM_BVEC2;
-        case GL_BOOL_VEC3:  return UNIFORM_BVEC3;
-        case GL_BOOL_VEC4:  return UNIFORM_BVEC4;
-        case GL_FLOAT_MAT2: return UNIFORM_MAT2;
-        case GL_FLOAT_MAT3: return UNIFORM_MAT3;
-        case GL_FLOAT_MAT4: return UNIFORM_MAT4;
+        case GL_FLOAT:      return UniformType::FLOAT;
+        case GL_FLOAT_VEC2: return UniformType::VEC2;
+        case GL_FLOAT_VEC3: return UniformType::VEC3;
+        case GL_FLOAT_VEC4: return UniformType::VEC4;
+        case GL_INT:        return UniformType::INT;
+        case GL_INT_VEC2:   return UniformType::IVEC2;
+        case GL_INT_VEC3:   return UniformType::IVEC3;
+        case GL_INT_VEC4:   return UniformType::IVEC4;
+        case GL_BOOL:       return UniformType::BOOL;
+        case GL_BOOL_VEC2:  return UniformType::BVEC2;
+        case GL_BOOL_VEC3:  return UniformType::BVEC3;
+        case GL_BOOL_VEC4:  return UniformType::BVEC4;
+        case GL_FLOAT_MAT2: return UniformType::MAT2;
+        case GL_FLOAT_MAT3: return UniformType::MAT3;
+        case GL_FLOAT_MAT4: return UniformType::MAT4;
     }
 
     return (UniformType) -1;
@@ -58,21 +58,21 @@ UniformType getUniformType(GLenum type) {
 
 ShaderUtil::ShaderUtil()
 {
-    uniformFuncs[UNIFORM_FLOAT] = (void *) glUniform1fv;
-    uniformFuncs[UNIFORM_VEC2]  = (void *) glUniform2fv;
-    uniformFuncs[UNIFORM_VEC3]  = (void *) glUniform3fv;
-    uniformFuncs[UNIFORM_VEC4]  = (void *) glUniform4fv;
-    uniformFuncs[UNIFORM_INT]   = (void *) glUniform1iv;
-    uniformFuncs[UNIFORM_IVEC2] = (void *) glUniform2iv;
-    uniformFuncs[UNIFORM_IVEC3] = (void *) glUniform3iv;
-    uniformFuncs[UNIFORM_IVEC4] = (void *) glUniform4iv;
-    uniformFuncs[UNIFORM_BOOL]  = (void *) glUniform1iv;
-    uniformFuncs[UNIFORM_BVEC2] = (void *) glUniform2iv;
-    uniformFuncs[UNIFORM_BVEC3] = (void *) glUniform3iv;
-    uniformFuncs[UNIFORM_BVEC4] = (void *) glUniform4iv;
-    uniformFuncs[UNIFORM_MAT2]  = (void *) glUniformMatrix2fv;
-    uniformFuncs[UNIFORM_MAT3]  = (void *) glUniformMatrix3fv;
-    uniformFuncs[UNIFORM_MAT4]  = (void *) glUniformMatrix4fv;
+    uniformFuncs[(int)UniformType::FLOAT] = (void *) glUniform1fv;
+    uniformFuncs[(int)UniformType::VEC2]  = (void *) glUniform2fv;
+    uniformFuncs[(int)UniformType::VEC3]  = (void *) glUniform3fv;
+    uniformFuncs[(int)UniformType::VEC4]  = (void *) glUniform4fv;
+    uniformFuncs[(int)UniformType::INT]   = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::IVEC2] = (void *) glUniform2iv;
+    uniformFuncs[(int)UniformType::IVEC3] = (void *) glUniform3iv;
+    uniformFuncs[(int)UniformType::IVEC4] = (void *) glUniform4iv;
+    uniformFuncs[(int)UniformType::BOOL]  = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::BVEC2] = (void *) glUniform2iv;
+    uniformFuncs[(int)UniformType::BVEC3] = (void *) glUniform3iv;
+    uniformFuncs[(int)UniformType::BVEC4] = (void *) glUniform4iv;
+    uniformFuncs[(int)UniformType::MAT2]  = (void *) glUniformMatrix2fv;
+    uniformFuncs[(int)UniformType::MAT3]  = (void *) glUniformMatrix3fv;
+    uniformFuncs[(int)UniformType::MAT4]  = (void *) glUniformMatrix4fv;
 }
 
 typedef void (*GLInfoFunction) (GLuint program, GLenum pname, GLint* params);
@@ -154,15 +154,15 @@ void ShaderUtil::bindShader(Shader *shader)
 void ShaderUtil::applyAttributeToHardware(Attribute *attr)
 {
     glEnableVertexAttribArray(attr->location);
-    glVertexAttribPointer(attr->location, attr->size, glTypes[attr->type], attr->normalized, attr->stride, (GLvoid *)attr->offset);
+    glVertexAttribPointer(attr->location, attr->size, glTypes[(int)(attr->type)], attr->normalized, attr->stride, (GLvoid *)attr->offset);
 }
 
 void ShaderUtil::applyUniformToHardware(Uniform *uniform)
 {
-    if (uniform->getType() >= UNIFORM_MAT2){
-        ((UNIFORM_MAT_FUNC) uniformFuncs[uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), GL_FALSE, uniform->getData());
+    if ((uniform->getType()) >= UniformType::MAT2){
+        ((UNIFORM_MAT_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), GL_FALSE, uniform->getData());
     } else {
-        ((UNIFORM_FUNC) uniformFuncs[uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), uniform->getData());
+        ((UNIFORM_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), uniform->getData());
     }
 }
 

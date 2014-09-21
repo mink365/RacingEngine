@@ -28,8 +28,8 @@ public:
   }
 };
 
-class FBXCluster;
-class ClusterCollection;
+struct FBXCluster;
+struct ClusterCollection;
 typedef std::shared_ptr<FBXCluster> FBXClusterPtr;
 typedef std::shared_ptr<ClusterCollection> ClusterCollectionPtr;
 struct FBXCluster {
