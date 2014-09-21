@@ -70,13 +70,13 @@ public:
     uint32_t count;
 };
 
-class MeshData : public Shared<MeshData>
+class MeshData
 {
 public:
     virtual ~MeshData() {};
 
     Buffer<float> vertices;
-    Buffer<unsigned short> indices;
+    Buffer<uint> indices;
 
     std::vector<StreamUnit> vertexStreams;
 
@@ -100,7 +100,7 @@ public:
     Geometry::ptr getGeometry();
     void setGeometry(GeometryPtr& g);
 
-    MeshData::ptr getMeshData() const;
+    MeshDataPtr getMeshData() const;
 
     MeshPtr clone();
 
@@ -111,11 +111,11 @@ protected:
 protected:
     Material::ptr material;
 
-    MeshData::ptr data;
+    MeshDataPtr data;
     Geometry::ptr geometry;
 };
 
-inline MeshData::ptr Mesh::getMeshData() const
+inline MeshDataPtr Mesh::getMeshData() const
 {
     return this->data;
 }
