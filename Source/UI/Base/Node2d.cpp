@@ -397,6 +397,8 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
 
+    mesh->setGeometry(Geometry::create());
+
     MaterialPtr material = mesh->getMaterial();
     material->setQueueID(RENDER_QUEUE_UI);
     material->getRenderState().depthState.depthTestEnable = false;
@@ -413,7 +415,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
     mesh->getMaterial()->setShder(shader);
 
-    node->setNodeAttribute(mesh->clone());
+    node->setNodeAttribute(mesh);
 }
 
 }

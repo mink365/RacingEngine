@@ -1,5 +1,7 @@
 #include "Geometry.h"
 
+#include "Mesh.h"
+
 namespace re {
 
 Geometry::Geometry()
@@ -57,6 +59,31 @@ void Geometry::addUv(const Uv &uv)
 void Geometry::addVertexNormal(const Vec3 &normal)
 {
     this->vertexNormals.push_back(normal);
+}
+
+void Geometry::appendToMeshData(MeshDataPtr &meshData)
+{
+    auto& stream = meshData->vertexStreams[0];
+
+    stream.vertices.allocate(this->getVertexCount() * stream.getVertexSize());
+    meshData->indices.allocate(this->faces.size() * 3);
+
+    auto vertexPointer = Map<FbxVertex>(stream.vertices);
+    auto facePointer = Map<Face>(meshData->indices);
+
+    FbxVertex v;
+    for (uint i = 0; i < this->getVertexCount(); i++) {
+        v.xyz = this->positions[i];
+        v.uv = this->uvs[i];
+        v.normal = this->vertexNormals[i];
+        v.color = this->colors[i];
+
+        vertexPointer[i] = v;
+    }
+
+    for (uint i = 0; i < this->faces.size(); i++) {
+        facePointer[i] = this->faces[i];
+    }
 }
 
 void Geometry::clear()

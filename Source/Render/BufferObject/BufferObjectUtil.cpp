@@ -11,18 +11,42 @@ BufferObjectUtil::BufferObjectUtil()
 
 void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
 {
-    Geometry& geometry = *mesh.getGeometry();
+    GeometryPtr geometry = mesh.getGeometry();
     MeshDataPtr meshData = mesh.getMeshData();
 
-    int face_count = geometry.getFaces().size();
+    if (!meshData) {
+        meshData = std::make_shared<MeshData>();
+        mesh.setMeshData(meshData);
 
+        StreamUnit unit;
+        unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));
+        unit.format.push_back(VertexElement(VertexElementType::TextureCoord, AttributeFormat::FLOAT, 2));
+        unit.format.push_back(VertexElement(VertexElementType::Normal, AttributeFormat::FLOAT, 3));
+        unit.format.push_back(VertexElement(VertexElementType::Diffuse, AttributeFormat::FLOAT, 4));
+        meshData->vertexStreams.push_back(unit);
+    }
+
+    if (geometry) {
+        geometry->appendToMeshData(meshData);
+    }
+
+    int face_count = meshData->indices.getSize() / 3;
+
+    auto facePointer = Map<Face>(meshData->indices);
     GLushort    pindex_buffer[face_count * 3];
     for (int i = 0; i < face_count; ++i) {
-        Face face = geometry.getFaces()[i];
+        Face& face = facePointer[i];
 
         pindex_buffer[i * 3 + 0] = face.a;
         pindex_buffer[i * 3 + 1] = face.b;
         pindex_buffer[i * 3 + 2] = face.c;
+    }
+
+    auto vertexPointer = Map<FbxVertex>(meshData->vertexStreams[0].vertices);
+    for (int i = 0; i < face_count * 3; ++i) {
+        FbxVertex& v = vertexPointer[i];
+
+        int j = 0;
     }
 
     meshData->indexStream.nIndices = face_count * 3;
@@ -55,7 +79,7 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, stream.vbo);
-        glBufferData(GL_ARRAY_BUFFER, stream.size, (GLvoid*)mesh.getMeshData()->vertices.getData(), mode);
+        glBufferData(GL_ARRAY_BUFFER, stream.size, (GLvoid*)unit.vertices.getData(), mode);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
@@ -69,7 +93,7 @@ void BufferObjectUtil::updateGeometryToHardware(Mesh &mesh)
         VertexBuffer& stream = unit.stream;
 
         glBindBuffer(GL_ARRAY_BUFFER, stream.vbo);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, stream.size, (GLvoid*)mesh.getMeshData()->vertices.getData());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, stream.size, (GLvoid*)unit.vertices.getData());
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 }

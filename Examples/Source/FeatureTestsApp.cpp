@@ -100,7 +100,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<Lightmap>();
     this->tests.push_back(test);
 
-    currIndex = 12;
+    currIndex = 1;
 
     this->onCurrentTestChanged();
 }

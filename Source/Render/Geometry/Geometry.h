@@ -11,6 +11,8 @@
 #include "Base/Shared.h"
 #include "Base/Clonable.h"
 
+#include "PredefineType.h"
+
 namespace re {
 
 class Vertex {
@@ -60,6 +62,8 @@ public:
     std::vector<Uv>& getUvs();
     std::vector<Vec3>& getVertexNormals();
     std::vector<Color>& getDiffuseColors();
+
+    void appendToMeshData(MeshDataPtr& meshData);
 
     void clear();
 

@@ -140,7 +140,15 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     node->setNodeAttribute(mesh);
     mesh->name = node->name;
 
-    SkinnedMeshDataPtr meshData = std::dynamic_pointer_cast<SkinnedMeshData>(mesh->getMeshData());
+    SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();
+    mesh->setMeshData(meshData);
+
+    StreamUnit unit;
+    unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));
+    unit.format.push_back(VertexElement(VertexElementType::TextureCoord, AttributeFormat::FLOAT, 2));
+    unit.format.push_back(VertexElement(VertexElementType::Normal, AttributeFormat::FLOAT, 3));
+    unit.format.push_back(VertexElement(VertexElementType::Diffuse, AttributeFormat::FLOAT, 4));
+    meshData->vertexStreams.push_back(unit);
 
     // controller points
     int len = reader->ReadInt(st);
@@ -167,21 +175,22 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     VectorCopy(vertexToControl, 0, len, meshData->controlPointsData.vertexToControl);
 
     len = reader->ReadInt(st);
-    uint index[len];
+    short index[len];
     st->read((char*)index, len * 2);
 
     PrintArray("index ", index, len, 1);
 
     int num_of_indices = len;
 
-    auto& indices = mesh->getMeshData()->indices;
-    auto facePointer = Map<Face>(indices);
-    for (int i = 0; i < num_of_indices; i += 3) {
-        Face face(index[i], index[i + 1], index[i + 2]);
-
-        facePointer[i/3] = face;
+    Buffer<uint>& indices = mesh->getMeshData()->indices;
+    indices.allocate(num_of_indices);
+    Face* facePointer = Map<Face>(indices);
+    for (int i = 0; i < num_of_indices/3; ++i) {
+        Face& face = facePointer[i];
+        face.a = index[i*3];
+        face.b = index[i*3 + 1];
+        face.c = index[i*3 + 2];
     }
-
     std::cout << " num of indices " << len << std::endl;
 
     len = reader->ReadInt(st);
@@ -234,9 +243,10 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     std::cout << " normal " << len << std::endl;
 
     // push data
-    auto& vertices = mesh->getMeshData()->vertices;
-    auto vertexPointer = Map<FbxVertex>(vertices);
     int vertexCount = num_of_vertex / 3;
+    auto& vertices = mesh->getMeshData()->vertexStreams[0].vertices;
+    vertices.allocate(vertexCount * sizeof(FbxVertex));
+    auto vertexPointer = Map<FbxVertex>(vertices);
     for (int i = 0; i < vertexCount; ++i) {
         FbxVertex v;
         v.xyz.set(vertex[i * 3], vertex[i * 3 + 1], vertex[i * 3 + 2]);

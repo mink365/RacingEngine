@@ -9,8 +9,6 @@ Mesh::Mesh()
 
 void Mesh::init()
 {
-    this->geometry = Geometry::create();
-
     this->material = Material::create();
     this->material->initDefaultPass();
 }
@@ -20,9 +18,19 @@ Geometry::ptr Mesh::getGeometry()
     return geometry;
 }
 
-void Mesh::setGeometry(GeometryPtr &g)
+void Mesh::setGeometry(const GeometryPtr &g)
 {
     this->geometry = g;
+}
+
+MeshDataPtr Mesh::getMeshData() const
+{
+    return this->data;
+}
+
+void Mesh::setMeshData(MeshDataPtr data)
+{
+    this->data = data;
 }
 
 Material::ptr Mesh::getMaterial()
@@ -78,6 +86,13 @@ void re::ControlPoints::cacheVertex() {
 
       this->controlToVertex.push_back(vertexIndexList);
     }
+}
+
+VertexElement::VertexElement(VertexElementType type, AttributeFormat format, int size)
+{
+    this->type = type;
+    this->format = format;
+    this->size = size;
 }
 
 }

@@ -29,6 +29,8 @@ enum class VertexElementType {
 
 class VertexElement {
 public:
+    VertexElement(VertexElementType type, AttributeFormat format, int size);
+
     size_t getElementSize() {
         switch (format) {
         case AttributeFormat::UBYTE:
@@ -65,6 +67,8 @@ public:
 public:
     StreamType type;
     std::vector<VertexElement> format;
+
+    Buffer<float> vertices;
     VertexBuffer stream;
 
     uint32_t count;
@@ -75,11 +79,9 @@ class MeshData
 public:
     virtual ~MeshData() {};
 
-    Buffer<float> vertices;
-    Buffer<uint> indices;
-
     std::vector<StreamUnit> vertexStreams;
 
+    Buffer<uint> indices;
     IndexBuffer indexStream;
 };
 
@@ -98,9 +100,10 @@ public:
     void setMaterial(MaterialPtr& m);
 
     Geometry::ptr getGeometry();
-    void setGeometry(GeometryPtr& g);
+    void setGeometry(const GeometryPtr &g);
 
     MeshDataPtr getMeshData() const;
+    void setMeshData(MeshDataPtr data);
 
     MeshPtr clone();
 
@@ -114,11 +117,6 @@ protected:
     MeshDataPtr data;
     Geometry::ptr geometry;
 };
-
-inline MeshDataPtr Mesh::getMeshData() const
-{
-    return this->data;
-}
 
 class ControlPoints
 {
@@ -161,7 +159,7 @@ struct FbxVertex
 };
 
 inline void SkinnedMeshData::setVertex(uint index, const Vec3& position) {
-    auto pointer = Map<FbxVertex>(this->vertices);
+    auto pointer = Map<FbxVertex>(this->vertexStreams[0].vertices);
 
     pointer[index].xyz = position;
 }

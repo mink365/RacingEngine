@@ -11,6 +11,11 @@ template<class T>
 class Buffer
 {
 public:
+    Buffer() {
+        this->_data = nullptr;
+        this->_size = 0;
+    }
+
     Buffer(size_t capacity) {
         this->_data = nullptr;
         this->_size = 0;
@@ -25,7 +30,7 @@ public:
     void allocate(size_t capacity) {
         this->clear();
 
-        this->_data = (T*)malloc(capacity);
+        this->_data = (T*)malloc(capacity * sizeof(T));
         this->_size = capacity;
     };
     void clear() {
@@ -50,6 +55,10 @@ public:
     size_t getSize() {
         return _size;
     };
+
+    size_t getByteSize() {
+        return _size * sizeof(T);
+    }
 
     bool isNull() {
         return (this->_size == 0) || (this->_data == nullptr);

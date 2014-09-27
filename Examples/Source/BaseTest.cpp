@@ -32,26 +32,26 @@ void setLightShaderAttribute(Shader::ptr& shader) {
     Attribute *vertAttr = shader->getAttribute("aPosition");
     vertAttr->setType(AttributeFormat::FLOAT);
     vertAttr->setSize(3);
-    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setStride(sizeof(FbxVertex));
     vertAttr->setOffset(0);
 
     Attribute *uvAttr = shader->getAttribute("aTexCoord");
     uvAttr->setType(AttributeFormat::FLOAT);
     uvAttr->setSize(2);
-    uvAttr->setStride(sizeof(Vertex));
+    uvAttr->setStride(sizeof(FbxVertex));
     uvAttr->setOffset((3) * 4);
-
-    Attribute *colorAttr = shader->getAttribute("aColor");
-    colorAttr->setType(AttributeFormat::FLOAT);
-    colorAttr->setSize(4);
-    colorAttr->setStride(sizeof(Vertex));
-    colorAttr->setOffset((8) * 4);
 
     Attribute *normalAttr = shader->getAttribute("aNormal");
     normalAttr->setType(AttributeFormat::FLOAT);
     normalAttr->setSize(3);
-    normalAttr->setStride(sizeof(Vertex));
+    normalAttr->setStride(sizeof(FbxVertex));
     normalAttr->setOffset((5) * 4);
+
+    Attribute *colorAttr = shader->getAttribute("aColor");
+    colorAttr->setType(AttributeFormat::FLOAT);
+    colorAttr->setSize(4);
+    colorAttr->setStride(sizeof(FbxVertex));
+    colorAttr->setOffset((8) * 4);
 }
 
 void setPTCShaderAttribute(Shader::ptr& shader) {
@@ -59,14 +59,14 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         Attribute *vertAttr = shader->getAttribute("aPosition");
         vertAttr->setType(AttributeFormat::FLOAT);
         vertAttr->setSize(3);
-        vertAttr->setStride(sizeof(Vertex));
+        vertAttr->setStride(sizeof(FbxVertex));
         vertAttr->setOffset(0);
 
         Attribute *uvAttr = shader->getAttribute("aTexCoord");
         if (uvAttr) {
             uvAttr->setType(AttributeFormat::FLOAT);
             uvAttr->setSize(2);
-            uvAttr->setStride(sizeof(Vertex));
+            uvAttr->setStride(sizeof(FbxVertex));
             uvAttr->setOffset((3) * 4);
         }
 
@@ -74,7 +74,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         if (normalAttr) {
             normalAttr->setType(AttributeFormat::FLOAT);
             normalAttr->setSize(3);
-            normalAttr->setStride(sizeof(Vertex));
+            normalAttr->setStride(sizeof(FbxVertex));
             normalAttr->setOffset((5) * 4);
         }
 
@@ -82,21 +82,21 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         if (colorAttr) {
             colorAttr->setType(AttributeFormat::FLOAT);
             colorAttr->setSize(4);
-            colorAttr->setStride(sizeof(Vertex));
+            colorAttr->setStride(sizeof(FbxVertex));
             colorAttr->setOffset((8) * 4);
         }
     } else {
         Attribute *vertAttr = shader->getAttribute("inVertex");
         vertAttr->setType(AttributeFormat::FLOAT);
         vertAttr->setSize(3);
-        vertAttr->setStride(sizeof(Vertex));
+        vertAttr->setStride(sizeof(FbxVertex));
         vertAttr->setOffset(0);
 
         Attribute *uvAttr = shader->getAttribute("inTexCoord");
         if (uvAttr) {
             uvAttr->setType(AttributeFormat::FLOAT);
             uvAttr->setSize(2);
-            uvAttr->setStride(sizeof(Vertex));
+            uvAttr->setStride(sizeof(FbxVertex));
             uvAttr->setOffset((3) * 4);
         }
 
@@ -104,7 +104,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         if (normalAttr) {
             normalAttr->setType(AttributeFormat::FLOAT);
             normalAttr->setSize(3);
-            normalAttr->setStride(sizeof(Vertex));
+            normalAttr->setStride(sizeof(FbxVertex));
             normalAttr->setOffset((5) * 4);
         }
 
@@ -112,7 +112,7 @@ void setPTCShaderAttribute(Shader::ptr& shader) {
         if (colorAttr) {
             colorAttr->setType(AttributeFormat::FLOAT);
             colorAttr->setSize(4);
-            colorAttr->setStride(sizeof(Vertex));
+            colorAttr->setStride(sizeof(FbxVertex));
             colorAttr->setOffset((8) * 4);
         }
     }
