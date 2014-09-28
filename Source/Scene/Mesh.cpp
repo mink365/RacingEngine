@@ -63,6 +63,7 @@ void Mesh::copyProperties(const NodeAttribute *att)
     if (inst) {
         this->material = inst->material;
 
+        this->data = inst->data;
 //        if (!inst->geometry->isStatic()) {
 //            // only dynamic geometry need to be copy
 //            this->geometry = inst->geometry;

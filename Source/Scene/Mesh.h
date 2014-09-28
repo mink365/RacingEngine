@@ -77,7 +77,7 @@ public:
 class MeshData
 {
 public:
-    virtual ~MeshData() {};
+    virtual ~MeshData() {}
 
     std::vector<StreamUnit> vertexStreams;
 
@@ -122,9 +122,6 @@ class ControlPoints
 {
     friend class SkeletonController;
     friend class FbxParser;
-
-public:
-    ControlPoints() {};
 
 protected:
     void cacheVertex();

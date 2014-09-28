@@ -19,6 +19,7 @@ re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skelet
     this->animation = animation;
 
     this->mesh = dynamic_pointer_cast<Mesh>(this->sceneNode->getNodeAttribute());
+    this->meshData = std::dynamic_pointer_cast<SkinnedMeshData>(this->mesh->getMeshData());
 }
 
 re::SkeletonPtr re::SkeletonController::getSkeleton()
