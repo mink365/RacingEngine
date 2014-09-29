@@ -122,7 +122,7 @@ void setDepthRGBAAttribute(Shader::ptr& shader) {
     Attribute *vertAttr = shader->getAttribute("aPosition");
     vertAttr->setType(AttributeFormat::FLOAT);
     vertAttr->setSize(3);
-    vertAttr->setStride(sizeof(Vertex));
+    vertAttr->setStride(sizeof(FbxVertex));
     vertAttr->setOffset(0);
 }
 
