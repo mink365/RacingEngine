@@ -173,28 +173,27 @@ void ShadowTest::Update(float dt)
 
     box->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
-    auto mesh = std::dynamic_pointer_cast<re::Mesh>(sprite->getNodeAttribute());
-    TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+    auto spriteMesh = std::dynamic_pointer_cast<re::Mesh>(sprite->getNodeAttribute());
+    auto groundMesh = std::dynamic_pointer_cast<re::Mesh>(ground->getNodeAttribute());
 
     auto& renderManager = SceneManager::getInstance().getRenderManager();
 
     if (renderManager.renderViewList.size() > 2) {
         auto view = renderManager.renderViewList[0];
-
         auto texture = view->renderTarget->getTexture();
+
+        TextureUnitState::ptr unit = spriteMesh->getMaterial()->getPass(0)->getTextureUnit(0);
         unit->setTexture(texture);
 
-        glActiveTexture(GL_TEXTURE0 + 1);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, view->renderTarget->getTexture()->getGlID());
-        glActiveTexture(GL_TEXTURE0);
+        if (groundMesh->getMaterial()->getPass(0)->getTextureUnitCount() < 2) {
+            groundMesh->getMaterial()->getPass(0)->addTextureUnit(TextureUnitState::create());
+            groundMesh->getMaterial()->getPass(0)->addTextureUnit(TextureUnitState::create());
 
-        glActiveTexture(GL_TEXTURE0 + 2);
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, view->renderTarget->getTexture()->getGlID());
-        glActiveTexture(GL_TEXTURE0);
+            groundMesh->getMaterial()->getPass(0)->getTextureUnit(1)->setTexture(texture);
+            groundMesh->getMaterial()->getPass(0)->getTextureUnit(2)->setTexture(texture);
+        }
     }
 
-    // TODO: clear func?
+//    // TODO: clear func?
     renderManager.initDefaultRenderState();
 }

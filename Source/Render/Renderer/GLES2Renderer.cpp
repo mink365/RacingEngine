@@ -77,13 +77,13 @@ void GLES2Renderer::bindTexture(int unit, bool enable, const Texture& texture)
 {
     GLenum target = TextureTargetTypeToGL(texture.getTarget());
 
-//    if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
+    if (this->context.textureUnits[unit].textureId != texture.getGlID()) {
         this->activateTextureUnit(unit);
 
         glBindTexture(target, texture.getGlID());
 
         this->context.textureUnits[unit].textureId = texture.getGlID();
-//    }
+    }
 }
 
 void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
