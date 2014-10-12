@@ -102,8 +102,8 @@ protected:
     int refreshFlags;
 
 protected:
-    static const int RF_LOCAL_TRANSFORM = 0x01;
-    static const int RF_WORLD_TRANSFORM = 0x02;
+    static const int RF_LOCAL_TRANSFORM = 0x01 << 0;
+    static const int RF_WORLD_TRANSFORM = 0x01 << 1;
 };
 
 } // namespace re

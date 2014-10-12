@@ -334,7 +334,6 @@ void Node2d::updateColor()
         worldColor = color;
     }
 
-
     for (auto child : this->children) {
         std::shared_ptr<Node2d> node = std::dynamic_pointer_cast<Node2d>(child);
 

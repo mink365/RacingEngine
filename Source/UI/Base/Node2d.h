@@ -123,6 +123,9 @@ protected:
     Vec2 anchorPointInPoints;
 
     Vec2 skew;
+
+protected:
+    static const int RF_COLOR = 0x01 << 3;
 };
 
 }
