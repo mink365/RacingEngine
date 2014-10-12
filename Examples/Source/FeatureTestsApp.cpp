@@ -154,13 +154,12 @@ void FeatureTestsApp::createBaseUI()
 
     labelTitle = std::make_shared<Label>();
     labelTitle->init(font);
+    labelTitle->setAnchorPoint(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
     labelFps = std::make_shared<Label>();
     labelFps->init(font);
-    labelFps->setText("xHtbo xx");
-
-    labelFps->setPosition(Vec2(300, 300 + 40));
+    labelFps->setText("HelleH");
 
     auto buttonNext = CreateView<ImageButton>();
     buttonNext->initView("b_you.png", "b_you.png", "b_you.png");
@@ -184,7 +183,6 @@ void FeatureTestsApp::createBaseUI()
     scene->addChild(buttonNext);
     scene->addChild(buttonPrev);
 
-    LayoutUtil::layoutParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER);
     LayoutUtil::layoutParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
     LayoutUtil::layoutParent(labelFps, AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
     LayoutUtil::layoutParent(buttonPrev, AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
