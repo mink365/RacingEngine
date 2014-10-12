@@ -21,6 +21,43 @@ struct KerningPair
     float kerning;
 };
 
+/**
+ *
+ * A structure that describe a glyph.
+ *
+ *
+ * Glyph metrics:
+ * --------------
+ *
+ *                       xmin                     xmax
+ *                        |                         |
+ *                        |<-------- width -------->|
+ *                        |                         |
+ *              |         +-------------------------+----------------- ymax
+ *              |         |    ggggggggg   ggggg    |     ^        ^
+ *              |         |   g:::::::::ggg::::g    |     |        |
+ *              |         |  g:::::::::::::::::g    |     |        |
+ *              |         | g::::::ggggg::::::gg    |     |        |
+ *              |         | g:::::g     g:::::g     |     |        |
+ *    offset_x -|-------->| g:::::g     g:::::g     |  offset_y    |
+ *              |         | g:::::g     g:::::g     |     |        |
+ *              |         | g::::::g    g:::::g     |     |        |
+ *              |         | g:::::::ggggg:::::g     |     |        |
+ *              |         |  g::::::::::::::::g     |     |      height
+ *              |         |   gg::::::::::::::g     |     |        |
+ *  baseline ---*---------|---- gggggggg::::::g-----*--------      |
+ *            / |         |             g:::::g     |              |
+ *     origin   |         | gggggg      g:::::g     |              |
+ *              |         | g:::::gg   gg:::::g     |              |
+ *              |         |  g::::::ggg:::::::g     |              |
+ *              |         |   gg:::::::::::::g      |              |
+ *              |         |     ggg::::::ggg        |              |
+ *              |         |         gggggg          |              v
+ *              |         +-------------------------+----------------- ymin
+ *              |                                   |
+ *              |------------- advance_x ---------->|
+ */
+
 class Glyph : public Shared<Glyph>
 {
 public:

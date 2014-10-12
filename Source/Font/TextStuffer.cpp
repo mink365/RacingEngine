@@ -27,6 +27,9 @@ void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::con
     Pen pen;
     Markup markup;
 
+    this->vertexOrigin = pen;
+    this->rect.set(0,0,0,0);
+
     for (auto span : spans) {
         this->tagStackToMarkup(span->stack, markup);
 
@@ -79,6 +82,12 @@ void TextStuffer::AddGlyph(Pen &pen, const Color &color, const Glyph &glyph)
     QuadStuffer::AddOriginalQuad(rect, textureRect, color, glyph.frame, geometry);
 
     pen.x += glyph.advanceX * scale.x;
+
+    if (this->rect.getWidth() == 0) {
+        this->rect = rect;
+    } else {
+        this->rect = this->rect.unionWithRect(rect);
+    }
 }
 
 std::vector<std::wstring> &split(const std::wstring &s, wchar_t delim, std::vector<std::wstring> &elems) {

@@ -14,18 +14,20 @@ Label::Label()
 void Label::init(Font::ptr &font)
 {
     this->font = font;
+
+    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    InitNodeForLeaf(node, font->getTexture(), "Shader_Font");
 }
 
 void Label::setText(const string &text)
 {
-    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, font->getTexture(), "Shader_Font");
-
     this->getGeometry()->clear();
 
     TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), this->getGeometry(), this->font);
 
-//    // TODO: set the size and anchorPoint pixel
+    this->setContentSize(TextStuffer::getInstance().getTextRect().size);
+    // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
+    this->anchorPointInPoints += TextStuffer::getInstance().getTextRect().origin;
 
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
