@@ -19,11 +19,11 @@ extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
 
 void UITest::Init()
 {
-    SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
+    SpritePtr sprite = CreateView<Sprite>("store_icon_coin.png");
     sprite->rebind();
     sprite->setPosition(Vec2(300, 300 + 200));
 
-    NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateView<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(200, 100));
     patch->rebind();
@@ -37,18 +37,15 @@ void UITest::Init()
         font = FontManager::getInstance().getFont("default");
     }
 
-    LabelPtr label = std::make_shared<Label>();
-    label->init(font);
+    LabelPtr label = CreateView<Label>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
 
-    LabelPtr label2 = std::make_shared<Label>();
-    label2->init(font);
+    LabelPtr label2 = CreateView<Label>(font);
     label2->setText("xHtbo xx");
 
     label2->setPosition(Vec2(300, 300 + 40));
 
-    auto button = CreateView<ImageButton>();
-    button->initView("rate.png", "rate_press.png", "rate.png");
+    auto button = CreateView<ImageButton>("rate.png", "rate_press.png", "rate.png");
 
     auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
@@ -85,14 +82,13 @@ std::shared_ptr<Window> UITest::createWin()
     auto win = CreateView<Window>();
     win->setContentSize(Size(400, 500));
 
-    NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateView<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(400, 500));
     patch->rebind();
     patch->setAnchorPoint(Vec2(0.5, 0.5));
 
-    auto button = CreateView<ImageButton>();
-    button->initView("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
+    auto button = CreateView<ImageButton>("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
 
     win->addChild(patch);
     win->addChild(button);

@@ -93,14 +93,11 @@ void SceneMaterialTest::createUI()
         font = FontManager::getInstance().getFont("default");
     }
 
-    labelName = std::make_shared<Label>();
-    labelName->init(font);
+    labelName = CreateView<Label>(font);
     labelName->setText("Name");
 
-    auto buttonNext = CreateView<ImageButton>();
-    buttonNext->initView("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateView<ImageButton>();
-    buttonPrev->initView("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](WidgetPtr& widget) {
         if (widget == buttonNext) {

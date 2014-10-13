@@ -152,19 +152,15 @@ void FeatureTestsApp::createBaseUI()
         font = FontManager::getInstance().getFont("default");
     }
 
-    labelTitle = std::make_shared<Label>();
-    labelTitle->init(font);
+    labelTitle = CreateView<Label>(font);
     labelTitle->setAnchorPoint(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
-    labelFps = std::make_shared<Label>();
-    labelFps->init(font);
+    labelFps = CreateView<Label>(font);
     labelFps->setText("HelleH");
 
-    auto buttonNext = CreateView<ImageButton>();
-    buttonNext->initView("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateView<ImageButton>();
-    buttonPrev->initView("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](WidgetPtr& widget) {
         if (widget == buttonNext) {

@@ -93,7 +93,7 @@ void ShadowTest::Init()
     dirLight->spotAngle = 50;
     dirLight->shadowCameraFov = 50;
 
-    sprite = std::make_shared<Sprite>("diffuse.png");
+    sprite = CreateView<Sprite>("diffuse.png");
     sprite->rebind();
     sprite->setScale(Vec2(1, 1));
     sprite->setPosition(Vec2(0, 0));

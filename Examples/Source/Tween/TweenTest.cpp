@@ -26,11 +26,11 @@ void TweenTest::Init()
     TextureParser::getInstance().addTextures("UI/", "png");
     TextureManager::getInstance().loadTextures();
 
-    SpritePtr sprite = std::make_shared<Sprite>("store_icon_coin.png");
+    SpritePtr sprite = CreateView<Sprite>("store_icon_coin.png");
     sprite->rebind();
     sprite->setPosition(Vec2(300, 300 + 200));
 
-    NinePatchPtr patch = std::make_shared<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateView<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(200, 100));
     patch->rebind();
@@ -44,13 +44,11 @@ void TweenTest::Init()
         font = FontManager::getInstance().getFont("default");
     }
 
-    LabelPtr label = std::make_shared<Label>();
-    label->init(font);
+    LabelPtr label = CreateView<Label>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
     label->setPosition(Vec2(300, 500 + 40));
 
-    LabelPtr label2 = std::make_shared<Label>();
-    label2->init(font);
+    LabelPtr label2 = CreateView<Label>(font);
     label2->setText("xHtbo xx");
     label2->setPosition(Vec2(300, 300 + 40));
 
