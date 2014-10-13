@@ -5,7 +5,7 @@
 
 namespace re {
 
-template<class T>
+template<class T, typename... Args>
 class Shared
 {
 public:
@@ -13,30 +13,14 @@ public:
     typedef std::shared_ptr<const T> constPtr;
 
 public:
-    static std::shared_ptr<T> create();
-
-//    static std::shared_ptr<T> create(Args... args) {
-////        return std::make_shared<T>(std::forward(args)...);
-
-//        T* t = new T(std::forward<args>...);
-
-//        return nullptr;
-//    }
+    static std::shared_ptr<T> create(Args... args);
 };
 
-template<class T>
-std::shared_ptr<T> Shared<T>::create()
+template<class T, typename... Args>
+std::shared_ptr<T> Shared<T, Args...>::create(Args... args)
 {
-//    T* temp = new T(std::forward<args>...);
-
-    return std::make_shared<T>();
+    return std::make_shared<T>(args...);
 }
-
-//template<class T, typename... Args>
-//std::shared_ptr<T> Shared<T, ...Args>::create(Args... args)
-//{
-//    return std::make_shared<T>();
-//}
 
 }
 

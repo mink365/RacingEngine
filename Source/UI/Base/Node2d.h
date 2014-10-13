@@ -10,12 +10,12 @@
 
 namespace re {
 
-template<class T>
-std::shared_ptr<T> CreateView() {
+template<class T, typename... Args>
+std::shared_ptr<T> CreateView(Args... args) {
     auto view = std::make_shared<T>();
 
     if (view != nullptr) {
-        view->init();
+        view->init(args...);
     }
 
     return view;
@@ -112,6 +112,12 @@ protected:
 
     virtual void updateLocalMatrix();
     virtual void updateColor();
+
+    /**
+     * @brief updateViewColor
+     * update the color of vertex/geometry
+     */
+    virtual void updateViewColor();
 
 protected:
     virtual NodePtr createCloneInstance() const;
