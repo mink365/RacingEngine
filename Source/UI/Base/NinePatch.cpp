@@ -6,9 +6,14 @@
 
 namespace re {
 
-NinePatch::NinePatch(const std::string& tex)
+void NinePatch::init(const std::string& tex)
 {
     this->frame = TextureFrameManager::getInstance().getFrame(tex);
+
+    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
+
+    this->rebind();
 }
 
 void NinePatch::setStretch(float x, float y, float w, float h)
@@ -69,9 +74,6 @@ float NinePatch::getTopPadding() const
 
 void NinePatch::rebind()
 {
-    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
-
     this->vertexGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
     this->textureGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
 

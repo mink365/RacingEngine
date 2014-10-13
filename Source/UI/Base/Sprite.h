@@ -10,13 +10,13 @@ class Sprite : public Node2d
 {
 public:
     Sprite() {};
-    Sprite(const std::string& tex);
-    Sprite(const std::string& tex, const Rect& rect);
 
-    void rebind();
-
-protected:
+    void init(const std::string& tex);
+    void init(const std::string& tex, const Rect& rect);
     void init(const TextureFrame::ptr& tex, const Rect& rect);
+
+public:
+    void rebind();
 
     virtual void updateViewColor() override;
 

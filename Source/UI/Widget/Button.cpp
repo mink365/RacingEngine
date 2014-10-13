@@ -105,11 +105,15 @@ void BaseButton::copyProperties(const Node *node)
     }
 }
 
-void ImageButton::initView(const string &texDefault, const string &texPress, const string &texDis)
+void ImageButton::init(const string &texDefault, const string &texPress, const string &texDis)
 {
-    this->defaultSprite = std::make_shared<Sprite>(texDefault);
-    this->pressedSprite = std::make_shared<Sprite>(texPress);
-    this->disabledSprite = std::make_shared<Sprite>(texDis);
+    if (!BaseButton::init()) {
+        return;
+    }
+
+    this->defaultSprite = CreateView<Sprite>(texDefault);
+    this->pressedSprite = CreateView<Sprite>(texPress);
+    this->disabledSprite = CreateView<Sprite>(texDis);
 
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();

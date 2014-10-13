@@ -6,10 +6,10 @@
 
 namespace re {
 
-Sprite::Sprite(const std::string& tex)
+void Sprite::init(const std::string& tex)
 {
     TextureFrame::ptr texture = TextureFrameManager::getInstance().getFrame(tex);
-//    assert(this->texture != nullptr);
+    assert(texture != nullptr);
 
     Rect rect;
     rect.size = texture->getOriginalSize();
@@ -17,22 +17,12 @@ Sprite::Sprite(const std::string& tex)
     this->init(texture, rect);
 }
 
-Sprite::Sprite(const string &tex, const Rect &rect)
+void Sprite::init(const string &tex, const Rect &rect)
 {
     TextureFrame::ptr texture = TextureFrameManager::getInstance().getFrame(tex);
-    assert(this->frame != nullptr);
+    assert(texture != nullptr);
 
     this->init(texture, rect);
-}
-
-void Sprite::rebind()
-{
-    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
-
-    QuadStuffer::FillQuad(frame, rect.size, this->worldColor, this->getGeometry());
-
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
@@ -41,6 +31,18 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
     this->rect = rect;
 
     this->setContentSize(rect.size);
+
+    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
+
+    this->rebind();
+}
+
+void Sprite::rebind()
+{
+    QuadStuffer::FillQuad(frame, rect.size, this->worldColor, this->getGeometry());
+
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 void Sprite::updateViewColor()
