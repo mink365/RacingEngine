@@ -6,14 +6,15 @@ QuadStuffer::QuadStuffer()
 {
 }
 
-void QuadStuffer::FillQuad(const TextureFrame::constPtr &frame, const Size &size, const Geometry::ptr &geomerty)
+void QuadStuffer::FillQuad(const TextureFrame::constPtr &frame, const Size &size, const Color &color, const Geometry::ptr &geomerty)
 {
     Rect rect(0, 0, size.width, size.height);
 
     const Size& originalSize = frame->getOriginalSize();
     Rect textureRect(0, 0, originalSize.width, originalSize.height);
 
-    AddOriginalQuad(rect, textureRect, Color::WHITE, frame, geomerty);
+    geomerty->clear();
+    AddOriginalQuad(rect, textureRect, color, frame, geomerty);
 }
 
 

@@ -36,6 +36,8 @@ public:
 protected:
     void addQuad(AlignType type);
 
+    virtual void updateViewColor() override;
+
 protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyProperties(const Node* node) override;

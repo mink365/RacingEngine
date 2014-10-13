@@ -30,7 +30,7 @@ void Sprite::rebind()
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
-    QuadStuffer::FillQuad(frame, rect.size, this->getGeometry());
+    QuadStuffer::FillQuad(frame, rect.size, this->worldColor, this->getGeometry());
 
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
@@ -41,6 +41,11 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
     this->rect = rect;
 
     this->setContentSize(rect.size);
+}
+
+void Sprite::updateViewColor()
+{
+    this->rebind();
 }
 
 NodePtr Sprite::createCloneInstance() const

@@ -18,6 +18,8 @@ public:
 protected:
     void init(const TextureFrame::ptr& tex, const Rect& rect);
 
+    virtual void updateViewColor() override;
+
 protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyProperties(const Node* node) override;

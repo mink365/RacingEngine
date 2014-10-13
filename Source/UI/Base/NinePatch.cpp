@@ -83,7 +83,6 @@ void NinePatch::rebind()
     this->textureGrid.rt.set(this->centerRect.getMaxX(), this->centerRect.getMaxY(),
                              this->getRightPadding(), this->getTopPadding());
 
-    // TODO: clear the geometry
     this->getGeometry()->clear();
 
     this->addQuad(AlignType::LEFT_BOTTOM);
@@ -104,7 +103,17 @@ void NinePatch::addQuad(AlignType type)
     Rect vRect = vertexGrid.getRect(type);
     Rect tRect = textureGrid.getRect(type);
 
-    QuadStuffer::AddOriginalQuad(vRect, tRect, Color::WHITE, this->frame, this->getGeometry());
+    QuadStuffer::AddOriginalQuad(vRect, tRect, this->worldColor, this->frame, this->getGeometry());
+}
+
+void NinePatch::updateViewColor()
+{
+    auto& colors = this->getGeometry()->getDiffuseColors();
+    for (int i = 0; i < colors.size(); ++i) {
+        colors[i] = this->worldColor;
+    }
+
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
 }
 
 NodePtr NinePatch::createCloneInstance() const
