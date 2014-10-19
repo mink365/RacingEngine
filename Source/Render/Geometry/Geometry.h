@@ -35,6 +35,20 @@ public:
     Face(uint a, uint b, uint c);
 };
 
+/**
+ * @brief CalculateTangents
+ * @param positions
+ * @param vertexNormals
+ * @param uvs
+ * @param faces
+ * @param tangents
+ *
+ * http://www.terathon.com/code/tangent.html
+ *
+ * http://blog.db-in.com/calculating-normals-and-tangent-space/
+ */
+void CalculateTangents(std::vector<Vec3>& positions, std::vector<Vec3>& vertexNormals, std::vector<Uv>& uvs, std::vector<Face>& faces, std::vector<Vec4>& tangents);
+
 class Geometry : public Shared<Geometry>, public Clonable<Geometry>
 {
     friend class SkeletonController;

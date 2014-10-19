@@ -432,6 +432,8 @@ public:
     Vec4 &set(const Vec4 &source);
     Vec4 &zero();
 
+    Vec4& operator =(const Vec3& source);
+
     float operator [](int index) const;
     float &operator [](int index);
 
@@ -468,6 +470,16 @@ inline Vec4 &Vec4::zero() {
     this->x = 0;
     this->y = 0;
     this->z = 0;
+    this->w = 0;
+
+    return *this;
+}
+
+inline Vec4 &Vec4::operator =(const Vec3 &source)
+{
+    this->x = source.x;
+    this->y = source.y;
+    this->z = source.z;
     this->w = 0;
 
     return *this;
