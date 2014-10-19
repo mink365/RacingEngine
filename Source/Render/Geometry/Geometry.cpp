@@ -6,6 +6,30 @@ namespace re {
 
 Geometry::Geometry()
 {
+    // default append func
+    appendFunc = [](Geometry& geometry, MeshData& meshData) {
+        auto& stream = meshData.vertexStreams[0];
+
+        stream.vertices.allocate(geometry.getVertexCount() * stream.getVertexSize());
+        meshData.indices.allocate(geometry.faces.size() * 3);
+
+        auto vertexPointer = Map<FbxVertex>(stream.vertices);
+        auto facePointer = Map<Face>(meshData.indices);
+
+        FbxVertex v;
+        for (uint i = 0; i < geometry.getVertexCount(); i++) {
+            v.xyz = geometry.positions[i];
+            v.uv = geometry.uvs[i];
+            v.normal = geometry.vertexNormals[i];
+            v.color = geometry.colors[i];
+
+            vertexPointer[i] = v;
+        }
+
+        for (uint i = 0; i < geometry.faces.size(); i++) {
+            facePointer[i] = geometry.faces[i];
+        }
+    };
 }
 
 void Geometry::addVertex(const re::Vertex& v) {
@@ -61,29 +85,19 @@ void Geometry::addVertexNormal(const Vec3 &normal)
     this->vertexNormals.push_back(normal);
 }
 
+void Geometry::calculateTangents()
+{
+    CalculateTangents(this->positions, this->vertexNormals, this->uvs, this->faces, this->tangents);
+}
+
 void Geometry::appendToMeshData(MeshDataPtr &meshData)
 {
-    auto& stream = meshData->vertexStreams[0];
+    this->appendFunc(*this, *meshData);
+}
 
-    stream.vertices.allocate(this->getVertexCount() * stream.getVertexSize());
-    meshData->indices.allocate(this->faces.size() * 3);
-
-    auto vertexPointer = Map<FbxVertex>(stream.vertices);
-    auto facePointer = Map<Face>(meshData->indices);
-
-    FbxVertex v;
-    for (uint i = 0; i < this->getVertexCount(); i++) {
-        v.xyz = this->positions[i];
-        v.uv = this->uvs[i];
-        v.normal = this->vertexNormals[i];
-        v.color = this->colors[i];
-
-        vertexPointer[i] = v;
-    }
-
-    for (uint i = 0; i < this->faces.size(); i++) {
-        facePointer[i] = this->faces[i];
-    }
+void Geometry::setMeshDataAppendFunc(std::function<void (Geometry &, MeshData &)> func)
+{
+    this->appendFunc = func;
 }
 
 void Geometry::clear()

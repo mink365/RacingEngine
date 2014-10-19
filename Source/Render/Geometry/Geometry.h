@@ -77,13 +77,16 @@ public:
     std::vector<Vec3>& getVertexNormals();
     std::vector<Color>& getDiffuseColors();
 
+    void calculateTangents();
+
     void appendToMeshData(MeshDataPtr& meshData);
+    void setMeshDataAppendFunc(std::function<void(Geometry& geometry, MeshData& meshData)> func);
 
     void clear();
 
     Geometry::ptr clone() const override;
 
-private:
+public:
     std::vector<Vec3> positions;
     std::vector<Vec3> vertexNormals;
     std::vector<Color> colors;
@@ -94,6 +97,8 @@ private:
     // surface normal
     std::vector<Vec3> normals;
     std::vector<Face> faces;
+
+    std::function<void(Geometry& geometry, MeshData& meshData)> appendFunc;
 };
 
 inline uint Geometry::getVertexCount()
