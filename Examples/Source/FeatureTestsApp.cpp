@@ -36,6 +36,7 @@
 #include "Reflection/Reflection.h"
 #include "Refraction/Refraction.h"
 #include "Lightmap/Lightmap.h"
+#include "Bumpmap/Bumpmap.h"
 
 #include "Util/LogUtil.h"
 
@@ -99,8 +100,10 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::make_shared<Lightmap>();
     this->tests.push_back(test);
+    test = std::make_shared<Bumpmap>();
+    this->tests.push_back(test);
 
-    currIndex = 1;
+    currIndex = this->tests.size() - 1;
 
     this->onCurrentTestChanged();
 }

@@ -42,13 +42,6 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
         pindex_buffer[i * 3 + 2] = face.c;
     }
 
-    auto vertexPointer = Map<FbxVertex>(meshData->vertexStreams[0].vertices);
-    for (int i = 0; i < face_count * 3; ++i) {
-        FbxVertex& v = vertexPointer[i];
-
-        int j = 0;
-    }
-
     meshData->indexStream.nIndices = face_count * 3;
     meshData->indexStream.indexSize = face_count * 3 *sizeof(GLushort);
 

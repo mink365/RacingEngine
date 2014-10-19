@@ -284,7 +284,7 @@ uint ShaderUtil::loadShader(const char *source, uint type)
 
 //    std::string code = "#ifdef GL_ES\n" + precision + "#else\n#version 120\n#endif\n" + source;
 #else
-    std::string code = "#version 120\n";
+    std::string code = "#version 130\n";
     code += source;
 #endif
 
