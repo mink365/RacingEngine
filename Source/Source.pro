@@ -6,6 +6,8 @@ CONFIG -= qt
 
 include(../common.pri)
 
+LIBS += -ljpeg
+
 SOURCES += \
     $$system("find Animation/ -name '*.cpp'") \
     $$system("find Base/ -name '*.cpp'") \
