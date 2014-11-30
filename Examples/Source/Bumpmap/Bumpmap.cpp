@@ -61,7 +61,8 @@ void Bumpmap::Init()
     }
 
     auto texture = TextureManager::getInstance().getTexture("diffuse");
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(50, texture);
+    auto geometry = ShapeGenerater::getInstance().CreateSphere(50, 30, 30);
+    MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
     mesh->getGeometry()->calculateTangents();
     {
         auto meshData = std::make_shared<MeshData>();
