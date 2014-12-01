@@ -68,4 +68,5 @@ INCLUDEPATH += \
     Render \
     Scene \
     Resource \
+    External \
     External/universal-tween-engine-cpp/ \
