@@ -1,7 +1,9 @@
 TEMPLATE = app
 
-include(../common.pri)
-include(../Source/Source.pri)
+ENGINE_DIR = ../
+
+include($${ENGINE_DIR}/common.pri)
+include($${ENGINE_DIR}/Source/Source.pri)
 
 SOURCES += \
     $$system("find Source/ -name '*.cpp'") \

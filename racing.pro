@@ -1,10 +1,13 @@
 TEMPLATE = subdirs
 
-#CONFIG += ordered
+CONFIG += ordered
+
+examples.file = Examples/Examples.pro
+engine.file = Source/Source.pro
 
 SUBDIRS += \
-	Examples \
-	Source \
+        engine \
+        examples \
 
 OTHER_FILES += \
 	common.pri
