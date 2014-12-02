@@ -3,20 +3,34 @@
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
 #include "Texture/Frame/TextureFrameManager.h"
+#include "Texture/AtlasParser/BaseAtlasParser.h"
+#include "Texture/AtlasParser/JSONAtlasParser.h"
 #include <iostream>
 
 namespace re {
 
 TextureParser::TextureParser()
 {
+    factory.registerCreateFunc("json", [](){
+        return std::make_shared<JSONAtlasParser>();
+    });
 }
 
 void TextureParser::addTextures(const string &dir, const std::string &extension)
 {
     auto list = FileSystem::getInstance().listFilesTree(dir, extension);
 
-    for (std::shared_ptr<File> file : list) {
-        this->parseSingle(file);
+    for (FilePtr& file : list) {
+        auto ext = file->getExt();
+        if (ext == "json") {
+            auto parser = factory.createInstance(ext);
+            parser->parseAtlasFile(file);
+
+            parser->getTextureFrames();
+        } else {
+            // if just a image
+            this->parseSingle(file);
+        }
     }
 }
 

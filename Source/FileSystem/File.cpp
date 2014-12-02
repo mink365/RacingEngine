@@ -23,12 +23,26 @@ int File::length() const
 
 const std::string File::getExt() const
 {
-    const std::string path = this->getFullPath();
+    const std::string& path = this->getFullPath();
 
     int pos = path.find_last_of(".");
     std::string ext = path.substr(pos + 1, path.length());
 
     return ext;
+}
+
+const std::string File::getDirPath() const
+{
+    const std::string& path = this->getFullPath();
+
+    int pos = path.find_last_of("/");
+    if (pos != std::string::npos) {
+        std::string dir = path.substr(0, pos);
+
+        return dir;
+    } else {
+        return "/";
+    }
 }
 
 ByteBufferPtr File::read()

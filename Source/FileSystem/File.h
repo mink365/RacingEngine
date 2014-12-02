@@ -33,6 +33,8 @@ public:
     File();
     virtual ~File();
 
+    FileType getType();
+
     virtual const std::string& getName() const = 0;
     /**
      * @brief getFullPath
@@ -42,6 +44,7 @@ public:
      */
     virtual const std::string& getFullPath() const = 0;
     virtual const std::string getExt() const;
+    virtual const std::string getDirPath() const;
 
     ByteBufferPtr read();
     virtual int read( void *buffer, int len ) = 0;
@@ -53,6 +56,10 @@ protected:
 
     int fileSize;
 };
+
+inline FileType File::getType() {
+    return this->type;
+}
 
 class FilePermanent : public File
 {

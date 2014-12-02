@@ -12,6 +12,8 @@ namespace re {
 
 class TextureFrame : public Named, public Shared<TextureFrame>
 {
+    friend class BaseAtlasParser;
+
 public:
     TextureFrame();
 
