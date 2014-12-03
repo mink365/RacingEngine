@@ -101,7 +101,10 @@ float re::Rect::getHeight() const
 
 void re::Rect::setLeft(float v)
 {
+    float diff = this->origin.x - v;
     this->origin.x = v;
+
+    this->size.width += diff;
 }
 
 void re::Rect::setRight(float v)
@@ -111,7 +114,10 @@ void re::Rect::setRight(float v)
 
 void re::Rect::setBottom(float v)
 {
+    float diff = this->origin.y - v;
     this->origin.y = v;
+
+    this->size.height += diff;
 }
 
 void re::Rect::setTop(float v)
