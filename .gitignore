@@ -5,3 +5,6 @@ __pycache__/
 *~
 obj/
 *.pro.user
+.*
+libs/
+bin/
