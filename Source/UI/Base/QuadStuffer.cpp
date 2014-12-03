@@ -69,13 +69,14 @@ void SetVertexAndTexture(const Rect& clampRect, Rect& newTextureRect, Rect& vert
  * @param textureRect
  * @param vertexRect
  *
- * use use the texture in not trimmed space, so if the textureFrame is trimmed, textureRect
+ * we use the texture in not trimmed space, so if the textureFrame is trimmed, textureRect
  * and vertextRect from use need to be clamp to the trimmed space
  */
 void Clamp(const Rect& clampRect, Rect& textureRect, Rect& vertexRect) {
     if (clampRect.containsRect(textureRect)) {
-
+        // nothing to do
     } else if (!clampRect.intersectsRect(textureRect)) {
+        // TODO: instersect ???
         const Rect oldTextureRect = textureRect;
 
         if (oldTextureRect.getMaxX() <= clampRect.getMinX()) {
@@ -103,25 +104,27 @@ void Clamp(const Rect& clampRect, Rect& textureRect, Rect& vertexRect) {
         }
 
     } else {
+        // clampRect inside the textureRect
+
         Rect oldTextureRect = textureRect;
 
         if (textureRect.getMinX() < clampRect.getMinX()) {
-            SetVertexAndTexture(clampRect, textureRect, oldTextureRect, vertexRect,
+            SetVertexAndTexture(clampRect, textureRect, vertexRect, oldTextureRect,
                                 &Rect::getMinX, &Rect::getWidth, &Rect::setLeft);
         }
 
         if (textureRect.getMaxX() > clampRect.getMaxX()) {
-            SetVertexAndTexture(clampRect, textureRect, oldTextureRect, vertexRect,
+            SetVertexAndTexture(clampRect, textureRect, vertexRect, oldTextureRect,
                                 &Rect::getMaxX, &Rect::getWidth, &Rect::setRight);
         }
 
         if (textureRect.getMinY() < clampRect.getMinY()) {
-            SetVertexAndTexture(clampRect, textureRect, oldTextureRect, vertexRect,
+            SetVertexAndTexture(clampRect, textureRect, vertexRect, oldTextureRect,
                                 &Rect::getMinY, &Rect::getHeight, &Rect::setBottom);
         }
 
         if (textureRect.getMaxY() > clampRect.getMaxY()) {
-            SetVertexAndTexture(clampRect, textureRect, oldTextureRect, vertexRect,
+            SetVertexAndTexture(clampRect, textureRect, vertexRect, oldTextureRect,
                                 &Rect::getMaxY, &Rect::getHeight, &Rect::setTop);
         }
     }
@@ -131,6 +134,8 @@ void QuadStuffer::AddOriginalQuad(const Rect &rect, const Rect &textureRect, con
 {
     // clamp texture
     Rect clampRect(frame->getOffset(), frame->getSize());
+    // change to GL coord
+    clampRect.origin.y = frame->getOriginalSize().height - frame->getSize().height - frame->getOffset().y;
 
     Rect newTextureRect = textureRect;
     Rect newVertexRect = rect;
