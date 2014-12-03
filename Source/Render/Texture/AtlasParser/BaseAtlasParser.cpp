@@ -73,6 +73,8 @@ TextureFramePtr BaseAtlasParser::getTextureFrameFromData(const TextureFrameData 
     frame->originalSize = data.originalSize;
 
     TextureFrameManager::getInstance().registerFrame(frame);
+
+    return frame;
 }
 
 string GetFrameName(const FilePtr& atlasFile, const string &name)

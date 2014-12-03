@@ -43,7 +43,7 @@ void JSONAtlasParser::parseAtlasFile(FilePtr& file) {
         auto frameName = iter->name.GetString();
         auto& frame = iter->value;
 
-        TextureFrameData data;
+        TextureFrameData& data = this->allocateFrameData();
         data.name = GetFrameName(file, frameName);
 
         data.isTrimmed = frame["trimmed"].GetBool();
