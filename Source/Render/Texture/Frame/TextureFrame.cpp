@@ -56,8 +56,6 @@ Uv TextureFrame::getUv(const Vec2 &v) const
 {
     Vec2 p = this->transform(v);
 
-    // TODO: translate frome GL to pic
-
     return this->texture->getUv(p);
 }
 
@@ -76,29 +74,59 @@ const Size &TextureFrame::getOriginalSize() const
     return this->originalSize;
 }
 
-Vec2 TextureFrame::transform(const Vec2 &v) const
+Vec2 TextureFrame::transform(const Vec2 &ov) const
 {
-    // TODO: the real func
+    // translate to pic coord
+    Vec2 v = {ov.x, this->originalSize.height - ov.y};
 
-    Mat4 translateM, rotateM, textureTranslateM;
+//    Mat4 translateM, rotateM, textureTranslateM;
+
+//    if (this->isTrimmed) {
+//        translateM.setTranslation(offset.x, offset.x, 0);
+//    }
+
+//    textureTranslateM.setTranslation(region.origin.x, region.origin.y, 0);
+
+//    if (this->isRotated) {
+//        rotateM.setRotationZ(-PI / 2.0f);
+//    }
+
+//    Mat4 m = translateM * rotateM  * textureTranslateM;
+
+//    Vec3 p(v.x, v.y, 0);
+
+//    Vec3 result =  m * p;
+
+//    return Vec2(result.x, result.y);
+
+    /* same as java version
+    // input is GL
+    Vec2 source = {v.x, this->originalSize.height - v.y};
+
+    Vec2 p;
+    if (this->isRotated) {
+        p.y = this->region.origin.y - this->offset.x + source.x;
+        p.x = this->region.origin.x + (this->offset.y + this->region.size.height) - source.y;
+    } else {
+        p.x = this->region.origin.x - this->offset.x + source.x;
+        p.y = this->region.origin.y - this->offset.y + source.y;
+    }
+
+    Uv uv = this->texture->getUv(p);
+    */
+
 
     if (this->isTrimmed) {
-        translateM.setTranslation(offset.x, offset.x, 0);
+        v = {v.x - offset.x, v.y - offset.y};
     }
-
-    textureTranslateM.setTranslation(region.origin.x, region.origin.y, 0);
 
     if (this->isRotated) {
-        rotateM.setRotationZ(PI / 2.0f);
+        v = {region.size.height - v.y, v.x};
     }
 
-    Mat4 m = translateM * rotateM * textureTranslateM;
+    v = v + region.origin;
 
-    Vec3 p(v.x, v.y, 0);
-
-    Vec3 result =  m * p;
-
-    return Vec2(result.x, result.y);
+    return v;
 }
 
 }
