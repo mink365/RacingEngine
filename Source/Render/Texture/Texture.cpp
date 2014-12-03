@@ -79,7 +79,7 @@ void Texture::setFile(FilePtr &value)
 
 Uv Texture::getUv(const Vec2 &p) const
 {
-    return {p.x / this->width, (this->height - p.y) / this->height};
+    return {p.x / this->width, p.y / this->height};
 }
 
 Texture::FilterValue Texture::getMinFilter() const
