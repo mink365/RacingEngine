@@ -43,7 +43,7 @@ private:
 
     std::vector<Mat4> boneDeformations;
     std::vector<float> boneWeights;
-    Int controlPointsCount;
+    size_t controlPointsCount;
 
 private:
     Mat4 emptyMatrix;
