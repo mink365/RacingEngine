@@ -8,18 +8,21 @@
 
 using namespace std;
 
-re::Rect::Rect()
+namespace re
+{
+
+Rect::Rect()
 {
 
 }
 
-re::Rect::Rect(const re::Vec2 &p, const re::Size &size)
+Rect::Rect(const Vec2 &p, const Size &size)
 {
     this->origin = p;
     this->size = size;
 }
 
-re::Rect::Rect(float x, float y, float width, float height)
+Rect::Rect(float x, float y, float width, float height)
 {
     this->origin.x = x;
     this->origin.y = y;
@@ -28,22 +31,22 @@ re::Rect::Rect(float x, float y, float width, float height)
     this->size.height = height;
 }
 
-bool re::Rect::compare(const re::Rect &v) const
+bool Rect::compare(const Rect &v) const
 {
     return (origin.compare(v.origin) && size.compare(v.size));
 }
 
-bool re::Rect::operator ==(const re::Rect &v) const
+bool Rect::operator ==(const Rect &v) const
 {
     return compare(v);
 }
 
-bool re::Rect::operator !=(const re::Rect &v) const
+bool Rect::operator !=(const Rect &v) const
 {
     return !compare(v);
 }
 
-void re::Rect::set(float x, float y, float width, float height)
+void Rect::set(float x, float y, float width, float height)
 {
     this->origin.x = x;
     this->origin.y = y;
@@ -52,54 +55,54 @@ void re::Rect::set(float x, float y, float width, float height)
     this->size.height = height;
 }
 
-void re::Rect::fromeVertex(const re::Vec2 &lb, const re::Vec2 &rt)
+void Rect::fromeVertex(const Vec2 &lb, const Vec2 &rt)
 {
     this->origin = lb;
     this->size.width = rt.x - lb.x;
     this->size.height = rt.y - lb.y;
 }
 
-float re::Rect::getMinX() const
+float Rect::getMinX() const
 {
     return origin.x;
 }
 
-float re::Rect::getMidX() const
+float Rect::getMidX() const
 {
     return origin.x + size.width / 2.0f;
 }
 
-float re::Rect::getMaxX() const
+float Rect::getMaxX() const
 {
     return origin.x + size.width;
 }
 
-float re::Rect::getMinY() const
+float Rect::getMinY() const
 {
     return origin.y;
 }
 
-float re::Rect::getMidY() const
+float Rect::getMidY() const
 {
     return origin.y + size.height / 2.0f;
 }
 
-float re::Rect::getMaxY() const
+float Rect::getMaxY() const
 {
     return origin.y + size.height;
 }
 
-float re::Rect::getWidth() const
+float Rect::getWidth() const
 {
     return this->size.width;
 }
 
-float re::Rect::getHeight() const
+float Rect::getHeight() const
 {
     return this->size.height;
 }
 
-void re::Rect::setLeft(float v)
+void Rect::setLeft(float v)
 {
     float diff = this->origin.x - v;
     this->origin.x = v;
@@ -107,12 +110,12 @@ void re::Rect::setLeft(float v)
     this->size.width += diff;
 }
 
-void re::Rect::setRight(float v)
+void Rect::setRight(float v)
 {
     this->size.width = v - this->origin.x;
 }
 
-void re::Rect::setBottom(float v)
+void Rect::setBottom(float v)
 {
     float diff = this->origin.y - v;
     this->origin.y = v;
@@ -120,17 +123,17 @@ void re::Rect::setBottom(float v)
     this->size.height += diff;
 }
 
-void re::Rect::setTop(float v)
+void Rect::setTop(float v)
 {
     this->size.height = v - this->origin.y;
 }
 
-bool re::Rect::equals(const re::Rect &rect) const
+bool Rect::equals(const Rect &rect) const
 {
     return compare(rect);
 }
 
-bool re::Rect::containsPoint(const re::Vec2 &point) const
+bool Rect::containsPoint(const Vec2 &point) const
 {
     if (point.x < this->getMinX() || point.x > this->getMaxX()) {
         return false;
@@ -143,7 +146,7 @@ bool re::Rect::containsPoint(const re::Vec2 &point) const
     return true;
 }
 
-bool re::Rect::intersectsRect(const re::Rect &rect) const
+bool Rect::intersectsRect(const Rect &rect) const
 {
     return !(     getMaxX() < rect.getMinX() ||
              rect.getMaxX() <      getMinX() ||
@@ -151,13 +154,13 @@ bool re::Rect::intersectsRect(const re::Rect &rect) const
                   rect.getMaxY() <      getMinY());
 }
 
-bool re::Rect::containsRect(const re::Rect &rect) const
+bool Rect::containsRect(const Rect &rect) const
 {
     return (this->containsPoint(rect.origin)
             && this->containsPoint(Vec2(rect.getMaxX(), rect.getMaxY())));
 }
 
-re::Rect re::Rect::unionWithRect(const re::Rect &rect) const
+Rect Rect::unionWithRect(const Rect &rect) const
 {
     float thisLeftX = origin.x;
     float thisRightX = origin.x + size.width;
@@ -198,7 +201,7 @@ re::Rect re::Rect::unionWithRect(const re::Rect &rect) const
 }
 
 
-re::Rect re::RectApplyMatrix(const re::Rect& rect, const re::Mat4& transform)
+Rect RectApplyMatrix(const Rect& rect, const Mat4& transform)
 {
     float top    = rect.getMinY();
     float left   = rect.getMinX();
@@ -220,4 +223,6 @@ re::Rect re::RectApplyMatrix(const re::Rect& rect, const re::Mat4& transform)
     float maxY = max(max(topLeft.y, topRight.y), max(bottomLeft.y, bottomRight.y));
 
     return Rect(minX, minY, (maxX - minX), (maxY - minY));
+}
+
 }
