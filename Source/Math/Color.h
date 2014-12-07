@@ -22,6 +22,13 @@ public:
     static const Color Yellow;
     static const Color Cyan;
     static const Color Magenta;
+    static const Color Gray;
+    static const Color DarkGray;
+    static const Color LightGray;
+    static const Color Orang;
+    static const Color Brown;
+    static const Color Pink;
+    static const Color BlackNoAlpha;
 
 public:
     float r, g, b, a;

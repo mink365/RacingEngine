@@ -17,6 +17,13 @@ const Color Color::Blue(0, 0, 1, 0);
 const Color Color::Yellow(1, 1, 0, 1);
 const Color Color::Cyan(0, 1, 1, 1);
 const Color Color::Magenta(1, 0, 1, 1);
+const Color Color::Gray(0.5, 0.5, 0.5, 1);
+const Color Color::DarkGray(0.2, 0.2, 0.2, 1);
+const Color Color::LightGray(0.8, 0.8, 0.8, 1);
+const Color Color::Orang(251/255.0f, 130/255.0f, 0, 1);
+const Color Color::Brown(65/255.0f, 40/255.0f, 25/255.0f, 1);
+const Color Color::Pink(1, 0.68, 0.68, 0);
+const Color Color::BlackNoAlpha(0, 0, 0, 0);
 
 Color::Color()
 {
