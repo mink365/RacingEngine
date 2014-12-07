@@ -4,6 +4,7 @@
 #include "FontManager.h"
 
 #include <stack>
+#include <sstream>
 
 namespace re {
 

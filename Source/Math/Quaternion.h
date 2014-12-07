@@ -10,6 +10,8 @@
 
 #include<cmath>
 
+#include "platform.h"
+
 namespace re {
 
 class Mat3;
@@ -57,6 +59,8 @@ public:
                                float m20, float m21, float m22);
 
     Quat &slerp(Quat &q2, float changeAmnt);
+
+    std::string toString() const;
 };
 
 inline float Quat::operator [](int index) const
@@ -142,6 +146,11 @@ inline Quat &Quat::normalizeSelf()
     }
 
     return *this;
+}
+
+inline std::string Quat::toString() const
+{
+    return StringUtil::Printf("Quat(%f, %f, %f, %f)", x, y, z, w);
 }
 
 } // namespace re

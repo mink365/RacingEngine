@@ -14,6 +14,7 @@
 #include "Util/ContainerUtil.h"
 #include "Base/Buffer.h"
 #include "FileSystem/FileSystem.h"
+#include "Util/PrintUtil.h"
 
 namespace re {
 

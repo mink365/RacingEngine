@@ -5,7 +5,6 @@
 #include <istream>
 #include <sstream>
 
-#include "platform.h"
 #include "Math/Vector.h"
 
 namespace re {

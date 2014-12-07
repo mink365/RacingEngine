@@ -43,6 +43,8 @@ public:
     operator float *() const;
     float *toFloatPtr();
     const float *toFloatPtr () const;
+
+    std::string toString() const;
 private:
     Vec3 mat[3];
 };
@@ -78,6 +80,19 @@ inline Vec3 &Mat3::operator[](int index)
 inline Mat3::operator float *() const
 {
     return (float *)mat[0];
+}
+
+inline std::string Mat3::toString() const
+{
+    std::string out("Mat3( \n");
+
+    out += StringUtil::Printf("[%f, %f, %f] \n", mat[0][0], mat[0][1], mat[0][2]);
+    out += StringUtil::Printf("[%f, %f, %f] \n", mat[1][0], mat[1][1], mat[1][2]);
+    out += StringUtil::Printf("[%f, %f, %f] \n", mat[2][0], mat[2][1], mat[2][2]);
+
+    out += ")";
+
+    return out;
 }
 
 /**
@@ -152,6 +167,9 @@ public:
     Mat4 &inverseSelf();
 
     Mat4 &transpose();
+
+    std::string toString() const;
+
 private:
     Vec4 mat[4];
 };
@@ -397,6 +415,20 @@ inline const Vec4 &Mat4::operator[](int index) const
 inline Vec4 &Mat4::operator[](int index)
 {
     return mat[ index ];
+}
+
+inline std::string Mat4::toString() const
+{
+    std::string out("Mat4( \n");
+
+    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[0][0], mat[0][1], mat[0][2], mat[0][3]);
+    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[1][0], mat[1][1], mat[1][2], mat[1][3]);
+    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[2][0], mat[2][1], mat[2][2], mat[2][3]);
+    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
+
+    out += ")";
+
+    return out;
 }
 
 } // namespace re

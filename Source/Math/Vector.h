@@ -11,6 +11,7 @@
 #include <math.h>
 #include <cmath>
 
+#include "platform.h"
 #include "MathTool.h"
 
 namespace re {
@@ -65,6 +66,8 @@ public:
     float *			toFloatPtr( void );
 
     void			lerp( const Vec2 &v1, const Vec2 &v2, const float l );
+
+    std::string toString() const;
 };
 
 inline Vec2::Vec2()
@@ -250,6 +253,11 @@ inline re::Vec2::operator float *() const
     return (float*)&x;
 }
 
+inline std::string Vec2::toString() const
+{
+    return StringUtil::Printf("Vec2(%f, %f)", x, y);
+}
+
 class Vec3 {
 public:
 	float x;
@@ -290,6 +298,8 @@ public:
     const float *toFloatPtr () const;
 
     Quat toQuat() const;
+
+    std::string toString() const;
 };
 
 inline float Vec3::operator [](int index) const
@@ -418,6 +428,11 @@ inline const float *Vec3::toFloatPtr() const
     return &x;
 }
 
+inline std::string Vec3::toString() const
+{
+    return StringUtil::Printf("Vec3(%f, %f, %f)", x, y, z);
+}
+
 class Vec4 {
 public:
     float x;
@@ -445,6 +460,8 @@ public:
 
     float *toFloatPtr();
     const float *toFloatPtr () const;
+
+    std::string toString() const;
 };
 
 inline Vec4 &Vec4::set(const float x, const float y, const float z, const float w) {
@@ -508,6 +525,11 @@ inline float *Vec4::toFloatPtr()
 inline const float *Vec4::toFloatPtr() const
 {
     return &x;
+}
+
+inline std::string Vec4::toString() const
+{
+    return StringUtil::Printf("Vec4(%f, %f, %f, %f)", x, y, z, w);
 }
 
 } // namespace re

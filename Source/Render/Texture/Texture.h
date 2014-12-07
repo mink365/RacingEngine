@@ -4,6 +4,7 @@
 #include "platform.h"
 #include <string>
 #include "Math/UV.h"
+#include "Math/Vector.h"
 
 namespace re {
 

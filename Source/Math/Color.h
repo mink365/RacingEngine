@@ -45,8 +45,9 @@ public:
     std::string toString();
 };
 
-inline std::string Color::toString() {
-    return StringUtil::Printf("R=%i,G=%i,B=%i,A=%i", (int)r*256, (int)g*256, (int)b*256, (int)a*256);
+inline std::string Color::toString()
+{
+    return StringUtil::Printf("Color(%i, %i, %i, %i)", (int)r*256, (int)g*256, (int)b*256, (int)a*256);
 }
 
 } // namespace re
