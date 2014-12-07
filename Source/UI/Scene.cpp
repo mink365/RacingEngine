@@ -21,7 +21,7 @@ bool Scene::init() {
     this->setContentSize(Screen::getInstance().getSize());
     
     alphaBg = std::make_shared<Node2d>();
-    alphaBg->setColor(Color::BLACK);
+    alphaBg->setColor(Color::Black);
     
     alphaBg->setContentSize(this->getContentSize());
     alphaBg->setVisible(false);

@@ -14,7 +14,7 @@ RenderView::RenderView()
                      | ClearBufferBit::DEPTH_BUFFER_BIT
                      | ClearBufferBit::STENCIL_BUFFER_BIT;
 
-    this->_clearColor = Color::BLACK;
+    this->_clearColor = Color::Black;
 }
 
 void RenderView::init(CameraPtr &camera)
@@ -49,7 +49,7 @@ void RenderView::init(CameraPtr &camera)
 void RenderView::init(LightPtr &light)
 {
     // we must set clearColor to WHITE if we want to render the depth to FBO
-    this->_clearColor = Color::WHITE;
+    this->_clearColor = Color::White;
 
     if (light->getType() == LightType::Directional) {
         auto dirLight = std::dynamic_pointer_cast<DirectionalLight>(light);

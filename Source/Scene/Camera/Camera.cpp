@@ -9,7 +9,7 @@ Camera::Camera()
                      | ClearBufferBit::DEPTH_BUFFER_BIT
                      | ClearBufferBit::STENCIL_BUFFER_BIT;
 
-    this->clearColor = Color::BLACK;
+    this->clearColor = Color::Black;
 
     this->fov = 45;
     this->orthoWidth = 0;

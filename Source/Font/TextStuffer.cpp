@@ -359,8 +359,8 @@ void TextStuffer::unfold(const std::vector<Tag::ptr> &tags, std::vector<Span::pt
 
 void TextStuffer::defaultMarkup(Markup &markup)
 {
-    markup.foregroundColor = Color::WHITE;
-    markup.backgroundColor = Color::WHITE;
+    markup.foregroundColor = Color::White;
+    markup.backgroundColor = Color::White;
     markup.size = 25;
     markup.font = FontManager::getInstance().getFont("default");
 }
