@@ -1,15 +1,16 @@
-#include "BoundingVolume.h"
+/*****************************************************************************
 
-#include "Vector.h"
+ Copyright (c) 2014 RE Game Studio. All rights reserved.
+
+ racing365game@gmail.com
+
+******************************************************************************/
+
+#include "Rect.h"
+
 #include "Matrix.h"
 
-#include <algorithm>
-#include <math.h>
-
-using namespace std;
-
-namespace re
-{
+namespace re {
 
 Rect::Rect()
 {
@@ -225,4 +226,5 @@ Rect RectApplyMatrix(const Rect& rect, const Mat4& transform)
     return Rect(minX, minY, (maxX - minX), (maxY - minY));
 }
 
-}
+
+} // namespace re

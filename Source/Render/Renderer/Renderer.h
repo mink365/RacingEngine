@@ -10,7 +10,7 @@
 
 #include "Math/Matrix.h"
 #include "Math/Color.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "RenderContext.h"
 
 namespace re {

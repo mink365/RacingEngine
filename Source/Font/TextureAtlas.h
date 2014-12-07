@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "platform.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Texture/Texture.h"
 
 namespace re {

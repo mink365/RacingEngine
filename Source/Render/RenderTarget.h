@@ -4,7 +4,7 @@
 #include "PredefineType.h"
 
 #include "Texture/Texture.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 
 namespace re {
 

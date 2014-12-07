@@ -10,7 +10,7 @@
 
 #include "platform.h"
 #include "RenderState.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include <vector>
 
 namespace re {

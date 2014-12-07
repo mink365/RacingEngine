@@ -2,7 +2,7 @@
 #define RE_DIRECTIONALLIGHT_H
 
 #include "Light.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 
 namespace re {
 

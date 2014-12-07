@@ -4,7 +4,7 @@
 #include "Math/Vector.h"
 #include "Math/UV.h"
 #include "Math/Color.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Geometry/Geometry.h"
 #include "Texture/Frame/TextureFrame.h"
 

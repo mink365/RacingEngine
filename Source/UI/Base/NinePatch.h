@@ -2,7 +2,7 @@
 #define NINEPATCH_H
 
 #include "Node2d.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Texture/Frame/TextureFrame.h"
 #include "UI/Layout/LayoutUtil.h"
 

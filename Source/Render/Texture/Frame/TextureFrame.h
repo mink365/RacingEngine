@@ -3,7 +3,7 @@
 
 #include "Base/Named.h"
 #include "Base/Shared.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Math/UV.h"
 
 #include "Texture/Texture.h"

@@ -5,7 +5,7 @@
 #include "Base/Shared.h"
 #include "PredefineType.h"
 #include "Math/Matrix.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Math/Color.h"
 #include "Scene/Camera/Camera.h"
 

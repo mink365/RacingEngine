@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include "Scene/SceneNode.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Math/Color.h"
 
 namespace re {

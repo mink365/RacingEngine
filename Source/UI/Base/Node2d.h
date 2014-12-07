@@ -1,7 +1,7 @@
 #ifndef NODE2D_H
 #define NODE2D_H
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Math/Color.h"
 #include "Base/Shared.h"
 #include "Scene/SceneNode.h"

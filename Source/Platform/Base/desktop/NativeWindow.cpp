@@ -3,7 +3,7 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include <string>
 #include "UI/TouchEvent.h"
 #include "Message/MessageManager.h"

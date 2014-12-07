@@ -1,7 +1,7 @@
 ﻿#ifndef RE_NATIVEWINDOW_H
 #define RE_NATIVEWINDOW_H
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Platform/NativeView.h"
 
 class GLFWwindow;

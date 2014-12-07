@@ -2,7 +2,7 @@
 #define __Screen__
 
 #include "Base/Singleton.h"
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 
 namespace re {
 

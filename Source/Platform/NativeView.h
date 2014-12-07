@@ -1,7 +1,7 @@
 #ifndef NATIVEVIEW_H
 #define NATIVEVIEW_H
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 
 namespace re {
 

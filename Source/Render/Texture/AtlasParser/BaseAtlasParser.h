@@ -9,7 +9,7 @@
 #ifndef BASEATLASPARSER_H
 #define BASEATLASPARSER_H
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "FileSystem/FileSystem.h"
 
 namespace re {
