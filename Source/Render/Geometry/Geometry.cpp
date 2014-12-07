@@ -171,7 +171,7 @@ void CalculateTangents(std::vector<Vec3>& positions, std::vector<Vec3>& vertexNo
         tan2[face.c] += tdir;
     }
 
-    for (int i=0; i < positions.size(); ++i) {
+    for (size_t i=0; i < positions.size(); ++i) {
         Vec3& n = vertexNormals[i];
         Vec3& t = tan1[i];
 

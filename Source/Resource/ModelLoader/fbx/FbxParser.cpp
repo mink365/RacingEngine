@@ -167,7 +167,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     PrintArray("points ", points, len * 3, 3);
 
     len = reader->ReadInt(st);
-    int vertexToControl[len];
+    uint vertexToControl[len];
     st->read((char*)vertexToControl, len * 4);
 
     PrintArray(" vertex to control ", vertexToControl, len, 1);

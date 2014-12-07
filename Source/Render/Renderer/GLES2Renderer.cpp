@@ -247,6 +247,8 @@ GLenum GetTestFunc(TestFunction func) {
     case TestFunction::NotEqual:
         return GL_NOTEQUAL;
     }
+
+    return GL_ALWAYS;
 }
 
 void GetBlendMode(BlendMode mode, GLenum* result) {
@@ -291,6 +293,8 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
     case FaceCullMode::FrontAndBack:
         return GL_FRONT_AND_BACK;
     }
+
+    return GL_FRONT;
 }
 
 void GLES2Renderer::applyRenderState(const RenderState &state, bool force)

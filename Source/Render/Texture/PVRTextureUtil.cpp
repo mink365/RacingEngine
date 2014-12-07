@@ -135,6 +135,8 @@ static TextureFormat PVRTGetOGLES2TextureFormat(const PVRTextureHeaderV3& sTextu
             return TextureFormat::NONE;
         }
     }
+
+    return TextureFormat::NONE;
 }
 
 bool PVRTTextureLoadFromPointer( const void* pointer,

@@ -40,6 +40,8 @@ public:
         case AttributeFormat::FLOAT:
             return 4 * size;
         }
+
+        return 0;
     }
 
 public:
@@ -128,8 +130,8 @@ protected:
 
 protected:
     std::vector<Vec3> controlPoints;
-    std::vector<int> vertexToControl;
-    std::vector<std::vector<int>> controlToVertex;
+    std::vector<uint> vertexToControl;
+    std::vector<std::vector<uint>> controlToVertex;
 };
 
 class SkinnedMeshData : public MeshData {

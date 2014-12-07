@@ -1,6 +1,8 @@
 #ifndef RENDERSTATE_H
 #define RENDERSTATE_H
 
+#include "platform.h"
+
 namespace re {
 
 /**
@@ -226,7 +228,7 @@ struct FaceCullState {
 
 struct TextureUnitContexState {
     bool unitEnabled;
-    int textureId;
+    GPU_ID textureId;
 };
 
 class RenderState
