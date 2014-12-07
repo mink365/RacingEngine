@@ -304,7 +304,7 @@ bool Image::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
             break;
     }
 
-    int rowSize = width * nChannels * bitDepth / 8;
+    uint rowSize = width * nChannels * bitDepth / 8;
 
     // now we can allocate memory to store the image
     pixels = new ubyte[rowSize * height];
@@ -343,7 +343,7 @@ bool Image::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
 
         ubyte *newPixels = new ubyte[width * height * 3];
         if (bitDepth == 4){
-            for (int i = 0; i < rowSize * height; i++){
+            for (uint i = 0; i < rowSize * height; i++){
                 uint i0 = pixels[i] >> 4;
                 uint i1 = pixels[i] & 0xF;
                 newPixels[6 * i    ] = palette[i0].red;
@@ -354,7 +354,7 @@ bool Image::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
                 newPixels[6 * i + 5] = palette[i1].blue;
             }
         } else {
-            for (int i = 0; i < rowSize * height; i++){
+            for (uint i = 0; i < rowSize * height; i++){
                 newPixels[3 * i    ] = palette[pixels[i]].red;
                 newPixels[3 * i + 1] = palette[pixels[i]].green;
                 newPixels[3 * i + 2] = palette[pixels[i]].blue;

@@ -137,7 +137,7 @@ FILE *FileSystem::OpenOSFile(const char *fileName, const char *mode)
 
 void FileSystem::GetExtensionList(const std::string& extension, StrList &extensionList) const
 {
-    int s, e, l;
+    size_t s, e, l;
 
     l = extension.length();
     s = 0;
@@ -179,7 +179,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
 
             StrList sysFiles;
 
-            for (int i = 0; i < extensions.size(); i++ ) {
+            for (size_t i = 0; i < extensions.size(); i++ ) {
                 sysFiles.clear();
 
                 // if we are searching for directories, remove . and ..
@@ -192,14 +192,14 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                     });
                     sysFiles.erase(iter, sysFiles.end());
 
-                    for(int j = 0; j < sysFiles.size(); j++ ) {
+                    for(size_t j = 0; j < sysFiles.size(); j++ ) {
                         directories->push_back(sysFiles[j]);
                     }
                 } else {
                     // scan for files in the filesystem
                     ListOSFiles( netpath, extensions[i], sysFiles );
 
-                    for(int j = 0; j < sysFiles.size(); j++ ) {
+                    for(size_t j = 0; j < sysFiles.size(); j++ ) {
                         std::string path = BuildOSPath(netpath, sysFiles[j]);
 
                         FilePtr file = CreateFile(path, search.type);
@@ -220,7 +220,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
 
 int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &extensions, FileList &list)
 {
-    int i;
+    size_t i;
     StrList slash, folders( 128 );
 
     // recurse through the subdirectories

@@ -114,7 +114,7 @@ void re::SkeletonController::computeLinearDeformation()
                 meshData->setVertex(index, destVertex);
             }
         } else {
-            for (int j = 0; j < meshData->controlPointsData.vertexToControl.size(); ++j) {
+            for (size_t j = 0; j < meshData->controlPointsData.vertexToControl.size(); ++j) {
                 Int controlPointIndex = meshData->controlPointsData.vertexToControl[j];
 
                 if (controlPointIndex == i) {

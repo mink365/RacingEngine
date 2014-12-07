@@ -58,7 +58,7 @@ private:
     bool looping;
     float power;
 
-    Int currentStackIndex;
+    size_t currentStackIndex;
     bool isUseAnimStack;
 
     Long currTime;

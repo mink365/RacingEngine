@@ -204,7 +204,7 @@ KeyFramePtr AnimationTrack::getKeyFrame(int index)
 
 void AnimationTrack::calcProportion(Long timePos)
 {
-    int i = 0;
+    size_t i = 0;
     for (i = 1; i < this->keyFrames.size(); ++i) {
         KeyFramePtr lastKeyFrame = this->keyFrames[i - 1];
         KeyFramePtr keyFrame = this->keyFrames[i];

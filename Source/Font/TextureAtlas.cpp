@@ -21,7 +21,7 @@ void eraseNode(vector<AtlasNode*>& nodes, int index) {
 }
 
 void clearNodes(vector<AtlasNode*>& nodes) {
-    for (int i = 0; i < nodes.size(); ++i) {
+    for (size_t i = 0; i < nodes.size(); ++i) {
         auto node = nodes[i];
 
         delete node;
@@ -251,7 +251,7 @@ Int TextureAtlas::fit(Int index, Int width, Int height) const
 
 void re::TextureAtlas::merge()
 {
-    for(int i=0; i< this->nodes.size()-1; ++i )
+    for(size_t i=0; i< this->nodes.size()-1; ++i )
     {
         AtlasNode* node = this->nodes[i];
         AtlasNode* next = this->nodes[i + 1];

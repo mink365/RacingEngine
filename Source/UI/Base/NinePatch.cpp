@@ -111,7 +111,7 @@ void NinePatch::addQuad(AlignType type)
 void NinePatch::updateViewColor()
 {
     auto& colors = this->getGeometry()->getDiffuseColors();
-    for (int i = 0; i < colors.size(); ++i) {
+    for (size_t i = 0; i < colors.size(); ++i) {
         colors[i] = this->worldColor;
     }
 

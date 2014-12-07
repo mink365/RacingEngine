@@ -35,7 +35,7 @@ const std::string File::getDirPath() const
 {
     const std::string& path = this->getFullPath();
 
-    int pos = path.find_last_of("/");
+    size_t pos = path.find_last_of("/");
     if (pos != std::string::npos) {
         std::string dir = path.substr(0, pos);
 

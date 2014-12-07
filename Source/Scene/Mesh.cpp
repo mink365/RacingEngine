@@ -74,10 +74,10 @@ void Mesh::copyProperties(const NodeAttribute *att)
 }
 
 void re::ControlPoints::cacheVertex() {
-    for (int i = 0; i < this->controlPoints.size(); ++i) {
+    for (size_t i = 0; i < this->controlPoints.size(); ++i) {
       std::vector<int> vertexIndexList;
 
-      for (int j = 0; j < this->vertexToControl.size(); ++j) {
+      for (size_t j = 0; j < this->vertexToControl.size(); ++j) {
         int &controlIndex = vertexToControl[j];
 
         if (controlIndex == i) {
