@@ -57,7 +57,7 @@ void UITest::Init()
 
 //    window->setPosition(Vec2(300, 300));
 
-    LayoutUtil::layoutParentCenter(button);
+    LayoutUtil::LayoutToParentCenter(button);
 
     label->setContentSize(Size(200, 50));
     label->setAnchorPoint(Vec2(0.5, 0.5));
@@ -93,8 +93,8 @@ std::shared_ptr<Window> UITest::createWin()
     win->addChild(patch);
     win->addChild(button);
 
-    LayoutUtil::layoutParentCenter(patch);
-    LayoutUtil::layoutParentRightTop(button);
+    LayoutUtil::LayoutToParentCenter(patch);
+    LayoutUtil::LayoutToParentRightTop(button);
 
     auto buttonClickFunc = [=](WidgetPtr& widget) {
         win->popFromWindowManager();

@@ -102,7 +102,7 @@ void ShadowTest::Init()
     auto window = scene->pushWindow("HelloWindow");
     window->addChild(sprite);
 
-    LayoutUtil::layoutParent(sprite, AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
+    LayoutUtil::LayoutToParent(sprite, AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
 
     SetupShadowMapShader();
 

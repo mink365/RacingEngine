@@ -10,10 +10,6 @@ BaseButton::BaseButton()
 
 bool BaseButton::init()
 {
-    if (!Widget::init()) {
-        return false;
-    }
-
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
@@ -103,6 +99,11 @@ void BaseButton::copyProperties(const Node *node)
         this->isTouchDown = false;
         this->touchDownTime = 0;
     }
+}
+
+void re::ImageButton::init(const string &texDefault, const string &texPress)
+{
+    this->init(texDefault, texPress, texDefault);
 }
 
 void ImageButton::init(const string &texDefault, const string &texPress, const string &texDis)

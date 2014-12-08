@@ -182,10 +182,10 @@ void FeatureTestsApp::createBaseUI()
     scene->addChild(buttonNext);
     scene->addChild(buttonPrev);
 
-    LayoutUtil::layoutParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
-    LayoutUtil::layoutParent(labelFps, AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
-    LayoutUtil::layoutParent(buttonPrev, AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
-    LayoutUtil::layoutParent(buttonNext, AlignType::RIGHT_CENTER, AlignType::RIGHT_CENTER);
+    LayoutUtil::LayoutToParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
+    LayoutUtil::LayoutToParent(labelFps, AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
+    LayoutUtil::LayoutToParent(buttonPrev, AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
+    LayoutUtil::LayoutToParent(buttonNext, AlignType::RIGHT_CENTER, AlignType::RIGHT_CENTER);
 }
 
 void FeatureTestsApp::initResources()

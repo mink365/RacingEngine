@@ -13,11 +13,7 @@ Scene::~Scene() {
 
 }
 
-bool Scene::init() {
-    if (!LogicalScene::init()) {
-        return false;
-    }
-    
+void Scene::init() {
     this->setContentSize(Screen::getInstance().getSize());
     
     alphaBg = std::make_shared<Node2d>();
@@ -26,7 +22,7 @@ bool Scene::init() {
     alphaBg->setContentSize(this->getContentSize());
     alphaBg->setVisible(false);
     
-    return true;
+    return;
 }
 
 // TODO: modify the dispatch of touch event
@@ -56,7 +52,7 @@ void Scene::addWindowToScene(std::shared_ptr<Window> &win) {
     // TODO: zorder
     this->addChild(win);
     
-    LayoutUtil::layoutParentCenter(win);
+    LayoutUtil::LayoutToParentCenter(win);
     win->layout();
 
     return;

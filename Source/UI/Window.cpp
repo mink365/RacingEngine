@@ -22,10 +22,6 @@ Window::Window()
 }
 
 bool Window::init() {
-    if (!Widget::init()) {
-        return false;
-    }
-    
     // window default is full screen
     this->setContentSize(Screen::getInstance().getSize());
     

@@ -35,6 +35,7 @@ protected:
 class ImageButton : public BaseButton
 {
 public:
+    virtual void init(const string& texDefault, const string& texPress);
     virtual void init(const string& texDefault, const string& texPress, const string& texDis);
 
     virtual void switchState(WidgetState newState);

@@ -49,7 +49,6 @@ class Node2d : public SceneNode, public Shared<Node2d>, public Rgba
 {
 public:
     Node2d();
-    virtual bool init() {return true;};
 
     Node2d::ptr getParent() const;
     void removeFromParent();

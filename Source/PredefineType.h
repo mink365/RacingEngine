@@ -38,6 +38,7 @@ class Label;
 class NinePatch;
 
 class Widget;
+class BaseButton;
 
 typedef std::shared_ptr<Animation> AnimationPtr;
 typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
@@ -74,6 +75,7 @@ typedef std::shared_ptr<NinePatch> NinePatchPtr;
 typedef std::shared_ptr<Label> LabelPtr;
 
 typedef std::shared_ptr<Widget> WidgetPtr;
+typedef std::shared_ptr<BaseButton> ButtonPtr;
 
 }
 

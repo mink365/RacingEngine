@@ -16,7 +16,7 @@ public:
     Scene();
     virtual ~Scene();
     
-    virtual bool init();
+    virtual void init();
         
     virtual bool onBackKeyEvent();
     

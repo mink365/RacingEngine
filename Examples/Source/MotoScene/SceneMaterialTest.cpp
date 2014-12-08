@@ -120,9 +120,9 @@ void SceneMaterialTest::createUI()
     window->addChild(buttonPrev);
     window->addChild(buttonNext);
 
-    LayoutUtil::layoutParent(labelName, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 0, 50);
-    LayoutUtil::layoutParent(buttonPrev, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, -30, 50);
-    LayoutUtil::layoutParent(buttonNext, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 30, 50);
+    LayoutUtil::LayoutToParent(labelName, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 0, 50);
+    LayoutUtil::LayoutToParent(buttonPrev, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, -30, 50);
+    LayoutUtil::LayoutToParent(buttonNext, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 30, 50);
 }
 
 void SceneMaterialTest::changeTile(int index)

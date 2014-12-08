@@ -23,8 +23,6 @@ public:
     Widget();
     virtual ~Widget();
     
-    bool init();
-    
     void layout();
 
     void update(float delta);

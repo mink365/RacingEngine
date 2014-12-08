@@ -10,10 +10,6 @@ UIManager::UIManager()
 }
 
 bool UIManager::init() {
-    if (!LogicalScene::init()) {
-        return false;
-    }
-
     this->setContentSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
@@ -62,7 +58,7 @@ std::shared_ptr<Scene> UIManager::createLayer(const std::string &name) {
 void UIManager::addLayerToScene(std::shared_ptr<Scene>& node) {
     this->addChild(node);
     
-    LayoutUtil::layoutParentCenter(node);
+    LayoutUtil::LayoutToParentCenter(node);
 
     return;
 }

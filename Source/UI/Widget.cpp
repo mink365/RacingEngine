@@ -15,14 +15,6 @@ Widget::~Widget() {
 
 }
 
-bool Widget::init() {
-    if (!Node2d::init()) {
-        return false;
-    }
-    
-    return true;
-}
-
 void Widget::addWidgets() {
 
 }

@@ -3,7 +3,7 @@
 
 namespace re {
 
-Vec2 LayoutUtil::alignTypeToPoint(AlignType type) {
+Vec2 LayoutUtil::AlignTypeToPoint(AlignType type) {
     switch (type) {
         case AlignType::CENTER:
             return Vec2(0.5, 0.5);
@@ -37,7 +37,7 @@ Vec2 LayoutUtil::alignTypeToPoint(AlignType type) {
     return Vec2();
 }
 
-Vec2 LayoutUtil::getBoundBoxPosition(Node2d::ptr node, AlignType type) {
+Vec2 LayoutUtil::GetBoundBoxPosition(Node2d::ptr node, AlignType type) {
     float x = 0, y = 0;
     
     Rect rect = node->getBoundingBox();
@@ -63,95 +63,95 @@ Vec2 LayoutUtil::getBoundBoxPosition(Node2d::ptr node, AlignType type) {
     return Vec2(x, y);
 }
 
-void LayoutUtil::layoutLeft(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 0.5, target, 0, 0.5, false, offsetX, offsetY);
+void LayoutUtil::LayoutLeft(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 0.5, target, 0, 0.5, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutRight(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 0.5, target, 1, 0.5, false, offsetX, offsetY);
+void LayoutUtil::LayoutRight(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 0.5, target, 1, 0.5, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 0, target, 0.5, 1, false, offsetX, offsetY);
+void LayoutUtil::LayoutTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 0, target, 0.5, 1, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 1, target, 0.5, 0, false, offsetX, offsetY);
+void LayoutUtil::LayoutBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 1, target, 0.5, 0, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutCenter(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 0.5, target, 0.5, 0.5, false, offsetX, offsetY);
+void LayoutUtil::LayoutCenter(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 0.5, target, 0.5, 0.5, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutLeftTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 1, target, 0, 1, false, offsetX, offsetY);
+void LayoutUtil::LayoutLeftTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 1, target, 0, 1, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutRightTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 1, target, 1, 1, false, offsetX, offsetY);
+void LayoutUtil::LayoutRightTop(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 1, target, 1, 1, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutLeftBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 0, target, 0, 0, false, offsetX, offsetY);
+void LayoutUtil::LayoutLeftBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 0, target, 0, 0, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutRightBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 0, target, 1, 0, false, offsetX, offsetY);
+void LayoutUtil::LayoutRightBottom(Node2d::ptr view, Node2d::ptr target, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 0, target, 1, 0, false, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentLeft(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 0.5, view->getParent(), 0, 0.5, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentLeft(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 0.5, view->getParent(), 0, 0.5, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentRight(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 0.5, view->getParent(), 1, 0.5, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentRight(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 0.5, view->getParent(), 1, 0.5, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 1, view->getParent(), 0.5, 1, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 1, view->getParent(), 0.5, 1, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 0, view->getParent(), 0.5, 0, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 0, view->getParent(), 0.5, 0, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentCenter(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0.5, 0.5, view->getParent(), 0.5, 0.5, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentCenter(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0.5, 0.5, view->getParent(), 0.5, 0.5, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentLeftTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 1, view->getParent(), 0, 1, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentLeftTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 1, view->getParent(), 0, 1, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentRightTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 1, view->getParent(), 1, 1, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentRightTop(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 1, view->getParent(), 1, 1, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentLeftBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 0, 0, view->getParent(), 0, 0, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentLeftBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 0, 0, view->getParent(), 0, 0, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParentRightBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
-    layout(view, 1, 0, view->getParent(), 1, 0, true, offsetX, offsetY);
+void LayoutUtil::LayoutToParentRightBottom(Node2d::ptr view, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
+    Layout(view, 1, 0, view->getParent(), 1, 0, true, offsetX, offsetY);
 }
 
-void LayoutUtil::layout(Node2d::ptr view, AlignType from, Node2d::ptr target, AlignType to, float offsetX, float offsetY) {
-    Vec2 fromV = alignTypeToPoint(from);
-    Vec2 toV = alignTypeToPoint(to);
+void LayoutUtil::Layout(Node2d::ptr view, AlignType from, Node2d::ptr target, AlignType to, float offsetX, float offsetY) {
+    Vec2 fromV = AlignTypeToPoint(from);
+    Vec2 toV = AlignTypeToPoint(to);
     
     bool targetIsParent = false;
     if (view->getParent() == target) {
         targetIsParent = true;
     }
     
-    layout(view, fromV.x, fromV.y, target, toV.x, toV.y, targetIsParent, offsetX, offsetY);
+    Layout(view, fromV.x, fromV.y, target, toV.x, toV.y, targetIsParent, offsetX, offsetY);
 }
 
-void LayoutUtil::layoutParent(Node2d::ptr view, AlignType from, AlignType to, float offsetx, float offsetY) {
-    layout(view, from, view->getParent(), to, offsetx, offsetY);
+void LayoutUtil::LayoutToParent(Node2d::ptr view, AlignType from, AlignType to, float offsetx, float offsetY) {
+    Layout(view, from, view->getParent(), to, offsetx, offsetY);
 }
 
-void LayoutUtil::layout(Node2d::ptr src, float srcAlignX, float srcAlignY, Node2d::ptr target,
+void LayoutUtil::Layout(Node2d::ptr src, float srcAlignX, float srcAlignY, Node2d::ptr target,
                         float targetAlignX, float targetAlignY, bool targetIsParent /* = false */, float offsetX /* = 0.0 */, float offsetY /* = 0.0 */) {
     const Vec2& srcAnchorPoint = src->getAnchorPoint();
     const Vec2& anchorPointDiff = Vec2(srcAlignX - srcAnchorPoint.x, srcAlignY - srcAnchorPoint.y);
