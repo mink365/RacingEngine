@@ -35,6 +35,10 @@ protected:
     void onCurrentTestChanged();
 
     void createBaseUI();
+
+    void registerWindows();
+    void registerScenes();
+
 private:
     void initResources();
 
@@ -51,18 +55,6 @@ private:
 
     LabelPtr labelTitle;
     LabelPtr labelFps;
-};
-
-class WindowFactory : public IWindowFactory
-{
-public:
-    virtual std::shared_ptr<Window> createView(const string& name) override;
-};
-
-class SceneFactory : public ISceneFactory
-{
-public:
-    virtual std::shared_ptr<Scene> createView(const string& name) override;
 };
 
 #endif // FEATURETESTSAPP_H

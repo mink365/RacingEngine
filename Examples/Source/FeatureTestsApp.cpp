@@ -103,7 +103,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<Bumpmap>();
     this->tests.push_back(test);
 
-    currIndex = this->tests.size() - 1;
+    currIndex = 0;
 
     this->onCurrentTestChanged();
 }
@@ -264,10 +264,28 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().addRootNode(this->stage);
     MessageManager::getInstance()->addHandler(this->stage.get());
 
-    std::shared_ptr<ISceneFactory> factory = std::make_shared<SceneFactory>();
-    this->stage->setSceneFactory(factory);
+    this->registerScenes();
+    this->registerWindows();
 
     this->createBaseUI();
+}
+
+void FeatureTestsApp::registerWindows()
+{
+    stage->getWindowFactory().registerCreateFunc("HelloWindow", [](){
+        auto window = CreateView<Window>();
+        window->setName("HelloWindow");
+        return window;
+    });
+}
+
+void FeatureTestsApp::registerScenes()
+{
+    stage->getSceneFactory().registerCreateFunc("Scene1", [](){
+        auto scene = CreateView<Scene>();
+        scene->setName("Scene1");
+        return scene;
+    });
 }
 
 void FeatureTestsApp::update(long dt)
@@ -280,35 +298,4 @@ void FeatureTestsApp::update(long dt)
     this->stage->update(dt/1000.0f);
 
     this->labelFps->setText(std::to_string(GameHub::getInstance().getFps()));
-}
-
-std::shared_ptr<Window> WindowFactory::createView(const string& name)
-{
-    std::shared_ptr<Window> win = nullptr;
-    if (name == "HelloWindow") {
-        win = CreateView<Window>();
-    }
-
-    if (win) {
-        win->setName(name);
-    }
-
-    return win;
-}
-
-std::shared_ptr<Scene> SceneFactory::createView(const string& name)
-{
-    std::shared_ptr<Scene> scene = nullptr;
-    if (name == "Scene1") {
-        scene = CreateView<Scene>();
-    }
-
-    if (scene) {
-        std::shared_ptr<IWindowFactory> factory = std::make_shared<WindowFactory>();
-
-        scene->setName(name);
-        scene->setWindowFactory(factory);
-    }
-
-    return scene;
 }

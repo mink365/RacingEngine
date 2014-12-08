@@ -5,9 +5,12 @@
 
 #include "LayerManager.h"
 #include "UI/Scene.h"
-#include "ViewFactory.h"
+#include "Base/NamedFactory.h"
 
 namespace re {
+typedef NamedFactory<Window> WindowFactory;
+typedef NamedFactory<Scene> SceneFactory;
+
     namespace ui {
 
 class UIManager : public LogicalScene, public LayerManager<Scene> {
@@ -16,7 +19,8 @@ public:
     bool init();
  
 public:
-    void setSceneFactory(std::shared_ptr<ISceneFactory>& factory);
+    SceneFactory& getSceneFactory();
+    WindowFactory& getWindowFactory();
     
 public:
     void handleMessage(Message *message);
@@ -41,8 +45,9 @@ protected:
     
 private:
     bool isKeyBackActive;
-    
-    std::shared_ptr<ISceneFactory> factory;
+
+    SceneFactory sceneFactory;
+    WindowFactory windowFactory;
 };
 
     }

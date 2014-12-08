@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "Message/MessageConstant.h"
 #include "Message/MessageManager.h"
-#include "ViewFactory.h"
 
 namespace re {
 
@@ -11,12 +10,6 @@ WindowManager::WindowManager()
 : factory(nullptr)
 {
 
-}
-
-void WindowManager::setWindowFactory(std::shared_ptr<IWindowFactory> &factory) {
-    assert(this->factory == nullptr);
-    
-    this->factory = factory;
 }
 
 std::shared_ptr<Window> WindowManager::getFocusedWindow() {
@@ -39,7 +32,7 @@ std::shared_ptr<Window> WindowManager::getWindowByName(string name) {
 }
 
 std::shared_ptr<Window> WindowManager::pushWindow(string name) {
-    std::shared_ptr<Window> win = factory->getView(name);
+    std::shared_ptr<Window> win = factory->createInstance(name);
     assert(win);
     
     this->pushWindow(win);

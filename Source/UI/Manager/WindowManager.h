@@ -8,11 +8,13 @@
 #include "Base/Uncopyable.h"
 #include "LayerManager.h"
 #include "UI/Window.h"
-#include "ViewFactory.h"
+#include "Base/NamedFactory.h"
 
 using namespace std;
 
 namespace re {
+
+typedef NamedFactory<Window> WindowFactory;
 
 class WindowManager : public Uncopyable {
 public:
@@ -29,9 +31,9 @@ public:
     
     std::shared_ptr<Window> getFocusedWindow();
     std::shared_ptr<Window> getWindowByName(string name);
-    
-    void setWindowFactory(std::shared_ptr<IWindowFactory>& factory);
-    
+
+    void setWindowFactory(WindowFactory* factory);
+
 protected:
     virtual void addWindowToScene(std::shared_ptr<Window>& win) = 0;
     virtual void removeWindowFromScene(std::shared_ptr<Window>& win) = 0;
@@ -47,9 +49,13 @@ protected:
     
 protected:
     list<std::shared_ptr<Window>> windowStack;
-    
-    std::shared_ptr<IWindowFactory> factory;
+
+    WindowFactory* factory;
 };
+
+inline void WindowManager::setWindowFactory(WindowFactory* factory) {
+    this->factory = factory;
+}
 
 }
 

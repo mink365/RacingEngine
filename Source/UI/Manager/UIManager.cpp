@@ -5,8 +5,7 @@ namespace re {
     namespace ui {
 
 UIManager::UIManager()
-: factory(nullptr)
-, isKeyBackActive(false)
+    : isKeyBackActive(false)
 {
 }
 
@@ -24,10 +23,14 @@ bool UIManager::init() {
     return true;
 }
 
-void UIManager::setSceneFactory(std::shared_ptr<ISceneFactory> &factory) {
-    assert(this->factory == nullptr);
-    
-    this->factory = factory;
+SceneFactory &UIManager::getSceneFactory()
+{
+    return this->sceneFactory;
+}
+
+WindowFactory &UIManager::getWindowFactory()
+{
+    return this->windowFactory;
 }
 
 void UIManager::handleMessage(Message *message) {
@@ -50,7 +53,8 @@ void UIManager::updateSelf(float delta) {
 }
 
 std::shared_ptr<Scene> UIManager::createLayer(const std::string &name) {
-    std::shared_ptr<Scene> scene = this->factory->getView(name);
+    std::shared_ptr<Scene> scene = this->sceneFactory.createInstance(name);
+    scene->setWindowFactory(&windowFactory);
     
     return scene;
 }
