@@ -3,12 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 
 namespace re {
 
 using namespace std;
-
-class IAnimListener;
 
 enum class ViewState {
     IN_SHOW_ANIM,
@@ -24,10 +23,13 @@ enum class ViewAnimEvent {
     SHOW_END,
 };
 
-class IAnimationView {
+class AnimationView {
 public:
-    IAnimationView();
-    virtual ~IAnimationView();
+    typedef std::function<void(AnimationView *view, ViewAnimEvent event)> AnimationEventListener;
+
+public:
+    AnimationView();
+    virtual ~AnimationView();
     
     virtual void show();
     virtual void hide();
@@ -39,8 +41,7 @@ public:
     ViewState getViewState();
     
 protected:
-    void addAnimListner(IAnimListener *item);
-    void removeAnimListener(IAnimListener *item);
+    void addAnimListner(AnimationEventListener item);
     
     void emitAnimEvent(ViewAnimEvent event);
     
@@ -53,22 +54,10 @@ public:
     virtual void showImmed();
     virtual void hideImmed();
     
-    virtual void onViewStateChanged(ViewAnimEvent event);
-    
 protected:
     ViewState viewState;
     
-    vector<IAnimListener*> animListeners;
-};
-
-class IAnimListener {
-public:
-    virtual void onShowAnimationStart(IAnimationView *view) {};
-    virtual void onHideAnimationStart(IAnimationView *view) {};
-    virtual void onShowAnimationEnd(IAnimationView *view) {};
-    virtual void onHideAnimationEnd(IAnimationView *view) {};
-    
-    virtual void OnAnimationEvent(IAnimationView *view, ViewAnimEvent event) {};
+    vector<AnimationEventListener> animListeners;
 };
 
 }

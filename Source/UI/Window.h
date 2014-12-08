@@ -9,7 +9,7 @@ namespace re {
 
 class WindowManager;
 
-class Window : public Widget, public IAnimationView, public IBackKeyHandler
+class Window : public Widget, public AnimationView, public IBackKeyHandler
 {
     friend class WindowManager;
     

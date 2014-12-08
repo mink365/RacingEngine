@@ -11,7 +11,7 @@ namespace re {
 
 using namespace std;
 
-class LogicalScene : public Widget, public IMessageHandler, public IAnimationView, public IBackKeyHandler
+class LogicalScene : public Widget, public AnimationView, public IMessageHandler, public IBackKeyHandler
 {
 public:
     LogicalScene();

@@ -6,16 +6,16 @@
 
 namespace re {
 
-IAnimationView::IAnimationView()
+AnimationView::AnimationView()
 : viewState(ViewState::HIDDEN)
 {
 }
 
-IAnimationView::~IAnimationView() {
+AnimationView::~AnimationView() {
 
 }
 
-void IAnimationView::show() {
+void AnimationView::show() {
     if (this->viewState == ViewState::SHOWN
         || this->viewState == ViewState::IN_SHOW_ANIM) {
         return;
@@ -24,7 +24,7 @@ void IAnimationView::show() {
     this->switchViewState(ViewState::IN_SHOW_ANIM);
 }
 
-void IAnimationView::hide() {
+void AnimationView::hide() {
     if (this->viewState == ViewState::HIDDEN
         || this->viewState == ViewState::IN_HIDE_ANIM) {
         return;
@@ -33,39 +33,39 @@ void IAnimationView::hide() {
     this->switchViewState(ViewState::IN_HIDE_ANIM);
 }
 
-void IAnimationView::playShowAnim() {
+void AnimationView::playShowAnim() {
     this->showImmed();
 }
 
-void IAnimationView::playHideAnim() {
+void AnimationView::playHideAnim() {
     this->hideImmed();
 }
 
-void IAnimationView::showImmed() {    
+void AnimationView::showImmed() {
     this->switchViewState(ViewState::SHOWN);
 }
 
-void IAnimationView::hideImmed() {
+void AnimationView::hideImmed() {
     this->switchViewState(ViewState::HIDDEN);
 }
 
-bool IAnimationView::isHidden() {
+bool AnimationView::isHidden() {
     return this->viewState == ViewState::HIDDEN;
 }
 
-bool IAnimationView::isShown() {
+bool AnimationView::isShown() {
     return viewState == ViewState::SHOWN;
 }
 
-bool IAnimationView::isInAnim() {
+bool AnimationView::isInAnim() {
     return viewState == ViewState::IN_HIDE_ANIM || viewState == ViewState::IN_SHOW_ANIM;
 }
 
-ViewState IAnimationView::getViewState() {
+ViewState AnimationView::getViewState() {
     return viewState;
 }
 
-void IAnimationView::switchViewState(ViewState newState) {
+void AnimationView::switchViewState(ViewState newState) {
     if (this->viewState == newState) {
         return;
     }
@@ -96,46 +96,14 @@ void IAnimationView::switchViewState(ViewState newState) {
     }
 }
 
-void IAnimationView::addAnimListner(IAnimListener *item) {
+void AnimationView::addAnimListner(AnimationEventListener item) {
     this->animListeners.push_back(item);
 }
 
-void IAnimationView::removeAnimListener(IAnimListener *item) {
-    auto iter = find(animListeners.begin(), animListeners.end(), item);
-    
-    if (iter != animListeners.end()) {
-        this->animListeners.erase(iter);
-    }
-}
-
-void IAnimationView::emitAnimEvent(ViewAnimEvent event) {
-    this->onViewStateChanged(event);
-    
+void AnimationView::emitAnimEvent(ViewAnimEvent event) {
     for (auto listener : animListeners) {
-        switch (event) {
-            case ViewAnimEvent::SHOW_START:
-                listener->onShowAnimationStart(this);
-                break;
-            case ViewAnimEvent::SHOW_END:
-                listener->onShowAnimationEnd(this);
-                break;
-            case ViewAnimEvent::HIDE_START:
-                listener->onHideAnimationStart(this);
-                break;
-            case ViewAnimEvent::HIDE_END:
-                listener->onHideAnimationEnd(this);
-                break;
-                
-            default:
-                break;
-        }
-        
-        listener->OnAnimationEvent(this, event);
+        listener(this, event);
     }
-}
-
-void IAnimationView::onViewStateChanged(ViewAnimEvent event) {
-    
 }
 
 }
