@@ -2,8 +2,6 @@
 
 #include "FileSystem.h"
 
-typedef unsigned char			byte;		// 8 bits
-
 namespace re {
 
 File::File()

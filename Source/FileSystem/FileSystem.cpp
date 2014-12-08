@@ -193,7 +193,8 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                     sysFiles.erase(iter, sysFiles.end());
 
                     for(size_t j = 0; j < sysFiles.size(); j++ ) {
-                        directories->push_back(sysFiles[j]);
+                        auto dir = BuildOSPath(relativePath, sysFiles[j]);
+                        directories->push_back(dir);
                     }
                 } else {
                     // scan for files in the filesystem
@@ -221,7 +222,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
 int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &extensions, FileList &list)
 {
     size_t i;
-    StrList slash, folders( 128 );
+    StrList slash, folders;
 
     // recurse through the subdirectories
     slash.push_back( "/" );

@@ -6,6 +6,7 @@
 
 #include "File.h"
 #include "Base/Singleton.h"
+#include "platform.h"
 
 namespace re {
 
