@@ -42,6 +42,17 @@ private:
     void merge();
 
 private:
+    Int width;
+    Int height;
+
+    /**
+     * @brief depth
+     * pixel depth, in byte
+     */
+    Int depth;
+
+    Int used;
+
     Texture::ptr texture;
 
     std::vector<AtlasNode*> nodes;
@@ -50,17 +61,6 @@ private:
      * Atlas data
      */
     unsigned char * data;
-
-    /**
-     * @brief depth
-     * pixel depth, in byte
-     */
-    Int depth;
-
-    Int width;
-    Int height;
-
-    Int used;
 };
 
 }

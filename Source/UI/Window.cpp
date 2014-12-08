@@ -64,13 +64,13 @@ void Window::playHideAnim() {
 void Window::showImmed() {
     this->stopAllActions();
     
-    AnimationView:showImmed();
+    AnimationView::showImmed();
 }
 
 void Window::hideImmed() {
     this->stopAllActions();
     
-    AnimationView:hideImmed();
+    AnimationView::hideImmed();
 }
 
 void Window::actionCallback() {

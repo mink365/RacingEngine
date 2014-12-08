@@ -4,10 +4,10 @@
 Message::Message()
 : type(-1)
 , id(-1)
-, data(NULL)
-, isHandled(false)
-, eventTime(-1)
 , source("")
+, eventTime(-1)
+, isHandled(false)
+, data(NULL)
 {
 }
 

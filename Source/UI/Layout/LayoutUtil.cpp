@@ -33,6 +33,8 @@ Vec2 LayoutUtil::alignTypeToPoint(AlignType type) {
             return Vec2(1.0, 0.0);
             break;
     }
+
+    return Vec2();
 }
 
 Vec2 LayoutUtil::getBoundBoxPosition(Node2d::ptr node, AlignType type) {

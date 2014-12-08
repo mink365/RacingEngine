@@ -31,7 +31,7 @@ void clearNodes(vector<AtlasNode*>& nodes) {
 }
 
 TextureAtlas::TextureAtlas()
-    : data(NULL), width(0), height(0), depth(0), used(0)
+    : width(0), height(0), depth(0), used(0), data(NULL)
 {
 }
 
