@@ -24,10 +24,10 @@ void JSONAtlasParser::parseAtlasFile(FilePtr& file) {
 
     ByteBufferPtr buf = file->read();
 
-    buf->getData();
+    string data((char*)(buf->getData()), buf->getSize());
 
     Document doc;
-    doc.Parse((const char*)buf->getData());
+    doc.Parse(data.c_str());
 
     auto& meta = doc["meta"];
     this->imageSize.width = meta["size"]["w"].GetInt();
