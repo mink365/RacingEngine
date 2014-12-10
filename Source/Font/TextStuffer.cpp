@@ -394,6 +394,8 @@ void TextStuffer::tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup &m
         }
         case TagType::Font:
         {
+            markup.font = FontManager::getInstance().getFont(tag->fontName);
+
             break;
         }
         case TagType::Italic:
