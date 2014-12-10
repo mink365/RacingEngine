@@ -3,8 +3,8 @@
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
 #include "Texture/Frame/TextureFrameManager.h"
-#include "Texture/AtlasParser/BaseAtlasParser.h"
-#include "Texture/AtlasParser/JSONAtlasParser.h"
+#include "Resource/AtlasParser/BaseAtlasParser.h"
+#include "Resource/AtlasParser/JSONAtlasParser.h"
 #include <iostream>
 
 namespace re {
