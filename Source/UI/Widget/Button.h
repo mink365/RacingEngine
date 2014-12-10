@@ -20,13 +20,13 @@ public:
 
     virtual bool onTouchEvent(TouchEvent& event);
 
-    void setOnClickFunc(std::function<void(WidgetPtr& button)> func);
+    void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyProperties(const Node* node) override;
 
 protected:
-    std::function<void(WidgetPtr& button)> onButtonClickFunc;
+    std::function<void(ButtonPtr& button)> onButtonClickFunc;
 
     bool isTouchDown;
     int touchDownTime;

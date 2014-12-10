@@ -50,8 +50,8 @@ void BaseButton::initTouchListener()
     listener->onTouchUpInside = [&](TouchEvent& event, WidgetPtr widget) {
         if (this->isTouchDown) {
             if (this->onButtonClickFunc) {
-                this->onButtonClickFunc(widget);
-
+                auto button = std::dynamic_pointer_cast<BaseButton>(widget);
+                this->onButtonClickFunc(button);
             }
 
             this->isTouchDown = false;
@@ -80,7 +80,7 @@ bool BaseButton::onTouchEvent(TouchEvent &event)
     return Widget::onTouchEvent(event);
 }
 
-void BaseButton::setOnClickFunc(std::function<void (WidgetPtr &)> func)
+void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
 {
     this->onButtonClickFunc = func;
 }
