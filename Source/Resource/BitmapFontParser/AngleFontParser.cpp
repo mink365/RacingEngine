@@ -16,6 +16,7 @@
 #include "Font/FontManager.h"
 
 #include "Texture/TextureManager.h"
+#include "Texture/Frame/TextureFrameManager.h"
 
 using namespace tinyxml2;
 
@@ -58,7 +59,7 @@ void AngleFontParser::parseFile(FilePtr& file)
         int x, y, offsetX, offsetY, width, height, advanceX;
 
         offsetX = charElement->IntAttribute("xoffset");
-        offsetY = charElement->IntAttribute("yoffset");
+        offsetY = -charElement->IntAttribute("yoffset");
         advanceX = charElement->IntAttribute("xadvance");
 
         x = charElement->IntAttribute("x");
@@ -69,13 +70,14 @@ void AngleFontParser::parseFile(FilePtr& file)
         Rect region = Rect(x, y, width, height);
 
         const char* letter = charElement->Attribute("letter");
+        int charID = charElement->IntAttribute("id");
 
         Glyph::ptr glyph = Glyph::create();
-        // TODO: UTF8, chinese and so on
-        glyph->init(letter[0], offsetX, offsetY, advanceX, 0);
+        glyph->init(charID, offsetX, offsetY, advanceX, 0);
 
         TextureFrame::ptr frame = TextureFrame::create();
         frame->init(region);
+        frame->setName(letter);
         frame->setTexture(this->texture);
         glyph->setTextureFrame(frame);
 
