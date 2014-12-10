@@ -108,9 +108,9 @@ extern FilePtr GetImageFile(const FilePtr& atlasFile, const string &imageName);
 
 void AngleFontParser::createFont(FilePtr& file)
 {
-    auto font = std::make_shared<Font>(this->size, file);
-    font->setName(this->family);
-    FontManager::getInstance().registerFont(font);
+    this->font = std::make_shared<Font>(this->size, file);
+    this->font->setName(this->family);
+    FontManager::getInstance().registerFont(this->font);
 
     FilePtr imageFile = GetImageFile(file, this->imageName);
     this->texture = GetTextureByImageFile(imageFile);
