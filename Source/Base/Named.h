@@ -11,7 +11,7 @@ class Named {
 public:
     Long getId() const;
 
-    std::string getName() const;
+    const std::string& getName() const;
     void setName(const std::string& name);
 
     Long getTag() const;
@@ -29,7 +29,7 @@ inline Long Named::getId() const
     return this->id;
 }
 
-inline string Named::getName() const
+inline const std::string& Named::getName() const
 {
     return name;
 }
