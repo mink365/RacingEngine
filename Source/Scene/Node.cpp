@@ -173,9 +173,26 @@ int Node::getLevel() const
     return this->level;
 }
 
-const std::vector<NodePtr> Node::getChildren() const
+const std::vector<NodePtr>& Node::getChildren() const
 {
     return children;
+}
+
+NodePtr Node::getChild(const string &name)
+{
+    auto iter = std::find_if(children.begin(), children.end(), [&](const NodePtr& node){
+        if (node->getName() == name) {
+            return true;
+        }
+
+        return false;
+    });
+
+    if (iter != children.end()) {
+        return *iter;
+    }
+
+    return nullptr;
 }
 
 void Node::addChild(NodePtr node)
