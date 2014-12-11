@@ -35,14 +35,6 @@ private:
     int type;
     int id;
 
-    /**
-     * @brief source
-     * 消息来源的标识。比如，我们在某个界面点了按钮，发出了某个RPC请求，
-     * 但我们可能有两个地方在监测此事件，这就很难确定如何处理。使用一个
-     * 标识来辨别它
-     */
-    std::string source;
-
     long eventTime;
     bool isHandled;
 

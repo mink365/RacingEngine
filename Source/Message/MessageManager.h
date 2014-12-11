@@ -21,8 +21,8 @@ public:
 
 public:
     void sendSimpleMessage(int type, int id);
-    void sendMessage(int type, int id, shared_ptr<void> obj);
-    void sendNoKeyMessage(int type, shared_ptr<void> obj);
+    void sendMessage(int type, int id, shared_ptr<void> obj=nullptr);
+    void sendNoKeyMessage(int type, shared_ptr<void> obj=nullptr);
 
     void addHandler(IMessageHandler *handler);
     void removeHandler(IMessageHandler *handler);

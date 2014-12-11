@@ -40,10 +40,10 @@ public:
     TouchEventType getType() const;
 
 protected:
+    TouchEventType type;
+
     Vec2 curr;
     Vec2 point;
-
-    TouchEventType type;
 };
 
 typedef std::shared_ptr<Widget> WidgetPtr;

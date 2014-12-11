@@ -4,7 +4,6 @@
 Message::Message()
 : type(-1)
 , id(-1)
-, source("")
 , eventTime(-1)
 , isHandled(false)
 , data(NULL)
@@ -30,8 +29,6 @@ void Message::set(int type, int id, std::shared_ptr<void> data)
 void Message::set(const Message& message) {
     type = message.type;
     id = message.id;
-    
-    source = message.source;
     
     eventTime = message.eventTime;
     isHandled = message.isHandled;
