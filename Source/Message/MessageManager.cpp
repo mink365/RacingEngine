@@ -4,16 +4,6 @@
 
 const int MessageManager::DEFAULT_MESSAGE_ID = -1;
 
-MessageManager *MessageManager::getInstance()
-{
-    static MessageManager instance;
-    return &instance;
-}
-
-MessageManager::MessageManager()
-{
-}
-
 void MessageManager::sendSimpleMessage(int type, int id)
 {
     Message *message = Message::obtainMessage();

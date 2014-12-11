@@ -11,12 +11,12 @@ LogicalScene::LogicalScene(string name){
 }
 
 void LogicalScene::onEnter(){
-    MessageManager::getInstance()->addHandler(this);
+    MessageManager::getInstance().addHandler(this);
     Widget::onEnter();
 }
 
 void LogicalScene::onExit(){
-    MessageManager::getInstance()->removeHandler(this);
+    MessageManager::getInstance().removeHandler(this);
     Widget::onExit();
 }
 

@@ -110,7 +110,7 @@ private:
         event->setInfo(type, x - rect.origin.x,
                        rect.size.height - (y - rect.origin.y));
 
-        MessageManager::getInstance()->sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
+        MessageManager::getInstance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
     }
 };
 

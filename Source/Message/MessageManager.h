@@ -2,6 +2,7 @@
 #define MESSAGEMANAGER_H
 
 #include "Message.h"
+#include "Base/Singleton.h"
 
 #include <list>
 #include <memory>
@@ -13,14 +14,12 @@ public:
     virtual void handleMessage(Message *message) = 0;
 };
 
-class MessageManager
+class MessageManager : public re::Singleton<MessageManager>
 {
 public:
     static const int DEFAULT_MESSAGE_ID;
 
 public:
-    static MessageManager *getInstance();
-
     void sendSimpleMessage(int type, int id);
     void sendMessage(int type, int id, shared_ptr<void> obj);
     void sendNoKeyMessage(int type, shared_ptr<void> obj);
@@ -31,8 +30,6 @@ public:
     void handleMessages();
 
 private:
-    MessageManager();
-    
     bool checkHandled(Message* msg);
 
 private:

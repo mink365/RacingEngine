@@ -59,7 +59,7 @@ std::shared_ptr<Window> WindowManager::pushWindow(std::shared_ptr<Window> &windo
     window->manager = this;
     window->show();
     
-    MessageManager::getInstance()->sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
+    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::PUSH_WINDOW,
                                                make_shared<string>(window->getName()));
     
@@ -86,7 +86,7 @@ std::shared_ptr<Window> WindowManager::popWindow(std::shared_ptr<Window> &win) {
     
     win->hide();
     
-    MessageManager::getInstance()->sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
+    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::POP_WINDOW,
                                                make_shared<string>(win->getName()));
     
