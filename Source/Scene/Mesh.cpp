@@ -61,7 +61,7 @@ void Mesh::copyProperties(const NodeAttribute *att)
 
     const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {
-        this->material = inst->material;
+        this->material = inst->material->clone();
 
         this->data = inst->data;
 //        if (!inst->geometry->isStatic()) {
