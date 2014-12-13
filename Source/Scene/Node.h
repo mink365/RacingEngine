@@ -55,9 +55,10 @@ public:
 
     const std::vector<NodePtr>& getChildren() const;
     NodePtr getChild(const std::string& name);
-    void addChild(NodePtr node);
-    void removeChild(NodePtr node);
-    void removeAllChildren();
+
+    virtual void addChild(NodePtr node);
+    virtual void removeChild(NodePtr node);
+    virtual void removeAllChildren();
 
     void updateTransform();
 

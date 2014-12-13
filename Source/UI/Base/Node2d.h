@@ -105,6 +105,11 @@ public:
     Vec2 convertParentToLocalSpace(const Vec2& point) const;
     Vec2 convertNodeToParentSpace(const Vec2& point) const;
 
+public:
+    virtual void addChild(NodePtr node) override;
+    virtual void removeChild(NodePtr node) override;
+    virtual void removeAllChildren() override;
+
 protected:
     Geometry::ptr getGeometry() const;
     MeshPtr getMesh() const;
@@ -123,6 +128,8 @@ protected:
     virtual void copyProperties(const Node* node) override;
 
 protected:
+    bool inScene;
+
     Size size;
     Vec2 anchorPoint;
     Vec2 anchorPointInPoints;

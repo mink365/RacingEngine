@@ -9,6 +9,7 @@
 namespace re {
 
 Node2d::Node2d()
+    :inScene(false)
 {
 }
 
@@ -26,12 +27,26 @@ void Node2d::removeFromParent()
 
 void Node2d::onEnter()
 {
+    this->inScene = true;
 
+    for (auto& node : this->children) {
+        auto childNode = std::dynamic_pointer_cast<Node2d>(node);
+        if (childNode) {
+            childNode->onEnter();
+        }
+    }
 }
 
 void Node2d::onExit()
 {
+    this->inScene = false;
 
+    for (auto& node : this->children) {
+        auto childNode = std::dynamic_pointer_cast<Node2d>(node);
+        if (childNode) {
+            childNode->onExit();
+        }
+    }
 }
 
 bool Node2d::isRunning()
@@ -236,6 +251,44 @@ Vec2 Node2d::convertNodeToParentSpace(const Vec2 &point) const
     Vec3 result = this->getLocalMatrix() * v;
 
     return Vec2(result.x, result.y);
+}
+
+void Node2d::addChild(NodePtr node)
+{
+    Node::addChild(node);
+
+    if (inScene) {
+        auto childNode = std::dynamic_pointer_cast<Node2d>(node);
+        if (childNode) {
+            childNode->onEnter();
+        }
+    }
+}
+
+void Node2d::removeChild(NodePtr node)
+{
+    Node::removeChild(node);
+
+    if (inScene) {
+        auto childNode = std::dynamic_pointer_cast<Node2d>(node);
+        if (childNode) {
+            childNode->onExit();
+        }
+    }
+}
+
+void Node2d::removeAllChildren()
+{
+    if (inScene) {
+        for (auto& node : this->children) {
+            auto childNode = std::dynamic_pointer_cast<Node2d>(node);
+            if (childNode) {
+                childNode->onExit();
+            }
+        }
+    }
+
+    Node::removeAllChildren();
 }
 
 Geometry::ptr Node2d::getGeometry() const
