@@ -24,6 +24,8 @@ Application::Application()
 
 void Application::run()
 {
+    this->initViewSize();
+
     NativeWindow* glfwWin = static_cast<NativeWindow*>(this->view);
     glfwWin->initView();
     glfwWin->bindEventHandler();

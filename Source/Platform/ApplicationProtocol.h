@@ -7,6 +7,8 @@ namespace re {
 
 class ApplicationProtocol {
 public:
+    virtual void initViewSize() {};
+
     virtual bool initEnvironment() = 0;
 
     virtual void onEnterForeground() = 0;
