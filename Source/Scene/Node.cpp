@@ -130,7 +130,9 @@ void Node::copyChildren(const Node *node)
 {
     this->children.clear();
     for (auto child : node->children) {
-        this->children.push_back(child->clone());
+        NodePtr copyChild = child->clone();
+        this->children.push_back(copyChild);
+        copyChild->parent = this->shared_from_this();
     }
 }
 
