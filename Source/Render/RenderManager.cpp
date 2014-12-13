@@ -200,6 +200,8 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
 void RenderManager::render()
 {
+    this->initDefaultRenderState();
+
     this->renderQueue.sortRenderableList();
 
     std::vector<RenderableList *> &lists = this->renderQueue.lists;
