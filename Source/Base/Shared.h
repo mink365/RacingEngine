@@ -6,6 +6,17 @@
 namespace re {
 
 template<class T, typename... Args>
+std::shared_ptr<T> Create(Args... args) {
+    auto obj = std::make_shared<T>();
+
+    if (obj != nullptr) {
+        obj->init(args...);
+    }
+
+    return obj;
+}
+
+template<class T, typename... Args>
 class Shared
 {
 public:
