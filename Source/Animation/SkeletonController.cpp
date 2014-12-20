@@ -42,6 +42,16 @@ re::MeshPtr re::SkeletonController::getMesh()
     return this->mesh;
 }
 
+void re::SkeletonController::play()
+{
+
+}
+
+void re::SkeletonController::stop()
+{
+
+}
+
 void re::SkeletonController::reset()
 {
 
