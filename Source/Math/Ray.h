@@ -6,28 +6,37 @@
 
 ******************************************************************************/
 
-#ifndef RE_AABBOX_H
-#define RE_AABBOX_H
+#ifndef RE_RAY_H
+#define RE_RAY_H
 
 #include "Vector.h"
 
 namespace re {
 
-class AABBox
+class Ray
 {
 public:
-    AABBox(const Vec3& min, const Vec3 max);
+    Ray();
+    ~Ray();
 
-    Vec3 Center() const;
-    Vec3 HalfSize() const;
-
-    const Vec3& Min() const;
-    const Vec3& Max() const;
+    const Vec3& Origin() const;
+    const Vec3& Direction() const;
 
 private:
-    Vec3 min, max;
+    Vec3 origin;
+    Vec3 direction;
 };
+
+inline const Vec3& Ray::Origin() const
+{
+    return origin;
+}
+
+inline const Vec3& Ray::Direction() const
+{
+    return direction;
+}
 
 } // namespace re
 
-#endif // RE_AABBOX_H
+#endif // RE_RAY_H

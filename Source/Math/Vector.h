@@ -12,7 +12,6 @@
 #include <cmath>
 
 #include "platform.h"
-#include "MathTool.h"
 
 namespace re {
 
@@ -260,10 +259,6 @@ inline std::string Vec2::toString() const
 
 class Vec3 {
 public:
-	float x;
-	float y;
-	float z;
-
     Vec3(void);
     explicit Vec3(const float x, const float y, const float z);
 
@@ -285,6 +280,19 @@ public:
 
     float operator *(const Vec3 &v) const;
 
+    Vec3 const operator+() const
+        { return *this; }
+    Vec3 const operator-() const
+    {
+        Vec3 temp(*this);
+        temp.x = -x;
+        temp.y = -y;
+        temp.z = -z;
+        return temp;
+    }
+
+    friend Vec3	operator*( const float a, const Vec3 b );
+
     Vec3            cross(const Vec3 &v) const;
     Vec3&           cross(const Vec3 &a, const Vec3 &b);
 
@@ -300,6 +308,11 @@ public:
     Quat toQuat() const;
 
     std::string toString() const;
+
+public:
+    float x;
+    float y;
+    float z;
 };
 
 inline float Vec3::operator [](int index) const
@@ -375,6 +388,10 @@ inline Vec3 Vec3::operator /(const float a) const
 inline float Vec3::operator *(const Vec3 &v) const
 {
     return x * v.x + y * v.y + z * v.z;
+}
+
+inline Vec3	operator*( const float a, const Vec3 b ) {
+    return Vec3(b.x * a, b.y * a, b.z * a);
 }
 
 inline Vec3 Vec3::cross(const Vec3 &v) const

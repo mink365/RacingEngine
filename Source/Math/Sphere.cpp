@@ -6,24 +6,19 @@
 
 ******************************************************************************/
 
-#include "AABBox.h"
+#include "Sphere.h"
 
 namespace re {
 
-AABBox::AABBox(const Vec3 &min, const Vec3 max)
+Sphere::Sphere()
 {
-    this->min = min;
-    this->max = max;
+
 }
 
-Vec3 AABBox::Center() const
+Sphere::~Sphere()
 {
-    return (min + max) / 2.0f;
-}
 
-Vec3 AABBox::HalfSize() const
-{
-    return (max - min) / 2.0f;
 }
 
 } // namespace re
+

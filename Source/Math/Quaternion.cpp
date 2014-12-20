@@ -12,6 +12,11 @@
 
 namespace re {
 
+Quat Quat::Identity()
+{
+    return Quat();
+}
+
 Quat::Quat() {
     this->x = 0;
     this->y = 0;

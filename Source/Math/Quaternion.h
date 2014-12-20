@@ -20,11 +20,9 @@ class Vec3;
 
 class Quat {
 public:
-    float x;
-    float y;
-    float z;
-    float w;
+    static Quat Identity();
 
+public:
     Quat();
     Quat(float x, float y, float z, float w);
 
@@ -61,6 +59,12 @@ public:
     Quat &slerp(Quat &q2, float changeAmnt);
 
     std::string toString() const;
+
+public:
+    float x;
+    float y;
+    float z;
+    float w;
 };
 
 inline float Quat::operator [](int index) const

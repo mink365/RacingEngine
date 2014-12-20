@@ -12,7 +12,7 @@
 #include <math.h>
 #include <string.h>
 
-#include "Math/MathTool.h"
+#include "Math/Math.h"
 #include "Quaternion.h"
 
 class Mat4;
@@ -101,6 +101,9 @@ inline std::string Mat3::toString() const
  */
 class Mat4 {
 public:
+    static const Mat4 Identity;
+
+public:
     Mat4();
 
     Mat4(const float m00, const float m01, const float m02, const float m03,
@@ -159,7 +162,10 @@ public:
 
     operator float *() const;
     const Vec4 	&operator[](int block_index) const;
-    Vec4          &operator[](int block_index);
+    Vec4        &operator[](int block_index);
+
+    float& operator()(size_t row, size_t col);
+    const float& operator()(size_t row, size_t col) const;
 
     float getDeterminant();
 
@@ -415,6 +421,16 @@ inline const Vec4 &Mat4::operator[](int index) const
 inline Vec4 &Mat4::operator[](int index)
 {
     return mat[ index ];
+}
+
+inline float& Mat4::operator()(size_t row, size_t col)
+{
+    return mat[row][col];
+}
+inline const float& Mat4::operator()(size_t row, size_t col) const
+{
+    //TODO:
+    return mat[row][col];
 }
 
 inline std::string Mat4::toString() const

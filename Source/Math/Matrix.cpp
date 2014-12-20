@@ -96,6 +96,7 @@ Mat3 &Mat3::invert()
     return *this;
 }
 
+const Mat4 Mat4::Identity = Mat4().identity();
 
 Mat4::Mat4() {
     this->identity();

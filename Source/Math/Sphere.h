@@ -6,28 +6,29 @@
 
 ******************************************************************************/
 
-#ifndef RE_AABBOX_H
-#define RE_AABBOX_H
+#ifndef RE_SPHERE_H
+#define RE_SPHERE_H
 
 #include "Vector.h"
 
 namespace re {
 
-class AABBox
+class Sphere
 {
 public:
-    AABBox(const Vec3& min, const Vec3 max);
+    Sphere();
+    ~Sphere();
 
-    Vec3 Center() const;
-    Vec3 HalfSize() const;
-
-    const Vec3& Min() const;
-    const Vec3& Max() const;
+    Vec3 Center();
+    const Vec3& Center() const;
+    float& Radius();
+    float Radius() const;
 
 private:
-    Vec3 min, max;
+    Vec3 center;
+    float radius;
 };
 
 } // namespace re
 
-#endif // RE_AABBOX_H
+#endif // RE_SPHERE_H
