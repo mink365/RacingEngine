@@ -87,7 +87,7 @@ inline std::shared_ptr<T> LayerManager<T>::getStackTop() {
     if (this->stack.empty()) {
         return NULL;
     } else {
-        return this->stack.top();
+        return this->stack.back();
     }
 }
 

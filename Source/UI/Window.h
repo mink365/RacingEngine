@@ -24,7 +24,7 @@ public:
     float getBackgroundAlpha();
     
     /*
-     * 从窗口堆栈弹出自己
+     * pop self from the window stack
      */
     void popFromWindowManager();
     
