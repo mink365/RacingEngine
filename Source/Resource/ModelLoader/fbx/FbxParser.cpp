@@ -308,9 +308,10 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
         MaterialPtr material = MaterialManager::getInstance().getMaterial(materialTextureKey);
         if (material != nullptr) {
             //TODO: if the pass is in material file ?
-            material->addPass(pass);
+            auto m = material->clone();
+            m->addPass(pass);
 
-            mesh->setMaterial(material);
+            mesh->setMaterial(m);
         } else {
             mesh->getMaterial()->clearPasses();
             mesh->getMaterial()->addPass(pass);
