@@ -9,15 +9,14 @@ RenderState::RenderState()
     this->blendState.blendModeRGB = BlendMode::PremultAlpha;
 
     this->depthState.depthTestEnable = true;
-    this->depthState.depthWrite = true;
+    this->depthWrite = true;
     this->depthState.function = TestFunction::LessOrEqual;
 
     this->alphaState.alphaTestEnable = false;
     this->alphaState.alphaFallOff = 0;
     this->alphaState.function = TestFunction::LessOrEqual;
 
-    this->faceCullState.faceCullEnable = true;
-    this->faceCullState.cullMode = FaceCullMode::Back;
+    this->faceCullMode = FaceCullMode::Back;
 
     this->stencilState.stencilTestEnable = false;
     this->stencilState.frontStencilStencilFailOperation = StencilOperation::Keep;
@@ -30,15 +29,14 @@ RenderState::RenderState()
     this->stencilState.backStencilFunction = TestFunction::Always;
 }
 
-bool DepthState::operator==(const DepthState &right) const
+bool DepthTestState::operator==(const DepthTestState &right) const
 {
     return (this->depthTestEnable == right.depthTestEnable
-            && this->depthWrite == right.depthWrite
             && this->function == right.function
             );
 }
 
-bool DepthState::operator!=(const DepthState &right) const
+bool DepthTestState::operator!=(const DepthTestState &right) const
 {
     return !(*this == right);
 }
@@ -74,19 +72,6 @@ bool AlphaState::operator==(const AlphaState &right) const
 bool AlphaState::operator!=(const AlphaState &right) const
 {
     return  !(this->alphaTestEnable == false && right.alphaTestEnable == false)
-            && !(*this == right);
-}
-
-bool FaceCullState::operator==(const FaceCullState &right) const
-{
-    return (this->faceCullEnable == right.faceCullEnable
-            && this->cullMode == right.cullMode
-            );
-}
-
-bool FaceCullState::operator!=(const FaceCullState &right) const
-{
-    return  !(this->faceCullEnable == false && right.faceCullEnable == false)
             && !(*this == right);
 }
 

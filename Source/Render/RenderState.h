@@ -54,14 +54,13 @@ enum class TestFunction {
 };
 
 // -------------------- DepthState -------------------------//
-struct DepthState
+struct DepthTestState
 {
     bool depthTestEnable;
-    bool depthWrite;
     TestFunction function;
 
-    bool operator==(const DepthState& right) const;
-    bool operator!=(const DepthState& right) const;
+    bool operator==(const DepthTestState& right) const;
+    bool operator!=(const DepthTestState& right) const;
 };
 
 //-------------------- BlendState ---------------------------//
@@ -203,6 +202,10 @@ struct AlphaState {
 // -------------------- FaceCullState --------------------------------//
 enum class FaceCullMode {
     /**
+     *  Cull No faces
+     */
+    Off,
+    /**
      * Cull front faces
      */
     Front,
@@ -216,17 +219,9 @@ enum class FaceCullMode {
     FrontAndBack
 };
 
-struct FaceCullState {
-    bool faceCullEnable;
-    FaceCullMode cullMode;
-
-    bool operator==(const FaceCullState& right) const;
-    bool operator!=(const FaceCullState& right) const;
-};
-
 // ---------------------- TextureUnitContextState ----------------------//
 
-struct TextureUnitContexState {
+struct TextureUnitContextState {
     bool unitEnabled;
     GPU_ID textureId;
 };
@@ -237,10 +232,12 @@ public:
     RenderState();
 
     BlendState blendState;
-    DepthState depthState;
+    DepthTestState depthState;
     AlphaState alphaState;
     StencilState stencilState;
-    FaceCullState faceCullState;
+
+    bool depthWrite;
+    FaceCullMode faceCullMode;
 };
 
 } // namespace re

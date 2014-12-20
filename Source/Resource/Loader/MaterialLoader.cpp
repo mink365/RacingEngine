@@ -37,9 +37,23 @@ MaterialPtr MaterialLoader::loadMaterial(Statement::ptr &statement)
             } else if (kv->key == "transparent") {
                 material->setTransparent(To<bool>(kv->value));
             } else if (kv->key == "depth_write") {
-                material->getRenderState().depthState.depthWrite = To<bool>(kv->value);
+                material->getRenderState().depthWrite = To<bool>(kv->value);
             } else if (kv->key == "depth_test") {
                 material->getRenderState().depthState.depthTestEnable = To<bool>(kv->value);
+            } else if (kv->key == "face_cull") {
+                FaceCullMode mode;
+
+                if (kv->value == "both") {
+                    mode = FaceCullMode::FrontAndBack;
+                } else if (kv->value == "back") {
+                    mode = FaceCullMode::Back;
+                } else if (kv->value == "front") {
+                    mode = FaceCullMode::Front;
+                } else if (kv->value == "off") {
+                    mode = FaceCullMode::Off;
+                }
+
+                material->getRenderState().faceCullMode = mode;
             }
         }
 

@@ -30,13 +30,9 @@ private:
 
     Rect viewport;
 
-    BlendState blendState;
-    AlphaState alphaState;
-    StencilState stencilState;
-    DepthState depthState;
-    FaceCullState faceCullState;
+    RenderState renderState;
 
-    std::vector<TextureUnitContexState> textureUnits;
+    std::vector<TextureUnitContextState> textureUnits;
 };
 
 } // namespace re

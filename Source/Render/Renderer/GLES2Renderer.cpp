@@ -292,6 +292,8 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
         return GL_FRONT;
     case FaceCullMode::FrontAndBack:
         return GL_FRONT_AND_BACK;
+    default:
+        break;
     }
 
     return GL_FRONT;
@@ -299,7 +301,13 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
 
 void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 {
-    if (force || this->context.depthState != state.depthState) {
+    if (force || this->context.renderState.depthWrite != state.depthWrite) {
+        glDepthMask(state.depthWrite);
+
+        context.renderState.depthWrite = state.depthWrite;
+    }
+
+    if (force || this->context.renderState.depthState != state.depthState) {
         if (state.depthState.depthTestEnable) {
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(GetTestFunc(state.depthState.function));
@@ -307,13 +315,11 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
             glDisable(GL_DEPTH_TEST);
         }
 
-        glDepthMask(state.depthState.depthWrite);
-
-        context.depthState = state.depthState;
+        context.renderState.depthState = state.depthState;
     }
 
 
-    if (force || context.alphaState != state.alphaState) {
+    if (force || context.renderState.alphaState != state.alphaState) {
 //        if (state.alphaState.alphaTestEnable) {
 //            glEnable(GL_ALPHA_TEST);
 
@@ -322,10 +328,10 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 //            glDisable(GL_ALPHA_TEST);
 //        }
 
-        context.alphaState = state.alphaState;
+        context.renderState.alphaState = state.alphaState;
     }
 
-    if (force || context.blendState != state.blendState) {
+    if (force || context.renderState.blendState != state.blendState) {
         if (state.blendState.blendEnable) {
             glEnable(GL_BLEND);
 
@@ -338,23 +344,23 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
             glDisable(GL_BLEND);
         }
 
-        context.blendState = state.blendState;
+        context.renderState.blendState = state.blendState;
     }
 
-    if (force || context.faceCullState != state.faceCullState) {
-        if (state.faceCullState.faceCullEnable) {
+    if (force || context.renderState.faceCullMode != state.faceCullMode) {
+        if (state.faceCullMode != FaceCullMode::Off) {
             glEnable(GL_CULL_FACE);
 
             // glFrontFace(GL_CCW);
-            glCullFace(GetFaceCullMode(state.faceCullState.cullMode));
+            glCullFace(GetFaceCullMode(state.faceCullMode));
         } else {
             glDisable(GL_CULL_FACE);
         }
 
-        context.faceCullState = state.faceCullState;
+        context.renderState.faceCullMode = state.faceCullMode;
     }
 
-    if (force || context.stencilState != state.stencilState) {
+    if (force || context.renderState.stencilState != state.stencilState) {
         // TODO:
         if (state.stencilState.stencilTestEnable) {
 
@@ -362,7 +368,7 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 
         }
 
-        context.stencilState = state.stencilState;
+        context.renderState.stencilState = state.stencilState;
     }
 }
 
