@@ -30,7 +30,7 @@ void BaseButton::initTouchListener()
 {
     auto listener = TouchEventListener::create();
 
-    listener->onTouchDown = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchDown = [&](TouchEvent&, WidgetPtr&) {
         this->isTouchDown = true;
         this->touchDownTime = LocalTime::getInstance().getCurrentTime();
 
@@ -39,15 +39,15 @@ void BaseButton::initTouchListener()
         return true;
     };
 
-    listener->onTouchMoveEnter = [&](TouchEvent&, WidgetPtr) {
+    listener->onTouchMoveEnter = [&](TouchEvent&, WidgetPtr&) {
         this->switchState(WidgetState::PRESSED);
     };
 
-    listener->onTouchMoveOut = [&](TouchEvent&, WidgetPtr) {
+    listener->onTouchMoveOut = [&](TouchEvent&, WidgetPtr&) {
         this->switchState(WidgetState::DEFAULT);
     };
 
-    listener->onTouchUpInside = [&](TouchEvent&, WidgetPtr widget) {
+    listener->onTouchUpInside = [&](TouchEvent&, WidgetPtr& widget) {
         if (this->isTouchDown) {
             if (this->onButtonClickFunc) {
                 auto button = std::dynamic_pointer_cast<BaseButton>(widget);
@@ -60,13 +60,13 @@ void BaseButton::initTouchListener()
         this->switchState(WidgetState::DEFAULT);
     };
 
-    listener->onTouchUpOutside = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchUpOutside = [&](TouchEvent&, WidgetPtr&) {
         this->switchState(WidgetState::DEFAULT);
 
         this->isTouchDown = false;
     };
 
-    listener->onTouchCancle = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchCancle = [&](TouchEvent&, WidgetPtr&) {
         this->switchState(WidgetState::DEFAULT);
 
         this->isTouchDown = false;

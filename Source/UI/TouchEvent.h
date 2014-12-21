@@ -54,17 +54,17 @@ public:
     TouchEventListener();
 
 public:
-    std::function<bool(TouchEvent&, WidgetPtr)> onTouchDown;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchDownOutSide;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchMoveInside;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchMoveOutside;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchMoveEnter;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchMoveOut;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchUpInside;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchUpOutside;
-    std::function<void(TouchEvent&, WidgetPtr)> onTouchCancle;
+    std::function<bool(TouchEvent&, WidgetPtr&)> onTouchDown;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchDownOutSide;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchMoveInside;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchMoveOutside;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchMoveEnter;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchMoveOut;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchUpInside;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchUpOutside;
+    std::function<void(TouchEvent&, WidgetPtr&)> onTouchCancle;
     std::function<void(WidgetTouchState oldTouchState, WidgetTouchState newTouchState,
-                       TouchEvent& event, WidgetPtr widget)> onTouchStateChange;
+                       TouchEvent& event, WidgetPtr& widget)> onTouchStateChange;
 };
 
 } // namespace re
