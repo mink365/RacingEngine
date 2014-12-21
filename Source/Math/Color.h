@@ -31,8 +31,6 @@ public:
     static const Color BlackNoAlpha;
 
 public:
-    float r, g, b, a;
-
     Color();
     Color(float r, float g, float b, float a);
 
@@ -43,6 +41,9 @@ public:
     Color& operator *=(const Color& v);
 
     std::string toString();
+
+public:
+    float r, g, b, a;
 };
 
 inline std::string Color::toString()

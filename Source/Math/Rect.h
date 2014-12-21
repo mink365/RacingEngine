@@ -19,10 +19,6 @@ class Mat4;
 class Rect
 {
 public:
-    Vec2 origin;
-    Size size;
-
-public:
     Rect();
     Rect(const Vec2& p, const Size& size);
     Rect(float x, float y, float width, float height);
@@ -56,6 +52,10 @@ public:
     bool intersectsRect(const Rect& rect) const;
     bool containsRect(const Rect& rect) const;
     Rect unionWithRect(const Rect & rect) const;
+
+public:
+    Vec2 origin;
+    Size size;
 };
 
 Rect RectApplyMatrix(const Rect &rect, const Mat4 &m);

@@ -14,10 +14,6 @@ namespace re {
 class Size
 {
 public:
-    float width;
-    float height;
-
-public:
     Size();
     Size(float w, float h);
 
@@ -27,6 +23,10 @@ public:
     bool compare(const Size& v) const;
     bool operator ==(const Size& v) const;
     bool operator !=(const Size& v) const;
+
+public:
+    float width;
+    float height;
 };
 
 inline Size::Size()

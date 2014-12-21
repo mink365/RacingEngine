@@ -14,15 +14,16 @@ namespace re {
 
 class Uv {
 public:
-    float u;
-    float v;
-
     Uv();
     Uv(float u, float v);
 
     void set(float u, float v);
 
     std::string toString() const;
+
+public:
+    float u;
+    float v;
 };
 
 inline std::string Uv::toString() const

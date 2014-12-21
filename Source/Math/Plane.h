@@ -24,10 +24,10 @@ public:
     Plane();
     ~Plane();
 
-    float a() const;
-    float b() const;
-    float c() const;
-    float d() const;
+    const float& a() const;
+    const float& b() const;
+    const float& c() const;
+    const float& d() const;
 
     const Vec3& Normal() const;
 
@@ -41,22 +41,22 @@ inline const Vec3& Plane::Normal() const
     return normal;
 }
 
-inline float Plane::a() const
+inline const float& Plane::a() const
 {
     return normal.x;
 }
 
-inline float Plane::b() const
+inline const float& Plane::b() const
 {
     return normal.y;
 }
 
-inline float Plane::c() const
+inline const float& Plane::c() const
 {
     return normal.z;
 }
 
-inline float Plane::d() const
+inline const float &Plane::d() const
 {
     return d_;
 }

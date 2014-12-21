@@ -429,7 +429,6 @@ inline float& Mat4::operator()(size_t row, size_t col)
 }
 inline const float& Mat4::operator()(size_t row, size_t col) const
 {
-    //TODO:
     return mat[row][col];
 }
 

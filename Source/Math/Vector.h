@@ -22,9 +22,6 @@ public:
     static const Vec2 Zero;
 
 public:
-    float x;
-    float y;
-
     Vec2(void);
     Vec2(const float x, const float y);
 
@@ -32,7 +29,7 @@ public:
     Vec2& set(const Vec2 &v);
     Vec2& zero(void);
 
-    float operator [](int index) const;
+    const float& operator [](int index) const;
     float& operator [](int index);
 
     Vec2 operator -() const;
@@ -67,6 +64,10 @@ public:
     void			lerp( const Vec2 &v1, const Vec2 &v2, const float l );
 
     std::string toString() const;
+
+public:
+    float x;
+    float y;
 };
 
 inline Vec2::Vec2()
@@ -103,7 +104,7 @@ inline Vec2 &Vec2::zero()
     return *this;
 }
 
-inline float Vec2::operator [](int index) const
+inline const float &Vec2::operator [](int index) const
 {
     return (&x)[index];
 }
@@ -265,7 +266,7 @@ public:
     Vec3 &set(float x, float y, float z);
     Vec3 &set(const Vec3 &v);
 
-    float operator [](int index) const;
+    const float& operator [](int index) const;
     float &operator [](int index);
 
     Vec3 &operator +=(const Vec3 &v);
@@ -315,7 +316,7 @@ public:
     float z;
 };
 
-inline float Vec3::operator [](int index) const
+inline const float &Vec3::operator [](int index) const
 {
     return (&x)[index];
 }
@@ -452,11 +453,6 @@ inline std::string Vec3::toString() const
 
 class Vec4 {
 public:
-    float x;
-    float y;
-    float z;
-    float w;
-
     Vec4();
     Vec4(const float x, const float y, const float z, const float w);
 
@@ -466,12 +462,11 @@ public:
 
     Vec4& operator =(const Vec3& source);
 
-    float operator [](int index) const;
+    const float &operator [](int index) const;
     float &operator [](int index);
 
     /**
      * @brief operator float *
-     * 强转时调用
      */
     operator float *() const;
 
@@ -479,6 +474,12 @@ public:
     const float *toFloatPtr () const;
 
     std::string toString() const;
+
+public:
+    float x;
+    float y;
+    float z;
+    float w;
 };
 
 inline Vec4 &Vec4::set(const float x, const float y, const float z, const float w) {
@@ -519,7 +520,7 @@ inline Vec4 &Vec4::operator =(const Vec3 &source)
     return *this;
 }
 
-inline float Vec4::operator [](int index) const
+inline const float& Vec4::operator [](int index) const
 {
     return (&x)[index];
 }
