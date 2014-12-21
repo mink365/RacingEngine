@@ -9,7 +9,7 @@
 #ifndef RE_BASEBITMAPFONTPARSER_H
 #define RE_BASEBITMAPFONTPARSER_H
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 namespace re {
 

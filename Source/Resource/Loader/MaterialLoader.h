@@ -2,7 +2,7 @@
 #define RE_MATERIALLOADER_H
 
 #include "Base/Singleton.h"
-#include "PredefineType.h"
+#include "PreDeclare.h"
 #include "Material/Material.h"
 #include "Resource/Common/BlockParser.h"
 #include <string>

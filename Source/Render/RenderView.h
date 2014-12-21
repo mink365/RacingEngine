@@ -3,7 +3,7 @@
 
 #include <functional>
 #include "Base/Shared.h"
-#include "PredefineType.h"
+#include "PreDeclare.h"
 #include "Math/Matrix.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"

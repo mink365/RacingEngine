@@ -1,7 +1,7 @@
 #ifndef RE_BLOCKPARSER_H
 #define RE_BLOCKPARSER_H
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 #include <string>
 #include <memory>

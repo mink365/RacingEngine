@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 namespace re {
 

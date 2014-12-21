@@ -1,7 +1,7 @@
 #ifndef RE_MATERIALMANAGER_H
 #define RE_MATERIALMANAGER_H
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 #include "Base/Singleton.h"
 #include <map>
 

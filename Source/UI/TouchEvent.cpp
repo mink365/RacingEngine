@@ -43,8 +43,8 @@ TouchEventListener::TouchEventListener()
     this->onTouchUpInside = [](TouchEvent&, WidgetPtr){};
     this->onTouchUpOutside = [](TouchEvent&, WidgetPtr){};
     this->onTouchCancle = [](TouchEvent&, WidgetPtr){};
-    this->onTouchStateChange = [](WidgetTouchState oldTouchState, WidgetTouchState newTouchState,
-            TouchEvent& event, WidgetPtr widget){};
+    this->onTouchStateChange = [](WidgetTouchState, WidgetTouchState,
+            TouchEvent&, WidgetPtr){};
 }
 
 } // namespace re

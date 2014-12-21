@@ -4,6 +4,7 @@
 #include "UI/Base/QuadStuffer.h"
 #include "Math/Color.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
+#include "Scene/Mesh.h"
 
 namespace re {
 
@@ -16,7 +17,12 @@ void Label::init(Font::ptr &font)
     this->font = font;
 
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, font->getTexture(), "Shader_Font");
+    InitNodeForLeaf(node, font->getTexture(), "Shader_PTC");
+
+    auto mesh = std::dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
+    MaterialPtr material = mesh->getMaterial();
+    material->getRenderState().blendState.blendModeAlpha = BlendMode::Alpha;
+    material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
 }
 
 void Label::setText(const string &text)

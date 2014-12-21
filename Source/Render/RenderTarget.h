@@ -1,7 +1,7 @@
 #ifndef RE_RENDERTARGET_H
 #define RE_RENDERTARGET_H
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 #include "Texture/Texture.h"
 #include "Math/Rect.h"

@@ -39,15 +39,15 @@ void BaseButton::initTouchListener()
         return true;
     };
 
-    listener->onTouchMoveEnter = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchMoveEnter = [&](TouchEvent&, WidgetPtr) {
         this->switchState(WidgetState::PRESSED);
     };
 
-    listener->onTouchMoveOut = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchMoveOut = [&](TouchEvent&, WidgetPtr) {
         this->switchState(WidgetState::DEFAULT);
     };
 
-    listener->onTouchUpInside = [&](TouchEvent& event, WidgetPtr widget) {
+    listener->onTouchUpInside = [&](TouchEvent&, WidgetPtr widget) {
         if (this->isTouchDown) {
             if (this->onButtonClickFunc) {
                 auto button = std::dynamic_pointer_cast<BaseButton>(widget);

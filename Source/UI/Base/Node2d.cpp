@@ -460,7 +460,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     MaterialPtr material = mesh->getMaterial();
     material->setQueueID(RENDER_QUEUE_UI);
     material->getRenderState().depthState.depthTestEnable = false;
-    material->getRenderState().depthState.depthWrite = false;
+    material->getRenderState().depthWrite = false;
     material->getRenderState().depthState.function = TestFunction::LessOrEqual;
     if (texture) {
         TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);

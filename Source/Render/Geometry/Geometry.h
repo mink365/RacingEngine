@@ -11,7 +11,7 @@
 #include "Base/Shared.h"
 #include "Base/Clonable.h"
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 namespace re {
 

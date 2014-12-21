@@ -1,5 +1,5 @@
-#ifndef PREDEFINETYPE_H
-#define PREDEFINETYPE_H
+#ifndef PREDECLARE_H
+#define PREDECLARE_H
 
 #include <memory>
 #include "Base/Buffer.h"

@@ -10,7 +10,7 @@
 #define RE_ANGLEFONTPARSER_H
 
 #include "BaseBitmapFontParser.h"
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 namespace re {
 
