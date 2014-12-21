@@ -10,6 +10,7 @@
 namespace re {
 typedef NamedFactory<Window> WindowFactory;
 typedef NamedFactory<Scene> SceneFactory;
+typedef std::shared_ptr<Scene> ScenePtr;
 
     namespace ui {
 
@@ -34,14 +35,14 @@ public:
     void keyBackClicked();
     void setKeyBackActive(bool active);
 protected:
-    virtual std::shared_ptr<Scene> createLayer(const std::string& name);
+    virtual ScenePtr createLayer(const std::string& name);
     /*
      * get the default layer, if we have no layer in the stack, we will jump to it
      */
-    virtual std::shared_ptr<Scene> getDefaultLayer();
+    virtual ScenePtr getDefaultLayer();
     
-    void addLayerToScene(std::shared_ptr<Scene> &node);
-    void removeLayerFromScene(std::shared_ptr<Scene>& node);
+    void addLayerToScene(ScenePtr &node);
+    void removeLayerFromScene(ScenePtr& node);
     
 private:
     bool isKeyBackActive;

@@ -12,7 +12,7 @@ WindowManager::WindowManager()
 
 }
 
-std::shared_ptr<Window> WindowManager::getFocusedWindow() {
+WindowPtr WindowManager::getFocusedWindow() {
     if (windowStack.empty()) {
         return NULL;
     } else {
@@ -20,8 +20,8 @@ std::shared_ptr<Window> WindowManager::getFocusedWindow() {
     }
 }
 
-std::shared_ptr<Window> WindowManager::getWindowByName(string name) {
-    auto query = find_if(windowStack.begin(), windowStack.end(), [name] (std::shared_ptr<Window> window) {
+WindowPtr WindowManager::getWindowByName(string name) {
+    auto query = find_if(windowStack.begin(), windowStack.end(), [name] (WindowPtr window) {
         return window->getName() == name;
     });
     if (query != windowStack.end()) {
@@ -31,8 +31,8 @@ std::shared_ptr<Window> WindowManager::getWindowByName(string name) {
     }
 }
 
-std::shared_ptr<Window> WindowManager::pushWindow(string name) {
-    std::shared_ptr<Window> win = factory->createInstance(name);
+WindowPtr WindowManager::pushWindow(string name) {
+    WindowPtr win = factory->createInstance(name);
     assert(win);
     
     this->pushWindow(win);
@@ -40,11 +40,11 @@ std::shared_ptr<Window> WindowManager::pushWindow(string name) {
     return win;
 }
 
-std::shared_ptr<Window> WindowManager::pushWindow(std::shared_ptr<Window> &window) {
+WindowPtr WindowManager::pushWindow(WindowPtr &window) {
     auto iter = find(windowStack.begin(), windowStack.end(), window);
     
     if (iter != windowStack.end()) {
-        std::shared_ptr<Window> win = *iter;
+        WindowPtr win = *iter;
         win->hideImmed();
         onWindowHidden(win);
     }
@@ -68,17 +68,17 @@ std::shared_ptr<Window> WindowManager::pushWindow(std::shared_ptr<Window> &windo
     return window;
 }
 
-std::shared_ptr<Window> WindowManager::popWindow() {
+WindowPtr WindowManager::popWindow() {
     assert(!windowStack.empty());
     
-    std::shared_ptr<Window> win = this->windowStack.back();
+    WindowPtr win = this->windowStack.back();
     
     popWindow(win);
     
     return win;
 }
 
-std::shared_ptr<Window> WindowManager::popWindow(std::shared_ptr<Window> &win) {
+WindowPtr WindowManager::popWindow(WindowPtr &win) {
     assert(!windowStack.empty());
     
     auto iter = find(windowStack.begin(), windowStack.end(), win);
@@ -93,11 +93,11 @@ std::shared_ptr<Window> WindowManager::popWindow(std::shared_ptr<Window> &win) {
     return win;
 }
 
-std::shared_ptr<Window> WindowManager::popToWindow(std::shared_ptr<Window> &win) {
+WindowPtr WindowManager::popToWindow(WindowPtr &win) {
     assert(!windowStack.empty());
     
     while (windowStack.back() != win) {
-        std::shared_ptr<Window> upper = windowStack.back();
+        WindowPtr upper = windowStack.back();
         upper->hideImmed();
         
         onWindowHidden(upper);
@@ -119,13 +119,13 @@ std::shared_ptr<Window> WindowManager::popToWindow(std::shared_ptr<Window> &win)
 
 void WindowManager::popAllWindow() {
     while (!windowStack.empty()) {
-        std::shared_ptr<Window> win = this->windowStack.back();
+        WindowPtr win = this->windowStack.back();
         
         this->onWindowHidden(win);
     }
 }
 
-void WindowManager::changeFocusedWindow(std::shared_ptr<Window> &win) {
+void WindowManager::changeFocusedWindow(WindowPtr &win) {
     std::shared_ptr<Node2d> bg = this->getAlphaBackground();
     
     float alpha = win->getBackgroundAlpha();
@@ -138,7 +138,7 @@ void WindowManager::changeFocusedWindow(std::shared_ptr<Window> &win) {
 
 void WindowManager::changeFocusedWindowToStackTop() {
     if (!windowStack.empty()) {
-        std::shared_ptr<Window> win = this->windowStack.back();
+        WindowPtr win = this->windowStack.back();
         
         this->changeFocusedWindow(win);
     } else {
@@ -148,7 +148,7 @@ void WindowManager::changeFocusedWindowToStackTop() {
 }
 
 void WindowManager::tick() {
-    auto iter = find_if(windowStack.begin(), windowStack.end(), [](std::shared_ptr<Window> win){
+    auto iter = find_if(windowStack.begin(), windowStack.end(), [](WindowPtr win){
         return win->isHidden();
     });
     
@@ -157,7 +157,7 @@ void WindowManager::tick() {
     }
 }
 
-void WindowManager::onWindowHidden(std::shared_ptr<Window> &win) {
+void WindowManager::onWindowHidden(WindowPtr &win) {
     this->removeWindowFromScene(win);
     
     auto iter = find(windowStack.begin(), windowStack.end(), win);

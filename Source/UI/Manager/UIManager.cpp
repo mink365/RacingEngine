@@ -48,14 +48,14 @@ void UIManager::updateSelf(float delta) {
     LayerManager::tick();
 }
 
-std::shared_ptr<Scene> UIManager::createLayer(const std::string &name) {
-    std::shared_ptr<Scene> scene = this->sceneFactory.createInstance(name);
+ScenePtr UIManager::createLayer(const std::string &name) {
+    ScenePtr scene = this->sceneFactory.createInstance(name);
     scene->setWindowFactory(&windowFactory);
     
     return scene;
 }
 
-void UIManager::addLayerToScene(std::shared_ptr<Scene>& node) {
+void UIManager::addLayerToScene(ScenePtr& node) {
     this->addChild(node);
     
     LayoutUtil::LayoutToParentCenter(node);
@@ -63,11 +63,11 @@ void UIManager::addLayerToScene(std::shared_ptr<Scene>& node) {
     return;
 }
 
-void UIManager::removeLayerFromScene(std::shared_ptr<Scene> &node) {
+void UIManager::removeLayerFromScene(ScenePtr &node) {
     node->removeFromParent();
 }
 
-std::shared_ptr<Scene> UIManager::getDefaultLayer() {
+ScenePtr UIManager::getDefaultLayer() {
     return NULL;
 }
 
@@ -83,7 +83,7 @@ void UIManager::keyBackClicked() {
     if (!isKeyBackActive) {
         return;
     }
-    std::shared_ptr<Scene> scene = this->getLastLayer();
+    ScenePtr scene = this->getLastLayer();
     
     if (scene) {
         scene->onBackKeyEvent();

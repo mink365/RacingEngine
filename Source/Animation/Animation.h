@@ -52,8 +52,8 @@ public:
 
 private:
 
-    vector<shared_ptr<AnimationTrack>> animTracks;
-    vector<shared_ptr<AnimationStack>> animStacks;
+    vector<AnimationTrackPtr> animTracks;
+    vector<AnimationStackPtr> animStacks;
 
     bool looping;
     float power;

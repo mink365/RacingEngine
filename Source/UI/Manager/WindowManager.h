@@ -15,40 +15,41 @@ using namespace std;
 namespace re {
 
 typedef NamedFactory<Window> WindowFactory;
+typedef std::shared_ptr<Window> WindowPtr;
 
 class WindowManager : public Uncopyable {
 public:
     WindowManager();
     
-    std::shared_ptr<Window> pushWindow(string name);
-    std::shared_ptr<Window> pushWindow(std::shared_ptr<Window>& window);
+    WindowPtr pushWindow(string name);
+    WindowPtr pushWindow(WindowPtr& window);
     
-    std::shared_ptr<Window> popWindow();
-    std::shared_ptr<Window> popWindow(std::shared_ptr<Window>& win);
-    std::shared_ptr<Window> popToWindow(std::shared_ptr<Window>& win);
+    WindowPtr popWindow();
+    WindowPtr popWindow(WindowPtr& win);
+    WindowPtr popToWindow(WindowPtr& win);
     
     void popAllWindow();
     
-    std::shared_ptr<Window> getFocusedWindow();
-    std::shared_ptr<Window> getWindowByName(string name);
+    WindowPtr getFocusedWindow();
+    WindowPtr getWindowByName(string name);
 
     void setWindowFactory(WindowFactory* factory);
 
 protected:
-    virtual void addWindowToScene(std::shared_ptr<Window>& win) = 0;
-    virtual void removeWindowFromScene(std::shared_ptr<Window>& win) = 0;
+    virtual void addWindowToScene(WindowPtr& win) = 0;
+    virtual void removeWindowFromScene(WindowPtr& win) = 0;
     virtual Node2d::ptr getAlphaBackground() = 0;
-    virtual void changeAlphaBackgroundIndex(std::shared_ptr<Window>& win) = 0;
+    virtual void changeAlphaBackgroundIndex(WindowPtr& win) = 0;
     
-    void changeFocusedWindow(std::shared_ptr<Window>& win);
+    void changeFocusedWindow(WindowPtr& win);
     void changeFocusedWindowToStackTop();
     
     void tick();
     
-    void onWindowHidden(std::shared_ptr<Window>& win);
+    void onWindowHidden(WindowPtr& win);
     
 protected:
-    list<std::shared_ptr<Window>> windowStack;
+    list<WindowPtr> windowStack;
 
     WindowFactory* factory;
 };
