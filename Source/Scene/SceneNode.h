@@ -20,8 +20,11 @@ class SceneNode : public Node {
     friend class SceneManager;
 
 public:
-	SceneNode();
-	virtual ~SceneNode();
+    SceneNode();
+    virtual ~SceneNode();
+
+    void init();
+    void init(const std::string& name);
 
     bool getVisible() const;
     void setVisible(bool value);
@@ -29,6 +32,9 @@ public:
     void setNodeAttribute(NodeAttributePtr att);
     void clearNodeAttribute();
     NodeAttributePtr getNodeAttribute();
+
+    template<typename T>
+    std::shared_ptr<T> getAttribute();
 
     SceneNodePtr clone();
 
@@ -41,6 +47,21 @@ protected:
 
     NodeAttributePtr attribute;
 };
+
+inline void SceneNode::init()
+{
+}
+
+inline void SceneNode::init(const string &name)
+{
+    this->name = name;
+}
+
+template<typename T>
+inline std::shared_ptr<T> SceneNode::getAttribute()
+{
+    return std::dynamic_pointer_cast<T>(attribute);
+}
 
 } // namespace re
 

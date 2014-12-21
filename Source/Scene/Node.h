@@ -54,6 +54,7 @@ public:
     int getLevel() const;
 
     const std::vector<NodePtr>& getChildren() const;
+    NodePtr getChild(uint32_t index);
     NodePtr getChild(const std::string& name);
 
     virtual void addChild(NodePtr node);

@@ -180,6 +180,11 @@ const std::vector<NodePtr>& Node::getChildren() const
     return children;
 }
 
+NodePtr Node::getChild(uint32_t index)
+{
+    return children.at(index);
+}
+
 NodePtr Node::getChild(const string &name)
 {
     auto iter = std::find_if(children.begin(), children.end(), [&](const NodePtr& node){
