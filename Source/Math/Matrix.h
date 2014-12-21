@@ -15,11 +15,11 @@
 #include "Math/Math.h"
 #include "Quaternion.h"
 
-class Mat4;
-
 // TODO: self (inverseSelf) func unify
 
 namespace re {
+
+class Mat4;
 
 class Mat3 {
 public:
@@ -129,9 +129,9 @@ public:
     Mat4 &setRotationY(const float angle);
     Mat4 &setRotationZ(const float angle);
 
-    Mat4 &setTranslation(const float x, const float y, const float z);
+    Mat4 &setTranslation(const Vec3& trans);
 
-    Mat4 &setScaling(float x, float y, float z);
+    Mat4 &setScaling(const Vec3& scale);
 
     Vec3 getTranslation() const;
     Vec3 getScaling() const;

@@ -12,6 +12,102 @@
 namespace re
 {
 
+namespace MathLib
+{
+    float sqrt(float x)
+    {
+        return std::sqrt(x);
+    }
+
+    float recip_sqrt(float number)
+    {
+        float const threehalfs = 1.5f;
+
+        float x2 = number * 0.5f;
+        union FNI
+        {
+            float f;
+            int32_t i;
+        } fni;
+        fni.f = number;											// evil floating point bit level hacking
+        fni.i = 0x5f375a86 - (fni.i >> 1);						// what the fuck?
+        fni.f = fni.f * (threehalfs - (x2 * fni.f * fni.f));	// 1st iteration
+        fni.f = fni.f * (threehalfs - (x2 * fni.f * fni.f));		// 2nd iteration, this can be removed
+
+        return fni.f;
+    }
+
+    float pow(float x, float y)
+    {
+        return std::pow(x, y);
+    }
+
+    float exp(float x)
+    {
+        return std::exp(x);
+    }
+
+    float log(float x)
+    {
+        return std::log(x);
+    }
+
+    float log10(float x)
+    {
+        return std::log10(x);
+    }
+
+    float sin(float x)
+    {
+        return std::sin(x);
+    }
+
+    float cos(float x)
+    {
+        return sin(x + PI / 2);
+    }
+
+    void sincos(float x, float& s, float& c)
+    {
+        s = sin(x);
+        c = cos(x);
+    }
+
+    float tan(float x)
+    {
+        return std::tan(x);
+    }
+
+    float asin(float x)
+    {
+        return std::asin(x);
+    }
+
+    float acos(float x)
+    {
+        return std::acos(x);
+    }
+
+    float atan(float x)
+    {
+        return std::atan(x);
+    }
+
+    float sinh(float x)
+    {
+        return std::sinh(x);
+    }
+
+    float cosh(float x)
+    {
+        return std::cosh(x);
+    }
+
+    float tanh(float x)
+    {
+        return std::tanh(x);
+    }
+}
 
 inline float Dot(const Plane& lhs, const Vec4& rhs)
 {
@@ -60,7 +156,7 @@ Vec3 cross(const Vec3& lhs, const Vec3& rhs)
     return lhs.cross(rhs);
 }
 
-AABBox MathLib::convertToAABBox(const OBBox &obb)
+AABBox MathLib::ConvertToAABBox(const OBBox &obb)
 {
     Vec3 min(+1e10f, +1e10f, +1e10f);
     Vec3 max(-1e10f, -1e10f, -1e10f);
@@ -82,7 +178,7 @@ AABBox MathLib::convertToAABBox(const OBBox &obb)
     return AABBox(min, max);
 }
 
-OBBox MathLib::convertToOBBox(const AABBox &aabb)
+OBBox MathLib::ConvertToOBBox(const AABBox &aabb)
 {
     return OBBox(aabb.Center(), Quat::Identity(), aabb.HalfSize());
 }
@@ -237,7 +333,7 @@ inline bool MathLib::IntersectAABBoxAABBox(const AABBox& lhs, const AABBox& aabb
 
 inline bool MathLib::IntersectAABBoxOBBox(const AABBox& aabb, const OBBox& obb)
 {
-    return IntersectOBBoxOBBox(convertToOBBox(aabb), obb);
+    return IntersectOBBoxOBBox(ConvertToOBBox(aabb), obb);
 }
 
 inline bool MathLib::IntersectAABBoxSphere(const AABBox& lhs, const Sphere& sphere)

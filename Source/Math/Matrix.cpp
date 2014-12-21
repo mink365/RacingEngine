@@ -141,23 +141,23 @@ Mat4 &Mat4::setRotationZ(const float angle)
     return *this;
 }
 
-Mat4 &Mat4::setTranslation(const float x, const float y, const float z)
+Mat4 &Mat4::setTranslation(const Vec3& trans)
 {
     this->identity();
-    mat[0][3] = x;
-    mat[1][3] = y;
-    mat[2][3] = z;
+    mat[0][3] = trans.x;
+    mat[1][3] = trans.y;
+    mat[2][3] = trans.z;
 
     return *this;
 }
 
-Mat4 &Mat4::setScaling(float x, float y, float z)
+Mat4 &Mat4::setScaling(const Vec3 &scale)
 {
     this->identity();
 
-    mat[0][0] = x;
-    mat[1][1] = y;
-    mat[2][2] = z;
+    mat[0][0] = scale.x;
+    mat[1][1] = scale.y;
+    mat[2][2] = scale.z;
 
     return *this;
 }
@@ -184,10 +184,10 @@ Mat4 &Mat4::fromRTS(const Quat &r, const Vec3 &t, const Vec3 &s)
     Mat4 tempRotateMatrix = r.toMat4();
 
     Mat4 tempScalingMatrix;
-    tempScalingMatrix.setScaling(s.x, s.y, s.z);
+    tempScalingMatrix.setScaling(s);
 
     Mat4 tempTranslationMatrix;
-    tempTranslationMatrix.setTranslation(t.x, t.y, t.z);
+    tempTranslationMatrix.setTranslation(t);
 
     // TM * RM * SM
     *this = tempTranslationMatrix * tempRotateMatrix * tempScalingMatrix;

@@ -151,6 +151,16 @@ Quat &Quat::fromAxes(const Vec3 &xAxis, const Vec3 &yAxis, const Vec3 &zAxis)
     return *this;
 }
 
+Quat &Quat::fromMatrix(const Mat4 &matrix)
+{
+    fromRotationMatrix(
+            matrix(0, 0), matrix(1, 0), matrix(2, 0),
+            matrix(0, 1), matrix(1, 1), matrix(2, 1),
+            matrix(0, 2), matrix(1, 2), matrix(2, 2));
+
+    return *this;
+}
+
 Quat &Quat::fromRotationMatrix(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 {
     // Use the Graphics Gems code, from
