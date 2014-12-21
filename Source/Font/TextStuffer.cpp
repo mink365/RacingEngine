@@ -312,7 +312,7 @@ void Unfold(const Tag::ptr& tag, std::vector<Tag::ptr>& stack, std::vector<Span:
         flatSpans.push_back(span);
     } else {
         for (auto child : tag->childrenTag) {
-            int start = 0;
+            size_t start = 0;
 
             if (flatSpans.size() > 0) {
                 start = flatSpans[flatSpans.size() - 1]->end;
