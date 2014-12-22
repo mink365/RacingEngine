@@ -96,7 +96,7 @@ inline bool InBound(float p, float min, float max)
         float cosh(float x);
         float tanh(float x);
 
-        inline Vec3 absVec3(const Vec3& v) {
+        inline Vec3 abs(const Vec3& v) {
             return Vec3(MathLib::abs(v.x), MathLib::abs(v.y), MathLib::abs(v.z));
         }
 
@@ -111,6 +111,9 @@ inline bool InBound(float p, float min, float max)
         inline float Rand() {
             return std::rand() / (float)RAND_MAX;
         }
+
+        template<typename T>
+        T lerp(const T& lhs, const T& rhs, float s);
 
         AABBox ConvertToAABBox(OBBox const & obb);
         OBBox ConvertToOBBox(AABBox const & aabb);

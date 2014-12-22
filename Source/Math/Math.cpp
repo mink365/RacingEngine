@@ -7,6 +7,9 @@
 ******************************************************************************/
 
 #include "Math.h"
+#include "Vector.h"
+#include "Color.h"
+#include "UV.h"
 #include "Matrix.h"
 
 namespace re
@@ -106,6 +109,19 @@ namespace MathLib
     float tanh(float x)
     {
         return std::tanh(x);
+    }
+
+    template float lerp(const float& lhs, const float& rhs, float s);
+    template Vec2 lerp(const Vec2& lhs, const Vec2& rhs, float s);
+    template Vec3 lerp(const Vec3& lhs, const Vec3& rhs, float s);
+    template Vec4 lerp(const Vec4& lhs, const Vec4& rhs, float s);
+    template Color lerp(const Color& lhs, const Color& rhs, float s);
+    template Uv lerp(const Uv& lhs, const Uv& rhs, float s);
+
+    template <typename T>
+    T lerp(const T& lhs, const T& rhs, float s)
+    {
+        return lhs + (rhs - rhs) * s;
     }
 }
 

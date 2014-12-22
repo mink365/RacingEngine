@@ -27,6 +27,68 @@ void Uv::set(float u, float v)
     this->v = v;
 }
 
+Uv &Uv::operator +=(const Uv &v)
+{
+    this->u += v.u;
+    this->v += v.v;
+
+    return *this;
+}
+
+Uv &Uv::operator -=(const Uv &v)
+{
+    this->u -= v.u;
+    this->v -= v.v;
+
+    return *this;
+}
+
+Uv &Uv::operator *=(float rhs)
+{
+    this->u += rhs;
+    this->v += rhs;
+
+    return *this;
+}
+
+Uv &Uv::operator /=(float rhs)
+{
+    this->u /= rhs;
+    this->v /= rhs;
+
+    return *this;
+}
+
+Uv Uv::operator +(const Uv &v) const
+{
+    return Uv(this->u + v.u, this->v + v.v);
+}
+
+Uv Uv::operator -(const Uv &v) const
+{
+    return Uv(this->u - v.u, this->v - v.v);
+}
+
+Uv Uv::operator *(float rhs) const
+{
+    return Uv(this->u * rhs, this->v * rhs);
+}
+
+Uv Uv::operator /(float rhs) const
+{
+    return Uv(this->u / rhs, this->v / rhs);
+}
+
+const Uv Uv::operator +() const
+{
+    return *this;
+}
+
+const Uv Uv::operator -() const
+{
+    return Uv(-u, -v);
+}
+
 }
 
 

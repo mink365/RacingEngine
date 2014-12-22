@@ -49,6 +49,92 @@ void Color::set(float r, float g, float b, float a)
     this->a = a;
 }
 
+Color &Color::operator +=(const Color &v)
+{
+    this->r += v.r;
+    this->g += v.g;
+    this->b += v.b;
+    this->a += v.a;
+
+    return *this;
+}
+
+Color &Color::operator -=(const Color &v)
+{
+    this->r -= v.r;
+    this->g -= v.g;
+    this->b -= v.b;
+    this->a -= v.a;
+
+    return *this;
+}
+
+Color &Color::operator *=(float rhs)
+{
+    this->r *= rhs;
+    this->g *= rhs;
+    this->b *= rhs;
+    this->a *= rhs;
+
+    return *this;
+}
+
+Color &Color::operator /=(float rhs)
+{
+    this->r /= rhs;
+    this->g /= rhs;
+    this->b /= rhs;
+    this->a /= rhs;
+
+    return *this;
+}
+
+Color &Color::operator *=(const Color &rhs)
+{
+    this->r *= rhs.r;
+    this->g *= rhs.g;
+    this->b *= rhs.b;
+    this->a *= rhs.a;
+
+    return *this;
+}
+
+Color Color::operator +(const Color &v) const
+{
+    Color color = *this;
+
+    color += v;
+
+    return color;
+}
+
+Color Color::operator -(const Color &v) const
+{
+    Color color = *this;
+
+    color -= v;
+
+    return color;
+}
+
+Color Color::operator *(float rhs) const
+{
+    Color color = *this;
+
+    color *= rhs;
+
+    return color;
+}
+
+Color Color::operator /(float rhs) const
+{
+    Color color = *this;
+
+    color /= rhs;
+
+    return color;
+}
+
 Color Color::operator *(const Color &v) const
 {
     Color color = *this;
@@ -58,14 +144,14 @@ Color Color::operator *(const Color &v) const
     return color;
 }
 
-Color &Color::operator *=(const Color &v)
+const Color Color::operator +() const
 {
-    this->r *= v.r;
-    this->g *= v.g;
-    this->b *= v.b;
-    this->a *= v.a;
-
     return *this;
+}
+
+const Color Color::operator -() const
+{
+    return Color(-r, -g, -b, -a);
 }
 
 }

@@ -19,6 +19,19 @@ public:
 
     void set(float u, float v);
 
+    Uv& operator +=(const Uv& v);
+    Uv& operator -=(const Uv& v);
+    Uv& operator *=(float rhs);
+    Uv& operator /=(float rhs);
+
+    Uv operator +(const Uv& v) const;
+    Uv operator -(const Uv& v) const;
+    Uv operator *(float rhs) const;
+    Uv operator /(float rhs) const;
+
+    const Uv operator +() const;
+    const Uv operator -() const;
+
     std::string toString() const;
 
 public:

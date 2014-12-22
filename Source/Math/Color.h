@@ -36,9 +36,20 @@ public:
 
     void set(float r, float g, float b, float a);
 
+    Color& operator +=(const Color& v);
+    Color& operator -=(const Color& v);
+    Color& operator *=(float rhs);
+    Color& operator /=(float rhs);
+    Color& operator *=(const Color& rhs);
+
+    Color operator +(const Color& v) const;
+    Color operator -(const Color& v) const;
+    Color operator *(float rhs) const;
+    Color operator /(float rhs) const;
     Color operator *(const Color& v) const;
 
-    Color& operator *=(const Color& v);
+    const Color operator +() const;
+    const Color operator -() const;
 
     std::string toString();
 
