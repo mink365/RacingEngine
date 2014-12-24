@@ -14,7 +14,8 @@ namespace re {
 
 Quat Quat::Identity()
 {
-    return Quat();
+    static const Quat out(0, 0, 0, 1);
+    return out;
 }
 
 Quat::Quat() {
@@ -37,6 +38,37 @@ void Quat::set(float x, float y, float z, float w)
     this->y = y;
     this->z = z;
     this->w = w;
+}
+
+Vec3 Quat::v() const
+{
+    return Vec3(x, y, z);
+}
+
+void Quat::v(const Vec3 &rhs)
+{
+    this->x = rhs.x;
+    this->y = rhs.y;
+    this->z = rhs.z;
+}
+
+Quat &Quat::operator *=(const Quat &rhs)
+{
+    this->x = this->x * rhs.w - this->y * rhs.z + this->z * rhs.y + this->w * rhs.x;
+    this->y = this->x * rhs.z + this->y * rhs.w - this->z * rhs.x + this->w * rhs.y;
+    this->z = this->y * rhs.x - this->x * rhs.y + this->z * rhs.w + this->w * rhs.z;
+    this->w = this->w * rhs.w - this->x * rhs.x - this->y * rhs.y - this->z * rhs.z;
+
+    return *this;
+}
+
+Quat Quat::operator *(const Quat &rhs) const
+{
+    Quat result = *this;
+
+    result *= rhs;
+
+    return result;
 }
 
 float *Quat::toFloatPtr()

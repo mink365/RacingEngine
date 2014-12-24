@@ -15,5 +15,15 @@ Frustum::Frustum()
 
 }
 
+void Frustum::FrustumPlane(uint32_t index, const Plane &plane)
+{
+    this->planes[index] = plane;
+}
+
+void Frustum::Corner(uint32_t index, const Vec3 &v)
+{
+    this->corners[index] = v;
+}
+
 } // namespace re
 

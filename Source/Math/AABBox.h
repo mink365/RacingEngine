@@ -24,6 +24,8 @@ public:
     const Vec3& Min() const;
     const Vec3& Max() const;
 
+    Vec3 Corner(uint32_t index) const;
+
 private:
     Vec3 min, max;
 };

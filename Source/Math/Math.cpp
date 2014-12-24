@@ -12,6 +12,8 @@
 #include "UV.h"
 #include "Matrix.h"
 
+#include "MathUtil.h"
+
 namespace re
 {
 
@@ -111,6 +113,55 @@ namespace MathLib
         return std::tanh(x);
     }
 
+    inline float Dot(const Plane& lhs, const Vec4& rhs)
+    {
+        return lhs.a() * rhs.x + lhs.b() * rhs.y + lhs.c() * rhs.z + lhs.d() * rhs.w;
+    }
+
+    inline float DotCoord(const Plane& lhs, const Vec3& rhs)
+    {
+        return (lhs.Normal() | rhs) + lhs.d();
+    }
+
+    inline float DotNormal(const Plane& lhs, const Vec3& rhs)
+    {
+        return lhs.Normal() | rhs;
+    }
+
+    inline float dot_coord(const Plane& lhs, const Vec3& rhs)
+    {
+        return DotCoord(lhs, rhs);
+    }
+
+    Vec3 cross(const Vec3& lhs, const Vec3& rhs)
+    {
+        return lhs.cross(rhs);
+    }
+
+    Mat4 translation(const Vec3& trans)
+    {
+        Mat4 result;
+
+        return result.setTranslation(trans);
+    }
+
+    Mat4 to_matrix(const Quat& rot)
+    {
+        return rot.toMat4();
+    }
+
+    Mat4 scaling(const Vec3& scale)
+    {
+        Mat4 result;
+
+        return result.setScaling(scale);
+    }
+
+    Mat4 inverse(const Mat4& rhs)
+    {
+        return rhs.inverse();
+    }
+
     template float lerp(const float& lhs, const float& rhs, float s);
     template Vec2 lerp(const Vec2& lhs, const Vec2& rhs, float s);
     template Vec3 lerp(const Vec3& lhs, const Vec3& rhs, float s);
@@ -123,53 +174,230 @@ namespace MathLib
     {
         return lhs + (rhs - rhs) * s;
     }
-}
 
-inline float Dot(const Plane& lhs, const Vec4& rhs)
-{
-    return lhs.a() * rhs.x + lhs.b() * rhs.y + lhs.c() * rhs.z + lhs.d() * rhs.w;
-}
+    template Vec2 minimize(const Vec2& lhs, const Vec2& rhs);
+    template Vec3 minimize(const Vec3& lhs, const Vec3& rhs);
+    template Vec4 minimize(const Vec4& lhs, const Vec4& rhs);
 
-inline float DotCoord(const Plane& lhs, const Vec3& rhs)
-{
-    return lhs.Normal() * rhs + lhs.d();
-}
+    template <typename T>
+    T minimize(const T &lhs, const T &rhs)
+    {
+        T ret;
+        max_minimize_helper<float, T::elem_num>::DoMax(lhs, rhs, ret);
 
-inline float DotNormal(const Plane& lhs, const Vec3& rhs)
-{
-    return lhs.Normal() * rhs;
-}
-
-inline float dot_coord(const Plane& lhs, const Vec3& rhs)
-{
-    return DotCoord(lhs, rhs);
-}
-
-Vec3 minimize(const Vec3& lhs, const Vec3& rhs)
-{
-    Vec3 tmp;
-
-    for (uint32_t i = 0; i < 3; ++i) {
-        tmp[i] = std::min(lhs[i], rhs[i]);
+        return ret;
     }
 
-    return tmp;
-}
+    template Vec2 maximize(const Vec2& lhs, const Vec2& rhs);
+    template Vec3 maximize(const Vec3& lhs, const Vec3& rhs);
+    template Vec4 maximize(const Vec4& lhs, const Vec4& rhs);
 
-Vec3 maximize(const Vec3& lhs, const Vec3& rhs)
-{
-    Vec3 tmp;
+    template <typename T>
+    T maximize(const T &lhs, const T &rhs)
+    {
+        T ret;
+        max_minimize_helper<float, T::elem_num>::DoMin(lhs, rhs, ret);
 
-    for (uint32_t i = 0; i < 3; ++i) {
-        tmp[i] = std::max(lhs[i], rhs[i]);
+        return ret;
     }
 
-    return tmp;
-}
+    template <typename T>
+    T normalize(const T& rhs)
+    {
+        return rhs.normalize();
+    }
 
-Vec3 cross(const Vec3& lhs, const Vec3& rhs)
-{
-    return lhs.cross(rhs);
+    Plane mul(const Plane &p, const Mat4 &mat)
+    {
+        return Plane(
+            p.a() * mat(0, 0) + p.b() * mat(1, 0) + p.c() * mat(2, 0) + p.d() * mat(3, 0),
+            p.a() * mat(0, 1) + p.b() * mat(1, 1) + p.c() * mat(2, 1) + p.d() * mat(3, 1),
+            p.a() * mat(0, 2) + p.b() * mat(1, 2) + p.c() * mat(2, 2) + p.d() * mat(3, 2),
+            p.a() * mat(0, 3) + p.b() * mat(1, 3) + p.c() * mat(2, 3) + p.d() * mat(3, 3));
+    }
+
+    void decompose(const Mat4 &rhs, Vec3 &scale, Quat &rot, Vec3 &trans)
+    {
+        scale.x = sqrt(rhs(0, 0) * rhs(0, 0) + rhs(0, 1) * rhs(0, 1) + rhs(0, 2) * rhs(0, 2));
+        scale.y = sqrt(rhs(1, 0) * rhs(1, 0) + rhs(1, 1) * rhs(1, 1) + rhs(1, 2) * rhs(1, 2));
+        scale.z = sqrt(rhs(2, 0) * rhs(2, 0) + rhs(2, 1) * rhs(2, 1) + rhs(2, 2) * rhs(2, 2));
+
+        trans = Vec3(rhs(3, 0), rhs(3, 1), rhs(3, 2));
+
+        Mat4 rot_mat;
+        rot_mat(0, 0) = rhs(0, 0) / scale.x;
+        rot_mat(0, 1) = rhs(0, 1) / scale.x;
+        rot_mat(0, 2) = rhs(0, 2) / scale.x;
+        rot_mat(0, 3) = 0;
+        rot_mat(1, 0) = rhs(1, 0) / scale.y;
+        rot_mat(1, 1) = rhs(1, 1) / scale.y;
+        rot_mat(1, 2) = rhs(1, 2) / scale.y;
+        rot_mat(1, 3) = 0;
+        rot_mat(2, 0) = rhs(2, 0) / scale.z;
+        rot_mat(2, 1) = rhs(2, 1) / scale.z;
+        rot_mat(2, 2) = rhs(2, 2) / scale.z;
+        rot_mat(2, 3) = 0;
+        rot_mat(3, 0) = 0;
+        rot_mat(3, 1) = 0;
+        rot_mat(3, 2) = 0;
+        rot_mat(3, 3) = 1;
+
+//        rot = to_quaternion(rot_mat);
+        rot.fromMatrix(rot_mat);
+    }
+
+    Mat4 transformation(const Vec3 *scaling_center, const Quat *scaling_rotation, const Vec3 *scale, const Vec3 *rotation_center, const Quat *rotation, const Vec3 *trans)
+    {
+        Vec3 psc, prc, pt;
+        if (!scaling_center)
+        {
+            psc = Vec3(float(0), float(0), float(0));
+        }
+        else
+        {
+            psc = *scaling_center;
+        }
+        if (!rotation_center)
+        {
+            prc = Vec3(float(0), float(0), float(0));
+        }
+        else
+        {
+            prc = *rotation_center;
+        }
+        if (!trans)
+        {
+            pt = Vec3(float(0), float(0), float(0));
+        }
+        else
+        {
+            pt = *trans;
+        }
+
+        Mat4 m1, m2, m3, m4, m5, m6, m7;
+        m1 = translation(-psc);
+        if (!scaling_rotation)
+        {
+            m2 = m4 = Mat4::Identity;
+        }
+        else
+        {
+            m4 = to_matrix(*scaling_rotation);
+            m2 = inverse(m4);
+        }
+        if (!scale)
+        {
+            m3 = Mat4::Identity;
+        }
+        else
+        {
+            m3 = scaling(*scale);
+        }
+        if (!rotation)
+        {
+            m6 = Mat4::Identity;
+        }
+        else
+        {
+            m6 = to_matrix(*rotation);
+        }
+        m5 = translation(psc - prc);
+        m7 = translation(prc + pt);
+
+        return m1 * m2 * m3 * m4 * m5 * m6 * m7;
+    }
+
+    Vec3 transform_quat(const Vec3 &v, const Quat &quat)
+    {
+        return v + cross(quat.v(), cross(quat.v(), v) + quat.w * v) * float(2);
+    }
+
+    Vec3 transform_coord(const Vec3 &v, const Mat4 &mat)
+    {
+        return mat * v;
+    }
+
+    AABBox TransformAABB(const AABBox &aabb, const Mat4 &mat)
+    {
+        Vec3 scale, trans;
+        Quat rot;
+
+        decompose(mat, scale, rot, trans);
+
+        return TransformAABB(aabb, scale, rot, trans);
+    }
+
+    OBBox TransformOBB(const OBBox &obb, const Mat4 &mat)
+    {
+        Vec3 scale, trans;
+        Quat rot;
+
+        decompose(mat, scale, rot, trans);
+
+        return TransformOBB(obb, scale, rot, trans);
+    }
+
+    Sphere TransformSphere(const Sphere &sphere, const Mat4 &mat)
+    {
+        Vec3 scale, trans;
+        Quat rot;
+
+        decompose(mat, scale, rot, trans);
+
+        return TransformSphere(sphere, scale.x, rot, trans);
+    }
+
+    Frustum TransformFrustum(const Frustum &frustum, const Mat4 &mat)
+    {
+        Frustum ret;
+        for (int i = 0; i < 6; ++ i)
+        {
+            ret.FrustumPlane(i, normalize(mul(frustum.FrustumPlane(i), mat)));
+        }
+        for (int i = 0; i < 8; ++ i)
+        {
+            ret.Corner(i, transform_coord(frustum.Corner(i), mat));
+        }
+
+        return ret;
+    }
+
+    AABBox TransformAABB(const AABBox &aabb, const Vec3 &scale, const Quat &rot, const Vec3 &trans)
+    {
+        Vec3 min, max;
+        min = max = transform_quat(aabb.Corner(0) * scale, rot) + trans;
+        for (size_t i = 1; i < 8; ++i) {
+            Vec3 v = transform_quat(aabb.Corner(i) * scale, rot) + trans;
+
+            min = minimize(min, v);
+            max = maximize(max, v);
+        }
+
+        return AABBox(min, max);
+    }
+
+    OBBox TransformOBB(const OBBox &obb, const Vec3 &scale, const Quat &rot, const Vec3 &trans)
+    {
+        Vec3 center = transform_quat(obb.Center() * scale, rot) + trans;
+        Quat rotation = obb.Rotation() * rot;
+        Vec3 extent = obb.HalfSize() * scale;
+
+        return OBBox(center, rotation, extent);
+    }
+
+    Sphere TransformSphere(const Sphere &sphere, float scale, const Quat &rot, const Vec3 &trans)
+    {
+        Vec3 center = transform_quat(sphere.Center() * scale, rot) + trans;
+        float radius = sphere.Radius() * scale;
+
+        return Sphere(center, radius);
+    }
+
+    Frustum TransformFrustum(const Frustum &frustum, float scale, const Quat &rot, const Vec3 &trans)
+    {
+        Vec3 vscale(scale, scale, scale);
+        return TransformFrustum(frustum, transformation(nullptr, nullptr, &vscale, nullptr, &rot, &trans));
+    }
 }
 
 AABBox MathLib::ConvertToAABBox(const OBBox &obb)
@@ -210,9 +438,9 @@ inline bool MathLib::IntersectPointOBB(const Vec3& p, const OBBox& obb)
 {
     Vec3 d = p - obb.Center();
 
-    return ((obb.Axis(0) * d <= obb.HalfSize().x)
-            && (obb.Axis(1) * d <= obb.HalfSize().y)
-            && (obb.Axis(2) * d <= obb.HalfSize().z));
+    return ((dot(obb.Axis(0), d) <= obb.HalfSize().x)
+            && (dot(obb.Axis(1), d) <= obb.HalfSize().y)
+            && (dot(obb.Axis(2), d) <= obb.HalfSize().z));
 }
 
 inline bool MathLib::IntersectPointSphere(const Vec3& p, const Sphere& sphere)
@@ -285,8 +513,8 @@ inline bool MathLib::IntersectRayOBB(const Ray& ray, const OBBox& obb)
     Vec3 const & extent = obb.HalfSize();
     for (int i = 0; i < 3; ++ i)
     {
-        float e = obb.Axis(i) * p;
-        float f = obb.Axis(i) * ray.Direction();
+        float e = dot(obb.Axis(i), p);
+        float f = dot(obb.Axis(i), ray.Direction());
         if (f == 0)
         {
             if ((e < -extent[i]) || (e > extent[i]))
@@ -330,7 +558,7 @@ inline bool MathLib::IntersectRayOBB(const Ray& ray, const OBBox& obb)
 inline bool MathLib::IntersectRaySphere(const Ray& ray, const Sphere& sphere)
 {
     float const a = ray.Direction().lengthSqr();
-    float const b = 2 * (ray.Direction() * (ray.Origin() - sphere.Center()));
+    float const b = 2 * dot(ray.Direction(), (ray.Origin() - sphere.Center()));
     float const c = (ray.Origin() - sphere.Center()).lengthSqr() - sphere.Radius() * sphere.Radius();
 
     if (b * b - 4 * a * c < 0)
@@ -361,7 +589,7 @@ inline bool MathLib::IntersectAABBoxSphere(const AABBox& lhs, const Sphere& sphe
     {
         Vec3 axis(0, 0, 0);
         axis[i] = 1;
-        float dist = axis * d;
+        float dist = dot(axis, d);
         if (dist > half_size[i])
         {
             dist = half_size[i];

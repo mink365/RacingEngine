@@ -22,6 +22,9 @@ public:
     static const Vec2 Zero;
 
 public:
+    enum { elem_num = 2 };
+
+public:
     Vec2(void);
     Vec2(const float& x, const float& y);
 
@@ -35,15 +38,18 @@ public:
     Vec2 operator -() const;
     Vec2 operator +(const Vec2& v) const;
     Vec2 operator -(const Vec2& v) const;
-    float operator *(const Vec2& v) const;
     Vec2 operator *(const float a) const;
     Vec2 operator /(const float a) const;
+
+    Vec2 operator *(const Vec2& v) const;
+    float operator |(const Vec2& v) const;
 
     Vec2& operator +=(const Vec2& v);
     Vec2& operator -=(const Vec2& v);
     Vec2& operator *=(const float a);
-    Vec2& operator /=(const Vec2& v);
+    Vec2& operator *=(const Vec2& v);
     Vec2& operator /=(const float a);
+    Vec2& operator /=(const Vec2& v);
 
     friend Vec2	operator*( const float a, const Vec2 b );
 
@@ -127,7 +133,12 @@ inline Vec2 Vec2::operator -(const Vec2 &v) const
     return Vec2(x - v.x, y - v.y);
 }
 
-inline float Vec2::operator *(const Vec2 &v) const
+inline Vec2 Vec2::operator *(const Vec2 &v) const
+{
+    return Vec2(x * v.x, y * v.y);
+}
+
+inline float Vec2::operator |(const Vec2 &v) const
 {
     return x * v.x + y * v.y;
 }
@@ -162,6 +173,14 @@ inline Vec2 &Vec2::operator *=(const float a)
 {
     x *= a;
     y *= a;
+
+    return *this;
+}
+
+inline Vec2 &Vec2::operator *=(const Vec2 &v)
+{
+    x *= v.x;
+    y *= v.y;
 
     return *this;
 }
@@ -258,6 +277,9 @@ inline std::string Vec2::toString() const
 
 class Vec3 {
 public:
+    enum { elem_num = 3 };
+
+public:
     Vec3(void);
     Vec3(const float& x, const float& y, const float& z);
 
@@ -270,14 +292,17 @@ public:
     Vec3 &operator +=(const Vec3 &v);
     Vec3 &operator -=(const Vec3 &v);
     Vec3 &operator *=(const float a);
+    Vec3 &operator *=(const Vec3 &v);
     Vec3 &operator /=(const float a);
+    Vec3 &operator /=(const Vec3 &v);
 
     Vec3 operator +(const Vec3 &v) const;
     Vec3 operator -(const Vec3 &v) const;
     Vec3 operator *(const float a) const;
     Vec3 operator /(const float a) const;
 
-    float operator *(const Vec3 &v) const;
+    Vec3 operator *(const Vec3 &v) const;
+    float operator |(const Vec3 &v) const;
 
     Vec3 const operator+() const
         { return *this; }
@@ -351,6 +376,15 @@ inline Vec3 &Vec3::operator *=(const float a)
     return *this;
 }
 
+inline Vec3 &Vec3::operator *=(const Vec3 &v)
+{
+    this->x *= v.x;
+    this->y *= v.y;
+    this->z *= v.z;
+
+    return *this;
+}
+
 inline Vec3 &Vec3::operator /=(const float a)
 {
     float inva = 1.0f / a;
@@ -358,6 +392,15 @@ inline Vec3 &Vec3::operator /=(const float a)
     this->x *= inva;
     this->y *= inva;
     this->z *= inva;
+
+    return *this;
+}
+
+inline Vec3 &Vec3::operator /=(const Vec3 &v)
+{
+    this->x /= v.x;
+    this->y /= v.y;
+    this->z /= v.z;
 
     return *this;
 }
@@ -384,7 +427,12 @@ inline Vec3 Vec3::operator /(const float a) const
     return Vec3(x * inva, y * inva, z * inva);
 }
 
-inline float Vec3::operator *(const Vec3 &v) const
+inline Vec3 Vec3::operator *(const Vec3 &v) const
+{
+    return Vec3(x * v.x, y * v.y, z * v.z);
+}
+
+inline float Vec3::operator |(const Vec3 &v) const
 {
     return x * v.x + y * v.y + z * v.z;
 }
@@ -451,6 +499,9 @@ inline std::string Vec3::toString() const
 
 class Vec4 {
 public:
+    enum { elem_num = 4 };
+
+public:
     Vec4(void);
     Vec4(const float& x, const float& y, const float& z, const float& w);
 
@@ -461,14 +512,17 @@ public:
     Vec4 &operator +=(const Vec4 &v);
     Vec4 &operator -=(const Vec4 &v);
     Vec4 &operator *=(const float a);
+    Vec4 &operator *=(const Vec4 &v);
     Vec4 &operator /=(const float a);
+    Vec4 &operator /=(const Vec4 &v);
 
     Vec4 operator +(const Vec4 &v) const;
     Vec4 operator -(const Vec4 &v) const;
     Vec4 operator *(const float a) const;
     Vec4 operator /(const float a) const;
 
-    float operator *(const Vec4 &v) const;
+    float operator |(const Vec4 &v) const;
+    Vec4 operator *(const Vec4 &v) const;
 
     Vec4& operator =(const Vec3& source);
 
@@ -550,12 +604,32 @@ inline Vec4 &Vec4::operator *=(const float a)
     return *this;
 }
 
+inline Vec4 &Vec4::operator *=(const Vec4 &v)
+{
+    this->x *= v.x;
+    this->y *= v.y;
+    this->z *= v.z;
+    this->w *= v.w;
+
+    return *this;
+}
+
 inline Vec4 &Vec4::operator /=(const float a)
 {
     this->x /= a;
     this->y /= a;
     this->z /= a;
     this->w /= a;
+
+    return *this;
+}
+
+inline Vec4 &Vec4::operator /=(const Vec4 &v)
+{
+    this->x /= v.x;
+    this->y /= v.z;
+    this->z /= v.y;
+    this->w /= v.w;
 
     return *this;
 }
@@ -600,7 +674,12 @@ inline Vec4 Vec4::operator /(const float a) const
     return result;
 }
 
-inline float Vec4::operator *(const Vec4 &v) const
+inline Vec4 Vec4::operator *(const Vec4 &v) const
+{
+    return Vec4(x * v.x, y * v.y, z * v.z, w * v.w);
+}
+
+inline float Vec4::operator |(const Vec4 &v) const
 {
     return x * v.x + y * v.y + z * v.z + w * v.w;
 }

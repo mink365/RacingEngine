@@ -22,6 +22,9 @@ public:
     const Plane& FrustumPlane(uint32_t index) const;
     const Vec3& Corner(uint32_t index) const;
 
+    void FrustumPlane(uint32_t index, const Plane& plane);
+    void Corner(uint32_t index, const Vec3& v);
+
 private:
     std::array<Plane, 6> planes;
     std::array<Vec3, 8> corners;

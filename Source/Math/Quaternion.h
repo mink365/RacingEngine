@@ -32,9 +32,11 @@ public:
     float &operator [](int index);
 
     Quat operator *(const float a) const;
+    Quat operator *(const Quat& rhs) const;
     Quat operator /(const float a) const;
 
     Quat &operator *=(const float a);
+    Quat &operator *=(const Quat& rhs);
     Quat &operator /=(const float a);
 
     Quat            inverse() const;
@@ -42,6 +44,9 @@ public:
     float           lengthSqr() const;
     Quat            normalize() const;
     Quat&           normalizeSelf();
+
+    Vec3 v() const;
+    void v(const Vec3& rhs);
 
     float *toFloatPtr();
     const float *toFloatPtr () const;

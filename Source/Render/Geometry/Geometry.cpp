@@ -179,7 +179,7 @@ void CalculateTangents(std::vector<Vec3>& positions, std::vector<Vec3>& vertexNo
         tangents[i] = (t - n * (n * t)).normalize();
 
         // Calculate handedness
-        tangents[i].w = ((n.cross(t) * tan2[i]) < 0.0F) ? -1.0F : 1.0F;
+        tangents[i].w = ((n.cross(t) | tan2[i]) < 0.0F) ? -1.0F : 1.0F;
     }
 }
 

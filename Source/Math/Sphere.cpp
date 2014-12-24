@@ -10,14 +10,30 @@
 
 namespace re {
 
-Sphere::Sphere()
+Sphere::Sphere(const Vec3& center, float radius)
 {
-
+    this->center = center;
+    this->radius = radius;
 }
 
-Sphere::~Sphere()
+Vec3 Sphere::Center()
 {
+    return center;
+}
 
+const Vec3 &Sphere::Center() const
+{
+    return center;
+}
+
+float &Sphere::Radius()
+{
+    return radius;
+}
+
+float Sphere::Radius() const
+{
+    return radius;
 }
 
 } // namespace re

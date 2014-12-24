@@ -101,7 +101,7 @@ inline bool InBound(float p, float min, float max)
         }
 
         inline float dot(const Vec3& lhs, const Vec3& rhs){
-            return lhs * rhs;
+            return lhs | rhs;
         }
 
         inline float length_sq(const Vec3& lhs) {
@@ -115,8 +115,37 @@ inline bool InBound(float p, float min, float max)
         template<typename T>
         T lerp(const T& lhs, const T& rhs, float s);
 
+        template <typename T>
+        T maximize(T const & lhs, T const & rhs);
+
+        template <typename T>
+        T minimize(T const & lhs, T const & rhs);
+
+        template <typename T>
+        T normalize(const T& rhs);
+
+        Plane mul(Plane const & p, Mat4 const & mat);
+
+        void decompose(const Mat4 & mat, Vec3& scale, Quat& rot, Vec3& trans);
+
+        Mat4 transformation(Vec3 const * scaling_center, Quat const * scaling_rotation, Vec3 const * scale,
+            Vec3 const * rotation_center, Quat const * rotation, Vec3 const * trans);
+
+        Vec3 transform_quat(Vec3 const & v, Quat const & quat);
+        Vec3 transform_coord(const Vec3& v, const Mat4& mat);
+
         AABBox ConvertToAABBox(OBBox const & obb);
         OBBox ConvertToOBBox(AABBox const & aabb);
+
+        AABBox TransformAABB(const AABBox& aabb, const Mat4& mat);
+        OBBox TransformOBB(const OBBox& obb, const Mat4& mat);
+        Sphere TransformSphere(const Sphere& sphere, const Mat4& mat);
+        Frustum TransformFrustum(const Frustum& frustum, const Mat4& mat);
+
+        AABBox TransformAABB(const AABBox& aabb, const Vec3& scale, const Quat& rot, const Vec3& trans);
+        OBBox TransformOBB(const OBBox& obb, const Vec3& scale, const Quat& rot, const Vec3& trans);
+        Sphere TransformSphere(const Sphere& sphere, float scale, const Quat& rot, const Vec3& trans);
+        Frustum TransformFrustum(const Frustum& frustum, float scale, const Quat& rot, const Vec3& trans);
 
         bool IntersectPointAABB(const Vec3& p, const AABBox& aabb);
         bool IntersectPointOBB(const Vec3& p, const OBBox& obb);

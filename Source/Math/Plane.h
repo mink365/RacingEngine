@@ -21,8 +21,8 @@ namespace re {
 class Plane
 {
 public:
-    Plane();
-    ~Plane();
+    Plane(){};
+    Plane(float a, float b, float c, float d);
 
     const float& a() const;
     const float& b() const;
@@ -31,15 +31,12 @@ public:
 
     const Vec3& Normal() const;
 
+    Plane normalize() const;
+
 private:
     Vec3 normal;
     float d_;
 };
-
-inline const Vec3& Plane::Normal() const
-{
-    return normal;
-}
 
 inline const float& Plane::a() const
 {
@@ -59,6 +56,11 @@ inline const float& Plane::c() const
 inline const float &Plane::d() const
 {
     return d_;
+}
+
+inline const Vec3& Plane::Normal() const
+{
+    return normal;
 }
 
 } // namespace re

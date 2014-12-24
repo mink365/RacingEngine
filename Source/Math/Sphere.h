@@ -16,8 +16,7 @@ namespace re {
 class Sphere
 {
 public:
-    Sphere();
-    ~Sphere();
+    Sphere(const Vec3& center, float radius);
 
     Vec3 Center();
     const Vec3& Center() const;

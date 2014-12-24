@@ -20,7 +20,9 @@ OBBox::OBBox(const Vec3 &center, const Quat &rotation, const Vec3 &extent)
 
 Vec3 OBBox::Axis(uint32_t axis) const
 {
-
+    Vec3 v(0, 0, 0);
+    v[axis] = 1;
+    return MathLib::transform_quat(v, rotation_);
 }
 
 Vec3 OBBox::Corner(uint32_t index) const

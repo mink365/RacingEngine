@@ -195,6 +195,8 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
     this->applyMaterial(*(material.get()));
 
+//    LOG_E("Render mesh: %s, %d", mesh->getName().c_str(), mesh->getMaterial()->getQueueID());
+
     this->renderer->renderMesh(*(mesh));
 }
 
@@ -210,6 +212,8 @@ void RenderManager::render()
         this->createRenderViews();
 //    }
 
+//    LOG_E("start Render ------------------------------------------------");
+
     for (auto renderView : this->renderViewList) {
         this->activeRenderView(renderView);
 
@@ -223,6 +227,8 @@ void RenderManager::render()
             }
         }
     }
+
+//    LOG_E("end Render ------------------------------------------------");
 }
 
 void RenderManager::activeRenderView(RenderView::ptr& view)
