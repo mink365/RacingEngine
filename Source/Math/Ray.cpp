@@ -15,9 +15,10 @@ Ray::Ray()
 
 }
 
-Ray::~Ray()
+Ray::Ray(const Vec3 &orig, const Vec3 &dir)
 {
-
+    this->origin = orig;
+    this->direction = dir;
 }
 
 } // namespace re

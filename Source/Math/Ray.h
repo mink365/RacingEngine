@@ -17,7 +17,7 @@ class Ray
 {
 public:
     Ray();
-    ~Ray();
+    Ray(const Vec3& orig, const Vec3& dir);
 
     const Vec3& Origin() const;
     const Vec3& Direction() const;

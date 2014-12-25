@@ -29,8 +29,14 @@ Vec3 AABBox::HalfSize() const
 Vec3 AABBox::Corner(uint32_t index) const
 {
     return Vec3((index & 1UL) ? this->max.x : this->min.x,
-        (index & 2UL) ? this->max.y : this->min.y,
-        (index & 4UL) ? this->max.z : this->min.z);
+                (index & 2UL) ? this->max.y : this->min.y,
+                (index & 4UL) ? this->max.z : this->min.z);
+}
+
+string AABBox::toString() const
+{
+    return StringUtil::Printf("AABB(%s, %s)", min.toString().c_str(),
+                              max.toString().c_str());
 }
 
 } // namespace re

@@ -17,6 +17,7 @@ namespace re {
 class OBBox
 {
 public:
+    OBBox() {};
     OBBox(const Vec3& center, const Quat& rotation, const Vec3& extent);
 
     const Vec3& Center() const;
@@ -26,6 +27,8 @@ public:
     Vec3 Axis(uint32_t axis) const;
 
     Vec3 Corner(uint32_t index) const;
+
+    std::string toString() const;
 
 private:
     Vec3 center_;

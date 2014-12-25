@@ -13,6 +13,11 @@ namespace re {
 
 const Vec2 Vec2::Zero(0, 0);
 
+std::string Vec2::toString() const
+{
+    return StringUtil::Printf("Vec2(%f, %f)", x, y);
+}
+
 Vec3::Vec3()
     : x(0), y(0), z(0)
 {
@@ -50,6 +55,11 @@ Quat Vec3::toQuat() const
     return result;
 }
 
+std::string Vec3::toString() const
+{
+    return StringUtil::Printf("Vec3(%f, %f, %f)", x, y, z);
+}
+
 Vec4::Vec4()
     :x(0), y(0), z(0), w(0)
 {
@@ -61,6 +71,11 @@ Vec4::Vec4(const float& x, const float& y, const float& z, const float& w) {
     this->y = y;
     this->z = z;
     this->w = w;
+}
+
+std::string Vec4::toString() const
+{
+    return StringUtil::Printf("Vec4(%f, %f, %f, %f)", x, y, z, w);
 }
 
 }

@@ -34,8 +34,15 @@ Vec3 OBBox::Corner(uint32_t index) const
     Vec3 const extent_z = MathLib::abs(extent.z * this->Axis(2));
 
     return center + ((index & 1UL) ? +extent_x : -extent_x)
-        + ((index & 2UL) ? +extent_y : -extent_y)
-        + ((index & 4UL) ? +extent_z : -extent_z);
+                  + ((index & 2UL) ? +extent_y : -extent_y)
+                  + ((index & 4UL) ? +extent_z : -extent_z);
+}
+
+string OBBox::toString() const
+{
+    return StringUtil::Printf("OBB(%s, %s, %s)", center_.toString().c_str(),
+                              rotation_.toString().c_str(),
+                              extent.toString().c_str());
 }
 
 } // namespace re

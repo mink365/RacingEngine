@@ -270,11 +270,6 @@ inline re::Vec2::operator float *() const
     return (float*)&x;
 }
 
-inline std::string Vec2::toString() const
-{
-    return StringUtil::Printf("Vec2(%f, %f)", x, y);
-}
-
 class Vec3 {
 public:
     enum { elem_num = 3 };
@@ -490,11 +485,6 @@ inline float *Vec3::toFloatPtr()
 inline const float *Vec3::toFloatPtr() const
 {
     return &x;
-}
-
-inline std::string Vec3::toString() const
-{
-    return StringUtil::Printf("Vec3(%f, %f, %f)", x, y, z);
 }
 
 class Vec4 {
@@ -717,11 +707,6 @@ inline float *Vec4::toFloatPtr()
 inline const float *Vec4::toFloatPtr() const
 {
     return &x;
-}
-
-inline std::string Vec4::toString() const
-{
-    return StringUtil::Printf("Vec4(%f, %f, %f, %f)", x, y, z, w);
 }
 
 } // namespace re

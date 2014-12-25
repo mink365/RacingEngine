@@ -16,6 +16,7 @@ namespace re {
 class AABBox
 {
 public:
+    AABBox() {};
     AABBox(const Vec3& min, const Vec3 max);
 
     Vec3 Center() const;
@@ -26,9 +27,21 @@ public:
 
     Vec3 Corner(uint32_t index) const;
 
+    std::string toString() const;
+
 private:
     Vec3 min, max;
 };
+
+inline const Vec3& AABBox::Min() const
+{
+    return min;
+}
+
+inline const Vec3& AABBox::Max() const
+{
+    return max;
+}
 
 } // namespace re
 
