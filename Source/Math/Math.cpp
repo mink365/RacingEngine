@@ -113,22 +113,22 @@ namespace MathLib
         return std::tanh(x);
     }
 
-    inline float Dot(const Plane& lhs, const Vec4& rhs)
+    float Dot(const Plane& lhs, const Vec4& rhs)
     {
         return lhs.a() * rhs.x + lhs.b() * rhs.y + lhs.c() * rhs.z + lhs.d() * rhs.w;
     }
 
-    inline float DotCoord(const Plane& lhs, const Vec3& rhs)
+    float DotCoord(const Plane& lhs, const Vec3& rhs)
     {
         return (lhs.Normal() | rhs) + lhs.d();
     }
 
-    inline float DotNormal(const Plane& lhs, const Vec3& rhs)
+    float DotNormal(const Plane& lhs, const Vec3& rhs)
     {
         return lhs.Normal() | rhs;
     }
 
-    inline float dot_coord(const Plane& lhs, const Vec3& rhs)
+    float dot_coord(const Plane& lhs, const Vec3& rhs)
     {
         return DotCoord(lhs, rhs);
     }
@@ -183,7 +183,7 @@ namespace MathLib
     T minimize(const T &lhs, const T &rhs)
     {
         T ret;
-        max_minimize_helper<float, T::elem_num>::DoMax(lhs, rhs, ret);
+        max_minimize_helper<float, T::elem_num>::DoMin(lhs, rhs, ret);
 
         return ret;
     }
@@ -196,7 +196,7 @@ namespace MathLib
     T maximize(const T &lhs, const T &rhs)
     {
         T ret;
-        max_minimize_helper<float, T::elem_num>::DoMin(lhs, rhs, ret);
+        max_minimize_helper<float, T::elem_num>::DoMax(lhs, rhs, ret);
 
         return ret;
     }
@@ -427,14 +427,14 @@ OBBox MathLib::ConvertToOBBox(const AABBox &aabb)
     return OBBox(aabb.Center(), Quat::Identity(), aabb.HalfSize());
 }
 
-inline bool MathLib::IntersectPointAABB(const Vec3& p, const AABBox& aabb)
+bool MathLib::IntersectPointAABB(const Vec3& p, const AABBox& aabb)
 {
     return ((InBound(p.x, aabb.Min().x, aabb.Max().x))
             && (InBound(p.y, aabb.Min().y, aabb.Max().y))
             && (InBound(p.z, aabb.Min().z, aabb.Max().z)));
 }
 
-inline bool MathLib::IntersectPointOBB(const Vec3& p, const OBBox& obb)
+bool MathLib::IntersectPointOBB(const Vec3& p, const OBBox& obb)
 {
     Vec3 d = p - obb.Center();
 
@@ -443,14 +443,14 @@ inline bool MathLib::IntersectPointOBB(const Vec3& p, const OBBox& obb)
             && (dot(obb.Axis(2), d) <= obb.HalfSize().z));
 }
 
-inline bool MathLib::IntersectPointSphere(const Vec3& p, const Sphere& sphere)
+bool MathLib::IntersectPointSphere(const Vec3& p, const Sphere& sphere)
 {
     Vec3 v = p - sphere.Center();
 
     return (v.length() < sphere.Radius());
 }
 
-inline bool MathLib::IntersectPointFrustum(const Vec3& p, const Frustum& frustum)
+bool MathLib::IntersectPointFrustum(const Vec3& p, const Frustum& frustum)
 {
     for (int i = 0; i < 6; ++i)
     {
@@ -462,7 +462,7 @@ inline bool MathLib::IntersectPointFrustum(const Vec3& p, const Frustum& frustum
     return true;
 }
 
-inline bool MathLib::IntersectRayAABB(const Ray& ray, const AABBox& aabb)
+bool MathLib::IntersectRayAABB(const Ray& ray, const AABBox& aabb)
 {
     float near = -1e10;
     float far = +1e10;
@@ -504,7 +504,7 @@ inline bool MathLib::IntersectRayAABB(const Ray& ray, const AABBox& aabb)
     return true;
 }
 
-inline bool MathLib::IntersectRayOBB(const Ray& ray, const OBBox& obb)
+bool MathLib::IntersectRayOBB(const Ray& ray, const OBBox& obb)
 {
     float t_near = float(-1e10);
     float t_far = float(+1e10);
@@ -555,7 +555,7 @@ inline bool MathLib::IntersectRayOBB(const Ray& ray, const OBBox& obb)
     return true;
 }
 
-inline bool MathLib::IntersectRaySphere(const Ray& ray, const Sphere& sphere)
+bool MathLib::IntersectRaySphere(const Ray& ray, const Sphere& sphere)
 {
     float const a = ray.Direction().lengthSqr();
     float const b = 2 * dot(ray.Direction(), (ray.Origin() - sphere.Center()));
@@ -568,19 +568,19 @@ inline bool MathLib::IntersectRaySphere(const Ray& ray, const Sphere& sphere)
     return true;
 }
 
-inline bool MathLib::IntersectAABBoxAABBox(const AABBox& lhs, const AABBox& aabb)
+bool MathLib::IntersectAABBoxAABBox(const AABBox& lhs, const AABBox& aabb)
 {
     Vec3 const t = aabb.Center() - lhs.Center();
     Vec3 const e = aabb.HalfSize() + lhs.HalfSize();
     return (MathLib::abs(t.x) <= e.x) && (MathLib::abs(t.y) <= e.y) && (MathLib::abs(t.z) <= e.z);
 }
 
-inline bool MathLib::IntersectAABBoxOBBox(const AABBox& aabb, const OBBox& obb)
+bool MathLib::IntersectAABBoxOBBox(const AABBox& aabb, const OBBox& obb)
 {
     return IntersectOBBoxOBBox(ConvertToOBBox(aabb), obb);
 }
 
-inline bool MathLib::IntersectAABBoxSphere(const AABBox& lhs, const Sphere& sphere)
+bool MathLib::IntersectAABBoxSphere(const AABBox& lhs, const Sphere& sphere)
 {
     Vec3 half_size = lhs.HalfSize();
     Vec3 d = sphere.Center() - lhs.Center();
@@ -605,7 +605,7 @@ inline bool MathLib::IntersectAABBoxSphere(const AABBox& lhs, const Sphere& sphe
     return v.lengthSqr() <= sphere.Radius() * sphere.Radius();
 }
 
-inline bool MathLib::IntersectOBBoxOBBox(const OBBox& lhs, const OBBox& obb)
+bool MathLib::IntersectOBBoxOBBox(const OBBox& lhs, const OBBox& obb)
 {
     // From Real-Time Collision Detection, p. 101-106. See http://realtimecollisiondetection.net/
 
@@ -734,7 +734,7 @@ inline bool MathLib::IntersectOBBoxOBBox(const OBBox& lhs, const OBBox& obb)
     return true;
 }
 
-inline bool MathLib::IntersectOBBoxSphere(const OBBox& lhs, const Sphere& sphere)
+bool MathLib::IntersectOBBoxSphere(const OBBox& lhs, const Sphere& sphere)
 {
     Vec3 d = sphere.Center() - lhs.Center();
     Vec3 closest_point_on_obb = lhs.Center();
@@ -756,14 +756,14 @@ inline bool MathLib::IntersectOBBoxSphere(const OBBox& lhs, const Sphere& sphere
     return length_sq(v) <= sphere.Radius() * sphere.Radius();
 }
 
-inline bool MathLib::IntersectSphereSphere(const Sphere& lhs, const Sphere& sphere)
+bool MathLib::IntersectSphereSphere(const Sphere& lhs, const Sphere& sphere)
 {
     Vec3 d = lhs.Center() - sphere.Center();
     float r = lhs.Radius() + sphere.Radius();
     return length_sq(d) <= r * r;
 }
 
-inline BoundOverlap MathLib::IntersectAABBoxFrustum(const AABBox& aabb, const Frustum& frustum)
+BoundOverlap MathLib::IntersectAABBoxFrustum(const AABBox& aabb, const Frustum& frustum)
 {
     Vec3 const & min_pt = aabb.Min();
     Vec3 const & max_pt = aabb.Max();
@@ -790,7 +790,7 @@ inline BoundOverlap MathLib::IntersectAABBoxFrustum(const AABBox& aabb, const Fr
     return intersect ? BO_Partial : BO_Yes;
 }
 
-inline BoundOverlap MathLib::IntersectOBBoxFrustum(const OBBox& obb, const Frustum& frustum)
+BoundOverlap MathLib::IntersectOBBoxFrustum(const OBBox& obb, const Frustum& frustum)
 {
     Vec3 min_pt = obb.Corner(0);
     Vec3 max_pt = min_pt;
@@ -824,7 +824,7 @@ inline BoundOverlap MathLib::IntersectOBBoxFrustum(const OBBox& obb, const Frust
     return intersect ? BO_Partial : BO_Yes;
 }
 
-inline BoundOverlap MathLib::IntersectSphereFrustum(const Sphere& sphere, const Frustum& frustum)
+BoundOverlap MathLib::IntersectSphereFrustum(const Sphere& sphere, const Frustum& frustum)
 {
     bool intersect = false;
     for (int i = 0; i < 6; ++ i)
@@ -845,7 +845,7 @@ inline BoundOverlap MathLib::IntersectSphereFrustum(const Sphere& sphere, const 
     return intersect ? BO_Partial : BO_Yes;
 }
 
-inline BoundOverlap MathLib::IntersectFrustumFrustum(const Frustum& lhs, const Frustum& rhs)
+BoundOverlap MathLib::IntersectFrustumFrustum(const Frustum& lhs, const Frustum& rhs)
 {
     bool outside = false;
     bool inside_all = true;
