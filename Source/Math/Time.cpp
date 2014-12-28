@@ -29,3 +29,28 @@ void Time::SetTime(uint64_t ms)
     this->_ns = ms * TimeConstant::NANOSECONDS_PER_MILLISECOND;
 }
 
+uint64_t Time::GetNanoSecond() const
+{
+    return _ns;
+}
+
+uint64_t Time::GetMilliSecond() const
+{
+    return _ns * TimeConstant::MILLISECONDS_PER_NANOSECOND;
+}
+
+float Time::GetSecond() const
+{
+    return _ns * TimeConstant::SECONDS_PER_NANOSECOND;
+}
+
+float Time::GetMinute() const
+{
+    return GetSecond() / TimeConstant::SECONDS_PER_MINUTE;
+}
+
+float Time::GetHour() const
+{
+    return GetSecond() / TimeConstant::SECONDS_PER_HOUR;
+}
+
