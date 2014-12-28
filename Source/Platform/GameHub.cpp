@@ -12,8 +12,6 @@ namespace re {
 
 GameHub::GameHub()
 {
-    _time = 0;
-    _frame = 0;
     fps = 0;
 
     this->updateFunc = nullptr;
@@ -37,16 +35,11 @@ void GameHub::init()
 
 void GameHub::mainLoop(long dt)
 {
-    _time += dt;
-    _frame += 1;
-    if (_time > 1000) {
-        this->fps = _frame;
+    this->updateFps(dt, fps);
 
-        _time = 0;
-        _frame = 0;
-    }
+    this->_lastSpanTime.SetTime(dt);
+    this->_gameTime.SetTime(_gameTime.GetMilliSecond() + dt);
 
-//    this->updateFunc(dt);
     if (tweenManager) {
         tweenManager->update(dt/1000.0);
     }
@@ -73,9 +66,33 @@ TweenEngine::TweenManager& GameHub::getTweenManager()
     return *(this->tweenManager);
 }
 
+const Time &GameHub::GetGameTime() const
+{
+    return _gameTime;
+}
+
+const Time &GameHub::GetDeltaTime() const
+{
+    return _lastSpanTime;
+}
+
 int GameHub::getFps()
 {
     return this->fps;
+}
+
+long time_ = 0;
+int frame_ = 0;
+void GameHub::updateFps(long dt, int &fps)
+{
+    time_ += dt;
+    frame_ += 1;
+    if (time_ > 1000) {
+        fps = frame_;
+
+        time_ = 0;
+        frame_ = 0;
+    }
 }
 
 } // namespace re

@@ -8,6 +8,7 @@
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
 #include "Scene/Mesh.h"
+#include "Platform/GameHub.h"
 
 re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation)
 {
@@ -44,11 +45,11 @@ re::MeshPtr re::SkeletonController::getMesh()
     return this->mesh;
 }
 
-Long local_time = 0;
 void re::SkeletonController::play()
 {
-    local_time = 0;
     this->isPlaying = true;
+
+    this->setInitTime(GameHub::getInstance().GetGameTime().GetMilliSecond());
 }
 
 void re::SkeletonController::stop()
@@ -67,9 +68,7 @@ void re::SkeletonController::update()
         return;
     }
 
-    local_time += 20;
-
-    this->animation->setCurrTime(local_time);
+    this->setCurrTime(GameHub::getInstance().GetGameTime().GetMilliSecond());
 
     this->computeLinearDeformation();
 }
@@ -81,11 +80,21 @@ void re::SkeletonController::setDefaultFrame(int frame)
     this->animation->setAnimationLoop(false);
     this->animation->setAnimationPower(1.0f);
 
+    this->setInitTime(0);
     Long time = this->animation->getCurrAnimationTrack()->getKeyFrame(frame)->getTime();
-
-    this->animation->setCurrTime(time);
+    this->setCurrTime(time);
 
     this->computeLinearDeformation();
+}
+
+void re::SkeletonController::setInitTime(Long time)
+{
+    this->animation->setBeginTime(time);
+}
+
+void re::SkeletonController::setCurrTime(Long time)
+{
+    this->animation->setCurrTime(time);
 }
 
 void re::SkeletonController::computeLinearDeformation()

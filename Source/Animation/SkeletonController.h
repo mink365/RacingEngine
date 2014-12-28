@@ -27,6 +27,8 @@ public:
     void update();
 
     void setDefaultFrame(int frame);
+    void setInitTime(Long time);
+    void setCurrTime(Long time);
 
 private:
     void computeLinearDeformation();

@@ -54,14 +54,18 @@ namespace TimeConstant
 class Time
 {
 public:
+    Time();
     Time(uint64_t ns);
 
     uint64_t GetNanoSecond() const;
-    uint64_t GetMillSecond() const;
+    uint64_t GetMilliSecond() const;
 
     float GetSecond() const;
     float GetMinute() const;
     float GetHour() const;
+
+    void SetNanoTime(uint64_t ns);
+    void SetTime(uint64_t ms);
 
 private:
     uint64_t _ns;
@@ -72,7 +76,7 @@ inline uint64_t Time::GetNanoSecond() const
     return _ns;
 }
 
-inline uint64_t Time::GetMillSecond() const
+inline uint64_t Time::GetMilliSecond() const
 {
     return _ns / TimeConstant::NANOSECONDS_PER_SECOND;
 }
