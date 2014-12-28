@@ -47,6 +47,8 @@ private:
 
 private:
     Mat4 emptyMatrix;
+
+    bool isPlaying;
 };
 }
 

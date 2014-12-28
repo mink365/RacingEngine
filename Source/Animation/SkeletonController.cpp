@@ -14,6 +14,8 @@ re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skelet
     float* mat = this->emptyMatrix.toFloatPtr();
     std::fill(mat, mat+16, 0);
 
+    this->isPlaying = false;
+
     this->sceneNode = mesh;
     this->skeleton = skeleton;
     this->animation = animation;
@@ -42,24 +44,29 @@ re::MeshPtr re::SkeletonController::getMesh()
     return this->mesh;
 }
 
+Long local_time = 0;
 void re::SkeletonController::play()
 {
-
+    local_time = 0;
+    this->isPlaying = true;
 }
 
 void re::SkeletonController::stop()
 {
-
+    this->isPlaying = false;
 }
 
 void re::SkeletonController::reset()
 {
-
+    this->setDefaultFrame(0);
 }
 
-Long local_time = 0;
 void re::SkeletonController::update()
 {
+    if (!isPlaying) {
+        return;
+    }
+
     local_time += 20;
 
     this->animation->setCurrTime(local_time);
