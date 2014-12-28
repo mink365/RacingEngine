@@ -105,7 +105,7 @@ Mat3 Quat::toMat3() const
     wy = w * y2;
     wz = w * z2;
 
-    // TODO: 交换顺序？
+    // floatODO: 交换顺序？
     mat[ 0 ][ 0 ] = 1.0f - (yy + zz);
     mat[ 0 ][ 1 ] = xy - wz;
     mat[ 0 ][ 2 ] = xz + wy;
@@ -123,7 +123,25 @@ Mat3 Quat::toMat3() const
 
 Mat4 Quat::toMat4() const
 {
-    return this->toMat3().toMat4();
+    // TODO: rotation will change the scaling of matrix?
+    // this->toMat4().toMat4(); can work, but also change the scale
+
+    const Quat& quat = *this;
+
+    // calculate coefficients
+    float const x2(quat.x + quat.x);
+    float const y2(quat.y + quat.y);
+    float const z2(quat.z + quat.z);
+
+    float const xx2(quat.x * x2), xy2(quat.x * y2), xz2(quat.x * z2);
+    float const yy2(quat.y * y2), yz2(quat.y * z2), zz2(quat.z * z2);
+    float const wx2(quat.w * x2), wy2(quat.w * y2), wz2(quat.w * z2);
+
+    return Mat4(
+        1 - yy2 - zz2,	xy2 - wz2,		xz2 + wy2,		0,
+        xy2 + wz2,		1 - xx2 - zz2,	yz2 - wx2,		0,
+        xz2 - wy2,		yz2 + wx2,		1 - xx2 - yy2,	0,
+        0,				0,				0,				1);
 }
 
 Vec3 Quat::toVec3() const
@@ -197,10 +215,10 @@ Quat &Quat::fromRotationMatrix(float m00, float m01, float m02, float m10, float
 {
     // Use the Graphics Gems code, from
     // ftp://ftp.cis.upenn.edu/pub/graphics/shoemake/quatut.ps.Z
-    // *NOT* the "Matrix and Quaternions FAQ", which has errors!
+    // *NOfloat* the "Matrix and Quaternions FAQ", which has errors!
 
     // the trace is the sum of the diagonal elements; see
-    // http://mathworld.wolfram.com/MatrixTrace.html
+    // http://mathworld.wolfram.com/Matrixfloatrace.html
     float t = m00 + m11 + m22;
 
     // we protect the division by s by ensuring that s>=1
@@ -268,12 +286,12 @@ Quat &Quat::slerp(Quat &q2, float changeAmnt)
         // Get the angle between the 2 quaternions, and then store the sin()
         // of that angle
         float theta = std::acos(result);
-        float invSinTheta = 1.0f / std::sin(theta);
+        float invSinfloatheta = 1.0f / std::sin(theta);
 
         // Calculate the scale for q1 and q2, according to the angle and
         // it's sine value
-        scale0 = std::sin((1.0f - changeAmnt) * theta) * invSinTheta;
-        scale1 = std::sin((changeAmnt * theta)) * invSinTheta;
+        scale0 = std::sin((1.0f - changeAmnt) * theta) * invSinfloatheta;
+        scale1 = std::sin((changeAmnt * theta)) * invSinfloatheta;
     }
 
     // Calculate the x, y, z and w values for the quaternion by using a

@@ -35,9 +35,9 @@ float Mat3::getDeterminant()
 Mat4 Mat3::toMat4()
 {
     return Mat4(mat[0][0], mat[0][1], mat[0][2], 0.0f,
-                  mat[1][0], mat[1][1], mat[1][2], 0.0f,
-                  mat[2][0], mat[2][1], mat[2][2], 0.0f,
-            0.0f,      0.0f,      0.0f,      1.0f);
+                mat[1][0], mat[1][1], mat[1][2], 0.0f,
+                mat[2][0], mat[2][1], mat[2][2], 0.0f,
+                0.0f,      0.0f,      0.0f,      1.0f);
 }
 
 float *Mat3::toFloatPtr()
