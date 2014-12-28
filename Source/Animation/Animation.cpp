@@ -1,7 +1,6 @@
 #include "Animation.h"
 
 #include "Scene/Node.h"
-
 #include <memory>
 
 namespace re {

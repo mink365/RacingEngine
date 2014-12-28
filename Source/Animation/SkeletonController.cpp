@@ -68,7 +68,8 @@ void re::SkeletonController::update()
         return;
     }
 
-    this->setCurrTime(GameHub::getInstance().GetGameTime().GetMilliSecond());
+    auto time = GameHub::getInstance().GetGameTime();
+    this->setCurrTime(time.GetMilliSecond());
 
     this->computeLinearDeformation();
 }
@@ -135,8 +136,6 @@ void re::SkeletonController::computeLinearDeformation()
             vector<uint>& vertexList = meshData->controlPointsData.controlToVertex.at(i);
 
             for (auto& index : vertexList) {
-//                Vertex& vertex = geometry->getVertices().at(index);
-//                vertex.xyz = destVertex;
                 meshData->setVertex(index, destVertex);
             }
         } else {
@@ -144,8 +143,6 @@ void re::SkeletonController::computeLinearDeformation()
                 Int controlPointIndex = meshData->controlPointsData.vertexToControl[j];
 
                 if (controlPointIndex == i) {
-//                    Vertex& vertex = geometry->getVertices().at(j);
-//                    vertex.xyz = destVertex;
                     meshData->setVertex(j, destVertex);
                 }
             }
