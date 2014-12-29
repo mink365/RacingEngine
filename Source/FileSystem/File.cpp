@@ -174,7 +174,13 @@ size_t FilePermanent::write(const void *buffer, size_t len)
 
 void FilePermanent::open()
 {
-    FileSystem::getInstance().openFile(*this, fsMode::Read);
+    // TODO: mode to char*
+    FILE* fp = fopen(fullPath.c_str(), "rw");
+
+    RE_ASSERT(fp);
+
+    this->fp = fp;
+    this->checkLength();
 }
 
 void FilePermanent::close()

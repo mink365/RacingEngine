@@ -29,13 +29,21 @@ void FileSystem::addSearchPath(const SearchPath &searchPath)
     this->searchPaths.push_back(searchPath);
 }
 
-FilePtr FileSystem::getFile(const std::string &relativePath)
+FilePtr FileSystem::getFile(const std::string &relativePath, fsMode mode)
 {
+    uint32_t _mode;
+    if (mode == fsMode::Append) {
+        _mode = (1 << (uint32_t)fsMode::Write) | (1 << (uint32_t)fsMode::Append);
+    } else {
+        _mode = (1 << (uint32_t)mode);
+    }
+
     for (auto search : this->searchPaths) {
-        std::string netpath = BuildOSPath( search.dir, relativePath );
+        std::string netpath = JoinPath( search.dir, relativePath );
 
         if (FileExists(netpath)) {
             FilePtr file = this->CreateFile(netpath);
+            file->mode = _mode;
             return file;
         }
     }
@@ -73,29 +81,6 @@ FileList FileSystem::listFilesTree(const std::string &relativePath, const std::s
     }
 
     return list;
-}
-
-void FileSystem::openFile(FilePermanent& file, fsMode mode)
-{
-    uint32_t _mode;
-    if (mode == fsMode::Append) {
-        _mode = (1 << (uint32_t)fsMode::Write) | (1 << (uint32_t)fsMode::Append);
-    } else {
-        _mode = (1 << (uint32_t)mode);
-    }
-
-    FILE* fp = OpenOSFile( file.fullPath.c_str(), "rb" );
-
-    RE_ASSERT(fp);
-
-    file.mode = _mode;
-    file.fp = fp;
-    file.checkLength();
-}
-
-void FileSystem::closeFile(FilePtr &file)
-{
-    file->close();
 }
 
 void FileSystem::GetExtensionList(const std::string& extension, StrList &extensionList) const
@@ -137,7 +122,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
 
     // search through the path, one element at a time, adding to list
     for( auto search : searchPaths) {
-        std::string netpath = BuildOSPath( search.dir, relativePath );
+        std::string netpath = JoinPath( search.dir, relativePath );
 
         StrList sysFiles;
 
@@ -158,7 +143,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                 sysFiles.erase(iter, sysFiles.end());
 
                 for(size_t j = 0; j < sysFiles.size(); j++ ) {
-                    auto dir = BuildOSPath(relativePath, sysFiles[j]);
+                    auto dir = JoinPath(relativePath, sysFiles[j]);
                     directories->push_back(dir);
                 }
             } else {
@@ -166,7 +151,7 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
                 ListOSFiles( netpath, extension, sysFiles );
 
                 for(size_t j = 0; j < sysFiles.size(); j++ ) {
-                    std::string path = BuildOSPath(netpath, sysFiles[j]);
+                    std::string path = JoinPath(netpath, sysFiles[j]);
 
                     FilePtr file = CreateFile(path);
 
@@ -229,6 +214,17 @@ bool FileSystem::FileExists(const string &path)
     return false;
 }
 
+std::string FileSystem::JoinPath(const std::string &dir, const std::string &relativeDir)
+{
+    return dir + "/" + relativeDir;
+}
+
+void ExtractFileExtension( const std::string& path, std::string& ext ) {
+    int pos = path.find_last_of(".");
+    ext = path.substr(pos + 1, path.length());
+}
+
+// TODO: replace / to \\ when touch the real file
 FILE *FileSystem::OpenOSFile(const char *fileName, const char *mode)
 {
     FILE *fp;
@@ -262,18 +258,6 @@ bool FileSystem::IsOSDirectory(const std::string path)
 #endif
 
     return false;
-}
-
-std::string FileSystem::BuildOSPath(const std::string &dir, const std::string &relativeDir)
-{
-    // TODO: in windows remove "\\"
-
-    return dir + "/" + relativeDir;
-}
-
-void ExtractFileExtension( const std::string& path, std::string& ext ) {
-    int pos = path.find_last_of(".");
-    ext = path.substr(pos + 1, path.length());
 }
 
 int FileSystem::ListOSFiles(const std::string &directory, const std::string &extension, StrList &list)

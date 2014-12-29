@@ -10,6 +10,16 @@
 
 namespace re {
 
+/**
+ * @brief The SearchPath struct
+ *
+ * use string to define the type of path
+ * android asset dir: asset:Resources/
+ * real path: /home/xxx/Resources
+ * if we use PAK to pack our resource we may use it like this:
+ * pack1:Images/, pack2:Images/ ....
+ * and create a File type such as PakFile
+ */
 struct SearchPath {
     std::string dir;
 };
@@ -24,15 +34,9 @@ class FileSystem : public Singleton<FileSystem>
 public:
     void addSearchPath(const SearchPath& searchPath);
 
-    FilePtr getFile(const std::string& relativePath);
+    FilePtr getFile(const std::string& relativePath, fsMode mode=fsMode::Read);
     FileList listFiles(const std::string& relativePath, const std::string& extension="", bool sort=false, bool fullRelativePath=false);
     FileList listFilesTree(const std::string& relativePath, const std::string& extension="", bool sort=false);
-
-    void closeFile(FilePtr& file);
-
-public:
-    // some function for typed file
-    void openFile(FilePermanent& file, fsMode mode=fsMode::Read);
 
 protected:
     virtual FilePtr CreateFile(const std::string& path);
@@ -42,10 +46,10 @@ protected:
     int	GetFileList(const std::string& relativePath, const StrList &extensions, FileList &list, StrList* directories=nullptr);
     int	GetFileListTree( const std::string& relativePath, const StrList &extensions, FileList &list);
 
-    FILE* OpenOSFile( const char *fileName, const char *mode);
-    bool IsOSDirectory(const std::string path);
-    std::string BuildOSPath(const std::string& dir, const std::string& relativeDir);
+    std::string JoinPath(const std::string& dir, const std::string& relativeDir);
 
+    FILE* OpenOSFile( const char *fileName, const char *mode);
+    virtual bool IsOSDirectory(const std::string path);
     virtual int ListOSFiles(const std::string& directory, const std::string& extension, StrList& list);
     virtual int ListOSDirectories(const std::string& directory, StrList& list);
 private:
