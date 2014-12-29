@@ -27,9 +27,10 @@ struct SearchPath {
 typedef std::vector<std::string> StrList;
 typedef std::vector<FilePtr> FileList;
 
-class FileSystem : public Singleton<FileSystem>
+class FileSystem
 {
-    friend class Singleton;
+public:
+    virtual ~FileSystem(){};
 
 public:
     void addSearchPath(const SearchPath& searchPath);
@@ -49,11 +50,9 @@ protected:
     std::string JoinPath(const std::string& dir, const std::string& relativeDir);
 
     FILE* OpenOSFile( const char *fileName, const char *mode);
-    virtual bool IsOSDirectory(const std::string path);
+    virtual bool IsOSDirectory(const std::string& path);
     virtual int ListOSFiles(const std::string& directory, const std::string& extension, StrList& list);
     virtual int ListOSDirectories(const std::string& directory, StrList& list);
-private:
-    FileSystem();
 
 private:
     std::vector<SearchPath> searchPaths;

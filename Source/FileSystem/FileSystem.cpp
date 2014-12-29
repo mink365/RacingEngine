@@ -242,7 +242,7 @@ FILE *FileSystem::OpenOSFile(const char *fileName, const char *mode)
     return fp;
 }
 
-bool FileSystem::IsOSDirectory(const std::string path)
+bool FileSystem::IsOSDirectory(const std::string& path)
 {
 #ifndef __MWERKS__
 #ifndef WIN32
