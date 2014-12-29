@@ -35,4 +35,11 @@ enum ClearBufferBit {
     STENCIL_BUFFER_BIT = 8,
 };
 
+// Assert macros.
+#ifdef _DEBUG
+#define RE_ASSERT(expression) assert(expression)
+#else
+#define RE_ASSERT(expression)
+#endif
+
 #endif // PLATFORM_H

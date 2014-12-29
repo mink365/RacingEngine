@@ -13,16 +13,11 @@ class FilePermanent;
 typedef std::shared_ptr<File> FilePtr;
 typedef std::shared_ptr<const File> ConstFilePtr;
 
-enum class FileType {
-    Permanent,
-    PACK,
-    AndroidAsset,
-};
-
-enum class fsMode {
-    Read = 0,
-    Write = 1,
-    Append = 2,
+enum class fsMode : std::uint32_t
+{
+    Read = 1,
+    Write = 2,
+    Append = 4,
 };
 
 class File : public std::enable_shared_from_this<File>
@@ -32,8 +27,6 @@ class File : public std::enable_shared_from_this<File>
 public:
     File();
     virtual ~File();
-
-    FileType getType();
 
     virtual const std::string& getName() const = 0;
     /**
@@ -47,19 +40,17 @@ public:
     virtual const std::string getDirPath() const;
 
     ByteBufferPtr read();
-    virtual int read( void *buffer, int len ) = 0;
-    virtual int write(const void *buffer, int len) = 0;
-    virtual int length() const;
+    virtual size_t read( void *buffer, size_t len ) = 0;
+    virtual size_t write(const void *buffer, size_t len) = 0;
+    virtual size_t length() const;
+    virtual void open() = 0;
+    virtual void close() = 0;
 
 protected:
-    FileType type;
+    size_t fileSize;
 
-    int fileSize;
+    uint32_t mode;
 };
-
-inline FileType File::getType() {
-    return this->type;
-}
 
 class FilePermanent : public File
 {
@@ -72,8 +63,10 @@ public:
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;
 
-    virtual int read( void *buffer, int len );
-    virtual int write(const void *buffer, int len);
+    virtual size_t read( void *buffer, size_t len );
+    virtual size_t write(const void *buffer, size_t len);
+    virtual void open();
+    virtual void close();
 
 protected:
     void checkLength();
@@ -81,8 +74,6 @@ protected:
 private:
     std::string name;
     std::string fullPath;
-
-    int mode;
 
     FILE *fp;
 };

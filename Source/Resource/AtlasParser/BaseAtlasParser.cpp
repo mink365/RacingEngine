@@ -89,7 +89,7 @@ FilePtr GetImageFile(const FilePtr& atlasFile, const string &imageName)
 {
     auto dir = atlasFile->getDirPath();
 
-    return FileSystem::getInstance().openFile(dir+"/"+imageName, fsMode::Read);
+    return FileSystem::getInstance().getFile(dir+"/"+imageName);
 }
 
 }

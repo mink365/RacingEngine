@@ -25,7 +25,7 @@ FbxParser::FbxParser()
 
 void FbxParser::parse(const string &path)
 {
-    FilePtr file = FileSystem::getInstance().openFile(path);
+    FilePtr file = FileSystem::getInstance().getFile(path);
     ByteBufferPtr buf = file->read();
 
     this->parseData(buf->getData(), buf->getSize());

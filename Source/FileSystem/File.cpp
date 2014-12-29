@@ -14,7 +14,7 @@ File::~File()
 
 }
 
-int File::length() const
+size_t File::length() const
 {
     return this->fileSize;
 }
@@ -45,9 +45,7 @@ const std::string File::getDirPath() const
 
 ByteBufferPtr File::read()
 {
-    FilePtr p = this->shared_from_this();
-
-    FileSystem::getInstance().openFile(p, fsMode::Read);
+    this->open();
 
     ByteBufferPtr buf = std::make_shared<ByteBuffer>(this->length());
 
@@ -58,8 +56,6 @@ ByteBufferPtr File::read()
 
 FilePermanent::FilePermanent()
 {
-    type = FileType::Permanent;
-
     name = "invalid";
     fullPath = "invalid";
     fp = NULL;
@@ -69,9 +65,7 @@ FilePermanent::FilePermanent()
 
 FilePermanent::~FilePermanent()
 {
-    if ( fp ) {
-        fclose( fp );
-    }
+    close();
 }
 
 const std::string &FilePermanent::getName() const
@@ -84,12 +78,12 @@ const std::string &FilePermanent::getFullPath() const
     return this->fullPath;
 }
 
-int FilePermanent::read(void *buffer, int len)
+size_t FilePermanent::read(void *buffer, size_t len)
 {
-    int		block, remaining;
-    int		read;
+    size_t		block, remaining;
+    size_t		read;
     byte *	buf;
-    int		tries;
+    size_t		tries;
 
     if ( !( mode & ( 1 << (int)fsMode::Read ) ) ) {
 //        common->FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
@@ -130,7 +124,7 @@ int FilePermanent::read(void *buffer, int len)
     return len;
 }
 
-int FilePermanent::write(const void *buffer, int len)
+size_t FilePermanent::write(const void *buffer, size_t len)
 {
     int		block, remaining;
     int		written;
@@ -178,10 +172,24 @@ int FilePermanent::write(const void *buffer, int len)
     return len;
 }
 
+void FilePermanent::open()
+{
+    FileSystem::getInstance().openFile(*this, fsMode::Read);
+}
+
+void FilePermanent::close()
+{
+    if ( fp ) {
+        fclose( fp );
+    }
+
+    fp = NULL;
+}
+
 void FilePermanent::checkLength()
 {
-    int		pos;
-    int		end;
+    size_t		pos;
+    size_t		end;
 
     pos = ftell( fp );
     fseek( fp, 0, SEEK_END );

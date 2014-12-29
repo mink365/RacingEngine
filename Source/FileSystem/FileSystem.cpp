@@ -1,4 +1,4 @@
-#include "FileSystem.h"
+﻿#include "FileSystem.h"
 
 #ifdef WIN32
     #include <io.h>	// for _read
@@ -20,9 +20,27 @@
 
 namespace re {
 
+FileSystem::FileSystem()
+{
+}
+
 void FileSystem::addSearchPath(const SearchPath &searchPath)
 {
     this->searchPaths.push_back(searchPath);
+}
+
+FilePtr FileSystem::getFile(const std::string &relativePath)
+{
+    for (auto search : this->searchPaths) {
+        std::string netpath = BuildOSPath( search.dir, relativePath );
+
+        if (FileExists(netpath)) {
+            FilePtr file = this->CreateFile(netpath);
+            return file;
+        }
+    }
+
+    return nullptr;
 }
 
 FileList FileSystem::listFiles(const std::string &relativePath, const std::string &extension, bool sort, bool fullRelativePath)
@@ -57,82 +75,27 @@ FileList FileSystem::listFilesTree(const std::string &relativePath, const std::s
     return list;
 }
 
-FilePtr FileSystem::openFile(const std::string &relativePath, fsMode mode)
+void FileSystem::openFile(FilePermanent& file, fsMode mode)
 {
-    // TODO: search and check it in android assert or osPath
-    for (auto search : this->searchPaths) {
-        if ( search.type == SearchPathType::Permanent ) {
-            std::string netpath = BuildOSPath( search.rootDir, relativePath );
-
-            FILE* fp = this->OpenOSFile(netpath.c_str(), "rw");
-            if ( !fp ) {
-                continue;
-            }
-
-            FilePtr file = this->CreateFile(netpath, FileType::Permanent);
-
-            this->openFile(file, mode);
-
-            return file;
-        }
+    uint32_t _mode;
+    if (mode == fsMode::Append) {
+        _mode = (1 << (uint32_t)fsMode::Write) | (1 << (uint32_t)fsMode::Append);
+    } else {
+        _mode = (1 << (uint32_t)mode);
     }
 
-    return nullptr;
+    FILE* fp = OpenOSFile( file.fullPath.c_str(), "rb" );
+
+    RE_ASSERT(fp);
+
+    file.mode = _mode;
+    file.fp = fp;
+    file.checkLength();
 }
 
-void FileSystem::openFile(FilePtr &file, fsMode mode)
+void FileSystem::closeFile(FilePtr &file)
 {
-    switch (file->type) {
-    case FileType::Permanent:
-    {
-        std::shared_ptr<FilePermanent> localFile = std::dynamic_pointer_cast<FilePermanent>(file);
-
-        FILE* fp = OpenOSFile( localFile->fullPath.c_str(), "rb" );
-        if ( !fp ) {
-            return;
-        }
-
-        localFile->fp = fp;
-        if (mode == fsMode::Append) {
-            localFile->mode = (1 << (int)fsMode::Write) | (1 << (int)fsMode::Append);
-        } else {
-            localFile->mode = (1 << (int)mode);
-        }
-        localFile->checkLength();
-
-        break;
-    }
-    case FileType::AndroidAsset:
-    {
-        break;
-    }
-    case FileType::PACK:
-    {
-        break;
-    }
-    }
-}
-
-void FileSystem::closeFile(ConstFilePtr &file)
-{
-
-}
-
-FILE *FileSystem::OpenOSFile(const char *fileName, const char *mode)
-{
-    FILE *fp;
-
-    if (IsOSDirectory(fileName)) {
-        return NULL;
-    }
-
-    fp = fopen( fileName, mode );
-
-    if (!fp) {
-        // TODO: error
-    }
-
-    return fp;
+    file->close();
 }
 
 void FileSystem::GetExtensionList(const std::string& extension, StrList &extensionList) const
@@ -174,45 +137,42 @@ int FileSystem::GetFileList(const std::string &relativePath, const StrList &exte
 
     // search through the path, one element at a time, adding to list
     for( auto search : searchPaths) {
-        if ( search.type == SearchPathType::Permanent ) {
-            std::string netpath = BuildOSPath( search.rootDir, relativePath );
+        std::string netpath = BuildOSPath( search.dir, relativePath );
 
-            StrList sysFiles;
+        StrList sysFiles;
 
-            for (size_t i = 0; i < extensions.size(); i++ ) {
-                sysFiles.clear();
+        for (size_t i = 0; i < extensions.size(); i++ ) {
+            sysFiles.clear();
 
-                // if we are searching for directories, remove . and ..
-                if ( extensions[i][0] == '/' && extensions[i][1] == 0 ) {
-                    // scan for files in the filesystem
-                    ListOSDirectories( netpath, sysFiles );
+            const std::string& extension = extensions[i];
 
-                    auto iter = std::remove_if(sysFiles.begin(), sysFiles.end(), [](const std::string& file) {
-                        return file == "." || file == "..";
-                    });
-                    sysFiles.erase(iter, sysFiles.end());
+            // if we are searching for directories, remove . and ..
+            if ( extension[0] == '/' && extension[1] == 0 ) {
+                // scan for directory in the filesystem
+                ListOSDirectories( netpath, sysFiles );
 
-                    for(size_t j = 0; j < sysFiles.size(); j++ ) {
-                        auto dir = BuildOSPath(relativePath, sysFiles[j]);
-                        directories->push_back(dir);
-                    }
-                } else {
-                    // scan for files in the filesystem
-                    ListOSFiles( netpath, extensions[i], sysFiles );
+                auto iter = std::remove_if(sysFiles.begin(), sysFiles.end(),
+                [](const std::string& file) {
+                    return file == "." || file == "..";
+                });
+                sysFiles.erase(iter, sysFiles.end());
 
-                    for(size_t j = 0; j < sysFiles.size(); j++ ) {
-                        std::string path = BuildOSPath(netpath, sysFiles[j]);
+                for(size_t j = 0; j < sysFiles.size(); j++ ) {
+                    auto dir = BuildOSPath(relativePath, sysFiles[j]);
+                    directories->push_back(dir);
+                }
+            } else {
+                // scan for files in the filesystem
+                ListOSFiles( netpath, extension, sysFiles );
 
-                        FilePtr file = CreateFile(path, search.type);
+                for(size_t j = 0; j < sysFiles.size(); j++ ) {
+                    std::string path = BuildOSPath(netpath, sysFiles[j]);
 
-                        list.push_back(file);
-                    }
+                    FilePtr file = CreateFile(path);
+
+                    list.push_back(file);
                 }
             }
-        } else if ( search.type == SearchPathType::PACK ) {
-
-        } else if (search.type == SearchPathType::AndroidAsset) {
-
         }
     }
 
@@ -227,6 +187,7 @@ int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &
     // recurse through the subdirectories
     slash.push_back( "/" );
     GetFileList( relativePath, slash, list, &folders);
+
     for ( i = 0; i < folders.size(); i++ ) {
         if ( folders[i][0] == '.' ) {
             continue;
@@ -241,6 +202,48 @@ int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &
     GetFileList( relativePath, extensions, list);
 
     return list.size();
+}
+
+FilePtr FileSystem::CreateFile(const std::string &path)
+{
+    FilePtr file = nullptr;
+
+    auto localFile = std::make_shared<FilePermanent>();
+
+    int pos = path.find_last_of("/") + 1;
+    localFile->name = path.substr(pos, path.length() - pos);
+    localFile->fullPath = path;
+
+    file = localFile;
+
+    return file;
+}
+
+bool FileSystem::FileExists(const string &path)
+{
+    FILE* fp = this->OpenOSFile(path.c_str(), "rw");
+    if ( fp ) {
+        return true;
+    }
+
+    return false;
+}
+
+FILE *FileSystem::OpenOSFile(const char *fileName, const char *mode)
+{
+    FILE *fp;
+
+    if (IsOSDirectory(fileName)) {
+        return NULL;
+    }
+
+    fp = fopen( fileName, mode );
+
+    if (!fp) {
+        // TODO: error
+    }
+
+    return fp;
 }
 
 bool FileSystem::IsOSDirectory(const std::string path)
@@ -310,31 +313,6 @@ int FileSystem::ListOSDirectories(const std::string &directory, StrList &list)
     closedir(dirp);
 
     return list.size();
-}
-
-FilePtr FileSystem::CreateFile(const std::string &path, FileType type)
-{
-    FilePtr file = nullptr;
-
-    if (type == FileType::Permanent) {
-        auto localFile = std::make_shared<FilePermanent>();
-
-        int pos = path.find_last_of("/") + 1;
-        localFile->name = path.substr(pos, path.length() - pos);
-        localFile->fullPath = path;
-
-        file = localFile;
-    } else if (type == FileType::PACK) {
-
-    } else if (type == FileType::AndroidAsset) {
-
-    }
-
-    return file;
-}
-
-FileSystem::FileSystem()
-{
 }
 
 }
