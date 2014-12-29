@@ -27,7 +27,9 @@ public:
 
     virtual int read( void *buffer, int len );
     virtual int write(const void *buffer, int len);
-    virtual size_t length() const;
+
+    virtual void open();
+    virtual void close();
 
 private:
     std::string name;

@@ -11,6 +11,8 @@
 namespace re
 {
 
+extern AAssetManager* __assetManager;
+
 AndroidFile::AndroidFile()
 {
     name = "invalid";
@@ -22,10 +24,7 @@ AndroidFile::AndroidFile()
 
 AndroidFile::~AndroidFile()
 {
-    if (_asset) {
-        AAsset_close(_asset);
-    }
-    _asset = NULL;
+    close();
 }
 
 const std::string &AndroidFile::getName() const
@@ -49,9 +48,23 @@ int AndroidFile::write(const void *buffer, int len)
     return 0;
 }
 
-size_t AndroidFile::length() const
+void AndroidFile::open()
 {
-    return (size_t)AAsset_getLength(_asset);
+    const char* filePath = fullPath.c_str();
+
+    AAsset* asset = AAssetManager_open(__assetManager, filePath, AASSET_MODE_RANDOM);
+
+    this->_asset = asset;
+
+    this->fileSize = (size_t)AAsset_getLength(asset);
+}
+
+void AndroidFile::close()
+{
+    if (_asset) {
+        AAsset_close(_asset);
+    }
+    _asset = NULL;
 }
 
 }

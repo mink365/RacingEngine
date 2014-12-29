@@ -21,4 +21,29 @@ AndroidFileSystem::~AndroidFileSystem()
 
 }
 
+FilePtr AndroidFileSystem::CreateFile(const string &path)
+{
+
+}
+
+bool AndroidFileSystem::FileExists(const string &path)
+{
+
+}
+
+bool AndroidFileSystem::IsOSDirectory(const string path)
+{
+
+}
+
+int AndroidFileSystem::ListOSFiles(const string &directory, const string &extension, StrList &list)
+{
+
+}
+
+int AndroidFileSystem::ListOSDirectories(const string &directory, StrList &list)
+{
+
+}
+
 }
