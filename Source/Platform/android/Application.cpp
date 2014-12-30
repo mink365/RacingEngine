@@ -2,6 +2,7 @@
 
 #include "NativeWindow.h"
 #include "Platform/GameHub.h"
+#include "FileSystemAndroid.h"
 #include "Util/LogUtil.h"
 
 #include <unistd.h>
@@ -130,6 +131,9 @@ void Application::run(android_app* state) {
     this->androidWin = static_cast<NativeWindow*>(this->view);
     this->androidWin->initView(__state);
 
+    FileSystemAndroid* fileSystem = static_cast<FileSystemAndroid*>(&FileSystem::getInstance());
+    fileSystem->BindAssetManager(__assetManager);
+
     GameHub& game = GameHub::getInstance();
     game.init();
 
@@ -227,7 +231,7 @@ void Application::run(android_app* state) {
 
 void Application::initApp()
 {
-//    GP_ASSERT(__state && __state->activity && __state->activity->vm);
+    RE_ASSERT(__state && __state->activity && __state->activity->vm);
 
     __initialized = false;
     __suspended = false;

@@ -12,6 +12,8 @@
 namespace re
 {
 
+AAssetManager* __assetManager;
+
 FileSystem& FileSystem::getInstance()
 {
     static FileSystemAndroid instance;
@@ -22,6 +24,17 @@ FileSystem& FileSystem::getInstance()
 FileSystemAndroid::FileSystemAndroid()
 {
 
+}
+
+FileSystemAndroid::~FileSystemAndroid()
+{
+
+}
+
+void FileSystemAndroid::BindAssetManager(AAssetManager* assetManager)
+{
+    __assetManager = assetManager;
+    this->_assetManager = assetManager;
 }
 
 FilePtr FileSystemAndroid::CreateFile(const string &netpath)

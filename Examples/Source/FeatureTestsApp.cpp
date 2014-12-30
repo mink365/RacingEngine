@@ -235,9 +235,9 @@ void FeatureTestsApp::initResources()
 #ifdef RE_PLATFORM_LINUX
     searchPath.dir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 #elif RE_PLATFORM_ANDROID
-    searchPath.rootDir = "/sdcard/regame/assets/";
+    searchPath.dir = "/sdcard/regame/assets/";
 #elif RE_PLATFORM_MAC
-    searchPath.rootDir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
+    searchPath.dir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
 #endif
     FileSystem::getInstance().addSearchPath(searchPath);
 

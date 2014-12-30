@@ -26,6 +26,8 @@ public:
     FileSystemAndroid();
     ~FileSystemAndroid();
 
+    void BindAssetManager(AAssetManager* assetManager);
+
 protected:
     virtual FilePtr CreateFile(const std::string& netpath);
     virtual bool FileExists(const std::string& netpath);
