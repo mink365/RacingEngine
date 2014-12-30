@@ -10,7 +10,7 @@
 namespace re {
 
 inline void PrintVector(Vec3 *v) {
-    std::cout << "V: " << v->x << " "<< v->y << " "<< v->z << std::endl;
+    LOG_D("%s", v->toString().c_str());
 }
 
 template <typename T>
@@ -27,7 +27,7 @@ void PrintArray(std::string head, T *value, int count, int split) {
         oss << "]" << "\n";
     }
 
-    std::cout << oss.str() << std::endl;
+    LOG_D("%s", oss.str().c_str());
 }
 
 }

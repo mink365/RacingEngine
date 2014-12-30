@@ -59,7 +59,7 @@ float ReadCommon::ReadFloat(std::istream *stream) {
 std::string ReadCommon::ReadString(std::istream *stream) {
     int count = ReadInt(stream);
 
-    std::cout << " char count: " << count << std::endl;
+    LOG_D(" char count: %d", count);
 
     char v[count + 1];
 
@@ -68,7 +68,7 @@ std::string ReadCommon::ReadString(std::istream *stream) {
     // 给C风格的字符串一个明确的结束字符
     v[count] = '\0';
 
-    std::cout << " read it " << v << std::endl;
+    LOG_D(" read it: %s", v);
 
     return v;
 }

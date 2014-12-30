@@ -49,7 +49,7 @@ void FbxParser::parseStream(std::istream *st) {
     int index = reader->ReadInt(st);
     int count = reader->ReadInt(st);
 
-    std::cout << "type: " << type << " len: " << mode_len << " index: " << index << " count: " << count << std::endl;
+    LOG_D("type: %d, len: %d, index: %d, count: %d", type, mode_len, index, count);
 
     for (int i = 0; i < count; ++i) {
         auto node = readNode(st);
@@ -103,12 +103,12 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
         node->id = id;
         node->name = name;
 
-        std::cout << " node: " << name << " id: " << id << " att: " << (int)attType << std::endl;
+        LOG_D("node: %s, id: %d, attType: %d", name.c_str(), id, (int)attType);
 
         this->readNodeTransform(st, node);
 
         if (attType == FbxNodeAttributeType::MESH) {
-            std::cout << " read mesh" << std::endl;
+            LOG_D("read mesh");
 
             this->readMesh(st, node);
         }
@@ -128,7 +128,7 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
         break;
     default:
         // 摄像机和灯光信息
-        std::cout << " not supported att type: " << (int)attType << std::endl;
+        LOG_D(" not supported att type: %d", (int)attType);
         break;
     }
 
@@ -155,7 +155,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     int len = reader->ReadInt(st);
     float points[len * 3];
 
-    std::cout << " count: " << len << std::endl;
+    LOG_D(" count: %d", len);
 
     st->read((char*)points, len * 3 * 4);
     for (int i = 0; i < len; ++i) {
@@ -192,7 +192,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
         face.b = index[i*3 + 1];
         face.c = index[i*3 + 2];
     }
-    std::cout << " num of indices " << len << std::endl;
+    LOG_D(" num of indices %d", len);
 
     len = reader->ReadInt(st);
     int num_of_vertex = len;
@@ -241,7 +241,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
 
         PrintArray("normal ", normalArray, normalCount, 3);
     }
-    std::cout << " normal " << len << std::endl;
+    LOG_D(" normal %d", len);
 
     // push data
     int vertexCount = num_of_vertex / 3;
@@ -321,7 +321,7 @@ void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
         node->setVisible(false);
     }
 
-    std::cout << "mesh read done. " << std::endl;
+    LOG_D("mesh read done.");
 }
 
 void FbxParser::readSkeleton(istream *st)
@@ -435,7 +435,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
         if (id != -1) {
             std::string name = reader->ReadString(st);
 
-            std::cout << " name: " << name << std::endl;
+            LOG_D(" name: %s", name.c_str());
 
             float offsetU = reader->ReadFloat(st);
             float offsetV = reader->ReadFloat(st);
@@ -447,7 +447,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
 
             Texture::ptr tex = TextureManager::getInstance().getTexture(name);
             if (tex == nullptr) {
-                assert(false);
+                RE_ASSERT(false);
             }
             unit->setTexture(tex);
 
@@ -459,7 +459,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
             }
             pass->addTextureUnit(unit);
 
-            std::cout << "id: " << id << " " << name << " offset " << offsetU << " " << offsetV << " scale " << scaleU << " " << scaleV << std::endl;
+            LOG_D("id: %d, offset: %f, %f, scale: %f, %f", id, offsetU, offsetV, scaleU, scaleV);
         }
 
     } while (id != -1);
@@ -472,7 +472,7 @@ void FbxParser::bindClusterData()
     for (auto coll : this->clusterColls) {
         Long boneId = coll->clusters.at(0)->linkedBoneId;
         SkeletonPtr skeleton = this->getSkeleton(boneId);
-        assert(skeleton);
+        RE_ASSERT(skeleton);
 
         for (auto cluster : coll->clusters) {
             auto bone = skeleton->getBone(cluster->linkedBoneId);
@@ -529,7 +529,7 @@ SkeletonPtr FbxParser::getSkeleton(Long id) const
 SkeletonControllerPtr FbxParser::getSkeletonController(const string &name) const
 {
     auto node = this->getSceneNode(name);
-    assert(node != nullptr);
+    RE_ASSERT(node != nullptr);
 
     auto coll = this->getClusterCollection(node->getId());
 

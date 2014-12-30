@@ -13,7 +13,7 @@ void TextureManager::registerTexture(Texture::ptr& texture)
     if (this->registeredTextures.find(texture->getName()) == this->registeredTextures.end()) {
         this->registeredTextures[texture->getName()] = texture;
     } else {
-        std::cout << "aready has key!: " << texture->getName() << std::endl;
+        LOG_D("aready has key!: %s", texture->getName().c_str());
     }
 }
 
