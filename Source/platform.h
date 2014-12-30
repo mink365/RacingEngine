@@ -36,6 +36,8 @@ enum ClearBufferBit {
 };
 
 // Assert macros.
+#define _DEBUG
+
 #ifdef _DEBUG
 #define RE_ASSERT(expression) assert(expression)
 #else

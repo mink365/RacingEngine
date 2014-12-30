@@ -85,7 +85,8 @@ size_t FilePermanent::read(void *buffer, size_t len)
     byte *	buf;
     size_t		tries;
 
-    if ( !( mode & ( 1 << (int)fsMode::Read ) ) ) {
+    if ( !( mode & (uint32_t)fsMode::Read ) ) {
+        RE_ASSERT(false);
 //        common->FatalError( "idFile_Permanent::Read: %s not opened in read mode", name.c_str() );
         return 0;
     }
@@ -114,6 +115,7 @@ size_t FilePermanent::read(void *buffer, size_t len)
         }
 
         if ( read == -1 ) {
+            RE_ASSERT(false);
 //            common->FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str() );
         }
 
@@ -131,7 +133,8 @@ size_t FilePermanent::write(const void *buffer, size_t len)
     byte *	buf;
     int		tries;
 
-    if ( !( mode & ( 1 << (int)fsMode::Write ) ) ) {
+    if ( !( mode & (uint32_t)fsMode::Write ) ) {
+        RE_ASSERT(false);
 //        common->FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
         return 0;
     }
@@ -152,12 +155,14 @@ size_t FilePermanent::write(const void *buffer, size_t len)
                 tries = 1;
             }
             else {
+                RE_ASSERT(false);
 //                common->Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
                 return 0;
             }
         }
 
         if ( written == -1 ) {
+            RE_ASSERT(false);
 //            common->Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
             return 0;
         }
@@ -174,12 +179,16 @@ size_t FilePermanent::write(const void *buffer, size_t len)
 
 void FilePermanent::open()
 {
+    if (this->fp != NULL) {
+        return;
+    }
+
     // TODO: mode to char*
-    FILE* fp = fopen(fullPath.c_str(), "rw");
+    FILE* _fp = fopen(fullPath.c_str(), "rw");
 
-    RE_ASSERT(fp);
+    RE_ASSERT(_fp);
 
-    this->fp = fp;
+    this->fp = _fp;
     this->checkLength();
 }
 

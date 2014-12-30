@@ -5,6 +5,7 @@
 
 #include "Platform/Base/desktop/NativeWindow.h"
 #include "Platform/GameHub.h"
+#include "FileSystem/FileSystem.h"
 
 namespace re {
 
@@ -15,6 +16,12 @@ static long getCurrentMillSecond() {
     gettimeofday(&stCurrentTime,NULL);
     lLastTime = stCurrentTime.tv_sec*1000+stCurrentTime.tv_usec*0.001; //millseconds
     return lLastTime;
+}
+
+FileSystem& FileSystem::getInstance()
+{
+    static FileSystem instance;
+    return instance;
 }
 
 Application::Application()

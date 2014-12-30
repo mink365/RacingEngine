@@ -27,9 +27,13 @@ struct SearchPath {
 typedef std::vector<std::string> StrList;
 typedef std::vector<FilePtr> FileList;
 
+void ExtractFileExtension( const std::string& path, std::string& ext );
+
 class FileSystem
 {
 public:
+    static FileSystem& getInstance();
+
     virtual ~FileSystem(){};
 
 public:
@@ -40,7 +44,7 @@ public:
     FileList listFilesTree(const std::string& relativePath, const std::string& extension="", bool sort=false);
 
 protected:
-    virtual FilePtr CreateFile(const std::string& path);
+    virtual FilePtr CreateFile(const std::string& path, uint32_t mode=(uint32_t)fsMode::Read);
     virtual bool FileExists(const std::string& path);
 
     void GetExtensionList(const std::string &extension, StrList &extensionList) const;

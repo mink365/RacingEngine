@@ -20,10 +20,6 @@
 
 namespace re {
 
-FileSystem::FileSystem()
-{
-}
-
 void FileSystem::addSearchPath(const SearchPath &searchPath)
 {
     this->searchPaths.push_back(searchPath);
@@ -33,7 +29,7 @@ FilePtr FileSystem::getFile(const std::string &relativePath, fsMode mode)
 {
     uint32_t _mode;
     if (mode == fsMode::Append) {
-        _mode = (1 << (uint32_t)fsMode::Write) | (1 << (uint32_t)fsMode::Append);
+        _mode = ((uint32_t)fsMode::Write | (uint32_t)fsMode::Append);
     } else {
         _mode = (1 << (uint32_t)mode);
     }
@@ -43,7 +39,6 @@ FilePtr FileSystem::getFile(const std::string &relativePath, fsMode mode)
 
         if (FileExists(netpath)) {
             FilePtr file = this->CreateFile(netpath);
-            file->mode = _mode;
             return file;
         }
     }
@@ -104,6 +99,7 @@ void FileSystem::GetExtensionList(const std::string& extension, StrList &extensi
 int FileSystem::GetFileList(const std::string &relativePath, const StrList &extensions, FileList &list, StrList* directories)
 {
     if ( !searchPaths.size() ) {
+        RE_ASSERT(false);
 //        common->FatalError( "Filesystem call made without initialization\n" );
     }
 
@@ -189,7 +185,7 @@ int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &
     return list.size();
 }
 
-FilePtr FileSystem::CreateFile(const std::string &path)
+FilePtr FileSystem::CreateFile(const std::string &path, uint32_t mode)
 {
     FilePtr file = nullptr;
 
@@ -198,6 +194,7 @@ FilePtr FileSystem::CreateFile(const std::string &path)
     int pos = path.find_last_of("/") + 1;
     localFile->name = path.substr(pos, path.length() - pos);
     localFile->fullPath = path;
+    localFile->mode = mode;
 
     file = localFile;
 
@@ -217,11 +214,6 @@ bool FileSystem::FileExists(const string &path)
 std::string FileSystem::JoinPath(const std::string &dir, const std::string &relativeDir)
 {
     return dir + "/" + relativeDir;
-}
-
-void ExtractFileExtension( const std::string& path, std::string& ext ) {
-    int pos = path.find_last_of(".");
-    ext = path.substr(pos + 1, path.length());
 }
 
 // TODO: replace / to \\ when touch the real file
@@ -297,6 +289,12 @@ int FileSystem::ListOSDirectories(const std::string &directory, StrList &list)
     closedir(dirp);
 
     return list.size();
+}
+
+void ExtractFileExtension( const std::string& path, std::string& ext )
+{
+    int pos = path.find_last_of(".");
+    ext = path.substr(pos + 1, path.length());
 }
 
 }
