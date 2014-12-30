@@ -25,7 +25,7 @@ ReadCommon::~ReadCommon() {
 }
 
 bool ReadCommon::ReadBoolean(std::istream *stream) {
-    int v;
+    Int v;
 
     stream->read((char*)&v, 4);
 
@@ -33,7 +33,7 @@ bool ReadCommon::ReadBoolean(std::istream *stream) {
 }
 
 Int ReadCommon::ReadInt(std::istream *stream) {
-  int v = 0;
+  Int v = 0;
 
   stream->read((char*)&v, 4);
 
@@ -41,7 +41,7 @@ Int ReadCommon::ReadInt(std::istream *stream) {
 }
 
 Long ReadCommon::ReadLong(std::istream *stream) {
-    long v = 0;
+    Long v = 0;
 
     stream->read((char*)&v, 8);
 
@@ -57,7 +57,7 @@ float ReadCommon::ReadFloat(std::istream *stream) {
 }
 
 std::string ReadCommon::ReadString(std::istream *stream) {
-    int count = ReadInt(stream);
+    Int count = ReadInt(stream);
 
     LOG_D(" char count: %d", count);
 
