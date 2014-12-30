@@ -154,7 +154,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
 
 std::string loadFile(const char *fname)
 {
-    FilePtr file = FileSystem::getInstance().openFile(fname);
+    FilePtr file = FileSystem::getInstance().getFile(fname);
     ByteBufferPtr buf = file->read();
 
     string data((char*)(buf->getData()), buf->getSize());

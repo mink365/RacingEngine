@@ -3,7 +3,7 @@
 
 #include "Application.h"
 #include "BaseTest.h"
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 #include <vector>
 #include <memory>

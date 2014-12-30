@@ -47,11 +47,11 @@ void SceneMaterialTest::Init()
     TextureParser::getInstance().addTextures("Textures/Scenes/", "png|jpg");
     TextureManager::getInstance().loadTextures();
 
-    FilePtr file = FileSystem::getInstance().openFile("Material/Scene/scene.material");
+    FilePtr file = FileSystem::getInstance().getFile("Material/Scene/scene.material");
     MaterialLoader::getInstance().Load(file);
 
     FbxParser *parser = new FbxParser();
-    file = FileSystem::getInstance().openFile("Model/scene.data");
+    file = FileSystem::getInstance().getFile("Model/scene.data");
     parser->parse(file);
 
     this->tiles = parser->getNodes();
@@ -99,7 +99,7 @@ void SceneMaterialTest::createUI()
     auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
     auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
-    auto buttonClickFunc = [=](WidgetPtr& widget) {
+    auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
             if (this->tileIndex < this->tiles.size() - 1) {
                 this->changeTile(this->tileIndex + 1);

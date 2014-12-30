@@ -165,7 +165,7 @@ void FeatureTestsApp::createBaseUI()
     auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
     auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
-    auto buttonClickFunc = [=](WidgetPtr& widget) {
+    auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
             this->nextTest();
         } else if (widget == buttonPrev) {
@@ -233,13 +233,12 @@ void FeatureTestsApp::initResources()
 
     SearchPath searchPath;
 #ifdef RE_PLATFORM_LINUX
-    searchPath.rootDir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+    searchPath.dir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 #elif RE_PLATFORM_ANDROID
     searchPath.rootDir = "/sdcard/regame/assets/";
 #elif RE_PLATFORM_MAC
     searchPath.rootDir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
 #endif
-    searchPath.type = FileType::Permanent;
     FileSystem::getInstance().addSearchPath(searchPath);
 
     std::string shaderDir = "Shaders/";
@@ -262,7 +261,7 @@ void FeatureTestsApp::initResources()
 
     this->stage = CreateView<ui::UIManager>();
     SceneManager::getInstance().addRootNode(this->stage);
-    MessageManager::getInstance()->addHandler(this->stage.get());
+    MessageManager::getInstance().addHandler(this->stage.get());
 
     this->registerScenes();
     this->registerWindows();
@@ -290,7 +289,7 @@ void FeatureTestsApp::registerScenes()
 
 void FeatureTestsApp::update(long dt)
 {
-    MessageManager::getInstance()->handleMessages();
+    MessageManager::getInstance().handleMessages();
 
     if (this->current) {
         this->current->Update(dt / 1000.0f);

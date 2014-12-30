@@ -37,11 +37,11 @@ void FBXTest::Init()
 
     std::string assertDir = "Model/PAD/";
 
-    FilePtr file = FileSystem::getInstance().openFile((assertDir + "black.data"));
+    FilePtr file = FileSystem::getInstance().getFile((assertDir + "black.data"));
     parser->parse(file);
     SceneNodePtr black = parser->getNodes()[0];
 
-    file = FileSystem::getInstance().openFile((assertDir + "wall.data"));
+    file = FileSystem::getInstance().getFile((assertDir + "wall.data"));
     parser->parse(file);
 
     SceneNodePtr wall = parser->getNodes()[0];
@@ -54,7 +54,7 @@ void FBXTest::Init()
 
     TextureManager::getInstance().loadTextures();
 
-    file = FileSystem::getInstance().openFile((assertDir + "new_group_moto03.data"));
+    file = FileSystem::getInstance().getFile((assertDir + "new_group_moto03.data"));
     parser->parse(file);
     SceneNodePtr shadow = parser->getNodes()[0];
     SceneNodePtr moto = parser->getNodes()[1];

@@ -1,7 +1,7 @@
 #ifndef BASETEST_H
 #define BASETEST_H
 
-#include "PredefineType.h"
+#include "PreDeclare.h"
 
 #include "Scene/SceneManager.h"
 #include "Scene/SceneNode.h"

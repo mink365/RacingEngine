@@ -63,7 +63,7 @@ void UITest::Init()
     label->setAnchorPoint(Vec2(0.5, 0.5));
     label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
 
-    auto buttonClickFunc = [=](WidgetPtr& widget) {
+    auto buttonClickFunc = [=](ButtonPtr& widget) {
         auto win = this->createWin();
 
         scene->pushWindow(win);
@@ -96,7 +96,7 @@ std::shared_ptr<Window> UITest::createWin()
     LayoutUtil::LayoutToParentCenter(patch);
     LayoutUtil::LayoutToParentRightTop(button);
 
-    auto buttonClickFunc = [=](WidgetPtr& widget) {
+    auto buttonClickFunc = [=](ButtonPtr& widget) {
         win->popFromWindowManager();
     };
 

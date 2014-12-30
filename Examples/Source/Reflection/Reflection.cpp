@@ -16,7 +16,7 @@ void Reflection::Init()
     LoadShader("reflection", shaderDir + "reflection.vsh",
                              shaderDir + "reflection.fsh");
 
-    auto file = FileSystem::getInstance().openFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
+    auto file = FileSystem::getInstance().getFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
     TexturePtr cubeTexture = Texture::create();
     cubeTexture->setFile(file);
     bool state = PVRTextureUtil::LoadFromPVR(*cubeTexture.get(), NULL, 0);

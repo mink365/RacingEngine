@@ -14,7 +14,7 @@ static SceneNodePtr skybox;
 
 void Skybox::Init()
 {
-    auto file = FileSystem::getInstance().openFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
+    auto file = FileSystem::getInstance().getFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
 
     TexturePtr tex = Texture::create();
     tex->setFile(file);
@@ -39,7 +39,7 @@ void Skybox::Init()
         MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, tex);
         InitMeshInHardward(mesh, "cubemap");
 
-        mesh->getMaterial()->getRenderState().faceCullState.faceCullEnable = false;
+        mesh->getMaterial()->getRenderState().faceCullMode = FaceCullMode::Off;
 
         skybox = std::make_shared<SceneNode>();
         AddMeshToNode(skybox, mesh);
