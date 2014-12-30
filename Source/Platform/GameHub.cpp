@@ -33,7 +33,7 @@ void GameHub::init()
     PredefineTweenAccessor::registerAccessor();
 }
 
-void GameHub::mainLoop(long dt)
+void GameHub::mainLoop(int64_t dt)
 {
     this->updateFps(dt, fps);
 
@@ -51,7 +51,7 @@ void GameHub::mainLoop(long dt)
     }
 }
 
-void GameHub::bindUpdateFunc(std::function<void (long)> func)
+void GameHub::bindUpdateFunc(std::function<void (int64_t)> func)
 {
     this->updateFunc = func;
 }
@@ -81,9 +81,9 @@ int GameHub::getFps()
     return this->fps;
 }
 
-long time_ = 0;
+int64_t time_ = 0;
 int frame_ = 0;
-void GameHub::updateFps(long dt, int &fps)
+void GameHub::updateFps(int64_t dt, int &fps)
 {
     time_ += dt;
     frame_ += 1;

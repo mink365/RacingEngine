@@ -42,7 +42,7 @@ protected:
 private:
     void initResources();
 
-    void update(long dt);
+    void update(Long dt);
 
 private:
     std::vector<std::shared_ptr<BaseTest>> tests;

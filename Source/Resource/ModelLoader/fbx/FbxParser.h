@@ -60,7 +60,7 @@ public:
     void parse(FilePtr& file);
     void parseStream(std::istream *st);
 
-    void parseData(void *data, long datalen);
+    void parseData(void *data, Long datalen);
 
     std::vector<SceneNodePtr> getNodes() const;
     SceneNodePtr getSceneNode(const string &name) const;

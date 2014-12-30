@@ -23,8 +23,8 @@ public:
 
     void init();
 
-    void mainLoop(long dt);
-    void bindUpdateFunc(std::function<void(long time)> func);
+    void mainLoop(int64_t dt);
+    void bindUpdateFunc(std::function<void(int64_t time)> func);
 
     Renderer& GetRenderer();
     TweenEngine::TweenManager &getTweenManager();
@@ -34,10 +34,10 @@ public:
     int getFps();
 
 private:
-    void updateFps(long dt, int &fps);
+    void updateFps(int64_t dt, int &fps);
 
 private:
-    std::function<void(long time)> updateFunc;
+    std::function<void(int64_t time)> updateFunc;
     TweenEngine::TweenManager* tweenManager;
 
     Time _gameTime;

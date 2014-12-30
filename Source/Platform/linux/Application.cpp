@@ -9,8 +9,8 @@
 
 namespace re {
 
-static long getCurrentMillSecond() {
-    long lLastTime;
+static int64_t getCurrentMillSecond() {
+    int64_t lLastTime;
     struct timeval stCurrentTime;
 
     gettimeofday(&stCurrentTime,NULL);
@@ -44,9 +44,9 @@ void Application::run()
         return;
     }
 
-    long lastTime = getCurrentMillSecond();
-    long curTime, dt, oldTime;
-    long _animationInterval = 1 / 60.0 * 1000;
+    int64_t lastTime = getCurrentMillSecond();
+    int64_t curTime, dt, oldTime;
+    int64_t _animationInterval = 1 / 60.0 * 1000;
     while(!glfwWin->shouldClose()) {
 
         oldTime = lastTime;

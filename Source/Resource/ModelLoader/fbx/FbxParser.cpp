@@ -62,7 +62,7 @@ void FbxParser::parseStream(std::istream *st) {
     this->bindClusterData();
 }
 
-void FbxParser::parseData(void *data, long datalen)
+void FbxParser::parseData(void *data, Long datalen)
 {
     membuf mb((char*)data, datalen);
     std::istream stream(&mb);
@@ -97,7 +97,7 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
     {
         SceneNodePtr node = std::make_shared<SceneNode>();
 
-        long id = reader->ReadLong(st);
+        Long id = reader->ReadLong(st);
         std::string name = reader->ReadString(st);
 
         node->id = id;

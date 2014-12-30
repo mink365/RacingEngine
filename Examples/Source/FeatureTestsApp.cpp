@@ -52,7 +52,7 @@ bool FeatureTestsApp::initEnvironment()
 
     Screen::getInstance().setRealFrameSize(this->view->getFrameSize());
 
-    std::function<void(long)> func = std::bind(&FeatureTestsApp::update, this, std::placeholders::_1);
+    std::function<void(Long)> func = std::bind(&FeatureTestsApp::update, this, std::placeholders::_1);
     GameHub::getInstance().bindUpdateFunc(func);
 
     this->initResources();
@@ -287,7 +287,7 @@ void FeatureTestsApp::registerScenes()
     });
 }
 
-void FeatureTestsApp::update(long dt)
+void FeatureTestsApp::update(Long dt)
 {
     MessageManager::getInstance().handleMessages();
 
