@@ -16,11 +16,11 @@
 namespace re
 {
 
-class AndroidFile : public File
+class FileAndroid : public File
 {
 public:
-    AndroidFile();
-    ~AndroidFile();
+    FileAndroid();
+    ~FileAndroid();
 
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;

@@ -6,14 +6,14 @@
 
 ******************************************************************************/
 
-#include "AndroidFile.h"
+#include "FileAndroid.h"
 
 namespace re
 {
 
 extern AAssetManager* __assetManager;
 
-AndroidFile::AndroidFile()
+FileAndroid::FileAndroid()
 {
     name = "invalid";
     fullPath = "invalid";
@@ -22,33 +22,33 @@ AndroidFile::AndroidFile()
     fileSize = 0;
 }
 
-AndroidFile::~AndroidFile()
+FileAndroid::~FileAndroid()
 {
     close();
 }
 
-const std::string &AndroidFile::getName() const
+const std::string &FileAndroid::getName() const
 {
     return name;
 }
 
-const std::string &AndroidFile::getFullPath() const
+const std::string &FileAndroid::getFullPath() const
 {
     return fullPath;
 }
 
-int AndroidFile::read(void *buffer, int len)
+int FileAndroid::read(void *buffer, int len)
 {
     int result = AAsset_read(_asset, ptr, size * count);
     return result > 0 ? ((size_t)result) / size : 0;
 }
 
-int AndroidFile::write(const void *buffer, int len)
+int FileAndroid::write(const void *buffer, int len)
 {
     return 0;
 }
 
-void AndroidFile::open()
+void FileAndroid::open()
 {
     const char* filePath = fullPath.c_str();
 
@@ -59,7 +59,7 @@ void AndroidFile::open()
     this->fileSize = (size_t)AAsset_getLength(asset);
 }
 
-void AndroidFile::close()
+void FileAndroid::close()
 {
     if (_asset) {
         AAsset_close(_asset);

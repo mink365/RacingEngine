@@ -17,14 +17,14 @@
 namespace re
 {
 
-class AndroidFileSystem : public FileSystem
+class FileSystemAndroid : public FileSystem
 {
 public:
-    const std::string AssetKey = "asset:";
+    const std::string ASSET_KEY = "asset:";
 
 public:
-    AndroidFileSystem();
-    ~AndroidFileSystem();
+    FileSystemAndroid();
+    ~FileSystemAndroid();
 
 protected:
     virtual FilePtr CreateFile(const std::string& netpath);
@@ -36,7 +36,7 @@ protected:
 
 private:
     FilePtr CreateAssetFile(const std::string& path);
-    bool AssetFileExists(const std::string& netpath);
+    bool AssetFileExists(const std::string& path);
 
     bool IsAssetPath(const std::string& path);
     std::string GetPathInAsset(const std::string& path);
@@ -49,9 +49,9 @@ private:
     AAssetManager* _assetManager;
 };
 
-inline bool AndroidFileSystem::IsAssetPath(const std::string& path)
+inline bool FileSystemAndroid::IsAssetPath(const std::string& path)
 {
-    if (strncmp(path.c_str(), AssetKey.c_str(), AssetKey.size()) == 0) {
+    if (strncmp(path.c_str(), ASSET_KEY.c_str(), ASSET_KEY.size()) == 0) {
         return true;
     }
 
