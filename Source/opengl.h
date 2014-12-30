@@ -35,6 +35,12 @@
     #define GL_SAMPLER_3D 0x8B5F
     #define GL_SAMPLER_2D_RECT_SHADOW 0x8B64
 
+    #define GL_TEXTURE_1D 0x0DE0
+    #define GL_TEXTURE_3D 0x806F
+    #define GL_DEPTH_COMPONENT24 0x81A6
+    #define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT 0x83F2
+    #define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT 0x83F3
+
     #define GL_RGBA16 0x805B
     #define GL_RED 0x1903
     #define GL_RG 0x8227

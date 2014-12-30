@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <array>
+#include <functional>
 
 #include "Math/Vector.h"
 #include "Math/Color.h"

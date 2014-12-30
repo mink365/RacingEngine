@@ -76,10 +76,10 @@ int FileSystemAndroid::ListOSDirectories(const string &directory, StrList &list)
 
 FilePtr FileSystemAndroid::CreateAssetFile(const string &path)
 {
-    auto localFile = std::make_shared<AndroidFile>();
+    auto localFile = std::make_shared<FileAndroid>();
 
     int pos = path.find_last_of("/") + 1;
-    localFile->name = path.substr(pos, _path.length() - pos);
+    localFile->name = path.substr(pos, path.length() - pos);
     localFile->fullPath = path;
 
     return localFile;
@@ -87,10 +87,10 @@ FilePtr FileSystemAndroid::CreateAssetFile(const string &path)
 
 bool FileSystemAndroid::AssetFileExists(const string &path)
 {
-    AAsset* asset = AAssetManager_open(__assetManager, path.c_str(), AASSET_MODE_RANDOM);
+    AAsset* asset = AAssetManager_open(_assetManager, path.c_str(), AASSET_MODE_RANDOM);
     if (asset)
     {
-        int lenght = AAsset_getLength(asset);
+        size_t length = AAsset_getLength(asset);
         AAsset_close(asset);
         return length > 0;
     }
@@ -104,10 +104,10 @@ string FileSystemAndroid::GetPathInAsset(const string &path)
 
 bool FileSystemAndroid::IsAssetDirectory(const string &path)
 {
-    AAssetDir* assetDir = AAssetManager_openDir(__assetManager, path);
+    AAssetDir* assetDir = AAssetManager_openDir(_assetManager, path.c_str());
 
     if (assetDir) {
-        AAssetDir_close(dir);
+        AAssetDir_close(assetDir);
         return true;
     }
 
@@ -117,7 +117,7 @@ bool FileSystemAndroid::IsAssetDirectory(const string &path)
 int FileSystemAndroid::ListAssetFiles(const string &directory, const string &extension, StrList &list)
 {
     // List the files that are in the android APK at this path
-    AAssetDir* assetDir = AAssetManager_openDir(__assetManager, directory.c_str());
+    AAssetDir* assetDir = AAssetManager_openDir(_assetManager, directory.c_str());
     if (assetDir != NULL)
     {
         AAssetDir_rewind(assetDir);

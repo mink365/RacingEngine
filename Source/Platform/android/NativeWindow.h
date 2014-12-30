@@ -3,7 +3,7 @@
 
 #include <android_native_app_glue.h>
 
-#include "Math/BoundingVolume.h"
+#include "Math/Rect.h"
 #include "Platform/NativeView.h"
 #include "UI/TouchEvent.h"
 

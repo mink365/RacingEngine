@@ -9,6 +9,7 @@
 #ifndef RE_ANGLEFONTPARSER_H
 #define RE_ANGLEFONTPARSER_H
 
+#include <string>
 #include "BaseBitmapFontParser.h"
 #include "PreDeclare.h"
 

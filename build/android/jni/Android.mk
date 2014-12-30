@@ -15,6 +15,9 @@ define all-c-files-under
 $(call all-files-under,$(1),*.c)
 endef
 
+# macro
+LOCAL_CFLAGS    := -DRE_PLATFORM_ANDROID
+
 # module
 
 LOCAL_PATH := $(call my-dir)/../../../Source
@@ -46,6 +49,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 	$(LOCAL_PATH)/Render \
 	$(LOCAL_PATH)/Scene \
 	$(LOCAL_PATH)/Resource \
+	$(LOCAL_PATH)/External \
 	$(LOCAL_PATH)/External/universal-tween-engine-cpp/ \
 	$(LOCAL_PATH)/Platform/android/ \
 	$(LOCAL_PATH)/../Examples/Source/ \

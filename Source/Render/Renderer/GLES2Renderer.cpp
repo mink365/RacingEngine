@@ -119,7 +119,6 @@ void GLES2Renderer::bindShader(const Shader &shader)
 void GLES2Renderer::activateTextureUnit(int unit)
 {
     glActiveTexture(GL_TEXTURE0 + unit);
-    glClientActiveTexture(GL_TEXTURE0 + unit);
 
     this->context.textureUnits[unit].unitEnabled = true;
 }

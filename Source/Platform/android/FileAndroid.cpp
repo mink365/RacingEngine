@@ -37,13 +37,13 @@ const std::string &FileAndroid::getFullPath() const
     return fullPath;
 }
 
-int FileAndroid::read(void *buffer, int len)
+size_t FileAndroid::read(void *buffer, size_t len)
 {
-    int result = AAsset_read(_asset, ptr, size * count);
-    return result > 0 ? ((size_t)result) / size : 0;
+    size_t result = AAsset_read(_asset, buffer, len);
+    return result > 0 ? ((size_t)result) : 0;
 }
 
-int FileAndroid::write(const void *buffer, int len)
+size_t FileAndroid::write(const void *buffer, size_t len)
 {
     return 0;
 }

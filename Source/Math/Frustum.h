@@ -9,6 +9,7 @@
 #ifndef RE_FRUSTUM_H
 #define RE_FRUSTUM_H
 
+#include <array>
 #include "Vector.h"
 #include "Plane.h"
 

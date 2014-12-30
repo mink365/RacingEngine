@@ -18,6 +18,8 @@ namespace re
 
 class FileAndroid : public File
 {
+    friend class FileSystemAndroid;
+
 public:
     FileAndroid();
     ~FileAndroid();
@@ -25,8 +27,8 @@ public:
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;
 
-    virtual int read( void *buffer, int len );
-    virtual int write(const void *buffer, int len);
+    virtual size_t read( void *buffer, size_t len );
+    virtual size_t write(const void *buffer, size_t len);
 
     virtual void open();
     virtual void close();
