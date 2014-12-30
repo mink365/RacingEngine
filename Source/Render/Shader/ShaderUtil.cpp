@@ -265,7 +265,7 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 uint ShaderUtil::loadShader(const char *source, uint type)
 {
 
-#if GLSL
+#if GLES
     std::string precision;
     switch (type) {
     case GL_VERTEX_SHADER:
@@ -282,7 +282,7 @@ uint ShaderUtil::loadShader(const char *source, uint type)
         return -1;
     }
 
-//    std::string code = "#ifdef GL_ES\n" + precision + "#else\n#version 120\n#endif\n" + source;
+    std::string code = "#ifdef GL_ES\n" + precision + "#else\n#version 120\n#endif\n" + source;
 #else
     std::string code = "#version 130\n";
     code += source;
