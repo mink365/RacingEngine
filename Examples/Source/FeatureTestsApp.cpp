@@ -146,6 +146,7 @@ void FeatureTestsApp::onCurrentTestChanged()
 void FeatureTestsApp::createBaseUI()
 {
     TextureParser::getInstance().addTextures("UI/", "png");
+
     TextureManager::getInstance().loadTextures();
 
     std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
@@ -235,7 +236,8 @@ void FeatureTestsApp::initResources()
 #ifdef RE_PLATFORM_LINUX
     searchPath.dir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
 #elif RE_PLATFORM_ANDROID
-    searchPath.dir = "/sdcard/regame/assets/";
+//    searchPath.dir = "/sdcard/regame/assets/";
+    searchPath.dir = "asset:";
 #elif RE_PLATFORM_MAC
     searchPath.dir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
 #endif
