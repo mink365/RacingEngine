@@ -40,7 +40,7 @@ void TextureParser::parseSingle(FilePtr &file)
     texture->setFile(file);
 
     TextureManager::getInstance().registerTexture(texture);
-    LOG_D("register texture: %s", texture->getName().c_str());
+
     // TODO: get the size of tex
     TextureManager::getInstance().loadTextures();
 

@@ -29,19 +29,20 @@ public:
     void BindAssetManager(AAssetManager* assetManager);
 
 protected:
-    virtual FilePtr CreateFile(const std::string& netpath);
-    virtual bool FileExists(const std::string& netpath);
+    virtual FilePtr CreateFile(const std::string& netpath, uint32_t mode=(uint32_t)fsMode::Read) override;
+    virtual bool FileExists(const std::string& netpath) override;
 
     virtual bool IsOSDirectory(const std::string& netpath);
-    virtual int ListOSFiles(const std::string& directory, const std::string& extension, StrList& list);
-    virtual int ListOSDirectories(const std::string& directory, StrList& list);
+    virtual int ListOSFiles(const std::string& directory, const std::string& extension, StrList& list) override;
+    virtual int ListOSDirectories(const std::string& directory, StrList& list) override;
 
 private:
-    FilePtr CreateAssetFile(const std::string& path);
+    FilePtr CreateAssetFile(const std::string& path, uint32_t mode);
     bool AssetFileExists(const std::string& path);
 
     bool IsAssetPath(const std::string& path);
     std::string GetPathInAsset(const std::string& path);
+    std::string GetDirInAsset(const std::string& path);
 
     bool IsAssetDirectory(const std::string& path);
     virtual int ListAssetFiles(const std::string& directory, const std::string& extension, StrList& list);

@@ -187,8 +187,6 @@ int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &
 
 FilePtr FileSystem::CreateFile(const std::string &path, uint32_t mode)
 {
-    FilePtr file = nullptr;
-
     auto localFile = std::make_shared<FilePermanent>();
 
     int pos = path.find_last_of("/") + 1;
@@ -196,9 +194,7 @@ FilePtr FileSystem::CreateFile(const std::string &path, uint32_t mode)
     localFile->fullPath = path;
     localFile->mode = mode;
 
-    file = localFile;
-
-    return file;
+    return localFile;
 }
 
 bool FileSystem::FileExists(const string &path)
@@ -213,7 +209,11 @@ bool FileSystem::FileExists(const string &path)
 
 std::string FileSystem::JoinPath(const std::string &dir, const std::string &relativeDir)
 {
-    return dir + "/" + relativeDir;
+    if (dir.at(dir.length() - 1) == '/') {
+        return dir + relativeDir;
+    } else {
+        return dir + "/" + relativeDir;
+    }
 }
 
 // TODO: replace / to \\ when touch the real file

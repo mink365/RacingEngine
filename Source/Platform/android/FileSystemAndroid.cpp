@@ -37,11 +37,11 @@ void FileSystemAndroid::BindAssetManager(AAssetManager* assetManager)
     this->_assetManager = assetManager;
 }
 
-FilePtr FileSystemAndroid::CreateFile(const string &netpath)
+FilePtr FileSystemAndroid::CreateFile(const string &netpath, uint32_t mode)
 {
     if (IsAssetPath(netpath)) {
         auto _path = GetPathInAsset(netpath);
-        return CreateAssetFile(_path);
+        return CreateAssetFile(_path, mode);
     }
 
     return FileSystem::CreateFile(netpath);
@@ -60,7 +60,7 @@ bool FileSystemAndroid::FileExists(const string &netpath)
 bool FileSystemAndroid::IsOSDirectory(const string& netpath)
 {
     if (IsAssetPath(netpath)) {
-        auto _path = GetPathInAsset(netpath);
+        auto _path = GetDirInAsset(netpath);
         return IsAssetDirectory(_path);
     }
 
@@ -70,7 +70,7 @@ bool FileSystemAndroid::IsOSDirectory(const string& netpath)
 int FileSystemAndroid::ListOSFiles(const string &directory, const string &extension, StrList &list)
 {
     if (IsAssetPath(directory)) {
-        auto _dir = GetPathInAsset(directory);
+        auto _dir = GetDirInAsset(directory);
         return ListAssetFiles(_dir, extension, list);
     }
 
@@ -80,20 +80,21 @@ int FileSystemAndroid::ListOSFiles(const string &directory, const string &extens
 int FileSystemAndroid::ListOSDirectories(const string &directory, StrList &list)
 {
     if (IsAssetPath(directory)) {
-        auto _dir = GetPathInAsset(directory);
+        auto _dir = GetDirInAsset(directory);
         return ListAssetDirectories(_dir, list);
     }
 
     return FileSystem::ListOSDirectories(directory, list);
 }
 
-FilePtr FileSystemAndroid::CreateAssetFile(const string &path)
+FilePtr FileSystemAndroid::CreateAssetFile(const string &path, uint32_t mode)
 {
     auto localFile = std::make_shared<FileAndroid>();
 
     int pos = path.find_last_of("/") + 1;
     localFile->name = path.substr(pos, path.length() - pos);
     localFile->fullPath = path;
+    localFile->mode = mode;
 
     return localFile;
 }
@@ -113,6 +114,18 @@ bool FileSystemAndroid::AssetFileExists(const string &path)
 string FileSystemAndroid::GetPathInAsset(const string &path)
 {
     return path.substr(ASSET_KEY.size() + 1, path.size());
+}
+
+string FileSystemAndroid::GetDirInAsset(const string& path)
+{
+    auto dir = GetPathInAsset(path);
+
+    // MUST remove the end '/' and change "//" to "/", OR AAssetManager can't work
+    if (dir.at(dir.length() - 1) == '/') {
+        return dir.substr(0, dir.length() - 1);
+    }
+
+    return dir;
 }
 
 bool FileSystemAndroid::IsAssetDirectory(const string &path)
