@@ -11,6 +11,7 @@
 
 #include "OpenALBase.h"
 #include "Base/Shared.h"
+#include <string>
 
 namespace re {
 
