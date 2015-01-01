@@ -10,14 +10,24 @@
 
 namespace re {
 
-OpenALSource::OpenALSource()
+OpenALSource::OpenALSource(OpenALBuffer::ptr buffer, ALuint source)
+    : _alSource(source), _buffer(buffer)
 {
-
+    RE_ASSERT(buffer);
+    AL_CHECK( alSourcei(_alSource, AL_BUFFER, _buffer->_alBuffer) );
+    AL_CHECK( alSourcei(_alSource, AL_LOOPING, looped) );
+    AL_CHECK( alSourcef(_alSource, AL_PITCH, pitch) );
+    AL_CHECK( alSourcef(_alSource, AL_GAIN, gain) );
+    AL_CHECK( alSourcefv(_alSource, AL_VELOCITY, velocity.toFloatPtr()) );
 }
 
 OpenALSource::~OpenALSource()
 {
-
+    if (_alSource)
+    {
+        AL_CHECK( alDeleteSources(1, &_alSource) );
+        _alSource = 0;
+    }
 }
 
 void OpenALSource::play()

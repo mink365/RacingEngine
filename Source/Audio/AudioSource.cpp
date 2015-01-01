@@ -11,6 +11,7 @@
 namespace re {
 
 AudioSource::AudioSource()
+    :looped(false), gain(1.0f), pitch(1.0f)
 {
 
 }

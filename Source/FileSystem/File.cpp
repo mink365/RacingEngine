@@ -138,7 +138,7 @@ bool FilePermanent::rewind()
 {
     if (canSeek())
     {
-        ::rewind(fp);
+        std::rewind(fp);
         return true;
     }
     return false;

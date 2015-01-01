@@ -18,8 +18,10 @@ class File;
 
 class OpenALBuffer : public Shared<OpenALBuffer>
 {
+    friend class OpenALSource;
+
 public:
-    OpenALBuffer();
+    OpenALBuffer(const std::string& path, ALuint &alBuffer);
     ~OpenALBuffer();
 
 public:

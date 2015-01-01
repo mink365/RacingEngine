@@ -11,6 +11,7 @@
 namespace re {
 
 AudioListener::AudioListener()
+    : gain(1.0f)
 {
 
 }

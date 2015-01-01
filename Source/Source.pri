@@ -39,7 +39,7 @@ RE_PLATFORM_MAC {
     LIBS += -lglfw
     LIBS += -lGL
     LIBS += -lopenal
-    LIBS += -lvorbis -logg
+    LIBS += -lvorbis -lvorbisenc -lvorbisfile -logg
 
     LIBS += -lBulletCollision \
             -lBulletDynamics \

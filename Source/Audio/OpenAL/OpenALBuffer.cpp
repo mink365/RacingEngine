@@ -18,7 +18,8 @@ ALenum __al_error_code = AL_NO_ERROR;
 
 namespace re {
 
-OpenALBuffer::OpenALBuffer()
+OpenALBuffer::OpenALBuffer(const std::string &path, ALuint& alBuffer)
+    : _filePath(path), _alBuffer(alBuffer)
 {
 
 }

@@ -37,6 +37,7 @@
 #include "Refraction/Refraction.h"
 #include "Lightmap/Lightmap.h"
 #include "Bumpmap/Bumpmap.h"
+#include "Audio/AudioTest.h"
 
 #include "Util/LogUtil.h"
 
@@ -75,6 +76,8 @@ void FeatureTestsApp::createTests()
 {
     std::shared_ptr<BaseTest> test;
     test = std::make_shared<FBXTest>();
+    this->tests.push_back(test);
+    test = std::make_shared<AudioTest>();
     this->tests.push_back(test);
     test = std::make_shared<FontTest>();
     this->tests.push_back(test);

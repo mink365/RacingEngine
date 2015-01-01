@@ -18,7 +18,7 @@ namespace re {
 class OpenALSource : public AudioSource
 {
 public:
-    OpenALSource();
+    OpenALSource(OpenALBuffer::ptr buffer, ALuint source);
     ~OpenALSource();
 
 public:
