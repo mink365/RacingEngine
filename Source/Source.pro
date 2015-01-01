@@ -10,6 +10,7 @@ LIBS += -ljpeg
 
 SOURCES += \
     $$system("find Animation/ -name '*.cpp'") \
+    $$system("find Audio/ -name '*.cpp'") \
     $$system("find Base/ -name '*.cpp'") \
     $$system("find Effect/ -name '*.cpp'") \
     $$system("find External/ -name '*.cpp'") \
@@ -26,6 +27,7 @@ SOURCES += \
 
 HEADERS += \
     $$system("find Animation/ -name '*.h'") \
+    $$system("find Audio/ -name '*.cpp'") \
     $$system("find Base/ -name '*.h'") \
     $$system("find Effect/ -name '*.h'") \
     $$system("find External/ -name '*.h'") \
