@@ -72,8 +72,6 @@ public:
 
     Buffer<float> vertices;
     VertexBuffer stream;
-
-    uint32_t count;
 };
 
 class MeshData

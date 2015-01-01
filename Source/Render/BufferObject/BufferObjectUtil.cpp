@@ -30,6 +30,7 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
         geometry->appendToMeshData(meshData);
     }
 
+    // transform from uint to short
     int face_count = meshData->indices.getSize() / 3;
 
     auto facePointer = Map<Face>(meshData->indices);
@@ -64,8 +65,7 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
     for (auto& unit : meshData->vertexStreams) {
         VertexBuffer& stream = unit.stream;
 
-        int vertex_count = face_count * 3;
-        stream.size = vertex_count * unit.getVertexSize();
+        stream.size = unit.vertices.getByteSize();
 
         if (stream.vbo == 0) {
             glGenBuffers(1, &(stream.vbo));
