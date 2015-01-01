@@ -68,17 +68,17 @@ bool FileAndroid::eof()
     return position() >= length();
 }
 
-size_t FileAndroid::length()
+size_t FileAndroid::length() const
 {
     return (size_t)AAsset_getLength(_asset);
 }
 
-long int FileAndroid::position()
+int64_t FileAndroid::position()
 {
     return AAsset_getLength(_asset) - AAsset_getRemainingLength(_asset);
 }
 
-bool FileAndroid::seek(long int offset, int origin)
+bool FileAndroid::seek(int64_t offset, int32_t origin)
 {
     return AAsset_seek(_asset, offset, origin) != -1;
 }

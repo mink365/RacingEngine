@@ -34,6 +34,7 @@ public:
     virtual size_t read(void *buffer, size_t size, size_t count);
     virtual size_t write(const void *buffer, size_t size, size_t count);
 
+    virtual size_t length() const;
     virtual bool eof();
     virtual int64_t position();
     virtual bool seek(int64_t offset, int32_t origin);
