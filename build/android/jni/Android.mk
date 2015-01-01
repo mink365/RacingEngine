@@ -27,6 +27,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libracing
 LOCAL_SRC_FILES := \
 	$(call all-cpp-files-under, ./Animation/) \
+	$(call all-cpp-files-under, ./Audio/) \
 	$(call all-cpp-files-under, ./Base/) \
 	$(call all-cpp-files-under, ./Effect/) \
 	$(call all-cpp-files-under, ./External/) \
@@ -58,7 +59,7 @@ LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
 
 # LOCAL_CFLAGS    := -Werror
 LOCAL_CFLAGS 	:= -Wno-extern-c-compat
-LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL
+LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL -lOpenSLES
 
 EXTERANL_PATH = $(LOCAL_PATH)/../build/external/
 INCLUDE_EXT = include/android/
@@ -69,11 +70,15 @@ LOCAL_C_INCLUDES += \
 	$(EXTERANL_PATH)/png/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT)/freetype2/ \
+	$(EXTERANL_PATH)/oggvorbis/include/ \
+	$(EXTERANL_PATH)/openal/include/ \
 
 LOCAL_LDFLAGS	:= \
 	-L$(EXTERANL_PATH)/jpeg/$(LIB_EXT) \
 	-L$(EXTERANL_PATH)/png/$(LIB_EXT) \
 	-L$(EXTERANL_PATH)/freetype2/$(LIB_EXT) \
+	-L$(EXTERANL_PATH)/openal/lib/android/arm/ \
+	-L$(EXTERANL_PATH)/oggvorbis/lib/android/arm/ \
 
 LOCAL_STATIC_LIBRARIES := \
 	android_native_app_glue \
@@ -81,11 +86,16 @@ LOCAL_STATIC_LIBRARIES := \
 	cocos_png_static \
 	cocos_freetype2_static \
 	bullet \
+	OpenAL_static \
+	vorbis_static \
+
 
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,jpeg/prebuilt/android)
 $(call import-module,png/prebuilt/android)
 $(call import-module,freetype2/prebuilt/android)
+$(call import-module,oggvorbis/lib/android)
+$(call import-module,openal/lib/android)
 $(call import-module,bullet)
 $(call import-module,android/native_app_glue)
