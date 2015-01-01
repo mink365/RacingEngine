@@ -31,20 +31,16 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
     }
 
     // transform from uint to short
-    int face_count = meshData->indices.getSize() / 3;
+    int index_count = meshData->indices.getSize();
 
-    auto facePointer = Map<Face>(meshData->indices);
-    GLushort    pindex_buffer[face_count * 3];
-    for (int i = 0; i < face_count; ++i) {
-        Face& face = facePointer[i];
-
-        pindex_buffer[i * 3 + 0] = face.a;
-        pindex_buffer[i * 3 + 1] = face.b;
-        pindex_buffer[i * 3 + 2] = face.c;
+    auto indexPointer = Map<uint>(meshData->indices);
+    GLushort short_index_buffer[index_count];
+    for (int i = 0; i < index_count; ++i) {
+        short_index_buffer[i] = indexPointer[i];
     }
 
-    meshData->indexStream.nIndices = face_count * 3;
-    meshData->indexStream.indexSize = face_count * 3 *sizeof(GLushort);
+    meshData->indexStream.nIndices = index_count;
+    meshData->indexStream.indexSize = index_count * sizeof(GLushort);
 
     GLint mode;
 //    if (geometry.isStatic()) {
@@ -58,7 +54,7 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
     }
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.vboIB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.indexSize, pindex_buffer, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.indexSize, short_index_buffer, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
