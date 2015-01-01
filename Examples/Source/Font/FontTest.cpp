@@ -17,7 +17,7 @@ std::shared_ptr<TextureAtlas> CreateDefaultFont()
     auto fontFile = "Fonts/Arial Rounded MT Bold.ttf";
     FilePtr file = FileSystem::getInstance().getFile(fontFile);
 
-    auto font = std::make_shared<Font>(32, file);
+    auto font = std::make_shared<Font>(FontType::TTF, 32, file);
     font->setName("default");
     FontManager::getInstance().registerFont(font);
 
