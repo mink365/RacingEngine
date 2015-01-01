@@ -26,14 +26,14 @@ void OpenALListener::setGain(float gain)
 {
     AudioListener::setGain(gain);
 
-    alListenerf(AL_GAIN, gain);
+    AL_CHECK( alListenerf(AL_GAIN, gain) );
 }
 
 void OpenALListener::setPosition(const Vec3 &pos)
 {
     AudioListener::setPosition(pos);
 
-    alListenerfv(AL_POSITION, pos.toFloatPtr());
+    AL_CHECK( alListenerfv(AL_POSITION, pos.toFloatPtr()) );
 }
 
 void OpenALListener::setRotation(const Quat &rot)
@@ -47,7 +47,7 @@ void OpenALListener::setVelocity(const Vec3 &vel)
 {
     AudioListener::setVelocity(vel);
 
-    alListenerfv(AL_VELOCITY, vel.toFloatPtr());
+    AL_CHECK( alListenerfv(AL_VELOCITY, vel.toFloatPtr()) );
 }
 
 } // namespace re

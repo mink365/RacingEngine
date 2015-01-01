@@ -37,15 +37,59 @@ const std::string &FileAndroid::getFullPath() const
     return fullPath;
 }
 
-size_t FileAndroid::read(void *buffer, size_t len)
+bool FileAndroid::canRead()
 {
-    size_t result = AAsset_read(_asset, buffer, len);
-    return result > 0 ? ((size_t)result) : 0;
+    return true;
 }
 
-size_t FileAndroid::write(const void *buffer, size_t len)
+bool FileAndroid::canWrite()
+{
+    return false;
+}
+
+bool FileAndroid::canSeek()
+{
+    return true;
+}
+
+size_t FileAndroid::read(void *buffer, size_t size, size_t count)
+{
+    size_t result = AAsset_read(_asset, buffer, size * count);
+    return result > 0 ? ((size_t)result) / size : 0;
+}
+
+size_t FileAndroid::write(const void *buffer, size_t size, size_t count)
 {
     return 0;
+}
+
+bool FileAndroid::eof()
+{
+    return position() >= length();
+}
+
+size_t FileAndroid::length()
+{
+    return (size_t)AAsset_getLength(_asset);
+}
+
+long int FileAndroid::position()
+{
+    return AAsset_getLength(_asset) - AAsset_getRemainingLength(_asset);
+}
+
+bool FileAndroid::seek(long int offset, int origin)
+{
+    return AAsset_seek(_asset, offset, origin) != -1;
+}
+
+bool FileAndroid::rewind()
+{
+    if (canSeek())
+    {
+        return AAsset_seek(_asset, 0, SEEK_SET) != -1;
+    }
+    return false;
 }
 
 void FileAndroid::open()

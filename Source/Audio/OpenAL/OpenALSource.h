@@ -11,7 +11,7 @@
 
 #include "Audio/AudioSource.h"
 #include "OpenALBuffer.h"
-#include <AL/al.h>
+#include "OpenALBase.h"
 
 namespace re {
 
@@ -29,6 +29,8 @@ public:
     virtual void rewind() override;
 
     virtual void setLooped(bool looped) override;
+
+    virtual AudioSourceState getState() const;
 
     virtual void setGain(float gain) override;
     virtual void setPitch(float pitch) override;

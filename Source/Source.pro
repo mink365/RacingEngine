@@ -27,7 +27,7 @@ SOURCES += \
 
 HEADERS += \
     $$system("find Animation/ -name '*.h'") \
-    $$system("find Audio/ -name '*.cpp'") \
+    $$system("find Audio/ -name '*.h'") \
     $$system("find Base/ -name '*.h'") \
     $$system("find Effect/ -name '*.h'") \
     $$system("find External/ -name '*.h'") \
@@ -42,6 +42,7 @@ HEADERS += \
     $$system("find Util/ -name '*.h'") \
     $$files(*.h) \
     $$files(Platform/*.h) \
+    Audio/OpenAL/OpenALBase.h
 
 RE_PLATFORM_ANDROID {
     SOURCES += \

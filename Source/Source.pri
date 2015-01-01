@@ -38,6 +38,8 @@ RE_PLATFORM_MAC {
 } RE_PLATFORM_LINUX {
     LIBS += -lglfw
     LIBS += -lGL
+    LIBS += -lopenal
+    LIBS += -lvorbis -logg
 
     LIBS += -lBulletCollision \
             -lBulletDynamics \

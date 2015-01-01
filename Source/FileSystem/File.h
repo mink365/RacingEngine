@@ -40,11 +40,21 @@ public:
     virtual const std::string getDirPath() const;
 
     ByteBufferPtr read();
-    virtual size_t read( void *buffer, size_t len ) = 0;
-    virtual size_t write(const void *buffer, size_t len) = 0;
-    virtual size_t length() const;
+
     virtual void open() = 0;
     virtual void close() = 0;
+
+    virtual bool canRead() = 0;
+    virtual bool canWrite() = 0;
+    virtual bool canSeek() = 0;
+
+    virtual size_t read( void *buffer, size_t size, size_t count) = 0;
+    virtual size_t write(const void *buffer, size_t size, size_t count) = 0;
+    virtual size_t length() const;
+    virtual bool eof() = 0;
+    virtual int64_t position() = 0;
+    virtual bool seek(int64_t offset, int32_t origin) = 0;
+    virtual bool rewind() = 0;
 
 protected:
     size_t fileSize;
@@ -63,8 +73,18 @@ public:
     virtual const std::string& getName() const;
     virtual const std::string& getFullPath() const;
 
-    virtual size_t read( void *buffer, size_t len );
-    virtual size_t write(const void *buffer, size_t len);
+    virtual bool canRead();
+    virtual bool canWrite();
+    virtual bool canSeek();
+
+    virtual size_t read(void *buffer, size_t size, size_t count);
+    virtual size_t write(const void *buffer, size_t size, size_t count);
+
+    virtual bool eof();
+    virtual int64_t position();
+    virtual bool seek(int64_t offset, int32_t origin);
+    virtual bool rewind();
+
     virtual void open();
     virtual void close();
 

@@ -13,6 +13,14 @@
 
 namespace re {
 
+enum class AudioSourceState
+{
+    INITIAL,
+    PLAYING,
+    PAUSED,
+    STOPPED
+};
+
 class AudioSource
 {
 public:
@@ -28,6 +36,8 @@ public:
 
     bool isLooped() const;
     virtual void setLooped(bool looped);
+
+    virtual AudioSourceState getState() const = 0;
 
     float getGain() const;
     float getPitch() const;

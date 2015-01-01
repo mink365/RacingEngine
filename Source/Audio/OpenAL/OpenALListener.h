@@ -9,6 +9,7 @@
 #ifndef RE_OPENALLISTENER_H
 #define RE_OPENALLISTENER_H
 
+#include "OpenALBase.h"
 #include "Audio/AudioListener.h"
 
 namespace re {
