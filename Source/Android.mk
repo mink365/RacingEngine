@@ -79,13 +79,6 @@ LOCAL_C_INCLUDES += \
 	$(EXTERANL_PATH)/oggvorbis/include/ \
 	$(EXTERANL_PATH)/openal/include/ \
 
-LOCAL_LDFLAGS	:= \
-	-L$(EXTERANL_PATH)/jpeg/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/png/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/freetype2/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/openal/lib/android/arm/ \
-	-L$(EXTERANL_PATH)/oggvorbis/lib/android/arm/ \
-
 LOCAL_STATIC_LIBRARIES := \
 	android_native_app_glue \
 	cocos_jpeg_static \
