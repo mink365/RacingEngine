@@ -15,87 +15,32 @@ define all-c-files-under
 $(call all-files-under,$(1),*.c)
 endef
 
-# macro
-LOCAL_CFLAGS    := -DRE_PLATFORM_ANDROID
-
 # module
-
-LOCAL_PATH := $(call my-dir)/../../../Source
+LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := libracing
+LOCAL_MODULE := libracing_examples
 LOCAL_SRC_FILES := \
-	$(call all-cpp-files-under, ./Animation/) \
-	$(call all-cpp-files-under, ./Audio/) \
-	$(call all-cpp-files-under, ./Base/) \
-	$(call all-cpp-files-under, ./Effect/) \
-	$(call all-cpp-files-under, ./External/) \
-	$(call all-cpp-files-under, ./FileSystem/) \
-	$(call all-cpp-files-under, ./Font/) \
-	$(call all-cpp-files-under, ./Math/) \
-	$(call all-cpp-files-under, ./Message/) \
-	$(call all-cpp-files-under, ./Render/) \
-	$(call all-cpp-files-under, ./Resource/) \
-	$(call all-cpp-files-under, ./Scene/) \
-	$(call all-cpp-files-under, ./UI/) \
-	$(call all-cpp-files-under, ./Util/) \
-	$(LOCAL_PATH)/Platform/GameHub.cpp \
-	$(call all-cpp-files-under, ./Platform/android/) \
-	$(call all-cpp-files-under, ./../Examples/) \
-	../build/android/jni/main.cpp \
+	$(call all-cpp-files-under, ./../../../Examples/Source/) \
+	$(LOCAL_PATH)/main.cpp \
 
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
-	$(LOCAL_PATH)/Platform \
-	$(LOCAL_PATH)/Render \
-	$(LOCAL_PATH)/Scene \
-	$(LOCAL_PATH)/Resource \
-	$(LOCAL_PATH)/External \
-	$(LOCAL_PATH)/External/universal-tween-engine-cpp/ \
-	$(LOCAL_PATH)/Platform/android/ \
-	$(LOCAL_PATH)/../Examples/Source/ \
+ENGINE_PATH = $(LOCAL_PATH)/../../../Source/
 
-LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
+LOCAL_C_INCLUDES := \
+	$(LOCAL_PATH) \
+	$(LOCAL_PATH)/../../../Examples/Source/ \
+	$(LOCAL_PATH)/../../../external/bullet/src/ \
+	$(ENGINE_PATH)/ \
+	$(ENGINE_PATH)/Platform \
+	$(ENGINE_PATH)/Render \
+	$(ENGINE_PATH)/Scene \
+	$(ENGINE_PATH)/Resource \
+	$(ENGINE_PATH)/External \
+	$(ENGINE_PATH)/External/universal-tween-engine-cpp/ \
 
-# LOCAL_CFLAGS    := -Werror
-LOCAL_CFLAGS 	:= -Wno-extern-c-compat
-LOCAL_LDLIBS    := -llog -lz -landroid -lGLESv2 -lEGL -lOpenSLES
-
-EXTERANL_PATH = $(LOCAL_PATH)/../build/external/
-INCLUDE_EXT = include/android/
-LIB_EXT = prebuilt/android/armeabi-v7a/
-
-LOCAL_C_INCLUDES += \
-	$(EXTERANL_PATH)/jpeg/$(INCLUDE_EXT) \
-	$(EXTERANL_PATH)/png/$(INCLUDE_EXT) \
-	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT) \
-	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT)/freetype2/ \
-	$(EXTERANL_PATH)/oggvorbis/include/ \
-	$(EXTERANL_PATH)/openal/include/ \
-
-LOCAL_LDFLAGS	:= \
-	-L$(EXTERANL_PATH)/jpeg/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/png/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/freetype2/$(LIB_EXT) \
-	-L$(EXTERANL_PATH)/openal/lib/android/arm/ \
-	-L$(EXTERANL_PATH)/oggvorbis/lib/android/arm/ \
-
-LOCAL_STATIC_LIBRARIES := \
-	android_native_app_glue \
-	cocos_jpeg_static \
-	cocos_png_static \
-	cocos_freetype2_static \
-	bullet \
-	OpenAL_static \
-	vorbis_static \
-
+LOCAL_STATIC_LIBRARIES += racing_static
 
 include $(BUILD_SHARED_LIBRARY)
 
-$(call import-module,jpeg/prebuilt/android)
-$(call import-module,png/prebuilt/android)
-$(call import-module,freetype2/prebuilt/android)
-$(call import-module,oggvorbis/lib/android)
-$(call import-module,openal/lib/android)
-$(call import-module,bullet)
-$(call import-module,android/native_app_glue)
+$(call import-module,.)
