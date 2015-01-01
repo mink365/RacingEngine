@@ -2,8 +2,9 @@
 
 namespace re {
 
-Font::Font(Int size, const FilePtr &file)
+Font::Font(FontType type, Int size, const FilePtr &file)
 {
+    this->type = type;
     this->size = size;
     this->file = file;
 }
@@ -26,6 +27,11 @@ Glyph::constPtr Font::getGlyph(const wchar_t &c) const
 void Font::addGlyph(Glyph::ptr &glyph)
 {
     this->glyphs[glyph->getCharcode()] = glyph;
+}
+
+FontType Font::getType() const
+{
+    return type;
 }
 Int Font::getSize() const
 {

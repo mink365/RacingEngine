@@ -17,7 +17,9 @@ void Label::init(Font::ptr &font)
     this->font = font;
 
     SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
-    InitNodeForLeaf(node, font->getTexture(), "Shader_PTC");
+
+    string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
+    InitNodeForLeaf(node, font->getTexture(), shaderName);
 
     auto mesh = std::dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
     MaterialPtr material = mesh->getMaterial();
