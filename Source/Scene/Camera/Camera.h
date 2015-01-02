@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include <functional>
 #include "Scene/SceneNode.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"
