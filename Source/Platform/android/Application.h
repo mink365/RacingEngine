@@ -15,6 +15,9 @@ public:
 
     void run(android_app *state);
 
+    void getAccelerometerValues(float* pitch, float* roll);
+    void getSensorValues(float* accelX, float* accelY, float* accelZ, float* gyroX, float* gyroY, float* gyroZ);
+
 protected:
     void initApp();
 

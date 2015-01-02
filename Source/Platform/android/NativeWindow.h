@@ -22,13 +22,20 @@ public:
     void setFrameSize(float width, float height) override;
     Size getFrameSize() const override;
 
+    void setVsync(bool enable) override;
+    bool isVsync() const override;
+
     void initView(android_app* app);
     int32_t handleInput(AInputEvent *event);
 
     int swapBuffers();
+
 public:
     int initDisplay();
-    void termDisplay();
+    void destroySurface();
+    void destroyDisplay();
+
+    int getOrientationAngle();
 
 private:
     void dispatchTouchEvent(TouchEventType type, float x, float y);
@@ -39,7 +46,11 @@ private:
     EGLDisplay display;
     EGLSurface surface;
     EGLContext context;
+
     Rect viewRect;
+
+    int orientationAngle;
+    bool vsync;
 };
 
 } // namespace re

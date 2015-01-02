@@ -14,12 +14,17 @@
 
 namespace re {
 
+extern int getRotation();
+
 NativeWindow::NativeWindow()
 {
     __app = 0;
     display = 0;
     context = 0;
     surface = 0;
+
+    orientationAngle = 0;
+    vsync = true;
 }
 
 void NativeWindow::initView(android_app *app)
@@ -126,6 +131,23 @@ Size NativeWindow::getFrameSize() const {
     return viewRect.size;
 }
 
+void NativeWindow::setVsync(bool enable)
+{
+    eglSwapInterval(this->display, enable ? 1 : 0);
+
+    vsync = enable;
+}
+
+bool NativeWindow::isVsync() const
+{
+    return vsync;
+}
+
+int NativeWindow::getOrientationAngle()
+{
+    return orientationAngle;
+}
+
 static EGLenum checkErrorEGL(const char* msg)
 {
 //    GP_ASSERT(msg);
@@ -155,6 +177,7 @@ static EGLenum checkErrorEGL(const char* msg)
 int NativeWindow::initDisplay()
 {
     // initialize OpenGL ES and EGL
+    // on phone rotate or app create
 
     /*
      * Here specify the attributes of the desired configuration.
@@ -236,6 +259,8 @@ int NativeWindow::initDisplay()
     eglQuerySurface(display, surface, EGL_WIDTH, &w);
     eglQuerySurface(display, surface, EGL_HEIGHT, &h);
 
+    eglSwapInterval(display, vsync ? 1 : 0);
+
     LOG_D("EGL display: %p, context: %p, App: %p, WH: %d %d", display, context, __app, w, h);
 
     this->display = display;
@@ -244,24 +269,40 @@ int NativeWindow::initDisplay()
 
     this->viewRect.set(0, 0, w, h);
 
+    this->orientationAngle = getRotation() * 90;
+
     return 0;
 }
 
-void NativeWindow::termDisplay()
+void NativeWindow::destroySurface()
 {
-    if (this->display != EGL_NO_DISPLAY) {
+    if (this->display != EGL_NO_DISPLAY)
+    {
         eglMakeCurrent(this->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-        if (this->context != EGL_NO_CONTEXT) {
-            eglDestroyContext(this->display, this->context);
-        }
-        if (this->surface != EGL_NO_SURFACE) {
-            eglDestroySurface(this->display, this->surface);
-        }
-        eglTerminate(this->display);
     }
-    this->display = EGL_NO_DISPLAY;
-    this->context = EGL_NO_CONTEXT;
-    this->surface = EGL_NO_SURFACE;
+
+    if (this->surface != EGL_NO_SURFACE)
+    {
+        eglDestroySurface(this->display, this->surface);
+        this->surface = EGL_NO_SURFACE;
+    }
+}
+
+void NativeWindow::destroyDisplay()
+{
+    destroySurface();
+
+    if (this->context != EGL_NO_CONTEXT)
+    {
+        eglDestroyContext(this->display, this->context);
+        this->context = EGL_NO_CONTEXT;
+    }
+
+    if (this->display != EGL_NO_DISPLAY)
+    {
+        eglTerminate(this->display);
+        this->display = EGL_NO_DISPLAY;
+    }
 }
 
 } // namespace re

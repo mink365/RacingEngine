@@ -5,6 +5,7 @@
 #include "FileSystemAndroid.h"
 #include "Util/LogUtil.h"
 
+#include <cmath>
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -19,6 +20,14 @@ static ASensorEvent __sensorEvent;
 static const ASensor* __accelerometerSensor;
 static const ASensor* __gyroscopeSensor;
 
+static float __accelRawX;
+static float __accelRawY;
+static float __accelRawZ;
+static float __gyroRawX;
+static float __gyroRawY;
+static float __gyroRawZ;
+static int __orientationAngle = 90;
+
 static long getCurrentMillSecond() {
     long lLastTime;
     struct timeval stCurrentTime;
@@ -26,6 +35,48 @@ static long getCurrentMillSecond() {
     gettimeofday(&stCurrentTime,NULL);
     lLastTime = stCurrentTime.tv_sec*1000+stCurrentTime.tv_usec*0.001; //millseconds
     return lLastTime;
+}
+
+int getRotation()
+{
+    jint rotation;
+
+    // Get the android application's activity.
+    ANativeActivity* activity = __state->activity;
+    JavaVM* jvm = __state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+    if (res == JNI_ERR)
+    {
+        LOG_E("Failed to retrieve JVM environment when entering message pump.");
+        return -1; 
+    }
+    RE_ASSERT(env);
+
+    jclass clsContext = env->FindClass("android/content/Context");
+    RE_ASSERT(clsContext != NULL);
+    jmethodID getSystemService = env->GetMethodID(clsContext, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
+    RE_ASSERT(getSystemService != NULL);
+    jfieldID WINDOW_SERVICE_ID = env->GetStaticFieldID(clsContext, "WINDOW_SERVICE", "Ljava/lang/String;");
+    RE_ASSERT(WINDOW_SERVICE_ID != NULL);
+    jstring WINDOW_SERVICE = (jstring) env->GetStaticObjectField(clsContext, WINDOW_SERVICE_ID);
+    RE_ASSERT(WINDOW_SERVICE != NULL);
+    jobject windowManager = env->CallObjectMethod(activity->clazz, getSystemService, WINDOW_SERVICE);
+    RE_ASSERT(windowManager != NULL);
+    jclass clsWindowManager = env->FindClass("android/view/WindowManager");
+    RE_ASSERT(clsWindowManager != NULL);
+    jmethodID getDefaultDisplay = env->GetMethodID(clsWindowManager, "getDefaultDisplay", "()Landroid/view/Display;");
+    RE_ASSERT(getDefaultDisplay != NULL);
+    jobject defaultDisplay = env->CallObjectMethod(windowManager, getDefaultDisplay);
+    RE_ASSERT(defaultDisplay != NULL);
+    jclass clsDisplay = env->FindClass("android/view/Display");
+    RE_ASSERT(clsDisplay != NULL);
+    jmethodID getRotation = env->GetMethodID(clsDisplay, "getRotation", "()I");
+    RE_ASSERT(getRotation != NULL);
+    rotation =  env->CallIntMethod(defaultDisplay, getRotation);
+
+    return rotation;
 }
 
 static int32_t handle_input(android_app *app, AInputEvent *event)
@@ -49,13 +100,13 @@ static void handle_cmd(android_app *app, int32_t cmd)
             break;
         case APP_CMD_TERM_WINDOW:
             // The window is being hidden or closed, clean it up.
-            application->androidWin->termDisplay();
+            application->androidWin->destroySurface();
             application->__initialized = false;
 
             break;
         case APP_CMD_DESTROY:
-            // TODO:
-            application->androidWin->termDisplay();
+            // TODO: exit the app
+            application->androidWin->destroyDisplay();
             application->__initialized = false;
             break;
         case APP_CMD_RESUME:
@@ -72,33 +123,36 @@ static void handle_cmd(android_app *app, int32_t cmd)
             break;
         case APP_CMD_GAINED_FOCUS:
             // When our app gains focus, we start monitoring the accelerometer.
-//            if (engine->accelerometerSensor != NULL) {
-//                ASensorEventQueue_enableSensor(engine->sensorEventQueue, engine->accelerometerSensor);
-//                // We'd like to get 60 events per second (in us).
-//                ASensorEventQueue_setEventRate(engine->sensorEventQueue, engine->accelerometerSensor, (1000L/60)*1000);
-//            }
+            if (__accelerometerSensor != NULL) {
+                ASensorEventQueue_enableSensor(__sensorEventQueue, __accelerometerSensor);
+                // We'd like to get 60 events per second (in us).
+                ASensorEventQueue_setEventRate(__sensorEventQueue, __accelerometerSensor, (1000L/60)*1000);
+            }
+            if (__gyroscopeSensor != NULL)
+            {
+                ASensorEventQueue_enableSensor(__sensorEventQueue, __gyroscopeSensor);
+                // We'd like to get 60 events per second (in microseconds).
+                ASensorEventQueue_setEventRate(__sensorEventQueue, __gyroscopeSensor, (1000L/60)*1000);
+            }
             break;
         case APP_CMD_LOST_FOCUS:
             // When our app loses focus, we stop monitoring the accelerometer.
             // This is to avoid consuming battery while not being used.
-//            if (engine->accelerometerSensor != NULL) {
-//                ASensorEventQueue_disableSensor(engine->sensorEventQueue,
-//                        engine->accelerometerSensor);
-//            }
-//            // Also stop animating.
-//            engine->animating = 0;
+            if (__accelerometerSensor != NULL) 
+            {
+                ASensorEventQueue_disableSensor(__sensorEventQueue, __accelerometerSensor);
+            }
+            if (__gyroscopeSensor != NULL) 
+            {
+                ASensorEventQueue_disableSensor(__sensorEventQueue, __gyroscopeSensor);
+            }
+
             break;
     }
 }
 
-static void handle_sensor() {
-    float __accelRawX;
-    float __accelRawY;
-    float __accelRawZ;
-    float __gyroRawX;
-    float __gyroRawY;
-    float __gyroRawZ;
-
+static void handle_sensor()
+{
     ASensorEventQueue_getEvents(__sensorEventQueue, &__sensorEvent, 1);
     if (__sensorEvent.type == ASENSOR_TYPE_ACCELEROMETER)
     {
@@ -213,8 +267,8 @@ void Application::run(android_app* state) {
                     if (__state->window != NULL)
                     {
                         // recreate it
-//                        destroyEGLSurface();
-//                        initEGL();
+                        androidWin->destroySurface();
+                        androidWin->initDisplay();
                     }
                     __initialized = true;
                 }
@@ -251,6 +305,79 @@ void Application::initApp()
     __accelerometerSensor = ASensorManager_getDefaultSensor(__sensorManager, ASENSOR_TYPE_ACCELEROMETER);
     __gyroscopeSensor = ASensorManager_getDefaultSensor(__sensorManager, ASENSOR_TYPE_GYROSCOPE);
     __sensorEventQueue = ASensorManager_createEventQueue(__sensorManager, __state->looper, LOOPER_ID_USER, NULL, NULL);
+}
+
+void Application::getAccelerometerValues(float* pitch, float* roll)
+{
+    double tx, ty, tz;
+    ASensorEvent event;
+    
+    // By default, android accelerometer values are oriented to the portrait mode.
+    // flipping the x and y to get the desired landscape mode values.
+    switch (androidWin->getOrientationAngle())
+    {
+    case 90:
+        tx = -__accelRawY;
+        ty = __accelRawX;
+        break;
+    case 180:
+        tx = -__accelRawX;
+        ty = -__accelRawY;
+        break;
+    case 270:
+        tx = __accelRawY;
+        ty = -__accelRawX;
+        break;
+    default:
+        tx = __accelRawX;
+        ty = __accelRawY;
+        break;
+    }
+    tz = __accelRawZ;
+
+    if (pitch != NULL)
+    {
+        RE_ASSERT(tx * tx + tz * tz);
+        *pitch = -atan(ty / sqrt(tx * tx + tz * tz)) * 180.0f * M_1_PI;
+    }
+    if (roll != NULL)
+    {
+        RE_ASSERT(ty * ty + tz * tz);
+        *roll = -atan(tx / sqrt(ty * ty + tz * tz)) * 180.0f * M_1_PI;
+    }
+}
+
+void Application::getSensorValues(float* accelX, float* accelY, float* accelZ, float* gyroX, float* gyroY, float* gyroZ)
+{
+    if (accelX)
+    {
+        *accelX = __accelRawX;
+    }
+
+    if (accelY)
+    {
+        *accelY = __accelRawY;
+    }
+
+    if (accelZ)
+    {
+        *accelZ = __accelRawZ;
+    }
+
+    if (gyroX)
+    {
+        *gyroX = __gyroRawX;
+    }
+
+    if (gyroY)
+    {
+        *gyroY = __gyroRawY;
+    }
+
+    if (gyroZ)
+    {
+        *gyroZ = __gyroRawZ;
+    }
 }
 
 } // namespace re
