@@ -33,7 +33,11 @@ bool TextureManager::containTexture(std::string name)
 
 Texture::ptr TextureManager::getTexture(std::string name)
 {
-    return this->registeredTextures[name];
+    if (this->containTexture(name)) {
+        return this->registeredTextures[name];
+    }
+
+    return nullptr;
 }
 
 void TextureManager::loadTextures()
