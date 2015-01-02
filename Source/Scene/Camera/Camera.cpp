@@ -177,7 +177,10 @@ void Camera::recalcViewMatrix()
 void Camera::recalcProjectionMatrix()
 {
     if (this->mode == CameraProjectionMode::Perspective) {
-        this->projectionMatrix.setPerspective(fov, zNear, zFar);
+
+        float aspect = viewport.getWidth() / viewport.getHeight();
+
+        this->projectionMatrix.setPerspectiveY(fov, aspect, zNear, zFar);
     } else {
         Size ortho = getOrthoSize();
 
