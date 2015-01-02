@@ -1,7 +1,8 @@
 #ifndef MATHTOOL_H
 #define MATHTOOL_H
 
-#include <random>
+#include <cmath>
+#include <cstdlib>
 
 #include "Vector.h"
 #include "Ray.h"
@@ -109,7 +110,7 @@ inline bool InBound(float p, float min, float max)
         }
 
         inline float Rand() {
-            return std::rand() / (float)RAND_MAX;
+            return rand() / (float)RAND_MAX;
         }
 
         template<typename T>
