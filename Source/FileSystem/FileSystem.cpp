@@ -87,10 +87,10 @@ void FileSystem::GetExtensionList(const std::string& extension, StrList &extensi
     while( 1 ) {
         e = extension.find_first_of('|', s);
         if ( e != std::string::npos ) {
-            extensionList.push_back(extension.substr(s, e));
+            extensionList.push_back(extension.substr(s, e-s));
             s = e + 1;
         } else {
-            extensionList.push_back(extension.substr(s, l));
+            extensionList.push_back(extension.substr(s, l-s));
             break;
         }
     }
