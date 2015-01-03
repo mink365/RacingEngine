@@ -470,7 +470,7 @@ bool MathLib::IntersectRayAABB(const Ray& ray, const AABBox& aabb)
     for (int i = 0; i < 3; ++i) {
         if (ray.Direction()[i] == 0)
         {
-            if (ray.Direction()[i] < aabb.Min()[i] || ray.Direction()[i] > aabb.Max()[i]) {
+            if (ray.Origin()[i] < aabb.Min()[i] || ray.Origin()[i] > aabb.Max()[i]) {
                 return false;
             }
         }
