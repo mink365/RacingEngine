@@ -162,12 +162,21 @@ void Node::setParent(NodePtr value)
     parent = value;
 }
 
+void Node::removeFromeParent()
+{
+    assert(isHasParent());
+
+    auto ins = this->shared_from_this();
+
+    this->parent.lock()->removeChild(ins);
+}
+
 void Node::resetParent() {
     parent.reset();
 }
 
 bool Node::isHasParent() {
-    return parent.lock() == nullptr;
+    return parent.lock() != nullptr;
 }
 
 int Node::getLevel() const
