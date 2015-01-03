@@ -6,6 +6,7 @@
 
 #include <functional>
 #include "NativeView.h"
+#include "ApplicationProtocol.h"
 
 namespace TweenEngine {
     class TweenManager;
@@ -21,13 +22,14 @@ public:
     GameHub();
     ~GameHub();
 
-    void init();
+    void init(ApplicationProtocol* app);
 
     void mainLoop(int64_t dt);
     void bindUpdateFunc(std::function<void(int64_t time)> func);
 
     Renderer& GetRenderer();
-    TweenEngine::TweenManager &getTweenManager();
+    TweenEngine::TweenManager &GetTweenManager();
+    ApplicationProtocol& GetApp();
 
     const Time& GetGameTime() const;
     const Time& GetDeltaTime() const;
@@ -39,6 +41,8 @@ private:
 private:
     std::function<void(int64_t time)> updateFunc;
     TweenEngine::TweenManager* tweenManager;
+
+    ApplicationProtocol* app;
 
     Time _gameTime;
     Time _lastSpanTime;

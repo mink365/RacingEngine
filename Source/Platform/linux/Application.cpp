@@ -38,7 +38,7 @@ void Application::run()
     glfwWin->bindEventHandler();
 
     GameHub& game = GameHub::getInstance();
-    game.init();
+    game.init(this);
 
     if (!this->initEnvironment()) {
         return;

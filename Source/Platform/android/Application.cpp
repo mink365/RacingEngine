@@ -189,7 +189,7 @@ void Application::run(android_app* state) {
     fileSystem->BindAssetManager(__assetManager);
 
     GameHub& game = GameHub::getInstance();
-    game.init();
+    game.init(this);
 
     long lastTime = getCurrentMillSecond();
     long curTime, dt, oldTime;

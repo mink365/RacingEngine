@@ -25,8 +25,10 @@ GameHub::~GameHub()
     }
 }
 
-void GameHub::init()
+void GameHub::init(ApplicationProtocol *app)
 {
+    this->app = app;
+
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
     this->tweenManager = new TweenEngine::TweenManager();
@@ -61,9 +63,14 @@ Renderer &GameHub::GetRenderer()
     return SceneManager::getInstance().getRenderManager().getRenderer();
 }
 
-TweenEngine::TweenManager& GameHub::getTweenManager()
+TweenEngine::TweenManager& GameHub::GetTweenManager()
 {
     return *(this->tweenManager);
+}
+
+ApplicationProtocol &GameHub::GetApp()
+{
+    return *(this->app);
 }
 
 const Time &GameHub::GetGameTime() const

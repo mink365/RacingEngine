@@ -16,6 +16,12 @@ public:
 
     NativeView* getNativeView() const;
 
+    virtual void getAccelerometerValues(float* pitch, float* roll)
+    {
+        if (pitch) *pitch = 0;
+        if (roll) *roll = 0;
+    }
+
 protected:
     NativeView* view;
 };

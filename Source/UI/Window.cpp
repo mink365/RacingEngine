@@ -116,7 +116,7 @@ void Window::initAnimFunc()
 
             .setCallback(animCallback)
             .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::getInstance().getTweenManager());
+            .start(GameHub::getInstance().GetTweenManager());
     };
 
     this->hideAnimFunc = [=]() {
@@ -133,7 +133,7 @@ void Window::initAnimFunc()
 
             .setCallback(animCallback)
             .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::getInstance().getTweenManager());
+            .start(GameHub::getInstance().GetTweenManager());
     };
 }
 
