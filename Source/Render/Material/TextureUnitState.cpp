@@ -24,6 +24,7 @@ Texture::ptr TextureUnitState::getTexture()
 
 void TextureUnitState::setTexture(TexturePtr &tex)
 {
+    RE_ASSERT(tex != nullptr);
     this->texture = tex;
 }
 
