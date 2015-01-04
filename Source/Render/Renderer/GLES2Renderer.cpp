@@ -198,6 +198,9 @@ void GLES2Renderer::renderMesh(const Mesh &mesh)
     const MeshDataPtr& meshData = mesh.getMeshData();
 
     glDrawElements(GL_TRIANGLES, meshData->indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
+
+    this->addDrawCall();
+    this->addDrawTrangles(meshData->indexStream.nIndices / 3);
 }
 
 void GLES2Renderer::setClearColor(const Color &color)

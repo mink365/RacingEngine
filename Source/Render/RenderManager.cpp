@@ -202,6 +202,7 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
 void RenderManager::render()
 {
+    this->renderer->resetStatistics();
     this->initDefaultRenderState();
 
     this->renderQueue.sortRenderableList();

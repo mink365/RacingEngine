@@ -58,8 +58,14 @@ public:
      */
     void resetToRenderState(const RenderState &state);
 
+    void readStatistics(size_t* drawCall, size_t* trangles);
+    void resetStatistics();
+
 protected:
     virtual void activateTextureUnit(int unit) = 0;
+
+    void addDrawCall();
+    void addDrawTrangles(size_t count);
 
 protected:
     RenderContext context;
@@ -67,6 +73,8 @@ protected:
     Mat4 modelMatrix, viewMatrix, projMatrix;
 
     Color _clearColor;
+
+    size_t drawCall, trangles;
 };
 
 } // namespace re

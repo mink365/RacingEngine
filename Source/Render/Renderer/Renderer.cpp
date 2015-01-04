@@ -9,7 +9,9 @@
 
 namespace re {
 
-Renderer::Renderer() {
+Renderer::Renderer()
+    : drawCall(0), trangles(0)
+{
 }
 
 Renderer::~Renderer() {
@@ -62,6 +64,33 @@ void Renderer::cleanBuffers(int flag)
 void Renderer::resetToRenderState(const RenderState &state)
 {
     this->applyRenderState(state, true);
+}
+
+void Renderer::readStatistics(size_t *drawCall, size_t *trangles)
+{
+    if (drawCall != NULL) {
+        *drawCall = this->drawCall;
+    }
+
+    if (trangles != NULL) {
+        *trangles = this->trangles;
+    }
+}
+
+void Renderer::addDrawCall()
+{
+    drawCall += 1;
+}
+
+void Renderer::addDrawTrangles(size_t count)
+{
+    trangles += count;
+}
+
+void Renderer::resetStatistics()
+{
+    drawCall = 0;
+    trangles = 0;
 }
 
 }
