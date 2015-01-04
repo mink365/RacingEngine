@@ -106,7 +106,7 @@ public:
     Vec2 convertNodeToParentSpace(const Vec2& point) const;
 
 public:
-    virtual void addChild(NodePtr node) override;
+    virtual void addChild(NodePtr node, Int index=-1) override;
     virtual void removeChild(NodePtr node) override;
     virtual void removeAllChildren() override;
 

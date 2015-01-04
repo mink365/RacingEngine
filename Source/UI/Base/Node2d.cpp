@@ -253,9 +253,9 @@ Vec2 Node2d::convertNodeToParentSpace(const Vec2 &point) const
     return Vec2(result.x, result.y);
 }
 
-void Node2d::addChild(NodePtr node)
+void Node2d::addChild(NodePtr node, Int index)
 {
-    Node::addChild(node);
+    Node::addChild(node, index);
 
     if (inScene) {
         auto childNode = std::dynamic_pointer_cast<Node2d>(node);

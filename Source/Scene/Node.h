@@ -58,7 +58,7 @@ public:
     NodePtr getChild(uint32_t index);
     NodePtr getChild(const std::string& name);
 
-    virtual void addChild(NodePtr node);
+    virtual void addChild(NodePtr node, Int index=-1);
     virtual void removeChild(NodePtr node);
     virtual void removeAllChildren();
 

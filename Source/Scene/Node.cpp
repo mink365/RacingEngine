@@ -211,12 +211,22 @@ NodePtr Node::getChild(const string &name)
     return nullptr;
 }
 
-void Node::addChild(NodePtr node)
+void Node::addChild(NodePtr node, Int index)
 {
     node->parent = this->shared_from_this();
     node->level = node->getParent()->level + 1;
 
-    this->children.push_back(node);
+    vector<NodePtr>::iterator iter;
+    if (index >= 0) {
+        Int _index = index > children.size() ? children.size() : index;
+        iter = children.begin() + _index;
+    } else {
+        Int _index = index + children.size() + 1;
+        _index = _index < 0 ? 0 : _index;
+        iter = children.begin() + _index;
+    }
+
+    this->children.insert(iter, node);
 }
 
 void Node::removeChild(NodePtr node)

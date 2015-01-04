@@ -56,7 +56,7 @@ ScenePtr UIManager::createLayer(const std::string &name) {
 }
 
 void UIManager::addLayerToScene(ScenePtr& node) {
-    this->addChild(node);
+    this->addChild(node, -2);
     
     LayoutUtil::LayoutToParentCenter(node);
 
