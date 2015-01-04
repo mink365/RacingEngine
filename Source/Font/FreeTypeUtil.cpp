@@ -137,6 +137,41 @@ void FreeTypeUtil::GenerateKerning(Font::ptr& font)
     buf.reset();
 }
 
+void FreeTypeUtil::LoadFontInfo(Font::ptr &font)
+{
+    FT_Library library;
+    FT_Face face;
+    FT_Size_Metrics metrics;
+
+    /* Get font metrics at high resolution */
+    if(!texture_font_get_hires_face(font, &library, &face))
+        return;
+
+    font->underline_position = face->underline_position / (float)(HRESf*HRESf) * font->size;
+    font->underline_position = round( font->underline_position );
+    if( font->underline_position > -2 )
+    {
+        font->underline_position = -2.0;
+    }
+
+    font->underline_thickness = face->underline_thickness / (float)(HRESf*HRESf) * font->size;
+    font->underline_thickness = round( font->underline_thickness );
+    if( font->underline_thickness < 1 )
+    {
+        font->underline_thickness = 1.0;
+    }
+
+    metrics = face->size->metrics;
+    font->ascender = (metrics.ascender >> 6) / 100.0;
+    font->descender = (metrics.descender >> 6) / 100.0;
+    font->height = (metrics.height >> 6) / 100.0;
+    font->linegap = font->height - font->ascender + font->descender;
+
+    FT_Done_Face( face );
+    FT_Done_FreeType( library );
+
+}
+
 size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const wchar_t *charcodes)
 {
     size_t width, height, depth, w, h;
@@ -183,9 +218,9 @@ size_t FreeTypeUtil::LoadGlyphs(TextureAtlas::ptr& atlas, Font::ptr& font, const
         {
             FT_Library_SetLcdFilter( library, FT_LCD_FILTER_LIGHT );
             flags |= FT_LOAD_TARGET_LCD;
-//            if( self->filtering )
+//            if( font->filtering )
 //            {
-//                FT_Library_SetLcdFilterWeights( library, self->lcd_weights );
+//                FT_Library_SetLcdFilterWeights( library, font->lcd_weights );
 //            }
         }
         error = FT_Load_Glyph( face, glyph_index, flags );

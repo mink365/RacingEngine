@@ -105,6 +105,8 @@ protected:
     void defaultMarkup(Markup& markup);
     void tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup& markup);
 
+    void textBufferMoveLastLine(float dy);
+
 private:
     Geometry::ptr geometry;
     Font::constPtr defaultFont;
@@ -113,6 +115,21 @@ private:
 
     Rect rect;
     Vec2 vertexOrigin;
+
+    /**
+     * Index (in the vertex buffer) of the line start
+     */
+    size_t line_start;
+
+    /**
+     * Current line ascender
+     */
+    float line_ascender;
+
+    /**
+     * Current line decender
+     */
+    float line_descender;
 };
 
 }

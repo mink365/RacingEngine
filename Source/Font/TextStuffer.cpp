@@ -9,6 +9,7 @@
 namespace re {
 
 TextStuffer::TextStuffer()
+    : line_ascender(0), line_descender(0), line_start(0)
 {
 }
 
@@ -25,11 +26,10 @@ void TextStuffer::AddText(const wstring &text, Geometry::ptr geometry, Font::con
 
     this->unfold(tags, spans);
 
-    Pen pen;
+    Pen pen = this->vertexOrigin;
     Markup markup;
 
-    this->vertexOrigin = pen;
-    this->rect.set(0,0,0,0);
+    this->rect.set(0, 0, 0, 0);
 
     for (auto span : spans) {
         this->tagStackToMarkup(span->stack, markup);
@@ -56,13 +56,37 @@ void TextStuffer::AddChar(Pen &pen, const Markup &markup, wchar_t current, wchar
 {
     float kerning = 0;
 
+    if (current == L'\n') {
+        pen.x = this->vertexOrigin.x;
+        pen.y += this->line_descender;
+
+        this->line_descender = 0;
+        this->line_ascender = 0;
+
+        this->line_start = this->geometry->getFaces().size() / 2;
+
+        return;
+    }
+
+    float scale = markup.size / markup.font->getSize();
+
+    if( markup.font->ascender * scale > this->line_ascender )
+    {
+        float y = pen.y;
+        pen.y -= (markup.font->ascender * scale - this->line_ascender);
+        textBufferMoveLastLine((int)(y - pen.y) );
+        this->line_ascender = markup.font->ascender * scale;
+    }
+    if( markup.font->descender * scale < this->line_descender )
+    {
+        this->line_descender = markup.font->descender * scale;
+    }
+
     Glyph::constPtr glyph = markup.font->getGlyph(current);
 
     kerning = glyph->getKerning(previous);
-    pen.x += kerning * scale.x;
+    pen.x += kerning * scale;
 
-    // TODO: scale
-    float scale = markup.size / markup.font->getSize();
     this->scale.x = scale;
     this->scale.y = scale;
 
@@ -414,6 +438,20 @@ void TextStuffer::tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup &m
         case TagType::Link:
             break;
         }
+    }
+}
+
+void TextStuffer::textBufferMoveLastLine(float dy)
+{
+    std::vector<Face>& faces = this->geometry->getFaces();
+    std::vector<Vec3>& vertices = this->geometry->getPositions();
+
+    for (size_t i=this->line_start * 2; i < faces.size(); ++i) {
+        const Face& face = faces[i];
+
+        vertices[face.a].y -= dy;
+        vertices[face.b].y -= dy;
+        vertices[face.c].y -= dy;
     }
 }
 
