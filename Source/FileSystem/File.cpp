@@ -51,6 +51,7 @@ ByteBufferPtr File::read()
 
     this->read(buf->getData(), 1, this->length());
 
+    this->close();
     return buf;
 }
 
