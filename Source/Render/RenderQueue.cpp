@@ -16,12 +16,12 @@ RenderQueue::~RenderQueue()
     }
 }
 
-void RenderQueue::addRenderable(NodeAttributePtr node)
+void RenderQueue::addRenderable(ComponentPtr node)
 {
     this->addRenderable(node, RENDER_QUEUE_MAIN);
 }
 
-void RenderQueue::addRenderable(NodeAttributePtr node, int type)
+void RenderQueue::addRenderable(ComponentPtr node, int type)
 {
     RenderableList &list = this->getRenderableList(type);
 

@@ -129,7 +129,7 @@ NodePtr Node::createCloneInstance() const
 void Node::copyChildren(const Node *node)
 {
     this->children.clear();
-    for (auto child : node->children) {
+    for (auto& child : node->children) {
         NodePtr copyChild = child->clone();
         this->children.push_back(copyChild);
         copyChild->parent = this->shared_from_this();
@@ -150,6 +150,16 @@ void Node::copyProperties(const Node *node)
     this->markWorldTransformRefreshFlag();
 
     this->parent.reset();
+}
+
+void Node::copyComponents(const Node *node)
+{
+    this->components.clear();
+    for (auto& component : node->components) {
+        ComponentPtr copyComponent = component->clone();
+        this->components.push_back(copyComponent);
+        copyComponent->attachNode = this->shared_from_this();
+    }
 }
 
 NodePtr Node::getParent() const
@@ -246,6 +256,34 @@ void Node::removeAllChildren()
     }
 
     this->children.clear();
+}
+
+void Node::addComponent(ComponentPtr component)
+{
+    NodePtr ptr = this->shared_from_this();
+
+    component->attachNode = ptr;
+    this->components.push_back(component);
+}
+
+void Node::clearComponent()
+{
+    this->components.clear();
+}
+
+size_t Node::getComponentCount() const
+{
+    return this->components.size();
+}
+
+ComponentPtr Node::getComponent(size_t index)
+{
+    return this->components.at(index);
+}
+
+const std::vector<ComponentPtr> &Node::getComponents() const
+{
+    return this->components;
 }
 
 NodePtr Node::clone() const

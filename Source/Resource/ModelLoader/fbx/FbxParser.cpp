@@ -138,7 +138,7 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
 void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
-    node->setNodeAttribute(mesh);
+    node->addComponent(mesh);
     mesh->name = node->name;
 
     SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();

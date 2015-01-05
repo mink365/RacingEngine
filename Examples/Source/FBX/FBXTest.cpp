@@ -67,7 +67,7 @@ void FBXTest::Init()
     meshs.push_back(moto);
 
     for (SceneNodePtr node : meshs) {
-        MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
+        MeshPtr mesh = node->getComponent<Mesh>();
 
         InitMeshInHardward(mesh);
     }

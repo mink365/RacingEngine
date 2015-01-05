@@ -88,7 +88,7 @@ void RenderToTextureTest::Init()
 static float rotateValue = 0;
 void RenderToTextureTest::Update(float dt)
 {
-    MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(cylinderNode->getNodeAttribute());
+    MeshPtr mesh = cylinderNode->getComponent<Mesh>();
     TextureUnitState::ptr state = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
     Texture::ptr tex = state->getTexture();
 

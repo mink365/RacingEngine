@@ -173,8 +173,8 @@ void ShadowTest::Update(float dt)
 
     box->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
-    auto spriteMesh = std::dynamic_pointer_cast<re::Mesh>(sprite->getNodeAttribute());
-    auto groundMesh = std::dynamic_pointer_cast<re::Mesh>(ground->getNodeAttribute());
+    auto spriteMesh = sprite->getComponent<Mesh>();
+    auto groundMesh = ground->getComponent<Mesh>();
 
     auto& renderManager = SceneManager::getInstance().getRenderManager();
 

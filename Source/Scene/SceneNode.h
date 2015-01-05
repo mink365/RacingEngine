@@ -9,7 +9,6 @@
 #define SCENENODE_H_
 
 #include "Node.h"
-#include "NodeAttribute.h"
 
 namespace re {
 
@@ -29,13 +28,6 @@ public:
     bool getVisible() const;
     void setVisible(bool value);
 
-    void setNodeAttribute(NodeAttributePtr att);
-    void clearNodeAttribute();
-    NodeAttributePtr getNodeAttribute();
-
-    template<typename T>
-    std::shared_ptr<T> getAttribute();
-
     SceneNodePtr clone();
 
 protected:
@@ -44,8 +36,6 @@ protected:
 
 protected:
     bool visible;
-
-    NodeAttributePtr attribute;
 };
 
 inline void SceneNode::init()
@@ -55,12 +45,6 @@ inline void SceneNode::init()
 inline void SceneNode::init(const string &name)
 {
     this->name = name;
-}
-
-template<typename T>
-inline std::shared_ptr<T> SceneNode::getAttribute()
-{
-    return std::dynamic_pointer_cast<T>(attribute);
 }
 
 } // namespace re

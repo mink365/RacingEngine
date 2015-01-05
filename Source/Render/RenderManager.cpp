@@ -7,7 +7,7 @@
 
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
-#include "Scene/NodeAttribute.h"
+#include "Scene/Component.h"
 #include "Light/Light.h"
 #include "Light/DirectionalLight.h"
 #include "Light/SpotLight.h"
@@ -63,10 +63,10 @@ void RenderManager::renderList(const RenderableList &list)
     }
 }
 
-void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
+void RenderManager::renderAttribute(const ComponentPtr &attribute)
 {
     switch(attribute->getType()) {
-        case NodeAttributeType::Mesh:
+        case ComponentType::Mesh:
     {
         MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
 
@@ -74,10 +74,10 @@ void RenderManager::renderAttribute(const NodeAttributePtr &attribute)
     }
         break;
 
-        case NodeAttributeType::Camera:
+        case ComponentType::Camera:
         break;
 
-        case NodeAttributeType::Light:
+        case ComponentType::Light:
         break;
     }
 }
@@ -179,7 +179,7 @@ void RenderManager::createRenderViews()
 
 void RenderManager::renderMesh(const MeshPtr& mesh)
 {
-    SceneNodePtr node = mesh->getNode();
+    NodePtr node = mesh->getNode();
 
     this->renderer->setModelMatrix(node->getWorldMatrix());
 

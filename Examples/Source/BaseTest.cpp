@@ -178,7 +178,7 @@ void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
 }
 
 void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
-    node->setNodeAttribute(mesh);
+    node->addComponent(mesh);
 
     for (auto child : node->getChildren()) {
         AddMeshToNode(dynamic_pointer_cast<SceneNode>(child), mesh);

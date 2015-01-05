@@ -291,7 +291,7 @@ void Node2d::removeAllChildren()
     Node::removeAllChildren();
 }
 
-Geometry::ptr Node2d::getGeometry() const
+Geometry::ptr Node2d::getGeometry()
 {
     auto mesh = this->getMesh();
     if (mesh) {
@@ -301,15 +301,9 @@ Geometry::ptr Node2d::getGeometry() const
     return nullptr;
 }
 
-MeshPtr Node2d::getMesh() const
+MeshPtr Node2d::getMesh()
 {
-    if (this->attribute != nullptr && this->attribute->getType() == NodeAttributeType::Mesh) {
-        auto mesh = std::dynamic_pointer_cast<Mesh>(this->attribute);
-
-        return mesh;
-    }
-
-    return nullptr;
+    return this->getComponent<Mesh>();
 }
 
 void Node2d::updateLocalMatrix()
@@ -473,7 +467,7 @@ void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
     mesh->getMaterial()->setShder(shader);
 
-    node->setNodeAttribute(mesh);
+    node->addComponent(mesh);
 }
 
 }

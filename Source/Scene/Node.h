@@ -15,11 +15,13 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 #include "platform.h"
 #include "Base/Named.h"
 #include "Base/Uncopyable.h"
 #include "Base/Clonable.h"
+#include "Component.h"
 
 namespace re {
 
@@ -46,6 +48,8 @@ public:
 
     const Mat4& getWorldMatrix() const;
 
+    void updateTransform();
+
     NodePtr getParent() const;
     void setParent(NodePtr value);
     void removeFromeParent();
@@ -62,7 +66,14 @@ public:
     virtual void removeChild(NodePtr node);
     virtual void removeAllChildren();
 
-    void updateTransform();
+    void addComponent(ComponentPtr component);
+    void clearComponent();
+    size_t getComponentCount() const;
+    ComponentPtr getComponent(size_t index);
+    const std::vector<ComponentPtr>& getComponents() const;
+
+    template<typename T>
+    std::shared_ptr<T> getComponent();
 
     NodePtr clone() const;
 
@@ -89,12 +100,15 @@ protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyChildren(const Node* node);
     virtual void copyProperties(const Node *node);
+    virtual void copyComponents(const Node *node);
 
 protected:
     int level;
 
     std::weak_ptr<Node> parent;
     std::vector<NodePtr> children;
+
+    std::vector<ComponentPtr> components;
 
     Vec3 localTranslation;
     Vec3 localScaling;
@@ -109,6 +123,24 @@ protected:
     static const int RF_LOCAL_TRANSFORM = 0x01 << 0;
     static const int RF_WORLD_TRANSFORM = 0x01 << 1;
 };
+
+template<typename T>
+inline std::shared_ptr<T> Node::getComponent()
+{
+    auto iter = std::find_if(components.begin(), components.end(), [](ComponentPtr& component){
+        if (typeid(*component.get()) == typeid(T)) {
+            return true;
+        }
+
+        return false;
+    });
+
+    if (iter != components.end()) {
+        return std::static_pointer_cast<T>(*iter);
+    }
+
+    return nullptr;
+}
 
 } // namespace re
 

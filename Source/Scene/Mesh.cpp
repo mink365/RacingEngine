@@ -4,7 +4,7 @@ namespace re {
 
 Mesh::Mesh()
 {
-    this->type = NodeAttributeType::Mesh;
+    this->type = ComponentType::Mesh;
 }
 
 void Mesh::init()
@@ -45,19 +45,19 @@ void Mesh::setMaterial(MaterialPtr &m)
 
 MeshPtr Mesh::clone()
 {
-    NodeAttributePtr inst = NodeAttribute::clone();
+    ComponentPtr inst = Component::clone();
 
     return dynamic_pointer_cast<Mesh>(inst);
 }
 
-NodeAttributePtr Mesh::createCloneInstance() const
+ComponentPtr Mesh::createCloneInstance() const
 {
     return std::make_shared<Mesh>();
 }
 
-void Mesh::copyProperties(const NodeAttribute *att)
+void Mesh::copyProperties(const Component *att)
 {
-    NodeAttribute::copyProperties(att);
+    Component::copyProperties(att);
 
     const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {

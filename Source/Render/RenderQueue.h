@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 #include "Scene/SceneNode.h"
-#include "Scene/NodeAttribute.h"
+#include "Scene/Component.h"
 
 namespace re {
 
@@ -35,7 +35,7 @@ public:
 
 public:
     int listType;
-    std::vector<NodeAttributePtr> attributes;
+    std::vector<ComponentPtr> attributes;
 };
 
 class RenderQueue
@@ -46,8 +46,8 @@ public:
     RenderQueue();
     virtual ~RenderQueue();
 
-    void addRenderable(NodeAttributePtr node);
-    void addRenderable(NodeAttributePtr node, int type);
+    void addRenderable(ComponentPtr node);
+    void addRenderable(ComponentPtr node, int type);
 
     RenderableList &getRenderableList(int type);
 

@@ -4,7 +4,7 @@
 #include "SceneNode.h"
 #include "Geometry/Geometry.h"
 #include "Material/Material.h"
-#include "NodeAttribute.h"
+#include "Component.h"
 #include "Render/BufferObject/VertexBuffer.h"
 #include "Render/BufferObject/IndexBuffer.h"
 
@@ -85,7 +85,7 @@ public:
     IndexBuffer indexStream;
 };
 
-class Mesh : public NodeAttribute
+class Mesh : public Component
 {
 public:
     Mesh();
@@ -108,8 +108,8 @@ public:
     MeshPtr clone();
 
 protected:
-    virtual NodeAttributePtr createCloneInstance() const override;
-    virtual void copyProperties(const NodeAttribute* att) override;
+    virtual ComponentPtr createCloneInstance() const override;
+    virtual void copyProperties(const Component* att) override;
 
 protected:
     Material::ptr material;

@@ -111,8 +111,8 @@ public:
     virtual void removeAllChildren() override;
 
 protected:
-    Geometry::ptr getGeometry() const;
-    MeshPtr getMesh() const;
+    Geometry::ptr getGeometry();
+    MeshPtr getMesh();
 
     virtual void updateLocalMatrix();
     virtual void updateColor();

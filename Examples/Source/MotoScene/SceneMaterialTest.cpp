@@ -19,7 +19,7 @@ SceneMaterialTest::SceneMaterialTest()
 }
 
 void InitNodeShader(SceneNodePtr& node) {
-    MeshPtr mesh = dynamic_pointer_cast<Mesh>(node->getNodeAttribute());
+    MeshPtr mesh = node->getComponent<Mesh>();
 
     if (mesh) {
         InitMeshInHardward(mesh);
