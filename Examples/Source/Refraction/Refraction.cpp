@@ -31,7 +31,7 @@ void Refraction::Init()
 
         rootNode->addChild(node);
 
-        node->setLocalTranslation(Vec3(0, 0, -70));
+        node->getTransform()->setLocalTranslation(Vec3(0, 0, -70));
     }
     auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
     MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
@@ -55,7 +55,7 @@ void Refraction::Update(float dt)
         rotateValue = 0;
     }
 
-    node->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
+    node->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 }
 
 void Refraction::setupShader()
@@ -64,8 +64,8 @@ void Refraction::setupShader()
 
     Vec3 lightPosition = Vec3(100, 100, 0);
 
-    Vec3 cameraPosition = camera->getWorldMatrix().getTranslation();
-    Vec3 modelPosition = node->getWorldMatrix().getTranslation();
+    Vec3 cameraPosition = camera->getTransform()->getWorldMatrix().getTranslation();
+    Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();
     Vec3 eyePosModel = cameraPosition - modelPosition;
 
     Vec3 lightPosModel = lightPosition - modelPosition;

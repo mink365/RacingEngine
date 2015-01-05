@@ -91,7 +91,7 @@ void Skeleton::computeBone(BoneNodePtr bone, vector<Mat4> &boneDeformations, vec
 
 void Skeleton::updateBoneVertex(BoneNodePtr bone, vector<Vec3> &boneVertex, Int index)
 {
-    Vec3 v = bone->getWorldMatrix().getTranslation();
+    Vec3 v = bone->getTransform()->getWorldMatrix().getTranslation();
 
     Vec3 vertex = boneVertex.at(index);
     vertex = v;

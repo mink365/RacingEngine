@@ -1,5 +1,6 @@
 
 #include "LayoutUtil.h"
+#include "UI/Base/Transform2D.h"
 
 namespace re {
 
@@ -161,10 +162,11 @@ void LayoutUtil::Layout(Node2d::ptr src, float srcAlignX, float srcAlignY, Node2
         targetAlignXPosition = target->getContentSize().width * targetAlignX;
         targetAlignYPosition = target->getContentSize().height * targetAlignY;
     } else {
-        targetAlignXPosition = target->getPositionX() + target->getBoundingBox().size.width * (targetAlignX - targetAnchorPoint.x);
-        targetAlignYPosition = target->getPositionY() + target->getBoundingBox().size.height * (targetAlignY - targetAnchorPoint.y);
+        const Vec2 position = target->getTransform2D()->getPosition();
+        targetAlignXPosition = position.x + target->getBoundingBox().size.width * (targetAlignX - targetAnchorPoint.x);
+        targetAlignYPosition = position.y + target->getBoundingBox().size.height * (targetAlignY - targetAnchorPoint.y);
     }
-    src->setPosition(Vec2(targetAlignXPosition - anchorPointDiff.x * src->getBoundingBox().size.width + offsetX,
+    src->getTransform2D()->setPosition(Vec2(targetAlignXPosition - anchorPointDiff.x * src->getBoundingBox().size.width + offsetX,
                          targetAlignYPosition - anchorPointDiff.y * src->getBoundingBox().size.height + offsetY));
 
 }

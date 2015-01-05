@@ -80,10 +80,10 @@ void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
 
     if (this->getParent()) {
         // TODO: only use the position of parent?
-        Vec3 p = this->getParent()->getWorldMatrix().inverse() * eye;
-        this->setLocalTranslation(p);
+        Vec3 p = this->getParent()->getTransform()->getWorldMatrix().inverse() * eye;
+        this->getTransform()->setLocalTranslation(p);
     } else {
-        this->setLocalTranslation(eye);
+        this->getTransform()->setLocalTranslation(eye);
     }
 
     //       dir  up
@@ -107,7 +107,7 @@ void Camera::setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction)
     quat.fromAxes(left, up, direction);
 
     // TODO: error, not need it
-    this->setWorldRotation(quat);
+    this->getTransform()->setWorldRotation(quat);
 
     this->onChange();
 }
@@ -169,7 +169,7 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
 
 void Camera::recalcViewMatrix()
 {
-    this->viewMatrix.lookAt(this->worldMatrix.getTranslation(), this->center, this->up);
+    this->viewMatrix.lookAt(this->getTransform()->getWorldMatrix().getTranslation(), this->center, this->up);
 
     return;
 }

@@ -50,15 +50,15 @@ void Reflection::Update(float dt)
         rotateValue = 0;
     }
 
-    node->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
+    node->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 }
 
 void Reflection::setupShader()
 {
     Shader::ptr shader = ShaderManager::getInstance().getShader("reflection");
 
-    Vec3 cameraPosition = camera->getWorldMatrix().getTranslation();
-    Vec3 modelPosition = node->getWorldMatrix().getTranslation();
+    Vec3 cameraPosition = camera->getTransform()->getWorldMatrix().getTranslation();
+    Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();
     Vec3 eyePosModel = cameraPosition - modelPosition;
     shader->getUniform("eyePosModel")->setData(eyePosModel);
 

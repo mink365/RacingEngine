@@ -60,14 +60,14 @@ void Lightmap::Update(float dt)
         rotateValue = 0;
     }
 
-    node->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
+    node->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 }
 
 void Lightmap::setupShader()
 {
     Shader::ptr shader = ShaderManager::getInstance().getShader("lightmap");
 
-    re::Mat4 modelM = node->getWorldMatrix();
+    re::Mat4 modelM = node->getTransform()->getWorldMatrix();
     re::Mat4 modelViewM = camera->getViewMatrix() * modelM;
 
     re::Vec4 lightDirModel = modelM.inverse() * Vec4(1, 1, 1, 0);
@@ -89,6 +89,6 @@ void Lightmap::setupShader()
 
     re::Mat4 shadowViewPorj = projMatrix * viewMatrix;
 
-    re::Mat4 ShadowProj = shadowViewPorj * node->getWorldMatrix();
+    re::Mat4 ShadowProj = shadowViewPorj * node->getTransform()->getWorldMatrix();
     shader->getUniform("ShadowProj")->setData(ShadowProj);
 }

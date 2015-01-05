@@ -21,13 +21,13 @@ void UITest::Init()
 {
     SpritePtr sprite = CreateView<Sprite>("store_icon_coin.png");
     sprite->rebind();
-    sprite->setPosition(Vec2(300, 300 + 200));
+    sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
     NinePatchPtr patch = CreateView<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(200, 100));
     patch->rebind();
-    patch->setPosition(Vec2(300, 300 + 80));
+    patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
     patch->setAnchorPoint(Vec2(0.5, 0.5));
 
     std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
@@ -43,7 +43,7 @@ void UITest::Init()
     LabelPtr label2 = CreateView<Label>(font);
     label2->setText("xHtbo xx");
 
-    label2->setPosition(Vec2(300, 300 + 40));
+    label2->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 40));
 
     auto button = CreateView<ImageButton>("rate.png", "rate_press.png", "rate.png");
 
@@ -61,7 +61,7 @@ void UITest::Init()
 
     label->setContentSize(Size(200, 50));
     label->setAnchorPoint(Vec2(0.5, 0.5));
-    label->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
+    label->getComponent<Transform2D>()->setPosition(window->getContentSize().width/2.0, window->getContentSize().height / 2.0);
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         auto win = this->createWin();

@@ -52,8 +52,8 @@ void LightTest::Init()
     box = std::make_shared<SceneNode>();
     AddMeshToNode(box, mesh);
 
-    box->setLocalTranslation(Vec3(0, 0, 52));
-    box->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
+    box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
+    box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
     rootNode->addChild(box);
     box->updateTransform();
@@ -182,7 +182,7 @@ void LightTest::Update(float dt)
         rotateValue = 0;
     }
 
-    box->setLocalRotation(Quat().fromAngles(Vec3(0, 20, rotateValue)));
+    box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, 20, rotateValue)));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader(CURRENT_SHADER_NAME);
     if (!PHONG_LIGHT) {
@@ -223,7 +223,7 @@ void LightTest::Update(float dt)
         shader->getUniform("spotLightExponent")->setData(spotLightExponent.data());
     }
 
-    re::Mat4 modelMatrix = box->getWorldMatrix();
+    re::Mat4 modelMatrix = box->getTransform()->getWorldMatrix();
     normalMatrix[0].set(modelMatrix[0].x, modelMatrix[0].y, modelMatrix[0].z);
     normalMatrix[1].set(modelMatrix[1].x, modelMatrix[1].y, modelMatrix[1].z);
     normalMatrix[2].set(modelMatrix[2].x, modelMatrix[2].y, modelMatrix[2].z);

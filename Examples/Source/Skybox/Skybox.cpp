@@ -64,7 +64,7 @@ void Skybox::Update(float dt)
 {
     r += 0.02;
 
-    box->setLocalRotation(quat.fromAngles(Vec3(0, 0, r)));
+    box->getTransform()->setLocalRotation(quat.fromAngles(Vec3(0, 0, r)));
 
     float rad = r / 2.0;
     this->camera->setView(Vec3(0, 100, 0), Vec3(sin(rad), 100 + cos(rad), 0), Vec3(0, 0, 1));

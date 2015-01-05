@@ -7,6 +7,7 @@
 #include "Scene/SceneNode.h"
 #include "Geometry/Geometry.h"
 #include "Texture/Texture.h"
+#include "Transform2D.h"
 
 namespace re {
 
@@ -20,6 +21,9 @@ std::shared_ptr<T> CreateView(Args... args) {
 
     return view;
 }
+
+class Transform2D;
+typedef std::shared_ptr<Transform2D> Transform2DPtr;
 
 void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture, const string &shaderName);
 
@@ -47,6 +51,8 @@ protected:
 
 class Node2d : public SceneNode, public Shared<Node2d>, public Rgba
 {
+    friend class Transform2D;
+
 public:
     Node2d();
 
@@ -61,28 +67,6 @@ public:
 
     void stopAllActions();
 
-    void setPosition(const Vec2& position);
-    Vec2 getPosition() const;
-
-    void setPosition(float x, float y);
-    void setPositionX(float v);
-    void setPositionY(float v);
-    float getPositionX() const;
-    float getPositionY() const;
-
-    void setScale(const Vec2& scale);
-    Vec2 getScale() const;
-
-    void setScale(float x, float y);
-    void setScale(float v);
-    void setScaleX(float v);
-    void setScaleY(float v);
-    float getScaleX() const;
-    float getScaleY() const;
-
-    void setRotation(float v);
-    float getRotation() const;
-
     void setAnchorPoint(const Vec2& v);
     const Vec2& getAnchorPoint() const;
     Vec2 getAnchorPointInPixels() const;
@@ -92,18 +76,7 @@ public:
 
     Rect getBoundingBox() const;
 
-    /**
-     * Converts a Vec2 to node (local) space coordinates. The result is in Points.
-     */
-    Vec2 convertToNodeSpace(const Vec2& worldPoint) const;
-
-    /**
-     * Converts a Vec2 to world space coordinates. The result is in Points.
-     */
-    Vec2 convertToWorldSpace(const Vec2& nodePoint) const;
-
-    Vec2 convertParentToLocalSpace(const Vec2& point) const;
-    Vec2 convertNodeToParentSpace(const Vec2& point) const;
+    Transform2DPtr getTransform2D();
 
 public:
     virtual void addChild(NodePtr node, Int index=-1) override;
@@ -114,7 +87,6 @@ protected:
     Geometry::ptr getGeometry();
     MeshPtr getMesh();
 
-    virtual void updateLocalMatrix();
     virtual void updateColor();
 
     /**
@@ -131,6 +103,7 @@ protected:
     bool inScene;
 
     Size size;
+
     Vec2 anchorPoint;
     Vec2 anchorPointInPoints;
 

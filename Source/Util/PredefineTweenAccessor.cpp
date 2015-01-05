@@ -12,48 +12,49 @@ void PredefineTweenAccessor::registerAccessor()
     auto func = [=](std::shared_ptr<void> obj, int tweenType, TweenCMD cmd, float *values)->int
     {
         Node2d* node = (Node2d*)(obj.get());
+        Transform2DPtr transform = node->getTransform2D();
 
         if (cmd == TweenCMD::SET) {
             switch(tweenType) {
             case FlatNodeAccessor::POSITION_X:
             {
-                node->setPositionX(values[0]);
+                transform->setPositionX(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::POSITION_Y:
             {
-                node->setPositionY(values[0]);
+                transform->setPositionY(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::POSITION_XY:
             {
-                node->setPosition(Vec2(values[0], values[1]));
+                transform->setPosition(Vec2(values[0], values[1]));
 
                 break;
             }
             case FlatNodeAccessor::SCALE:
             {
-                node->setScale(values[0]);
+                transform->setScale(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::SCALE_X:
             {
-                node->setScaleX(values[0]);
+                transform->setScaleX(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::SCALE_Y:
             {
-                node->setScaleY(values[0]);
+                transform->setScaleY(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::SCALE_XY:
             {
-                node->setScale(Vec2(values[0], values[1]));
+                transform->setScale(Vec2(values[0], values[1]));
 
                 break;
             }
@@ -81,7 +82,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ROTATION:
             {
-                node->setRotation(values[0]);
+                transform->setRotation(values[0]);
 
                 break;
             }
@@ -108,7 +109,7 @@ void PredefineTweenAccessor::registerAccessor()
             switch(tweenType) {
             case FlatNodeAccessor::POSITION_X:
             {
-                const Vec2& position = node->getPosition();
+                const Vec2& position = transform->getPosition();
 
                 values[0] = position.x;
 
@@ -116,7 +117,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::POSITION_Y:
             {
-                const Vec2& position = node->getPosition();
+                const Vec2& position = transform->getPosition();
 
                 values[0] = position.y;
 
@@ -124,7 +125,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::POSITION_XY:
             {
-                const Vec2& position = node->getPosition();
+                const Vec2& position = transform->getPosition();
 
                 values[0] = position.x;
                 values[1] = position.y;
@@ -133,7 +134,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::SCALE:
             {
-                const Vec2& scale = node->getScale();
+                const Vec2& scale = transform->getScale();
 
                 values[0] = scale.x;
 
@@ -141,7 +142,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::SCALE_X:
             {
-                const Vec2& scale = node->getScale();
+                const Vec2& scale = transform->getScale();
 
                 values[0] = scale.x;
 
@@ -149,7 +150,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::SCALE_Y:
             {
-                const Vec2& scale = node->getScale();
+                const Vec2& scale = transform->getScale();
 
                 values[0] = scale.y;
 
@@ -157,7 +158,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::SCALE_XY:
             {
-                const Vec2& scale = node->getScale();
+                const Vec2& scale = transform->getScale();
 
                 values[0] = scale.x;
                 values[1] = scale.y;
@@ -191,7 +192,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ROTATION:
             {
-                values[0] = node->getRotation();
+                values[0] = transform->getRotation();
 
                 break;
             }

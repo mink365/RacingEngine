@@ -42,7 +42,6 @@ HEADERS += \
     $$system("find Util/ -name '*.h'") \
     $$files(*.h) \
     $$files(Platform/*.h) \
-    Audio/OpenAL/OpenALBase.h
 
 RE_PLATFORM_ANDROID {
     SOURCES += \

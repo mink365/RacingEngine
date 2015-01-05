@@ -206,7 +206,7 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
             continue;
         }
 
-        Vec2 p = childWidget->convertParentToLocalSpace(curr);
+        Vec2 p = childWidget->getTransform2D()->convertParentToLocalSpace(curr);
         event.setCurrPoint(p);
 
         // 有控件处理了事件就阻止传递
@@ -221,7 +221,7 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
 }
 
 bool Widget::hitFromWorldPoint(const Vec2 &p) {
-    Vec2 point = convertToNodeSpace(p);
+    Vec2 point = getTransform2D()->convertToNodeSpace(p);
     
     return this->hit(point);
 }
@@ -242,7 +242,7 @@ bool Widget::hitTest(Node2d::ptr node, Vec2 p) {
         return false;
     }
     
-    Vec2 localP = convertToNodeSpace(p);
+    Vec2 localP = getTransform2D()->convertToNodeSpace(p);
     
     Rect rect = node->getBoundingBox();
     

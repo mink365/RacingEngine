@@ -114,8 +114,8 @@ void Bumpmap::Init()
     auto box = std::make_shared<SceneNode>();
     AddMeshToNode(box, mesh);
 
-    box->setLocalTranslation(Vec3(0, 0, 52));
-    box->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
+    box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
+    box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
     rootNode->addChild(box);
 }

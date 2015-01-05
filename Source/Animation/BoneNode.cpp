@@ -47,7 +47,7 @@ Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Ma
         Mat4 clusterRelativeInitPosition = transformLinkMatrixInverse * globalInitPosition;
 
         Mat4 globalCurrentPositionInverse = globalPositionMatrix.inverse();
-        Mat4 clusterRelativeCurrentPositionInverse = globalCurrentPositionInverse * getWorldMatrix();
+        Mat4 clusterRelativeCurrentPositionInverse = globalCurrentPositionInverse * getTransform()->getWorldMatrix();
 
         return clusterRelativeCurrentPositionInverse * clusterRelativeInitPosition;
     }
@@ -61,8 +61,7 @@ void BoneNode::updateMatrix()
         animationTrack->updateLocalMatrix();
     }
 
-    this->updateLocalMatrix();
-    this->updateWorldMatrix();
+    this->getTransform()->refresh();
 }
 
 }

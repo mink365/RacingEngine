@@ -10,6 +10,7 @@
 namespace re {
 
 enum class ComponentType {
+    Transform,
     Mesh,
     Camera,
     Light,
@@ -32,7 +33,7 @@ public:
 
     ComponentType getType();
 
-    NodePtr getNode();
+    NodePtr getNode() const;
 
     ComponentPtr clone() const;
 

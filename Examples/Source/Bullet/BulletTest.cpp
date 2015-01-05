@@ -243,7 +243,7 @@ void BulletTest::initView()
     InitMeshInHardward(groundMesh);
     auto groundNode = std::make_shared<SceneNode>();
     AddMeshToNode(groundNode, groundMesh);
-    groundNode->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
+    groundNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
     rootNode->addChild(groundNode);
 
     texture = TextureManager::getInstance().getTexture("cube3");
@@ -278,7 +278,8 @@ void BulletTest::syncView()
 //        std::cout << "Index: " << i << " Position: " << v.x() << " " << v.y() << " " << v.z() << std::endl;
 
         auto boxNode = boxList.at(i - 1);
-        boxNode->setLocalTranslation(Vec3(v.x(),v.y(),v.z()));
-        boxNode->setLocalRotation(Quat(r.x(),r.y(),r.z(),r.w()));
+        TransformPtr& transform = boxNode->getTransform();
+        transform->setLocalTranslation(Vec3(v.x(),v.y(),v.z()));
+        transform->setLocalRotation(Quat(r.x(),r.y(),r.z(),r.w()));
     }
 }

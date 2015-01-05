@@ -181,7 +181,7 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 {
     NodePtr node = mesh->getNode();
 
-    this->renderer->setModelMatrix(node->getWorldMatrix());
+    this->renderer->setModelMatrix(node->getTransform()->getWorldMatrix());
 
     Material::ptr material = mesh->getMaterial();
 

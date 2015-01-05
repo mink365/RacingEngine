@@ -82,7 +82,7 @@ void FBXTest::Init()
         block->addChild(wall_copy);
         block->addChild(floor_copy);
 
-        block->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
+        block->getTransform()->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
         rootNode->addChild(block);
 
@@ -92,7 +92,7 @@ void FBXTest::Init()
     motoRoot = std::make_shared<SceneNode>();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
-    motoRoot->setLocalTranslation(Vec3(0, 0, 12));
+    motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));
 
     // TODO:
 //    moto->getMaterial()->getRenderState().setDepthTest(true);
@@ -137,12 +137,12 @@ void FBXTest::Update(float dt)
 
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
-    motoRoot->setLocalRotation(quat);
+    motoRoot->getTransform()->setLocalRotation(quat);
 
     manController->update();
     MeshPtr mesh = manController->getMesh();
 
     BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh.get()));
 
-    mesh->getNode()->setLocalRotation(quat);
+    mesh->getNode()->getTransform()->setLocalRotation(quat);
 }

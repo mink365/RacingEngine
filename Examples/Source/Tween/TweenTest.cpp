@@ -28,13 +28,13 @@ void TweenTest::Init()
 
     SpritePtr sprite = CreateView<Sprite>("store_icon_coin.png");
     sprite->rebind();
-    sprite->setPosition(Vec2(300, 300 + 200));
+    sprite->getTransform2D()->setPosition(Vec2(300, 300 + 200));
 
     NinePatchPtr patch = CreateView<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->setContentSize(Size(200, 100));
     patch->rebind();
-    patch->setPosition(Vec2(300, 300 + 80));
+    patch->getTransform2D()->setPosition(Vec2(300, 300 + 80));
     patch->setAnchorPoint(Vec2(0.5, 0.5));
 
     std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
@@ -46,11 +46,11 @@ void TweenTest::Init()
 
     LabelPtr label = CreateView<Label>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
-    label->setPosition(Vec2(300, 500 + 40));
+    label->getTransform2D()->setPosition(Vec2(300, 500 + 40));
 
     LabelPtr label2 = CreateView<Label>(font);
     label2->setText("xHtbo xx");
-    label2->setPosition(Vec2(300, 300 + 40));
+    label2->getTransform2D()->setPosition(Vec2(300, 300 + 40));
 
     auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");

@@ -263,9 +263,10 @@ void AnimationTrack::linearDeformation()
 
     std::shared_ptr<Node> node =  this->node.lock();
 
-    node->setLocalTranslation(trans);
-    node->setLocalRotation(rotate);
-    node->setLocalScaling(scale);
+    TransformPtr& transform = node->getTransform();
+    transform->setLocalTranslation(trans);
+    transform->setLocalRotation(rotate);
+    transform->setLocalScaling(scale);
 }
 
 void AnimationTrack::updateTrackInfo()

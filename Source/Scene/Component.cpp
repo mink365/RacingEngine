@@ -11,7 +11,7 @@ Component::~Component()
 
 }
 
-NodePtr Component::getNode()
+NodePtr Component::getNode() const
 {
     return this->attachNode.lock();
 }

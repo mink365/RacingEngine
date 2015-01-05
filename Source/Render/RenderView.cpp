@@ -63,7 +63,7 @@ void RenderView::init(LightPtr &light)
         // TODO: center shold be calc by light direct and curr pos
         Vec3 center{0, 0, 0};
         Vec3 up(0, 1, 0);
-        Vec3 p = light->worldMatrix.getTranslation();
+        Vec3 p = light->getTransform()->getWorldMatrix().getTranslation();
         p.z *= -1;
 
         this->viewMatrix.lookAt(p, center, up);
@@ -86,7 +86,7 @@ void RenderView::init(LightPtr &light)
         Vec3 center{0, 0, 0};
         Vec3 up(0, 1, 0);
 
-        this->viewMatrix.lookAt(light->worldMatrix.getTranslation(), center, up);
+        this->viewMatrix.lookAt(light->getTransform()->getWorldMatrix().getTranslation(), center, up);
 
         this->projMatrix.setPerspective(fov, zNear, zFar);
 

@@ -71,7 +71,7 @@ void FbxParser::parseData(void *data, Long datalen)
 }
 
 void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
-    Vec3 transform = reader->ReadVec3(st);
+    Vec3 position = reader->ReadVec3(st);
     Vec3 rotation = reader->ReadVec3(st);
     Vec3 scale = reader->ReadVec3(st);
 
@@ -81,11 +81,11 @@ void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
 
     rotation *= DEG_TO_RAD;
 
-    node->localTranslation.set(transform);
-    node->localRotation.fromAngles(rotation);
-    node->localScaling.set(scale);
+    TransformPtr& transform = node->getTransform();
 
-    node->markLocalTransformRefreshFlag();
+    transform->setLocalTranslation(position);
+    transform->setLocalRotation(Quat().fromAngles(rotation));
+    transform->setLocalScaling(scale);
 }
 
 SceneNodePtr FbxParser::readNode(std::istream *st) {
@@ -355,9 +355,10 @@ BoneNodePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 
     vectorR *= DEG_TO_RAD;
 
-    bone->setLocalTranslation(vectorT);
-    bone->setLocalRotation(vectorR.toQuat());
-    bone->setLocalScaling(vectorS);
+    TransformPtr& transform = bone->getTransform();
+    transform->setLocalTranslation(vectorT);
+    transform->setLocalRotation(vectorR.toQuat());
+    transform->setLocalScaling(vectorS);
 
     Int keyCount = reader->ReadInt(st);
     if (keyCount > 0) {

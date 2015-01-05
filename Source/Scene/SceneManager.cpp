@@ -73,7 +73,7 @@ void SceneManager::clearFrame()
 
 void SceneManager::vist(const SceneNodePtr &node)
 {
-    if (node->refreshFlags & Node::RF_LOCAL_TRANSFORM) {
+    if (node->getTransform()->refreshFlags & Transform::RF_LOCAL_TRANSFORM) {
         this->sceneTransformUpdateBucket.push_back(node);
     }
 

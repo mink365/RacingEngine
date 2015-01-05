@@ -97,5 +97,5 @@ void RenderToTextureTest::Update(float dt)
         rotateValue = 0;
     }
 
-    cylinderNode->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
+    cylinderNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 }

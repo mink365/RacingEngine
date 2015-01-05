@@ -60,7 +60,7 @@ void ShadowTest::Init()
     AddMeshToNode(ground, groundMesh);
 
     // TODO: if the plane z > 100, shadow will be cull ?
-    ground->setLocalTranslation(Vec3(0, 0, 0));
+    ground->getTransform()->setLocalTranslation(Vec3(0, 0, 0));
 
     rootNode->addChild(ground);
     ground->updateTransform();
@@ -71,8 +71,8 @@ void ShadowTest::Init()
     box = std::make_shared<SceneNode>();
     AddMeshToNode(box, mesh);
 
-    box->setLocalTranslation(Vec3(0, 0, 22));
-    box->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
+    box->getTransform()->setLocalTranslation(Vec3(0, 0, 22));
+    box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
     rootNode->addChild(box);
     box->updateTransform();
@@ -85,7 +85,7 @@ void ShadowTest::Init()
     SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
-    light->setLocalTranslation(Vec3(0, -200, 300));
+    light->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
     light->updateTransform();
     auto dirLight = std::dynamic_pointer_cast<SpotLight>(light);
     dirLight->shadow.shadowCameraNear = 10;
@@ -95,8 +95,8 @@ void ShadowTest::Init()
 
     sprite = CreateView<Sprite>("diffuse.png");
     sprite->rebind();
-    sprite->setScale(Vec2(1, 1));
-    sprite->setPosition(Vec2(0, 0));
+    sprite->getTransform2D()->setScale(Vec2(1, 1));
+    sprite->getTransform2D()->setPosition(Vec2(0, 0));
 
     auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
@@ -171,7 +171,7 @@ void ShadowTest::Update(float dt)
         rotateValue = 0;
     }
 
-    box->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
+    box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
     auto spriteMesh = sprite->getComponent<Mesh>();
     auto groundMesh = ground->getComponent<Mesh>();

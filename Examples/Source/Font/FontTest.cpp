@@ -41,7 +41,7 @@ void FontTest::Init()
     box = std::make_shared<SceneNode>();
     AddMeshToNode(box, mesh);
 
-    box->setLocalTranslation(Vec3(0, 0, 52));
+    box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
 
     rootNode->addChild(box);
 }
@@ -57,5 +57,5 @@ void FontTest::Update(float dt)
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
 
-    box->setLocalRotation(quat);
+    box->getTransform()->setLocalRotation(quat);
 }
