@@ -14,10 +14,6 @@
 
 using namespace std;
 
-typedef uint GPU_ID;
-
-typedef uint64_t OBJ_ID;
-
 typedef uint8_t ubyte;
 typedef uint16_t ushort;
 typedef uint32_t uint;
@@ -26,6 +22,9 @@ typedef uint64_t ulong;
 typedef int8_t byte;
 typedef int32_t Int;
 typedef int64_t Long;
+
+typedef uint GPU_ID;
+typedef uint64_t OBJ_ID;
 
 enum ClearBufferBit {
     COLOR_BUFFER_BIT = 2,

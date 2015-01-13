@@ -1,6 +1,7 @@
 #include "StringUtil.h"
 
 #include <stdarg.h>
+#include <stdlib.h>
 
 #define STARTING_BUFFER_SIZE  512
 

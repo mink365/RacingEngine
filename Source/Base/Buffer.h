@@ -4,6 +4,7 @@
 #include "Shared.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 namespace re {
 

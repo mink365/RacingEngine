@@ -9,6 +9,9 @@
         #include <OpenGL/gl.h>
     #endif
 
+    #define GL_HALF_FLOAT_OES GL_FLOAT
+    #define GL_ETC1_RGB8_OES 0
+
     #define GLES 0
 #elif defined(RE_PLATFORM_WIN)
     #include <Windows.h>
