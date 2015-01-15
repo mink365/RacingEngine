@@ -81,12 +81,12 @@ void ShadowTest::Init()
 
     // light
     re::LightPtr light = std::make_shared<SpotLight>();
-    rootNode->addChild(light);
+    rootNode->addChild(std::dynamic_pointer_cast<SceneNode>(light->getNode()));
     SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
-    light->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
-    light->updateTransform();
+    light->getNode()->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
+    light->getNode()->updateTransform();
     auto dirLight = std::dynamic_pointer_cast<SpotLight>(light);
     dirLight->shadow.shadowCameraNear = 10;
     dirLight->shadow.shadowCameraFar = 500;

@@ -9,16 +9,17 @@
 #define NODE_H_
 
 #include <string>
+#include <typeinfo>
+#include <typeindex>
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <unordered_map>
 
 #include "platform.h"
 #include "Base/Named.h"
 #include "Base/Uncopyable.h"
 #include "Base/Clonable.h"
-#include "Component.h"
-#include "Transform.h"
 
 namespace re {
 
@@ -77,6 +78,7 @@ protected:
     std::vector<NodePtr> children;
 
     std::vector<ComponentPtr> components;
+    std::unordered_map<std::type_index, std::vector<ComponentPtr>> componentMap;
 
 protected:
     TransformPtr transform;
@@ -85,16 +87,10 @@ protected:
 template<typename T>
 inline std::shared_ptr<T> Node::getComponent()
 {
-    auto iter = std::find_if(components.begin(), components.end(), [](ComponentPtr& component){
-        if (typeid(*component.get()) == typeid(T)) {
-            return true;
-        }
+    auto iter = this->componentMap.find(typeid(T));
 
-        return false;
-    });
-
-    if (iter != components.end()) {
-        return std::static_pointer_cast<T>(*iter);
+    if (iter != componentMap.end() && iter->second.size() > 0) {
+        return std::static_pointer_cast<T>(iter->second[0]);
     }
 
     return nullptr;

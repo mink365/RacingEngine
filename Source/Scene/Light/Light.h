@@ -1,7 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "Scene/SceneNode.h"
+#include "Scene/Component.h"
 #include "Math/Color.h"
 
 namespace re {
@@ -24,7 +24,7 @@ public:
     std::shared_ptr<RenderTarget> renderTarget;
 };
 
-class Light : public SceneNode
+class Light : public Component
 {
     friend class RenderView;
 

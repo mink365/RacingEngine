@@ -6,6 +6,7 @@
 #include "Base/Named.h"
 #include "Base/Uncopyable.h"
 #include "Base/Clonable.h"
+#include "Scene/Node.h"
 
 namespace re {
 
@@ -35,6 +36,9 @@ public:
 
     NodePtr getNode() const;
 
+    template<typename T>
+    std::shared_ptr<T> getComponent();
+
     ComponentPtr clone() const;
 
 protected:
@@ -50,6 +54,12 @@ protected:
 inline ComponentType Component::getType()
 {
     return this->type;
+}
+
+template<typename T>
+inline std::shared_ptr<T> Component::getComponent()
+{
+    return getNode()->getComponent<T>();
 }
 
 } //namespace re

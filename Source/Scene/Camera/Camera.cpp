@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Scene/Node.h"
 
 namespace re {
 
@@ -78,12 +79,14 @@ void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
 {
     this->center = center;
 
-    if (this->getParent()) {
+    auto transform = this->getComponent<Transform>();
+
+    if (this->getNode()->getParent()) {
         // TODO: only use the position of parent?
-        Vec3 p = this->getParent()->getTransform()->getWorldMatrix().inverse() * eye;
-        this->getTransform()->setLocalTranslation(p);
+        Vec3 p = this->getNode()->getParent()->getTransform()->getWorldMatrix().inverse() * eye;
+        transform->setLocalTranslation(p);
     } else {
-        this->getTransform()->setLocalTranslation(eye);
+        transform->setLocalTranslation(eye);
     }
 
     //       dir  up
@@ -107,7 +110,8 @@ void Camera::setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction)
     quat.fromAxes(left, up, direction);
 
     // TODO: error, not need it
-    this->getTransform()->setWorldRotation(quat);
+    auto transform = this->getComponent<Transform>();
+    transform->setWorldRotation(quat);
 
     this->onChange();
 }
@@ -169,7 +173,9 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
 
 void Camera::recalcViewMatrix()
 {
-    this->viewMatrix.lookAt(this->getTransform()->getWorldMatrix().getTranslation(), this->center, this->up);
+    auto transform = this->getComponent<Transform>();
+
+    this->viewMatrix.lookAt(transform->getWorldMatrix().getTranslation(), this->center, this->up);
 
     return;
 }
@@ -193,7 +199,7 @@ void Camera::recalcProjectionMatrix()
 
 void Camera::onChange()
 {
-    this->updateTransform();
+    this->getNode()->updateTransform();
 
     this->recalcViewMatrix();
     this->recalcProjectionMatrix();

@@ -8,6 +8,7 @@
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
 #include "Scene/Mesh.h"
+#include "Scene/Transform.h"
 #include "Platform/GameHub.h"
 
 re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation)

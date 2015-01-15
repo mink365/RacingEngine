@@ -126,7 +126,6 @@ void setDepthRGBAAttribute(Shader::ptr& shader) {
     vertAttr->setOffset(0);
 }
 
-Camera camera;
 int LoadShaderData(const std::string& name, const std::string& vs, const std::string& fs) {
     Shader::ptr shader = Shader::create();
     shader->setName(name);

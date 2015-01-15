@@ -64,7 +64,7 @@ void Refraction::setupShader()
 
     Vec3 lightPosition = Vec3(100, 100, 0);
 
-    Vec3 cameraPosition = camera->getTransform()->getWorldMatrix().getTranslation();
+    Vec3 cameraPosition = camera->getNode()->getTransform()->getWorldMatrix().getTranslation();
     Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();
     Vec3 eyePosModel = cameraPosition - modelPosition;
 

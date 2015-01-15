@@ -7,6 +7,7 @@
 
 #include "Node.h"
 #include <algorithm>
+#include "Transform.h"
 
 namespace re {
 
@@ -183,6 +184,7 @@ void Node::addComponent(ComponentPtr component)
 
     component->attachNode = ptr;
     this->components.push_back(component);
+    this->componentMap[std::type_index(typeid(component.get()))].push_back(component);
 }
 
 void Node::clearComponent()

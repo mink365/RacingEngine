@@ -71,7 +71,7 @@ void RenderToTextureTest::Init()
     presCamera->setClearColor(Color(169.0/255, 74.0/255, 174.0/255, 1));
 
     SceneManager::getInstance().getRenderManager().addCamera(presCamera);
-    SceneManager::getInstance().addRootNode(presCamera);
+    SceneManager::getInstance().addRootNode(std::dynamic_pointer_cast<SceneNode>(presCamera->getNode()));
 
     // create the normal geometry
     geometry = ShapeGenerater::getInstance().CreateBox(100, 100, 100, 10, 10, 10);

@@ -4,6 +4,7 @@
 #include "Math/Vector.h"
 #include "BoneNode.h"
 #include "Scene/Node.h"
+#include "Scene/Transform.h"
 
 namespace re {
 

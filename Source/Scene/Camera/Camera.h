@@ -2,7 +2,8 @@
 #define CAMERA_H
 
 #include <functional>
-#include "Scene/SceneNode.h"
+#include "Scene/Component.h"
+#include "Scene/Transform.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"
 
@@ -13,7 +14,7 @@ enum class CameraProjectionMode {
     Orthographic
 };
 
-class Camera : public SceneNode
+class Camera : public Component
 {
     friend class RenderView;
 

@@ -57,7 +57,7 @@ void Reflection::setupShader()
 {
     Shader::ptr shader = ShaderManager::getInstance().getShader("reflection");
 
-    Vec3 cameraPosition = camera->getTransform()->getWorldMatrix().getTranslation();
+    Vec3 cameraPosition = camera->getNode()->getTransform()->getWorldMatrix().getTranslation();
     Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();
     Vec3 eyePosModel = cameraPosition - modelPosition;
     shader->getUniform("eyePosModel")->setData(eyePosModel);

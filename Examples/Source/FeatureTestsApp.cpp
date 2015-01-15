@@ -232,8 +232,8 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().getRenderManager().addCamera(presCamera);
     SceneManager::getInstance().getRenderManager().addCamera(uiCamera);
 
-    SceneManager::getInstance().addRootNode(presCamera);
-    SceneManager::getInstance().addRootNode(uiCamera);
+    SceneManager::getInstance().addRootNode(std::dynamic_pointer_cast<SceneNode>(presCamera->getNode()));
+    SceneManager::getInstance().addRootNode(std::dynamic_pointer_cast<SceneNode>(uiCamera->getNode()));
 
     SearchPath searchPath;
 #ifdef RE_PLATFORM_LINUX

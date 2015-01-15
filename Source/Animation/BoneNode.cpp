@@ -1,6 +1,7 @@
 #include "BoneNode.h"
 
 #include "Scene/Node.h"
+#include "Scene/Transform.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 

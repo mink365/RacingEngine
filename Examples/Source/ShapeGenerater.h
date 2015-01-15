@@ -2,7 +2,7 @@
 #define SHAPEGENERATER_H
 
 #include "Scene/Mesh.h"
-
+#include "Math/Math.h"
 #include "Base/Singleton.h"
 
 using namespace re;
