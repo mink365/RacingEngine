@@ -4,7 +4,7 @@
 #include <vector>
 #include "Base/Singleton.h"
 
-#include "SceneNode.h"
+#include "Scene/Node.h"
 #include "Render/RenderManager.h"
 
 namespace re {
@@ -16,10 +16,10 @@ class SceneManager : public Singleton<SceneManager>
     friend class Singleton;
 
 public:
-    void addRootNode(SceneNodePtr node);
-    void removeRootNode(const SceneNodePtr node);
+    void addRootNode(NodePtr node);
+    void removeRootNode(const NodePtr node);
     void clearRootNodes();
-    std::vector<SceneNodePtr> &getRootNodes();
+    std::vector<NodePtr> &getRootNodes();
 
     void renderScene();
 
@@ -32,15 +32,15 @@ public:
     void clearFrame();
 
 protected:
-    void vist(const SceneNodePtr& node);
+    void vist(const NodePtr& node);
 
 private:
     SceneManager();
 
 private:
-    std::vector<SceneNodePtr> roots;
+    std::vector<NodePtr> roots;
 
-    std::vector<SceneNodePtr> sceneTransformUpdateBucket;
+    std::vector<NodePtr> sceneTransformUpdateBucket;
 
     RenderManager renderManger;
 };

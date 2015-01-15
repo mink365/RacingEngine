@@ -8,7 +8,7 @@ Reflection::Reflection()
     this->name = "Reflection";
 }
 
-static SceneNodePtr node;
+static NodePtr node;
 void Reflection::Init()
 {
     std::string shaderDir = "Shaders/";
@@ -30,7 +30,7 @@ void Reflection::Init()
 //    InitMeshInHardward(mesh);
     mesh->getMaterial()->setQueueID(51);
 
-    node = std::make_shared<SceneNode>();
+    node = CreateNode();
     AddMeshToNode(node, mesh);
 
     rootNode->addChild(node);

@@ -88,14 +88,14 @@ void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
     transform->setLocalScaling(scale);
 }
 
-SceneNodePtr FbxParser::readNode(std::istream *st) {
+NodePtr FbxParser::readNode(std::istream *st) {
     FbxNodeAttributeType attType = (FbxNodeAttributeType)reader->ReadInt(st);
 
     switch (attType) {
     case FbxNodeAttributeType::MESH:
     case FbxNodeAttributeType::GROUP:
     {
-        SceneNodePtr node = std::make_shared<SceneNode>();
+        NodePtr node = std::make_shared<Node>();
 
         Long id = reader->ReadLong(st);
         std::string name = reader->ReadString(st);
@@ -135,7 +135,7 @@ SceneNodePtr FbxParser::readNode(std::istream *st) {
     return nullptr;
 }
 
-void FbxParser::readMesh(std::istream *st, SceneNodePtr node) {
+void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();
     node->addComponent(mesh);
@@ -489,12 +489,12 @@ void FbxParser::bindClusterData()
     }
 }
 
-std::vector<SceneNodePtr> FbxParser::getNodes() const
+std::vector<NodePtr> FbxParser::getNodes() const
 {
     return nodes;
 }
 
-SceneNodePtr FbxParser::getSceneNode(const string &name) const
+NodePtr FbxParser::getNode(const string &name) const
 {
     for (auto node : this->nodes) {
         if (node->getName() == name) {
@@ -529,7 +529,7 @@ SkeletonPtr FbxParser::getSkeleton(Long id) const
 
 SkeletonControllerPtr FbxParser::getSkeletonController(const string &name) const
 {
-    auto node = this->getSceneNode(name);
+    auto node = this->getNode(name);
     RE_ASSERT(node != nullptr);
 
     auto coll = this->getClusterCollection(node->getId());

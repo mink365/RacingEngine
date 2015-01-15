@@ -15,9 +15,9 @@ FBXTest::FBXTest()
 
 const static int BLOCK_LENGTH = 157;
 const static int BLOCK_COUNT = 5;
-std::vector<SceneNodePtr> blocks;
-SceneNodePtr black_box;
-SceneNodePtr motoRoot;
+std::vector<NodePtr> blocks;
+NodePtr black_box;
+NodePtr motoRoot;
 SkeletonControllerPtr manController;
 
 void FBXTest::Init()
@@ -39,13 +39,13 @@ void FBXTest::Init()
 
     FilePtr file = FileSystem::getInstance().getFile((assertDir + "black.data"));
     parser->parse(file);
-    SceneNodePtr black = parser->getNodes()[0];
+    NodePtr black = parser->getNodes()[0];
 
     file = FileSystem::getInstance().getFile((assertDir + "wall.data"));
     parser->parse(file);
 
-    SceneNodePtr wall = parser->getNodes()[0];
-    SceneNodePtr floor = parser->getNodes()[1];
+    NodePtr wall = parser->getNodes()[0];
+    NodePtr floor = parser->getNodes()[1];
 
     assertDir = "Model/Moto/";
 
@@ -56,24 +56,24 @@ void FBXTest::Init()
 
     file = FileSystem::getInstance().getFile((assertDir + "new_group_moto03.data"));
     parser->parse(file);
-    SceneNodePtr shadow = parser->getNodes()[0];
-    SceneNodePtr moto = parser->getNodes()[1];
+    NodePtr shadow = parser->getNodes()[0];
+    NodePtr moto = parser->getNodes()[1];
 
-    std::vector<SceneNodePtr> meshs;
+    std::vector<NodePtr> meshs;
     meshs.push_back(wall);
     meshs.push_back(floor);
     meshs.push_back(black);
     meshs.push_back(shadow);
     meshs.push_back(moto);
 
-    for (SceneNodePtr node : meshs) {
+    for (NodePtr node : meshs) {
         MeshPtr mesh = node->getComponent<Mesh>();
 
         InitMeshInHardward(mesh);
     }
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
-        SceneNodePtr block = std::make_shared<SceneNode>();
+        NodePtr block = CreateNode();
 
         auto wall_copy = wall->clone();
 
@@ -89,7 +89,7 @@ void FBXTest::Init()
         blocks.push_back(block);
     }
 
-    motoRoot = std::make_shared<SceneNode>();
+    motoRoot = CreateNode();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));
@@ -121,7 +121,7 @@ void FBXTest::Init()
 //    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(2);
 //    InitMeshInHardward(mesh);
 
-//    auto box = std::make_shared<SceneNode>();
+//    auto box = CreateNode();
 //    AddMeshToNode(box, mesh);
 }
 

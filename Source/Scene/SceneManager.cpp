@@ -7,16 +7,16 @@ SceneManager::SceneManager()
 {
 }
 
-void SceneManager::addRootNode(SceneNodePtr node)
+void SceneManager::addRootNode(NodePtr node)
 {
     node->resetParent();
 
     this->roots.push_back(node);
 }
 
-void SceneManager::removeRootNode(const SceneNodePtr node)
+void SceneManager::removeRootNode(const NodePtr node)
 {
-    std::vector<SceneNodePtr>::iterator iter;
+    std::vector<NodePtr>::iterator iter;
     iter = find(this->roots.begin(), this->roots.end(), node);
 
     if (iter != this->roots.end()) {
@@ -29,12 +29,12 @@ void SceneManager::clearRootNodes()
     this->roots.clear();
 }
 
-std::vector<SceneNodePtr> &SceneManager::getRootNodes()
+std::vector<NodePtr> &SceneManager::getRootNodes()
 {
     return this->roots;
 }
 
-bool bucketComp (const SceneNodePtr node1, const SceneNodePtr node2) {
+bool bucketComp (const NodePtr node1, const NodePtr node2) {
     if (node1->getLevel() > node2->getLevel()) {
         return true;
     }
@@ -71,13 +71,13 @@ void SceneManager::clearFrame()
     this->renderManger.clear();
 }
 
-void SceneManager::vist(const SceneNodePtr &node)
+void SceneManager::vist(const NodePtr &node)
 {
     if (node->getTransform()->refreshFlags & Transform::RF_LOCAL_TRANSFORM) {
         this->sceneTransformUpdateBucket.push_back(node);
     }
 
-    if (node->visible) {
+    if (node->isVisible()) {
         for (auto& component : node->getComponents()) {
             if (component->getType() == ComponentType::Mesh) {
                 MeshPtr mesh = dynamic_pointer_cast<Mesh>(component);
@@ -86,9 +86,7 @@ void SceneManager::vist(const SceneNodePtr &node)
         }
 
         for (auto& child : node->getChildren()) {
-            auto childSceneNode = dynamic_pointer_cast<SceneNode>(child);
-
-            this->vist(childSceneNode);
+            this->vist(child);
         }
     }
 }

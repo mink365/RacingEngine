@@ -3,6 +3,13 @@
 
 #include "opengl.h"
 
+NodePtr CreateNode()
+{
+    auto node = std::make_shared<Node>();
+
+    return node;
+}
+
 int CheckShaderLinkError(GLint program) {
     GLint IsLinked;
     glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);
@@ -176,11 +183,11 @@ void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
     mesh->getMaterial()->setShder(shader);
 }
 
-void AddMeshToNode(SceneNodePtr node, MeshPtr mesh) {
+void AddMeshToNode(NodePtr node, MeshPtr mesh) {
     node->addComponent(mesh);
 
     for (auto child : node->getChildren()) {
-        AddMeshToNode(dynamic_pointer_cast<SceneNode>(child), mesh);
+        AddMeshToNode(child, mesh);
     }
 }
 

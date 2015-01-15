@@ -50,7 +50,7 @@ private:
     int currIndex;
 
     CameraPtr presCamera;
-    SceneNodePtr rootNode;
+    NodePtr rootNode;
     std::shared_ptr<ui::UIManager> stage;
 
     LabelPtr labelTitle;

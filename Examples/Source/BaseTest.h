@@ -4,7 +4,7 @@
 #include "PreDeclare.h"
 
 #include "Scene/SceneManager.h"
-#include "Scene/SceneNode.h"
+#include "Scene/Node.h"
 #include "Camera/Camera.h"
 #include "UI/Scene.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -22,10 +22,25 @@
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Shader/ShaderManager.h"
 #include "UI/Manager/UIManager.h"
+#include <memory>
 
 using namespace re;
 
 class FeatureTestsApp;
+
+template<typename T>
+std::shared_ptr<T> CreateComponent()
+{
+    auto node = std::make_shared<Node>();
+
+    auto component = std::make_shared<T>();
+
+    node->addComponent(component);
+
+    return component;
+}
+
+NodePtr CreateNode();
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
 
@@ -47,12 +62,12 @@ public:
 protected:
     std::string name;
 
-    SceneNodePtr rootNode;
+    NodePtr rootNode;
     CameraPtr camera;
     std::shared_ptr<ui::UIManager> stage;
 };
 
 void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC");
-void AddMeshToNode(SceneNodePtr node, MeshPtr mesh);
+void AddMeshToNode(NodePtr node, MeshPtr mesh);
 
 #endif // BASETEST_H

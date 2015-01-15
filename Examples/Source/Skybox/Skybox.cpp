@@ -9,8 +9,8 @@ Skybox::Skybox()
     this->name = "SkyboxTest";
 }
 
-static SceneNodePtr box;
-static SceneNodePtr skybox;
+static NodePtr box;
+static NodePtr skybox;
 
 void Skybox::Init()
 {
@@ -30,7 +30,7 @@ void Skybox::Init()
         MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, tex);
         InitMeshInHardward(mesh, "cubemap");
 
-        box = std::make_shared<SceneNode>();
+        box = CreateNode();
         AddMeshToNode(box, mesh);
     }
 
@@ -41,7 +41,7 @@ void Skybox::Init()
 
         mesh->getMaterial()->getRenderState().faceCullMode = FaceCullMode::Off;
 
-        skybox = std::make_shared<SceneNode>();
+        skybox = CreateNode();
         AddMeshToNode(skybox, mesh);
     }
 

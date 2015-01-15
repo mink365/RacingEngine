@@ -13,11 +13,11 @@ typedef shared_ptr<SkeletonController> SkeletonControllerPtr;
 class SkeletonController
 {
 public:
-    SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation);
+    SkeletonController(NodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation);
 
     SkeletonPtr getSkeleton();
     AnimationPtr getAnimation();
-    SceneNodePtr getMeshNode();
+    NodePtr getMeshNode();
     MeshPtr getMesh();
 
     void play();
@@ -39,7 +39,7 @@ private:
 private:
     SkeletonPtr skeleton;
     AnimationPtr animation;
-    SceneNodePtr sceneNode;
+    NodePtr sceneNode;
     MeshPtr mesh;
     SkinnedMeshDataPtr meshData;
 

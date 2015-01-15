@@ -3,7 +3,6 @@
 
 #include <map>
 #include <vector>
-#include "Scene/SceneNode.h"
 #include "Scene/Component.h"
 
 namespace re {

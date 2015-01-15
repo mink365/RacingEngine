@@ -4,7 +4,6 @@
 #include "Math/Rect.h"
 #include "Math/Color.h"
 #include "Base/Shared.h"
-#include "Scene/SceneNode.h"
 #include "Geometry/Geometry.h"
 #include "Texture/Texture.h"
 #include "Transform2D.h"
@@ -25,7 +24,7 @@ std::shared_ptr<T> CreateView(Args... args) {
 class Transform2D;
 typedef std::shared_ptr<Transform2D> Transform2DPtr;
 
-void InitNodeForLeaf(SceneNodePtr& node, Texture::ptr texture, const string &shaderName);
+void InitNodeForLeaf(NodePtr& node, Texture::ptr texture, const string &shaderName);
 
 class Rgba {
 public:
@@ -49,7 +48,7 @@ protected:
     Color worldColor;
 };
 
-class Node2d : public SceneNode, public Shared<Node2d>, public Rgba
+class Node2d : public Node, public Shared<Node2d>, public Rgba
 {
     friend class Transform2D;
 

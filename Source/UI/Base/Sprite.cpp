@@ -32,7 +32,7 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 
     this->setContentSize(rect.size);
 
-    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    NodePtr node = this->shared_from_this();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     this->rebind();

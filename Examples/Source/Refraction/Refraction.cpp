@@ -8,7 +8,7 @@ Refraction::Refraction()
     this->name = "Refraction";
 }
 
-static SceneNodePtr node;
+static NodePtr node;
 void Refraction::Init()
 {
     std::string shaderDir = "Shaders/";
@@ -26,7 +26,7 @@ void Refraction::Init()
         InitMeshInHardward(mesh);
         mesh->getMaterial()->setQueueID(51);
 
-        auto node = std::make_shared<SceneNode>();
+        auto node = CreateNode();
         AddMeshToNode(node, mesh);
 
         rootNode->addChild(node);
@@ -39,7 +39,7 @@ void Refraction::Init()
 //    InitMeshInHardward(mesh);
     mesh->getMaterial()->setQueueID(51);
 
-    node = std::make_shared<SceneNode>();
+    node = CreateNode();
     AddMeshToNode(node, mesh);
 
     rootNode->addChild(node);

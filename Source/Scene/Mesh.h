@@ -1,7 +1,7 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "SceneNode.h"
+#include "Scene/Node.h"
 #include "Geometry/Geometry.h"
 #include "Material/Material.h"
 #include "Component.h"

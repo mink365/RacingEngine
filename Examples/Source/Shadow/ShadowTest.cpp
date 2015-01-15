@@ -5,7 +5,7 @@
 #include "Scene/Light/SpotLight.h"
 #include "UI/Base/Sprite.h"
 #include "Render/RenderTarget.h"
-#include "Scene/SceneNode.h"
+#include "Scene/Node.h"
 #include "opengl.h"
 
 ShadowTest::ShadowTest()
@@ -13,8 +13,8 @@ ShadowTest::ShadowTest()
     this->name = "ShadowTest";
 }
 
-static SceneNodePtr box;
-static SceneNodePtr ground;
+static NodePtr box;
+static NodePtr ground;
 static SpritePtr sprite;
 
 void SetupShadowMapShader();
@@ -56,7 +56,7 @@ void ShadowTest::Init()
     InitMeshInHardward(groundMesh, "shadow_map");
     groundMesh->getMaterial()->setQueueID(51);
 
-    ground = std::make_shared<SceneNode>();
+    ground = CreateNode();
     AddMeshToNode(ground, groundMesh);
 
     // TODO: if the plane z > 100, shadow will be cull ?
@@ -68,7 +68,7 @@ void ShadowTest::Init()
     MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(50, texture);
     InitMeshInHardward(mesh);
 
-    box = std::make_shared<SceneNode>();
+    box = CreateNode();
     AddMeshToNode(box, mesh);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 22));
@@ -80,8 +80,8 @@ void ShadowTest::Init()
     // TODO: Dir Light/Camera can't see the model?.....
 
     // light
-    re::LightPtr light = std::make_shared<SpotLight>();
-    rootNode->addChild(std::dynamic_pointer_cast<SceneNode>(light->getNode()));
+    re::LightPtr light = CreateComponent<SpotLight>();
+    rootNode->addChild(light->getNode());
     SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);

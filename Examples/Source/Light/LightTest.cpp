@@ -10,7 +10,7 @@ LightTest::LightTest()
     this->name = "LightTest";
 }
 
-SceneNodePtr box = nullptr;
+NodePtr box = nullptr;
 
 const bool PHONG_LIGHT = true;
 string CURRENT_SHADER_NAME;
@@ -49,7 +49,7 @@ void LightTest::Init()
 //    InitMeshInHardward(mesh, "Shader_PTC");
     InitMeshInHardward(mesh, CURRENT_SHADER_NAME);
 
-    box = std::make_shared<SceneNode>();
+    box = CreateNode();
     AddMeshToNode(box, mesh);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

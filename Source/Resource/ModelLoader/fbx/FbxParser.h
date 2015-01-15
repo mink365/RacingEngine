@@ -63,15 +63,15 @@ public:
 
     void parseData(void *data, Long datalen);
 
-    std::vector<SceneNodePtr> getNodes() const;
-    SceneNodePtr getSceneNode(const string &name) const;
+    std::vector<NodePtr> getNodes() const;
+    NodePtr getNode(const string &name) const;
     ClusterCollectionPtr getClusterCollection(Long id) const;
     SkeletonPtr getSkeleton(Long id) const;
     SkeletonControllerPtr getSkeletonController(const string& name) const;
 
 private:
-    SceneNodePtr readNode(std::istream *st);
-    void readMesh(std::istream *st, SceneNodePtr node);
+    NodePtr readNode(std::istream *st);
+    void readMesh(std::istream *st, NodePtr node);
 
     void readSkeleton(std::istream *st);
     BoneNodePtr readBoneNode(std::istream* st, AnimationPtr animation);
@@ -85,7 +85,7 @@ private:
     void bindClusterData();
 
 private:
-    std::vector<SceneNodePtr> nodes;
+    std::vector<NodePtr> nodes;
     std::vector<SkeletonPtr> skeletons;
     std::vector<AnimationPtr> animations;
     std::vector<ClusterCollectionPtr> clusterColls;

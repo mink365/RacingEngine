@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "Scene/SceneNode.h"
+#include "Scene/Node.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 

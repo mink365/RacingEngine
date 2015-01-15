@@ -18,7 +18,7 @@ SceneMaterialTest::SceneMaterialTest()
     this->name = "MaterialTest";
 }
 
-void InitNodeShader(SceneNodePtr& node) {
+void InitNodeShader(NodePtr& node) {
     MeshPtr mesh = node->getComponent<Mesh>();
 
     if (mesh) {
@@ -26,8 +26,8 @@ void InitNodeShader(SceneNodePtr& node) {
     }
 
     for (auto child : node->getChildren()) {
-        auto childSceneNode = std::dynamic_pointer_cast<SceneNode>(child);
-        InitNodeShader(childSceneNode);
+        auto childNode = std::dynamic_pointer_cast<Node>(child);
+        InitNodeShader(childNode);
     }
 }
 

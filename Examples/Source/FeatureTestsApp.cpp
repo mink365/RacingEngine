@@ -203,7 +203,7 @@ void FeatureTestsApp::initResources()
 
     const Screen& screen = Screen::getInstance();
 
-    presCamera = std::make_shared<Camera>();
+    presCamera = CreateComponent<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
@@ -213,7 +213,7 @@ void FeatureTestsApp::initResources()
         }
         return true;
     });
-    CameraPtr uiCamera = std::make_shared<Camera>();
+    CameraPtr uiCamera = CreateComponent<Camera>();
     uiCamera->setProjectionMode(CameraProjectionMode::Orthographic);
     uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     uiCamera->setOrthoWidth(screen.getWidth());
@@ -232,8 +232,8 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().getRenderManager().addCamera(presCamera);
     SceneManager::getInstance().getRenderManager().addCamera(uiCamera);
 
-    SceneManager::getInstance().addRootNode(std::dynamic_pointer_cast<SceneNode>(presCamera->getNode()));
-    SceneManager::getInstance().addRootNode(std::dynamic_pointer_cast<SceneNode>(uiCamera->getNode()));
+    SceneManager::getInstance().addRootNode(presCamera->getNode());
+    SceneManager::getInstance().addRootNode(uiCamera->getNode());
 
     SearchPath searchPath;
 #ifdef RE_PLATFORM_LINUX
@@ -261,7 +261,7 @@ void FeatureTestsApp::initResources()
 
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
-    rootNode = std::make_shared<SceneNode>();
+    rootNode = CreateNode();
     SceneManager::getInstance().addRootNode(rootNode);
 
     this->stage = CreateView<ui::UIManager>();

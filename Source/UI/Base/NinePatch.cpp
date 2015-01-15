@@ -10,7 +10,7 @@ void NinePatch::init(const std::string& tex)
 {
     this->frame = TextureFrameManager::getInstance().getFrame(tex);
 
-    SceneNodePtr node = std::dynamic_pointer_cast<SceneNode>(this->shared_from_this());
+    NodePtr node = this->shared_from_this();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     this->rebind();

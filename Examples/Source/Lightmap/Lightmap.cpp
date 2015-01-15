@@ -8,7 +8,7 @@ Lightmap::Lightmap()
     this->name = "Lightmap";
 }
 
-static SceneNodePtr node;
+static NodePtr node;
 void Lightmap::Init()
 {
     this->camera->setDepthField(10, 1320);
@@ -37,7 +37,7 @@ void Lightmap::Init()
 //    InitMeshInHardward(mesh);
     mesh->getMaterial()->setQueueID(51);
 
-    node = std::make_shared<SceneNode>();
+    node = CreateNode();
     AddMeshToNode(node, mesh);
 
     rootNode->addChild(node);

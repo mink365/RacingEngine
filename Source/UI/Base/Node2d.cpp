@@ -15,7 +15,7 @@ Node2d::Node2d()
 
 Node2d::ptr Node2d::getParent() const
 {
-    return dynamic_pointer_cast<Node2d>(SceneNode::getParent());
+    return dynamic_pointer_cast<Node2d>(Node::getParent());
 }
 
 void Node2d::removeFromParent()
@@ -56,7 +56,7 @@ bool Node2d::isRunning()
 
 bool Node2d::isVisible()
 {
-    return this->getVisible();
+    return this->isVisible();
 }
 
 void Node2d::stopAllActions()
@@ -198,7 +198,7 @@ NodePtr Node2d::createCloneInstance() const
 
 void Node2d::copyProperties(const Node *node)
 {
-    SceneNode::copyProperties(node);
+    Node::copyProperties(node);
 
     const Node2d* inst = dynamic_cast<const Node2d*>(node);
     if (inst) {
@@ -239,7 +239,7 @@ const Color &Rgba::getDisplayColor() const
     return this->worldColor;
 }
 
-void InitNodeForLeaf(SceneNodePtr &node, Texture::ptr texture, const std::string& shaderName)
+void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
     MeshPtr mesh = std::make_shared<Mesh>();
     mesh->init();

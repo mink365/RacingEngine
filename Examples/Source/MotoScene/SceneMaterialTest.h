@@ -16,7 +16,7 @@ private:
     void changeTile(int index);
 
 private:
-    std::vector<SceneNodePtr> tiles;
+    std::vector<NodePtr> tiles;
     int tileIndex;
 };
 

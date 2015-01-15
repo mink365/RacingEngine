@@ -3,7 +3,7 @@
 #include "Skeleton.h"
 #include "Animation.h"
 #include "BoneNode.h"
-#include "Scene/SceneNode.h"
+#include "Scene/Node.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
@@ -11,7 +11,7 @@
 #include "Scene/Transform.h"
 #include "Platform/GameHub.h"
 
-re::SkeletonController::SkeletonController(SceneNodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation)
+re::SkeletonController::SkeletonController(NodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation)
 {
     float* mat = this->emptyMatrix.toFloatPtr();
     std::fill(mat, mat+16, 0);
@@ -36,7 +36,7 @@ re::AnimationPtr re::SkeletonController::getAnimation()
     return this->animation;
 }
 
-re::SceneNodePtr re::SkeletonController::getMeshNode()
+re::NodePtr re::SkeletonController::getMeshNode()
 {
     return this->sceneNode;
 }

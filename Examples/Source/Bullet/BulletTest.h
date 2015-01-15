@@ -43,7 +43,7 @@ private:
 
     btDefaultCollisionConfiguration* m_collisionConfiguration;
 
-    std::vector<SceneNodePtr> boxList;
+    std::vector<NodePtr> boxList;
 };
 
 #endif // BULLETTEST_H

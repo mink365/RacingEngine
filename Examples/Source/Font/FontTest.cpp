@@ -38,7 +38,7 @@ void FontTest::Init()
     MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(150, atlas->getTexture());
     InitMeshInHardward(mesh);
 
-    box = std::make_shared<SceneNode>();
+    box = CreateNode();
     AddMeshToNode(box, mesh);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

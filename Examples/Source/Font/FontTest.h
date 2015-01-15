@@ -12,7 +12,7 @@ public:
     virtual void Update(float dt);
 
 private:
-    SceneNodePtr box;
+    NodePtr box;
 };
 
 #endif // FONTTEST_H

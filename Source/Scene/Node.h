@@ -63,6 +63,9 @@ public:
 
     NodePtr clone() const;
 
+    bool isVisible() const {return this->_visible;};
+    void setVisible(bool v) {this->_visible = v;};
+
 protected:
     void updateChildrenTransform();
 
@@ -82,6 +85,8 @@ protected:
 
 protected:
     TransformPtr transform;
+
+    bool _visible;
 };
 
 template<typename T>
