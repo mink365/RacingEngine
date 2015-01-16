@@ -16,7 +16,7 @@ class Window : public Widget, public AnimationView, public IBackKeyHandler
 public:
     Window();
     
-    bool init();
+    void init();
     
 public:    
     bool getFullScreenState();

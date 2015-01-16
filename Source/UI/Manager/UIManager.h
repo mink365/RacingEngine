@@ -17,7 +17,7 @@ typedef std::shared_ptr<Scene> ScenePtr;
 class UIManager : public LogicalScene, public LayerManager<Scene> {
 public:
     UIManager();
-    bool init();
+    void init();
  
 public:
     SceneFactory& getSceneFactory();

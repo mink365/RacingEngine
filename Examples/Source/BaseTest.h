@@ -29,15 +29,15 @@ using namespace re;
 class FeatureTestsApp;
 
 template<typename T>
-std::shared_ptr<T> CreateComponent()
+NodePtr CreateComponent()
 {
-    auto node = std::make_shared<Node>();
+    auto node = Create<Node>();
 
     auto component = std::make_shared<T>();
 
     node->addComponent(component);
 
-    return component;
+    return node;
 }
 
 NodePtr CreateNode();

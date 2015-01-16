@@ -21,15 +21,13 @@ Window::Window()
     this->hideAnimFunc = nullptr;
 }
 
-bool Window::init() {
+void Window::init() {
     // window default is full screen
     this->setContentSize(Screen::getInstance().getSize());
     
     this->setAnchorPoint(Vec2(0.5, 0.5));
 
     this->initAnimFunc();
-    
-    return true;
 }
 
 bool Window::getFullScreenState() {

@@ -12,7 +12,7 @@ class BaseButton : public Widget
 public:
     BaseButton();
 
-    virtual bool init();
+    virtual void init();
 
     virtual void switchState(WidgetState newState);
 

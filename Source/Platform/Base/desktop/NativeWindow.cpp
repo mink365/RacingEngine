@@ -127,28 +127,42 @@ bool NativeWindow::initView()
 
     glfwSetErrorCallback(GLFWEventHandler::onGLFWError);
 
-    glfwInit();
+    if ( !glfwInit() ) {
+        fprintf( stderr, "Failed to initialize GLFW!\n" );
+        return -1;
+    }
 
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 //    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     window = glfwCreateWindow(rect.size.width,
                                    rect.size.height,
                                    _viewName.c_str(),
                                    _monitor,
                                    nullptr);
+    if( window == NULL ){
+        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
+        glfwTerminate();
+        return -1;
+    }
+
     glfwMakeContextCurrent(window);
 
     nativeView = this;
 
-    this->bindEventHandler();
-
     // check OpenGL version at first
+    const GLubyte* glVendor = glGetString(GL_VENDOR);
+    const GLubyte* glRenderer = glGetString(GL_RENDERER);
     const GLubyte* glVersion = glGetString(GL_VERSION);
     const GLubyte* glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    printf("GL version: %s, GLSL version: %s", glVersion, glslVersion);
+    printf("GL Vendor:    %s\n"
+           "GL Renderer:  %s\n"
+           "GL version:   %s\n"
+           "GLSL version: %s\n", glVendor, glRenderer, glVersion, glslVersion);
 
     if ( atof((const char*)glVersion) < 1.5 )
     {
@@ -159,6 +173,8 @@ bool NativeWindow::initView()
 //        MessageBox(strComplain, "OpenGL version too old");
         return false;
     }
+
+    this->bindEventHandler();
 
     initGlew();
 

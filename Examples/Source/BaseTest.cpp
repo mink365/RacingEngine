@@ -5,7 +5,7 @@
 
 NodePtr CreateNode()
 {
-    auto node = std::make_shared<Node>();
+    auto node = Create<Node>();
 
     return node;
 }

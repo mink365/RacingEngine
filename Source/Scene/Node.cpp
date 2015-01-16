@@ -14,14 +14,17 @@ namespace re {
 Node::Node() {
     this->id = 0;
     this->level = 0;
-
-    this->transform = std::make_shared<Transform>();
-
-    this->addComponent(transform);
 }
 
 Node::~Node() {
 
+}
+
+void Node::init()
+{
+    this->transform = std::make_shared<Transform>();
+
+    this->addComponent(transform);
 }
 
 void Node::updateTransform()
@@ -184,7 +187,16 @@ void Node::addComponent(ComponentPtr component)
 
     component->attachNode = ptr;
     this->components.push_back(component);
-    this->componentMap[std::type_index(typeid(component.get()))].push_back(component);
+
+    std::type_index id = std::type_index(typeid(*component.get()));
+    if (this->componentMap.count(id) == 0) {
+        this->componentMap[id] = std::vector<ComponentPtr>();
+
+        std::vector<ComponentPtr>& list = this->componentMap[id];
+        list.push_back(component);
+    } else {
+        this->componentMap[id].push_back(component);
+    }
 }
 
 void Node::clearComponent()

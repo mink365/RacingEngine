@@ -80,7 +80,8 @@ void ShadowTest::Init()
     // TODO: Dir Light/Camera can't see the model?.....
 
     // light
-    re::LightPtr light = CreateComponent<SpotLight>();
+    auto lightNode = CreateComponent<SpotLight>();
+    re::LightPtr light = lightNode->getComponent<SpotLight>();
     rootNode->addChild(light->getNode());
     SceneManager::getInstance().getRenderManager().addLight(light);
 

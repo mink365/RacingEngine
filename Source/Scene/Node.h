@@ -15,6 +15,7 @@
 #include <memory>
 #include <algorithm>
 #include <unordered_map>
+#include <map>
 
 #include "platform.h"
 #include "Base/Named.h"
@@ -31,6 +32,8 @@ class Node : public enable_shared_from_this<Node>, public Named, public Clonable
 public:
 	Node();
 	virtual ~Node();
+
+    virtual void init();
 
     NodePtr getParent() const;
     void setParent(NodePtr value);
@@ -92,7 +95,7 @@ protected:
 template<typename T>
 inline std::shared_ptr<T> Node::getComponent()
 {
-    auto iter = this->componentMap.find(typeid(T));
+    auto iter = this->componentMap.find(std::type_index(typeid(T)));
 
     if (iter != componentMap.end() && iter->second.size() > 0) {
         return std::static_pointer_cast<T>(iter->second[0]);

@@ -57,7 +57,8 @@ void RenderToTextureTest::Init()
 
     auto size = renderTarget->getSize();
 
-    auto presCamera = CreateComponent<Camera>();
+    auto cameraNode = CreateComponent<Camera>();
+    auto presCamera = cameraNode->getComponent<Camera>();
     presCamera->setViewport(size.width, size.height);
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));

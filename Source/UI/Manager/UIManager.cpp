@@ -9,14 +9,12 @@ UIManager::UIManager()
 {
 }
 
-bool UIManager::init() {
+void UIManager::init() {
     this->setContentSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
     
     addWidgets();
-    
-    return true;
 }
 
 SceneFactory &UIManager::getSceneFactory()

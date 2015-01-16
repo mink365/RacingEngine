@@ -203,7 +203,8 @@ void FeatureTestsApp::initResources()
 
     const Screen& screen = Screen::getInstance();
 
-    presCamera = CreateComponent<Camera>();
+    auto presCameraNode = CreateComponent<Camera>();
+    presCamera = presCameraNode->getComponent<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
@@ -213,7 +214,9 @@ void FeatureTestsApp::initResources()
         }
         return true;
     });
-    CameraPtr uiCamera = CreateComponent<Camera>();
+
+    auto uiCameraNode = CreateComponent<Camera>();
+    CameraPtr uiCamera = uiCameraNode->getComponent<Camera>();
     uiCamera->setProjectionMode(CameraProjectionMode::Orthographic);
     uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     uiCamera->setOrthoWidth(screen.getWidth());
@@ -242,7 +245,7 @@ void FeatureTestsApp::initResources()
 //    searchPath.dir = "/sdcard/regame/assets/";
     searchPath.dir = "asset:";
 #elif RE_PLATFORM_MAC
-    searchPath.dir = "/Users/ruikou/Workspace/engine/RacingEngine/Examples/Resources/";
+    searchPath.dir = "/Users/jk/Workspace/projects/RacingEngine/Examples/Resources/";
 #endif
     FileSystem::getInstance().addSearchPath(searchPath);
 

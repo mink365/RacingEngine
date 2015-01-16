@@ -8,13 +8,11 @@ BaseButton::BaseButton()
 {
 }
 
-bool BaseButton::init()
+void BaseButton::init()
 {
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
-
-    return true;
 }
 
 void BaseButton::switchState(WidgetState newState)
@@ -108,9 +106,7 @@ void re::ImageButton::init(const string &texDefault, const string &texPress)
 
 void ImageButton::init(const string &texDefault, const string &texPress, const string &texDis)
 {
-    if (!BaseButton::init()) {
-        return;
-    }
+    BaseButton::init();
 
     this->defaultSprite = CreateView<Sprite>(texDefault);
     this->pressedSprite = CreateView<Sprite>(texPress);
