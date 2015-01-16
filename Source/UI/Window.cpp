@@ -23,9 +23,9 @@ Window::Window()
 
 void Window::init() {
     // window default is full screen
-    this->setContentSize(Screen::getInstance().getSize());
+    transform->setContentSize(Screen::getInstance().getSize());
     
-    this->setAnchorPoint(Vec2(0.5, 0.5));
+    transform->setAnchorPoint(Vec2(0.5, 0.5));
 
     this->initAnimFunc();
 }
@@ -43,27 +43,19 @@ float Window::getBackgroundAlpha() {
 }
 
 
-void Window::playShowAnim() {
-    this->stopAllActions();
-    
+void Window::playShowAnim() {    
     this->showAnimFunc();
 }
 
 void Window::playHideAnim() {
-    this->stopAllActions();
-    
     this->hideAnimFunc();
 }
 
 void Window::showImmed() {
-    this->stopAllActions();
-    
     AnimationView::showImmed();
 }
 
 void Window::hideImmed() {
-    this->stopAllActions();
-    
     AnimationView::hideImmed();
 }
 
@@ -80,8 +72,7 @@ void Window::popFromWindowManager() {
         return;
     }
     
-    auto thisPtr = this->shared_from_this();
-    auto win = std::dynamic_pointer_cast<Window>(thisPtr);
+    auto win = this->getComponent<Window>();
 
     manager->popWindow(win);
 }
@@ -94,10 +85,10 @@ bool Window::onBackKeyEvent() {
 
 void Window::initAnimFunc()
 {
-    auto ptr = std::static_pointer_cast<Window>(this->shared_from_this());
+    auto ptr = this->getNode();
 
     std::function<void(TweenCallbackType type, BaseTween *source)> animCallback = [=](TweenCallbackType type, BaseTween *source) {
-        ptr->actionCallback();
+        this->actionCallback();
     };
 
     this->showAnimFunc = [=]() {

@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "Layout/LayoutUtil.h"
 #include "Layout/Screen.h"
-#include "Base/Node2d.h"
 
 namespace re {
 
@@ -14,13 +13,16 @@ Scene::~Scene() {
 }
 
 void Scene::init() {
-    this->setContentSize(Screen::getInstance().getSize());
+    Widget::init();
+
+    transform->setContentSize(Screen::getInstance().getSize());
     
-    alphaBg = std::make_shared<Node2d>();
-    alphaBg->setColor(Color::Black);
+    // TODO:
+//    alphaBg = Create<Widget>();
+//    alphaBg->setColor(Color::Black);
     
-    alphaBg->setContentSize(this->getContentSize());
-    alphaBg->setVisible(false);
+//    alphaBg->setContentSize(this->getContentSize());
+//    alphaBg->setVisible(false);
     
     return;
 }
@@ -50,19 +52,19 @@ void Scene::onEnter() {
 
 void Scene::addWindowToScene(std::shared_ptr<Window> &win) {
     // TODO: zorder
-    this->addChild(win);
+    getNode()->addChild(win->getNode());
     
-    LayoutUtil::LayoutToParentCenter(win);
+    LayoutUtil::LayoutToParentCenter(win->getComponent<Transform2D>());
     win->layout();
 
     return;
 }
 
 void Scene::removeWindowFromScene(std::shared_ptr<Window>& win) {
-    win->removeFromParent();
+    win->getNode()->removeFromParent();
 }
 
-Node2d::ptr Scene::getAlphaBackground() {
+NodePtr Scene::getAlphaBackground() {
     return this->alphaBg;
 }
 

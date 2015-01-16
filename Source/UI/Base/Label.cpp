@@ -1,5 +1,8 @@
 #include "Label.h"
 
+#include "HierarchyColor.h"
+#include "Transform2D.h"
+
 #include "Font/TextStuffer.h"
 #include "UI/Base/QuadStuffer.h"
 #include "Math/Color.h"
@@ -16,7 +19,7 @@ void Label::init(Font::ptr &font)
 {
     this->font = font;
 
-    NodePtr node = this->shared_from_this();
+    NodePtr node = this->getNode();
 
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
     InitNodeForLeaf(node, font->getTexture(), shaderName);
@@ -29,27 +32,33 @@ void Label::init(Font::ptr &font)
 
 void Label::setText(const string &text)
 {
-    this->getGeometry()->clear();
+    auto mesh = this->getComponent<Mesh>();
+    auto color = this->getComponent<HierarchyColor>();
+    auto transform = this->getComponent<Transform2D>();
 
-    TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), this->getGeometry(), this->font);
+    mesh->getGeometry()->clear();
 
-    this->setContentSize(TextStuffer::getInstance().getTextRect().size);
+    TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), mesh->getGeometry(), this->font);
+
+    const Rect& textRect = TextStuffer::getInstance().getTextRect();
+
+    transform->setContentSize(textRect.size);
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
-    this->anchorPointInPoints += TextStuffer::getInstance().getTextRect().origin;
+//    transform->setAnchorPointInPixels(textRect.origin); // TODO: just an offset of vertext
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 }
 
-NodePtr Label::createCloneInstance() const
+ComponentPtr Label::createCloneInstance() const
 {
     return CreateCloneInstance<Label>();
 }
 
-void Label::copyProperties(const Node *node)
+void Label::copyProperties(const Component *component)
 {
-    Node2d::copyProperties(node);
+    Component::copyProperties(component);
 
-    const Label* inst = dynamic_cast<const Label*>(node);
+    const Label* inst = dynamic_cast<const Label*>(component);
     if (inst) {
         this->font = inst->font;
         this->text = inst->text;

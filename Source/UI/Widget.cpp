@@ -1,5 +1,7 @@
 #include "Widget.h"
 
+#include "UI/Base/HierarchyColor.h"
+#include "UI/Base/Transform2D.h"
 #include "Layout/LayoutUtil.h"
 
 namespace re {
@@ -13,6 +15,12 @@ Widget::Widget()
 
 Widget::~Widget() {
 
+}
+
+void Widget::init()
+{
+    color = this->getComponent<HierarchyColor>();
+    transform = this->getComponent<Transform2D>();
 }
 
 void Widget::addWidgets() {
@@ -30,7 +38,7 @@ void Widget::layout() {
 }
 
 void Widget::dispatchLayout() {
-    for (auto child : this->getChildren()) {
+    for (auto child : getNode()->getChildren()) {
         std::shared_ptr<Widget> childWidget = dynamic_pointer_cast<Widget>(child);
 
         if (childWidget) {
@@ -50,7 +58,7 @@ void Widget::update(float delta) {
 }
 
 void Widget::dispatchUpdate(float delta) {
-    for (auto child : this->getChildren()) {
+    for (auto child : getNode()->getChildren()) {
         std::shared_ptr<Widget> childWidget = dynamic_pointer_cast<Widget>(child);
 
         if (childWidget) {
@@ -143,7 +151,7 @@ bool Widget::emitWidgetTouchEvent(WidgetTouchState oldTouchState, WidgetTouchSta
     bool r = false;
     bool lr = false;
     for (auto listener : this->_onTouchListeners) {
-        std::shared_ptr<Widget> ptr = std::dynamic_pointer_cast<Widget>(this->shared_from_this());
+        std::shared_ptr<Widget> ptr = this->getNode()->getComponent<Widget>();
 
         if (oldTouchState != newTouchState) {
             listener->onTouchStateChange(oldTouchState, newTouchState, event, ptr);
@@ -196,17 +204,17 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
     bool handled = false;
 
     // 靠前的控件先接受事件
-    int size = this->getChildren().size();
+    int size = getNode()->getChildren().size();
     for (int i = size - 1; i >= 0; --i) {
-        auto child = this->getChildren()[i];
+        auto child = getNode()->getChildren()[i];
 
-        WidgetPtr childWidget = std::dynamic_pointer_cast<Widget>(child);
+        WidgetPtr childWidget = child->getComponent<Widget>();
 
         if (!childWidget) {
             continue;
         }
 
-        Vec2 p = childWidget->getTransform2D()->convertParentToLocalSpace(curr);
+        Vec2 p = childWidget->getComponent<Transform2D>()->convertParentToLocalSpace(curr);
         event.setCurrPoint(p);
 
         // 有控件处理了事件就阻止传递
@@ -221,14 +229,14 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
 }
 
 bool Widget::hitFromWorldPoint(const Vec2 &p) {
-    Vec2 point = getTransform2D()->convertToNodeSpace(p);
+    Vec2 point = transform->convertToNodeSpace(p);
     
     return this->hit(point);
 }
 
 bool Widget::hit(const Vec2 &p) {
     // rect local space
-    Rect rect(0, 0, getContentSize().width, getContentSize().height);
+    Rect rect(0, 0, transform->getContentSize().width, transform->getContentSize().height);
     
     if (rect.containsPoint(p)) {
         return true;
@@ -237,12 +245,12 @@ bool Widget::hit(const Vec2 &p) {
     return false;
 }
 
-bool Widget::hitTest(Node2d::ptr node, Vec2 p) {
+bool Widget::hitTest(Transform2DPtr node, Vec2 p) {
     if(!isRunning() || !isVisible()){
         return false;
     }
     
-    Vec2 localP = getTransform2D()->convertToNodeSpace(p);
+    Vec2 localP = transform->convertToNodeSpace(p);
     
     Rect rect = node->getBoundingBox();
     
@@ -253,30 +261,22 @@ bool Widget::hitTest(Node2d::ptr node, Vec2 p) {
     return false;
 }
 
-void Widget::visit() {
-	// quick return if not visible
-	if (!isVisible())
-    {
-		return;
-    }
-}
-
 void Widget::beforeDraw() {
 }
 
 void Widget::afterDraw() {
 }
 
-NodePtr Widget::createCloneInstance() const
+ComponentPtr Widget::createCloneInstance() const
 {
     return CreateCloneInstance<Widget>();
 }
 
-void Widget::copyProperties(const Node *node)
+void Widget::copyProperties(const Component *component)
 {
-    Node2d::copyProperties(node);
+    Component::copyProperties(component);
 
-    const Widget* inst = dynamic_cast<const Widget*>(node);
+    const Widget* inst = dynamic_cast<const Widget*>(component);
     if (inst) {
         this->_touchEnable = inst->_touchEnable;
         this->_blockTouch = inst->_blockTouch;

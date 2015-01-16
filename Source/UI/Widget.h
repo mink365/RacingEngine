@@ -1,7 +1,9 @@
 #ifndef WIDGETCONTAINER_H
 #define WIDGETCONTAINER_H
 
-#include "Base/Node2d.h"
+#include "Component.h"
+#include "UI/Base/HierarchyColor.h"
+#include "UI/Base/Transform2D.h"
 #include "Layout/Screen.h"
 #include "TouchEvent.h"
 
@@ -17,18 +19,21 @@ enum class WidgetState {
     DISABLED,
 };
 
-class Widget : public Node2d, public Shared<Widget>
+class Widget : public Component, public Shared<Widget>
 {
 public:
     Widget();
     virtual ~Widget();
+
+    void init();
     
     void layout();
 
     void update(float delta);
     
-    void visit();
-    
+    bool isVisible() {return true;};
+    bool isRunning() {return true;};
+
 public:
     bool isTouchEnabled();
     void setTouchEnabled(bool value);
@@ -61,14 +66,14 @@ protected:
     virtual void initView() {};
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
     
 public:
     bool hitFromWorldPoint(const Vec2& p);
     bool hit(const Vec2& p);
     
-    bool hitTest(Node2d::ptr node, Vec2 p);
+    bool hitTest(Transform2DPtr node, Vec2 p);
     
 protected:
     bool _touchEnable;
@@ -82,6 +87,10 @@ protected:
     WidgetTouchState touchState;
 
     std::vector<TouchEventListener::ptr> _onTouchListeners;
+
+protected:
+    HierarchyColorPtr color;
+    Transform2DPtr transform;
 };
 
 }

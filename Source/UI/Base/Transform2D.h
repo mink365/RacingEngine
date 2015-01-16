@@ -9,11 +9,14 @@
 #ifndef RE_TRANSFORM2D_H
 #define RE_TRANSFORM2D_H
 
-#include "Transform.h"
+#include "Math/Size.h"
+#include "Math/Rect.h"
+#include "Scene/Transform.h"
 
 namespace re {
 
-class Node2d;
+class Transform2D;
+typedef std::shared_ptr<Transform2D> Transform2DPtr;
 
 class Transform2D : public Transform
 {
@@ -24,24 +27,22 @@ public:
     void setPosition(const Vec2& position);
     Vec2 getPosition() const;
 
-    void setPosition(float x, float y);
-    void setPositionX(float v);
-    void setPositionY(float v);
-    float getPositionX() const;
-    float getPositionY() const;
-
     void setScale(const Vec2& scale);
     Vec2 getScale() const;
-
-    void setScale(float x, float y);
     void setScale(float v);
-    void setScaleX(float v);
-    void setScaleY(float v);
-    float getScaleX() const;
-    float getScaleY() const;
 
     void setRotation(float v);
     float getRotation() const;
+
+    void setAnchorPoint(const Vec2& v);
+    const Vec2& getAnchorPoint() const;
+    void setAnchorPointInPixels(const Vec2& v);
+    Vec2 getAnchorPointInPixels() const;
+
+    void setContentSize(const Size& size);
+    const Size &getContentSize() const;
+
+    Rect getBoundingBox() const;
 
     /**
      * Converts a Vec2 to node (local) space coordinates. The result is in Points.
@@ -59,7 +60,16 @@ public:
 protected:
     virtual void updateLocalMatrix();
 
-    Node2d& getNode2D();
+    ComponentPtr createCloneInstance() const;
+    void copyProperties(const Component* component);
+
+private:
+    Size size;
+
+    Vec2 anchorPoint;
+    Vec2 anchorPointInPoints;
+
+    Vec2 skew;
 
 };
 

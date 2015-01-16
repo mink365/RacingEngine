@@ -37,7 +37,7 @@ public:
 
     NodePtr getParent() const;
     void setParent(NodePtr value);
-    void removeFromeParent();
+    void removeFromParent();
     void resetParent();
     bool isHasParent();
 

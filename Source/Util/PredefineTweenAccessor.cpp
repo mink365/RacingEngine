@@ -1,6 +1,7 @@
 ﻿#include "PredefineTweenAccessor.h"
 
-#include "UI/Base/Node2d.h"
+#include "UI/Base/Transform2D.h"
+#include "UI/Base/HierarchyColor.h"
 #include "Tween.h"
 
 using namespace TweenEngine;
@@ -11,20 +12,23 @@ void PredefineTweenAccessor::registerAccessor()
 {
     auto func = [=](std::shared_ptr<void> obj, int tweenType, TweenCMD cmd, float *values)->int
     {
-        Node2d* node = (Node2d*)(obj.get());
-        Transform2DPtr transform = node->getTransform2D();
+        Node* node = (Node*)(obj.get());
+        Transform2DPtr transform = node->getComponent<Transform2D>();
+        HierarchyColorPtr hierColor = node->getComponent<HierarchyColor>();
 
         if (cmd == TweenCMD::SET) {
             switch(tweenType) {
             case FlatNodeAccessor::POSITION_X:
             {
-                transform->setPositionX(values[0]);
+                const Vec2& position = transform->getPosition();
+                transform->setPosition(Vec2(values[0], position.y));
 
                 break;
             }
             case FlatNodeAccessor::POSITION_Y:
             {
-                transform->setPositionY(values[0]);
+                const Vec2& position = transform->getPosition();
+                transform->setPosition(Vec2(position.x, values[0]));
 
                 break;
             }
@@ -42,13 +46,15 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::SCALE_X:
             {
-                transform->setScaleX(values[0]);
+                const Vec2& scale = transform->getScale();
+                transform->setScale(Vec2(values[0], scale.y));
 
                 break;
             }
             case FlatNodeAccessor::SCALE_Y:
             {
-                transform->setScaleY(values[0]);
+                const Vec2& scale = transform->getScale();
+                transform->setScale(Vec2(scale.x, values[0]));
 
                 break;
             }
@@ -60,23 +66,23 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_X:
             {
-                const Vec2& anchor = node->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchorPoint();
 
-                node->setAnchorPoint(Vec2(values[0], anchor.y));
+                transform->setAnchorPoint(Vec2(values[0], anchor.y));
 
                 break;
             }
             case FlatNodeAccessor::ANCHOR_Y:
             {
-                const Vec2& anchor = node->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchorPoint();
 
-                node->setAnchorPoint(Vec2(anchor.x, values[0]));
+                transform->setAnchorPoint(Vec2(anchor.x, values[0]));
 
                 break;
             }
             case FlatNodeAccessor::ANCHOR_XY:
             {
-                node->setAnchorPoint(Vec2(values[0], values[1]));
+                transform->setAnchorPoint(Vec2(values[0], values[1]));
 
                 break;
             }
@@ -88,19 +94,19 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::COLOR:
             {
-                node->setColor(Color(values[0], values[1], values[2], values[3]));
+                hierColor->setColor(Color(values[0], values[1], values[2], values[3]));
 
                 break;
             }
             case FlatNodeAccessor::ALPHA:
             {
-                node->setAlpha(values[0]);
+                hierColor->setAlpha(values[0]);
 
                 break;
             }
             case FlatNodeAccessor::OPACITY:
             {
-                node->setAlpha(values[0] / 255);
+                hierColor->setAlpha(values[0] / 255);
 
                 break;
             }
@@ -167,7 +173,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_X:
             {
-                const Vec2& anchor = node->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchorPoint();
 
                 values[0] = anchor.x;
 
@@ -175,7 +181,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_Y:
             {
-                const Vec2& anchor = node->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchorPoint();
 
                 values[0] = anchor.y;
 
@@ -183,7 +189,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_XY:
             {
-                const Vec2& anchor = node->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchorPoint();
 
                 values[0] = anchor.x;
                 values[1] = anchor.y;
@@ -198,7 +204,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::COLOR:
             {
-                const Color& color = node->getColor();
+                const Color& color = hierColor->getColor();
 
                 values[0] = color.r;
                 values[1] = color.g;
@@ -209,13 +215,13 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ALPHA:
             {
-                values[0] = node->getAlpha();
+                values[0] = hierColor->getAlpha();
 
                 break;
             }
             case FlatNodeAccessor::OPACITY:
             {
-                values[0] = node->getAlpha() * 255;
+                values[0] = hierColor->getAlpha() * 255;
 
                 break;
             }

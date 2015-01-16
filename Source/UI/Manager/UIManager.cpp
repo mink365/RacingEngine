@@ -10,7 +10,7 @@ UIManager::UIManager()
 }
 
 void UIManager::init() {
-    this->setContentSize(Screen::getInstance().getSize());
+    this->getComponent<Transform2D>()->setContentSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
     
@@ -54,15 +54,15 @@ ScenePtr UIManager::createLayer(const std::string &name) {
 }
 
 void UIManager::addLayerToScene(ScenePtr& node) {
-    this->addChild(node, -2);
+    getNode()->addChild(node->getNode(), -2);
     
-    LayoutUtil::LayoutToParentCenter(node);
+    LayoutUtil::LayoutToParentCenter(node->getComponent<Transform2D>());
 
     return;
 }
 
 void UIManager::removeLayerFromScene(ScenePtr &node) {
-    node->removeFromParent();
+    node->getNode()->removeFromParent();
 }
 
 ScenePtr UIManager::getDefaultLayer() {

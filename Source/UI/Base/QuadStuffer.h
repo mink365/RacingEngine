@@ -12,6 +12,8 @@
 
 namespace re {
 
+void InitNodeForLeaf(NodePtr& node, Texture::ptr texture, const string &shaderName);
+
 class QuadStuffer
 {
 public:

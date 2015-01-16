@@ -39,6 +39,9 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponent();
 
+    template<typename T>
+    std::shared_ptr<T> getComponentInParent();
+
     ComponentPtr clone() const;
 
 protected:
@@ -60,6 +63,18 @@ template<typename T>
 inline std::shared_ptr<T> Component::getComponent()
 {
     return getNode()->getComponent<T>();
+}
+
+template<typename T>
+inline std::shared_ptr<T> Component::getComponentInParent()
+{
+    auto parent = getNode()->getParent();
+
+    if (parent != nullptr) {
+        return parent->getComponent<T>();
+    }
+
+    return nullptr;
 }
 
 } //namespace re

@@ -1,7 +1,7 @@
 #ifndef __LayoutUtil__
 #define __LayoutUtil__
 
-#include "UI/Base/Node2d.h"
+#include "UI/Base/Transform2D.h"
 
 namespace re {
 
@@ -20,33 +20,34 @@ enum class AlignType {
 namespace LayoutUtil {
     Vec2 AlignTypeToPoint(AlignType type);
     
-    Vec2 GetBoundBoxPosition(Node2d::ptr node, AlignType type);
+    Vec2 GetBoundBoxPosition(Transform2DPtr node, AlignType type);
     
-    void LayoutLeft(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutRight(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutTop(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutBottom(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutCenter(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutLeftTop(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutRightTop(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutLeftBottom(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutRightBottom(Node2d::ptr view, Node2d::ptr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutLeft(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutRight(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutTop(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutBottom(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutCenter(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutLeftTop(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutRightTop(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutLeftBottom(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutRightBottom(Transform2DPtr view, Transform2DPtr target, float offsetX = 0.0, float offsetY = 0.0);
 
-    void LayoutToParentLeft(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentRight(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentTop(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentBottom(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentCenter(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentLeftTop(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentRightTop(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentLeftBottom(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParentRightBottom(Node2d::ptr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentLeft(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentRight(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentTop(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentBottom(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentCenter(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentLeftTop(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentRightTop(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentLeftBottom(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParentRightBottom(Transform2DPtr view, float offsetX = 0.0, float offsetY = 0.0);
     
-    void Layout(Node2d::ptr view, AlignType from, Node2d::ptr target, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
-    void LayoutToParent(Node2d::ptr view, AlignType from, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
+    void Layout(Transform2DPtr view, AlignType from, Transform2DPtr target, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
+    void LayoutToParent(Transform2DPtr view, AlignType from, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
     
-    void Layout(Node2d::ptr view, float viewAlignX, float viewAlignY, Node2d::ptr target,
+    void Layout(Transform2DPtr view, float viewAlignX, float viewAlignY, Transform2DPtr target,
                 float targetAlignX, float targetAlignY, bool targetIsParent = false, float offsetX = 0.0, float offsetY = 0.0);
+    void LayoutToParent(Transform2DPtr view, float viewAlignX, float viewAlignY, float targetAlignX, float targetAlignY,float offsetX = 0.0, float offsetY = 0.0);
     
 }
 

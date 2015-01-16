@@ -22,8 +22,8 @@ public:
 
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     std::function<void(ButtonPtr& button)> onButtonClickFunc;
@@ -41,8 +41,8 @@ public:
     virtual void switchState(WidgetState newState);
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     SpritePtr defaultSprite, pressedSprite, disabledSprite;
@@ -52,8 +52,8 @@ class LabelButton : public ImageButton
 {
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     LabelPtr label;

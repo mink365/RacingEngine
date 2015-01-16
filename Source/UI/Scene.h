@@ -28,11 +28,12 @@ protected:
 protected:
     void addWindowToScene(std::shared_ptr<Window>& win);
     void removeWindowFromScene(std::shared_ptr<Window> &win);
-    Node2d::ptr getAlphaBackground();
+
+    NodePtr getAlphaBackground();
     void changeAlphaBackgroundIndex(std::shared_ptr<Window> &win);
     
 private:
-    Node2d::ptr alphaBg;
+    NodePtr alphaBg;
 };
 
 }

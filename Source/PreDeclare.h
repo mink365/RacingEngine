@@ -35,6 +35,8 @@ class Light;
 class File;
 class Font;
 
+class Transform2D;
+class HierarchyColor;
 class Sprite;
 class Label;
 class NinePatch;
@@ -75,6 +77,8 @@ typedef std::shared_ptr<Font> FontPtr;
 
 typedef std::shared_ptr<ByteBuffer> ByteBufferPtr;
 
+typedef std::shared_ptr<Transform2D> Transform2DPtr;
+typedef std::shared_ptr<HierarchyColor> HierarchyColorPtr;
 typedef std::shared_ptr<Sprite> SpritePtr;
 typedef std::shared_ptr<NinePatch> NinePatchPtr;
 typedef std::shared_ptr<Label> LabelPtr;

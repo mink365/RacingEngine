@@ -26,7 +26,7 @@ class Transform : public Component
 
 public:
     Transform();
-    ~Transform();
+    virtual ~Transform();
 
     const Vec3 &getLocalTranslation() const;
     void setLocalTranslation(const Vec3 &value);

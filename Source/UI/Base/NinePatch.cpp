@@ -1,5 +1,7 @@
 #include "NinePatch.h"
 
+#include "HierarchyColor.h"
+#include "Scene/Mesh.h"
 #include "QuadStuffer.h"
 #include "Texture/Frame/TextureFrameManager.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -8,9 +10,13 @@ namespace re {
 
 void NinePatch::init(const std::string& tex)
 {
+    mesh = this->getComponent<Mesh>();
+    color = this->getComponent<HierarchyColor>();
+    transform = this->getComponent<Transform2D>();
+
     this->frame = TextureFrameManager::getInstance().getFrame(tex);
 
-    NodePtr node = this->shared_from_this();
+    NodePtr node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     this->rebind();
@@ -77,15 +83,15 @@ void NinePatch::rebind()
     this->vertexGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
     this->textureGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
 
-    this->vertexGrid.rt.set(this->size.width - this->getRightPadding(),
-                            this->size.height - this->getTopPadding(),
+    this->vertexGrid.rt.set(transform->getContentSize().width - this->getRightPadding(),
+                            transform->getContentSize().height - this->getTopPadding(),
                             this->getRightPadding(),
                             this->getTopPadding());
 
     this->textureGrid.rt.set(this->centerRect.getMaxX(), this->centerRect.getMaxY(),
                              this->getRightPadding(), this->getTopPadding());
 
-    this->getGeometry()->clear();
+    mesh->getGeometry()->clear();
 
     this->addQuad(AlignType::LEFT_BOTTOM);
     this->addQuad(AlignType::LEFT_CENTER);
@@ -97,7 +103,7 @@ void NinePatch::rebind()
     this->addQuad(AlignType::CENTER_BOTTOM);
     this->addQuad(AlignType::CENTER);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 }
 
 void NinePatch::addQuad(AlignType type)
@@ -105,29 +111,29 @@ void NinePatch::addQuad(AlignType type)
     Rect vRect = vertexGrid.getRect(type);
     Rect tRect = textureGrid.getRect(type);
 
-    QuadStuffer::AddOriginalQuad(vRect, tRect, this->worldColor, this->frame, this->getGeometry());
+    QuadStuffer::AddOriginalQuad(vRect, tRect, color->getDisplayColor(), this->frame, mesh->getGeometry());
 }
 
 void NinePatch::updateViewColor()
 {
-    auto& colors = this->getGeometry()->getDiffuseColors();
+    auto& colors = mesh->getGeometry()->getDiffuseColors();
     for (size_t i = 0; i < colors.size(); ++i) {
-        colors[i] = this->worldColor;
+        colors[i] = color->getDisplayColor();
     }
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 }
 
-NodePtr NinePatch::createCloneInstance() const
+ComponentPtr NinePatch::createCloneInstance() const
 {
     return CreateCloneInstance<NinePatch>();
 }
 
-void NinePatch::copyProperties(const Node *node)
+void NinePatch::copyProperties(const Component *component)
 {
-    Node2d::copyProperties(node);
+    Component::copyProperties(component);
 
-    const NinePatch* inst = dynamic_cast<const NinePatch*>(node);
+    const NinePatch* inst = dynamic_cast<const NinePatch*>(component);
     if (inst) {
         this->frame = inst->frame;
         this->centerRect = inst->centerRect;

@@ -83,16 +83,16 @@ void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
     this->onButtonClickFunc = func;
 }
 
-NodePtr BaseButton::createCloneInstance() const
+ComponentPtr BaseButton::createCloneInstance() const
 {
     return CreateCloneInstance<BaseButton>();
 }
 
-void BaseButton::copyProperties(const Node *node)
+void BaseButton::copyProperties(const Component *component)
 {
-    Widget::copyProperties(node);
+    Widget::copyProperties(component);
 
-    const BaseButton* inst = dynamic_cast<const BaseButton*>(node);
+    const BaseButton* inst = dynamic_cast<const BaseButton*>(component);
     if (inst) {
         this->isTouchDown = false;
         this->touchDownTime = 0;
@@ -108,23 +108,23 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
 {
     BaseButton::init();
 
-    this->defaultSprite = CreateView<Sprite>(texDefault);
-    this->pressedSprite = CreateView<Sprite>(texPress);
-    this->disabledSprite = CreateView<Sprite>(texDis);
+    this->defaultSprite = Create<Sprite>(texDefault);
+    this->pressedSprite = Create<Sprite>(texPress);
+    this->disabledSprite = Create<Sprite>(texDis);
 
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();
     this->disabledSprite->rebind();
 
-    this->setContentSize(this->defaultSprite->getContentSize());
+    transform->setContentSize(this->defaultSprite->getComponent<Transform2D>()->getContentSize());
 
-    this->addChild(defaultSprite);
-    this->addChild(pressedSprite);
-    this->addChild(disabledSprite);
+//    this->addChild(defaultSprite);
+//    this->addChild(pressedSprite);
+//    this->addChild(disabledSprite);
 
-    this->defaultSprite->setVisible(true);
-    this->pressedSprite->setVisible(false);
-    this->disabledSprite->setVisible(false);
+//    this->defaultSprite->setVisible(true);
+//    this->pressedSprite->setVisible(false);
+//    this->disabledSprite->setVisible(false);
 
     this->switchState(WidgetState::DEFAULT);
 }
@@ -136,63 +136,63 @@ void ImageButton::switchState(WidgetState newState)
     }
     WidgetState oldState = this->state;
 
-    switch (oldState) {
-    case WidgetState::PRESSED:
-        pressedSprite->setVisible(false);
-        break;
-    case WidgetState::DEFAULT:
-        defaultSprite->setVisible(false);
-        break;
-    case WidgetState::SELECTED:
-        pressedSprite->setVisible(false);
-        break;
-    case WidgetState::DISABLED:
-        disabledSprite->setVisible(false);
-        break;
-    }
+//    switch (oldState) {
+//    case WidgetState::PRESSED:
+//        pressedSprite->setVisible(false);
+//        break;
+//    case WidgetState::DEFAULT:
+//        defaultSprite->setVisible(false);
+//        break;
+//    case WidgetState::SELECTED:
+//        pressedSprite->setVisible(false);
+//        break;
+//    case WidgetState::DISABLED:
+//        disabledSprite->setVisible(false);
+//        break;
+//    }
 
-    switch (newState) {
-    case WidgetState::PRESSED:
-        pressedSprite->setVisible(true);
-        break;
-    case WidgetState::DEFAULT:
-        defaultSprite->setVisible(true);
-        break;
-    case WidgetState::SELECTED:
-        pressedSprite->setVisible(true);
-        break;
-    case WidgetState::DISABLED:
-        disabledSprite->setVisible(true);
-    }
+//    switch (newState) {
+//    case WidgetState::PRESSED:
+//        pressedSprite->setVisible(true);
+//        break;
+//    case WidgetState::DEFAULT:
+//        defaultSprite->setVisible(true);
+//        break;
+//    case WidgetState::SELECTED:
+//        pressedSprite->setVisible(true);
+//        break;
+//    case WidgetState::DISABLED:
+//        disabledSprite->setVisible(true);
+//    }
     this->state = newState;
 }
 
-NodePtr ImageButton::createCloneInstance() const
+ComponentPtr ImageButton::createCloneInstance() const
 {
     return CreateCloneInstance<ImageButton>();
 }
 
-void ImageButton::copyProperties(const Node *node)
+void ImageButton::copyProperties(const Component *component)
 {
-    BaseButton::copyProperties(node);
+    BaseButton::copyProperties(component);
 
-    const ImageButton* inst = dynamic_cast<const ImageButton*>(node);
+    const ImageButton* inst = dynamic_cast<const ImageButton*>(component);
     if (inst) {
         // TODO: get the sprite from cloned child or just not clone children?
 //        this->defaultSprite = inst->defaultSprite->clone();
     }
 }
 
-NodePtr LabelButton::createCloneInstance() const
+ComponentPtr LabelButton::createCloneInstance() const
 {
     return CreateCloneInstance<LabelButton>();
 }
 
-void LabelButton::copyProperties(const Node *node)
+void LabelButton::copyProperties(const Component *component)
 {
-    ImageButton::copyProperties(node);
+    ImageButton::copyProperties(component);
 
-    const LabelButton* inst = dynamic_cast<const LabelButton*>(node);
+    const LabelButton* inst = dynamic_cast<const LabelButton*>(component);
     if (inst) {
         // TODO: get the sprite from cloned child or just not clone children?
 //        this->defaultSprite = inst->defaultSprite->clone();

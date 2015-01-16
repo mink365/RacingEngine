@@ -2,11 +2,11 @@
 #define SPRITE_H
 
 #include "Texture/Frame/TextureFrame.h"
-#include "Node2d.h"
+#include "Component.h"
 
 namespace re {
 
-class Sprite : public Node2d
+class Sprite : public Component
 {
 public:
     Sprite() {};
@@ -18,11 +18,11 @@ public:
 public:
     void rebind();
 
-    virtual void updateViewColor() override;
+    virtual void updateViewColor();
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 private:
     Rect rect;

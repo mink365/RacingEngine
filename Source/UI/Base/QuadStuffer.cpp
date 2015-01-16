@@ -1,6 +1,39 @@
 #include "QuadStuffer.h"
 
+#include "Scene/Mesh.h"
+
+#include "Render/BufferObject/BufferObjectUtil.h"
+#include "Shader/ShaderManager.h"
+#include "Render/RenderQueue.h"
+
 namespace re {
+
+void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
+{
+    MeshPtr mesh = std::make_shared<Mesh>();
+    mesh->init();
+
+    mesh->setGeometry(Geometry::create());
+
+    MaterialPtr material = mesh->getMaterial();
+    material->setQueueID(RENDER_QUEUE_UI);
+    material->getRenderState().depthState.depthTestEnable = false;
+    material->getRenderState().depthWrite = false;
+    material->getRenderState().depthState.function = TestFunction::LessOrEqual;
+    if (texture) {
+        TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+        unit->setUVstate(0, 0, 1, 1, 0);
+        unit->setTexture(texture);
+    }
+
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+
+    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
+    mesh->getMaterial()->setShder(shader);
+
+    node->addComponent(mesh);
+}
+
 
 QuadStuffer::QuadStuffer()
 {

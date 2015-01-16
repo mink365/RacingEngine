@@ -38,7 +38,7 @@ public:
 protected:
     virtual void addWindowToScene(WindowPtr& win) = 0;
     virtual void removeWindowFromScene(WindowPtr& win) = 0;
-    virtual Node2d::ptr getAlphaBackground() = 0;
+    virtual NodePtr getAlphaBackground() = 0;
     virtual void changeAlphaBackgroundIndex(WindowPtr& win) = 0;
     
     void changeFocusedWindow(WindowPtr& win);

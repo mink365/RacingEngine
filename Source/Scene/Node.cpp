@@ -95,7 +95,7 @@ void Node::setParent(NodePtr value)
     parent = value;
 }
 
-void Node::removeFromeParent()
+void Node::removeFromParent()
 {
     assert(isHasParent());
 
@@ -224,6 +224,7 @@ NodePtr Node::clone() const
     NodePtr cloned = this->createCloneInstance();
     cloned->copyProperties(this);
     cloned->copyChildren(this);
+    cloned->copyComponents(this);
 
     return cloned;
 }

@@ -1,7 +1,7 @@
 #ifndef NINEPATCH_H
 #define NINEPATCH_H
 
-#include "Node2d.h"
+#include "Component.h"
 #include "Math/Rect.h"
 #include "Texture/Frame/TextureFrame.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -16,7 +16,7 @@ public:
     const Rect getRect(AlignType type) const;
 };
 
-class NinePatch : public Node2d
+class NinePatch : public Component
 {
 public:
     NinePatch() {};
@@ -37,11 +37,11 @@ public:
 protected:
     void addQuad(AlignType type);
 
-    virtual void updateViewColor() override;
+    virtual void updateViewColor();
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     Rect centerRect;
@@ -50,6 +50,11 @@ protected:
 
     NineGrid vertexGrid;
     NineGrid textureGrid;
+
+private:
+    MeshPtr mesh;
+    HierarchyColorPtr color;
+    Transform2DPtr transform;
 };
 
 }

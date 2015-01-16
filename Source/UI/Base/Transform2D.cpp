@@ -7,7 +7,6 @@
 ******************************************************************************/
 
 #include "Transform2D.h"
-#include "Node2d.h"
 
 namespace re {
 
@@ -35,38 +34,6 @@ Vec2 Transform2D::getPosition() const
     return Vec2(p.x, p.y);
 }
 
-void Transform2D::setPosition(float x, float y)
-{
-    localTranslation.x = x;
-    localTranslation.y = y;
-
-    markLocalTransformRefreshFlag();
-}
-
-void Transform2D::setPositionX(float v)
-{
-    localTranslation.x = v;
-
-    markLocalTransformRefreshFlag();
-}
-
-void Transform2D::setPositionY(float v)
-{
-    localTranslation.y = v;
-
-    markLocalTransformRefreshFlag();
-}
-
-float Transform2D::getPositionX() const
-{
-    return localTranslation.x;
-}
-
-float Transform2D::getPositionY() const
-{
-    return localTranslation.y;
-}
-
 void Transform2D::setScale(const Vec2 &scale)
 {
     localScaling.x = scale.x;
@@ -80,41 +47,9 @@ Vec2 Transform2D::getScale() const
     return Vec2(localScaling.x, localScaling.y);
 }
 
-void Transform2D::setScale(float x, float y)
-{
-    localScaling.x = x;
-    localScaling.y = y;
-
-    markLocalTransformRefreshFlag();
-}
-
 void Transform2D::setScale(float v)
 {
-    this->setScale(v, v);
-}
-
-void Transform2D::setScaleX(float v)
-{
-    localScaling.x = v;
-
-    markLocalTransformRefreshFlag();
-}
-
-void Transform2D::setScaleY(float v)
-{
-    localScaling.y = v;
-
-    markLocalTransformRefreshFlag();
-}
-
-float Transform2D::getScaleX() const
-{
-    return localScaling.x;
-}
-
-float Transform2D::getScaleY() const
-{
-    return localScaling.y;
+    this->setScale(Vec2(v, v));
 }
 
 void Transform2D::setRotation(float v)
@@ -128,6 +63,64 @@ void Transform2D::setRotation(float v)
 float Transform2D::getRotation() const
 {
     return localRotation.toVec3().z * RAD_TO_DEG;
+}
+
+void Transform2D::setAnchorPoint(const Vec2 &v)
+{
+    if (v == this->anchorPoint) {
+        return;
+    }
+
+    this->anchorPoint = v;
+
+    this->anchorPointInPoints = Vec2(size.width * anchorPoint.x, size.height * anchorPoint.y);
+
+    markLocalTransformRefreshFlag();
+}
+
+const Vec2& Transform2D::getAnchorPoint() const
+{
+    return this->anchorPoint;
+}
+
+void Transform2D::setAnchorPointInPixels(const Vec2 &v)
+{
+    if (v == this->anchorPointInPoints) {
+        return;
+    }
+
+    this->anchorPointInPoints = v;
+    this->anchorPoint = Vec2(anchorPointInPoints.x / size.width, anchorPointInPoints.y / size.height);
+
+    markLocalTransformRefreshFlag();
+}
+
+Vec2 Transform2D::getAnchorPointInPixels() const
+{
+    float x = this->anchorPoint.x * size.width;
+    float y = this->anchorPoint.y * size.height;
+
+    return Vec2(x, y);
+}
+
+void Transform2D::setContentSize(const Size &size)
+{
+    this->size = size;
+
+    this->anchorPointInPoints = Vec2(size.width * anchorPoint.x, size.height * anchorPoint.y);
+
+    markLocalTransformRefreshFlag();
+}
+
+const Size& Transform2D::getContentSize() const
+{
+    return this->size;
+}
+
+Rect Transform2D::getBoundingBox() const
+{
+    Rect rect = Rect(0, 0, size.width, size.height);
+    return RectApplyMatrix(rect, localMatrix);
 }
 
 Vec2 Transform2D::convertToNodeSpace(const Vec2 &worldPoint) const
@@ -169,12 +162,12 @@ Vec2 Transform2D::convertNodeToParentSpace(const Vec2 &point) const
 void Transform2D::updateLocalMatrix()
 {
     Vec3 position = this->localTranslation;
-    const Vec2 skew = getNode2D().skew;
+    const Vec2& skew = this->skew;
 
     bool needsSkewMatrix = (skew != Vec2::Zero);
 
     Vec2 anchorPoint;
-    Vec2& anchorPointInPoints = getNode2D().anchorPointInPoints;
+    const Vec2& anchorPointInPoints = this->anchorPointInPoints;
     anchorPoint.x = anchorPointInPoints.x * localScaling.x;
     anchorPoint.y = anchorPointInPoints.y * localScaling.y;
 
@@ -235,9 +228,22 @@ void Transform2D::updateLocalMatrix()
     this->markWorldTransformRefreshFlag();
 }
 
-Node2d& Transform2D::getNode2D()
+ComponentPtr Transform2D::createCloneInstance() const
 {
-    return *static_cast<Node2d*>(getNode().get());
+    return CreateCloneInstance<Transform2D>();
+}
+
+void Transform2D::copyProperties(const Component *component)
+{
+    Transform::copyProperties(component);
+
+    const Transform2D* inst = dynamic_cast<const Transform2D*>(component);
+    if (inst) {
+        this->size = inst->size;
+        this->anchorPoint = inst->anchorPoint;
+        this->anchorPointInPoints = inst->anchorPointInPoints;
+        this->skew = inst->skew;
+    }
 }
 
 } // namespace re

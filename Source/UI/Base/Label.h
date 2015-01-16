@@ -1,12 +1,12 @@
 #ifndef LABEL_H
 #define LABEL_H
 
-#include "Node2d.h"
+#include "Component.h"
 #include "Font/Font.h"
 
 namespace re {
 
-class Label : public Node2d
+class Label : public Component
 {
 public:
     Label();
@@ -16,8 +16,8 @@ public:
     void setText(const string &text);
 
 protected:
-    virtual NodePtr createCloneInstance() const;
-    virtual void copyProperties(const Node* node) override;
+    virtual ComponentPtr createCloneInstance() const;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     Font::ptr font;

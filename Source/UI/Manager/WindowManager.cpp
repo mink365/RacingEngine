@@ -49,8 +49,8 @@ WindowPtr WindowManager::pushWindow(WindowPtr &window) {
         onWindowHidden(win);
     }
     
-    if (window->getParent() != NULL) {
-        window->removeFromParent();
+    if (window->getNode()->getParent() != NULL) {
+        window->getNode()->removeFromParent();
     }
     
     this->addWindowToScene(window);
@@ -126,12 +126,12 @@ void WindowManager::popAllWindow() {
 }
 
 void WindowManager::changeFocusedWindow(WindowPtr &win) {
-    std::shared_ptr<Node2d> bg = this->getAlphaBackground();
+    auto bg = this->getAlphaBackground();
     
     float alpha = win->getBackgroundAlpha();
         
     bg->setVisible(true);
-    bg->setAlpha(alpha);
+    bg->getComponent<HierarchyColor>()->setAlpha(alpha);
         
     this->changeAlphaBackgroundIndex(win);
 }
@@ -142,7 +142,7 @@ void WindowManager::changeFocusedWindowToStackTop() {
         
         this->changeFocusedWindow(win);
     } else {
-        std::shared_ptr<Node2d> bg = this->getAlphaBackground();
+        auto bg = this->getAlphaBackground();
         bg->setVisible(false);
     }
 }

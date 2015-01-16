@@ -1,7 +1,11 @@
 #include "Sprite.h"
 
-#include "Texture/Frame/TextureFrameManager.h"
+#include "HierarchyColor.h"
+#include "Transform2D.h"
+
+#include "Scene/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
+#include "Texture/Frame/TextureFrameManager.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
@@ -30,9 +34,9 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
     this->frame = tex;
     this->rect = rect;
 
-    this->setContentSize(rect.size);
+    this->getComponent<Transform2D>()->setContentSize(rect.size);
 
-    NodePtr node = this->shared_from_this();
+    auto node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
     this->rebind();
@@ -40,9 +44,11 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 
 void Sprite::rebind()
 {
-    QuadStuffer::FillQuad(frame, rect.size, this->worldColor, this->getGeometry());
+    auto mesh = this->getComponent<Mesh>();
+    auto color = this->getComponent<HierarchyColor>();
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(this->getMesh().get()));
+    QuadStuffer::FillQuad(frame, rect.size, color->getDisplayColor(), mesh->getGeometry());
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 }
 
 void Sprite::updateViewColor()
@@ -50,16 +56,16 @@ void Sprite::updateViewColor()
     this->rebind();
 }
 
-NodePtr Sprite::createCloneInstance() const
+ComponentPtr Sprite::createCloneInstance() const
 {
     return CreateCloneInstance<Sprite>();
 }
 
-void Sprite::copyProperties(const Node *node)
+void Sprite::copyProperties(const Component *component)
 {
-    Node2d::copyProperties(node);
+    Component::copyProperties(component);
 
-    const Sprite* inst = dynamic_cast<const Sprite*>(node);
+    const Sprite* inst = dynamic_cast<const Sprite*>(component);
     if (inst) {
         this->frame = inst->frame;
         this->rect = inst->rect;
