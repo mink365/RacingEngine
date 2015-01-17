@@ -63,11 +63,12 @@ public:
 
     void parseData(void *data, Long datalen);
 
-    std::vector<NodePtr> getNodes() const;
+    const std::vector<NodePtr>& getNodes() const;
     NodePtr getNode(const string &name) const;
+    NodePtr getSkinningNode(const string& name) const;
+
     ClusterCollectionPtr getClusterCollection(Long id) const;
     SkeletonPtr getSkeleton(Long id) const;
-    SkeletonControllerPtr getSkeletonController(const string& name) const;
 
 private:
     NodePtr readNode(std::istream *st);

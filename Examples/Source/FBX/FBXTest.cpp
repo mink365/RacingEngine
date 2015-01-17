@@ -19,7 +19,7 @@ const static int BLOCK_COUNT = 5;
 std::vector<NodePtr> blocks;
 NodePtr black_box;
 NodePtr motoRoot;
-SkeletonControllerPtr manController;
+NodePtr man;
 
 void FBXTest::Init()
 {
@@ -103,21 +103,22 @@ void FBXTest::Init()
 
     assertDir = "Model/Man/";
     parser->parse(assertDir + "group_girl.data");
-    manController = parser->getSkeletonController("girl");
+    man = parser->getSkinningNode("girl");
 
-    AnimationTrackPtr track = manController->getAnimation()->getCurrAnimationTrack();
+    auto animation = man->getComponent<Animation>();
+    AnimationTrackPtr track = animation->getCurrAnimationTrack();
     Long beginTime = track->getKeyFrame(2)->getTime();
     Long endTime = track->getKeyFrame(12)->getTime();
-    manController->getAnimation()->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
-    manController->getAnimation()->setAnimationStackIndex(0);
-    manController->getAnimation()->setAnimationLoop(true);
-    manController->getAnimation()->setAnimationPower(1.0);
-    manController->getAnimation()->setIsUseAnimationStack(true);
+    animation->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
+    animation->setAnimationStackIndex(0);
+    animation->setAnimationLoop(true);
+    animation->setAnimationPower(1.0);
+    animation->setIsUseAnimationStack(true);
 
 //    manController->setDefaultFrame(1);
 
-    InitMeshInHardward(manController->getMesh());
-    rootNode->addChild(manController->getMeshNode());
+    InitMeshInHardward(man->getComponent<Mesh>());
+    rootNode->addChild(man);
 }
 
 static float rotation = 0;
@@ -134,10 +135,10 @@ void FBXTest::Update(float dt)
     quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->getTransform()->setLocalRotation(quat);
 
-    manController->update();
-    MeshPtr mesh = manController->getMesh();
+//    man->update();
+    MeshPtr mesh = man->getComponent<Mesh>();
 
     BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh.get()));
 
-    mesh->getNode()->getTransform()->setLocalRotation(quat);
+    man->getTransform()->setLocalRotation(quat);
 }

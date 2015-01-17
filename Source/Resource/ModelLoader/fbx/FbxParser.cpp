@@ -139,8 +139,11 @@ NodePtr FbxParser::readNode(std::istream *st) {
 
 void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
-    mesh->init();
+    auto material = std::make_shared<Material>();
     node->addComponent(mesh);
+    node->addComponent(material);
+
+    mesh->init();
     mesh->name = node->name;
 
     SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();
@@ -492,20 +495,43 @@ void FbxParser::bindClusterData()
     }
 }
 
-std::vector<NodePtr> FbxParser::getNodes() const
+const std::vector<NodePtr> &FbxParser::getNodes() const
 {
     return nodes;
 }
 
 NodePtr FbxParser::getNode(const string &name) const
 {
-    for (auto node : this->nodes) {
+    for (auto& node : this->nodes) {
         if (node->getName() == name) {
             return node;
         }
     }
 
     return nullptr;
+}
+
+NodePtr FbxParser::getSkinningNode(const string &name) const
+{
+    auto node = this->getNode(name);
+    RE_ASSERT(node != nullptr);
+
+    auto coll = this->getClusterCollection(node->getId());
+
+    Long boneId = coll->clusters.at(0)->linkedBoneId;
+    auto skeleton = this->getSkeleton(boneId);
+
+    auto animation = this->animations.at(0);
+
+    auto controller = std::make_shared<SkeletonController>();
+
+    node->addComponent(skeleton);
+    node->addComponent(animation);
+    node->addComponent(controller);
+
+    controller->init();
+
+    return node;
 }
 
 ClusterCollectionPtr FbxParser::getClusterCollection(Long id) const
@@ -527,25 +553,6 @@ SkeletonPtr FbxParser::getSkeleton(Long id) const
         }
     }
 
-    return nullptr;
-}
-
-SkeletonControllerPtr FbxParser::getSkeletonController(const string &name) const
-{
-    auto node = this->getNode(name);
-    RE_ASSERT(node != nullptr);
-
-    auto coll = this->getClusterCollection(node->getId());
-
-    Long boneId = coll->clusters.at(0)->linkedBoneId;
-    auto skeleton = this->getSkeleton(boneId);
-
-    auto animation = this->animations.at(0);
-
-    // TODO:
-//    SkeletonControllerPtr controller = std::make_shared<SkeletonController>(node, skeleton, animation);
-
-//    return controller;
     return nullptr;
 }
 
