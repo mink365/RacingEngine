@@ -61,8 +61,12 @@ void Bumpmap::Init()
     }
 
     auto texture = TextureManager::getInstance().getTexture("diffuse");
+
     auto geometry = ShapeGenerater::getInstance().CreateSphere(50, 30, 30);
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
+
+    auto box = CreateMeshNode();
+    SetMeshData(box, geometry, texture);
+    MeshPtr mesh = box->getComponent<Mesh>();
     mesh->getGeometry()->calculateTangents();
     {
         auto meshData = std::make_shared<MeshData>();
@@ -110,9 +114,6 @@ void Bumpmap::Init()
         mesh->getMaterial()->getPass(0)->getTextureUnit(0)->setTexture(diffuseTexture);
         mesh->getMaterial()->getPass(0)->getTextureUnit(1)->setTexture(normalTexture);
     }
-
-    NodePtr box = CreateNode();
-    AddMeshToNode(box, mesh);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));

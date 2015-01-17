@@ -24,10 +24,10 @@ MaterialPtr MaterialLoader::Load(FilePtr &file)
 
 MaterialPtr MaterialLoader::loadMaterial(Statement::ptr &statement)
 {
-    Material::ptr material = nullptr;
+    MaterialPtr material = nullptr;
 
     if (statement->type == "material") {
-        material = Material::create();
+        material = Create<Material>();
         material->setName(statement->name);
 
         for (auto kv : statement->keyValues) {

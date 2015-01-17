@@ -239,19 +239,17 @@ void BulletTest::initView()
     });
 
     auto geometry = ShapeGenerater::getInstance().CreatePlane(100, 100, 30, 30);
-    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
-    InitMeshInHardward(groundMesh);
-    auto groundNode = CreateNode();
-    AddMeshToNode(groundNode, groundMesh);
+    auto groundNode = CreateMeshNode();
+    SetMeshData(groundNode, geometry, texture);
+
     groundNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
     rootNode->addChild(groundNode);
 
     texture = TextureManager::getInstance().getTexture("cube3");
-    MeshPtr boxMesh = ShapeGenerater::getInstance().CreateBox(6, texture);
-    InitMeshInHardward(boxMesh);
+    auto box = ShapeGenerater::getInstance().CreateBox(6, 6, 6);
 
-    auto boxNode = CreateNode();
-    AddMeshToNode(boxNode, boxMesh);
+    auto boxNode = CreateMeshNode();
+    SetMeshData(groundNode, box, texture);
 
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {

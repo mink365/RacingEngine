@@ -309,11 +309,12 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     if (pass != nullptr) {
         MaterialPtr material = MaterialManager::getInstance().getMaterial(materialTextureKey);
         if (material != nullptr) {
-            //TODO: if the pass is in material file ?
-            auto m = material->clone();
-            m->addPass(pass);
+            auto m = mesh->getComponent<Material>();
 
-            mesh->setMaterial(m);
+            // copy renderstate from defined material
+            *m = *material;
+            m->addPass(pass); //TODO: if the pass is in material file ?
+
         } else {
             mesh->getMaterial()->clearPasses();
             mesh->getMaterial()->addPass(pass);
@@ -541,9 +542,11 @@ SkeletonControllerPtr FbxParser::getSkeletonController(const string &name) const
 
     auto animation = this->animations.at(0);
 
-    SkeletonControllerPtr controller = std::make_shared<SkeletonController>(node, skeleton, animation);
+    // TODO:
+//    SkeletonControllerPtr controller = std::make_shared<SkeletonController>(node, skeleton, animation);
 
-    return controller;
+//    return controller;
+    return nullptr;
 }
 
 }

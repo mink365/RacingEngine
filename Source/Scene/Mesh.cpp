@@ -9,7 +9,7 @@ Mesh::Mesh()
 
 void Mesh::init()
 {
-    this->material = Material::create();
+    this->material = this->getComponent<Material>();
     this->material->initDefaultPass();
 }
 
@@ -33,14 +33,9 @@ void Mesh::setMeshData(MeshDataPtr data)
     this->data = data;
 }
 
-Material::ptr Mesh::getMaterial()
+MaterialPtr Mesh::getMaterial()
 {
     return material;
-}
-
-void Mesh::setMaterial(MaterialPtr &m)
-{
-    this->material = m;
 }
 
 MeshPtr Mesh::clone()

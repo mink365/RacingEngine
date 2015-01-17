@@ -176,12 +176,22 @@ void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
     mesh->getMaterial()->setShder(shader);
 }
 
-void AddMeshToNode(NodePtr node, MeshPtr mesh) {
-    node->addComponent(mesh);
+void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, const std::string& shaderName)
+{
+    MeshPtr mesh = node->getComponent<Mesh>();
+    mesh->init();
 
-    for (auto child : node->getChildren()) {
-        AddMeshToNode(child, mesh);
+    mesh->setGeometry(geometry);
+
+    TextureUnitState::ptr unit = node->getComponent<re::Material>()->getPass(0)->getTextureUnit(0);
+    unit->setUVstate(0, 0, 1, 1, 0);
+
+    if (texture == nullptr) {
+        texture = TextureManager::getInstance().getTexture("girl");
     }
+    unit->setTexture(texture);
+
+    InitMeshInHardward(mesh, shaderName);
 }
 
 BaseTest::BaseTest()

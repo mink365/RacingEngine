@@ -1,24 +1,20 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "Base/Shared.h"
-#include "Base/Named.h"
-#include "Base/Clonable.h"
+#include "Scene/Component.h"
 #include "Render/RenderState.h"
 #include "TextureUnitState.h"
 #include "Shader/Shader.h"
 #include "Pass.h"
-#include "Base/Named.h"
 
 namespace re {
 
-class Material : public Named,
-                 public Shared<Material>,
-                 public Clonable<Material>,
-                 public enable_shared_from_this<Material>
+class Material : public Component, public enable_shared_from_this<Material>
 {
 public:
     Material();
+    void init() {};
+
     void initDefaultPass();
 
     RenderState& getRenderState();
@@ -37,7 +33,13 @@ public:
     Shader::ptr getShader() const;
     void setShder(Shader::ptr &value);
 
-    Material::ptr clone() const override;
+    Material& operator =(const Material& rhs);
+
+    MaterialPtr clone();
+
+protected:
+    virtual ComponentPtr createCloneInstance() const override;
+    virtual void copyProperties(const Component* rhs) override;
 
 private:
     bool transparent;

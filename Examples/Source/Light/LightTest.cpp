@@ -45,12 +45,10 @@ void LightTest::Init()
 
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(50, texture);
-//    InitMeshInHardward(mesh, "Shader_PTC");
-    InitMeshInHardward(mesh, CURRENT_SHADER_NAME);
+    auto boxGeometry = ShapeGenerater::getInstance().CreateBox(50, 50, 50);
 
-    box = CreateNode();
-    AddMeshToNode(box, mesh);
+    box = CreateMeshNode();
+    SetMeshData(box, boxGeometry, texture, CURRENT_SHADER_NAME);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));

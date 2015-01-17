@@ -14,6 +14,9 @@ public:
 };
 
 NodePtr CreateNode();
+NodePtr CreateMeshNode();
+NodePtr CreateSkinningMesh();
+NodePtr CreateBoneNode();
 
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateComponent(Args... args)

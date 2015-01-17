@@ -5,6 +5,8 @@
 
 #include "Scene/SceneManager.h"
 #include "Scene/Node.h"
+#include "Scene/Mesh.h"
+#include "Render/Material/Material.h"
 #include "Camera/Camera.h"
 #include "UI/Scene.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -54,6 +56,6 @@ protected:
 };
 
 void InitMeshInHardward(MeshPtr mesh, const std::string& shaderName="Shader_PTC");
-void AddMeshToNode(NodePtr node, MeshPtr mesh);
+void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture=nullptr, const std::string& shaderName="Shader_PTC");
 
 #endif // BASETEST_H

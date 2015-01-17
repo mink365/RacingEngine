@@ -183,7 +183,7 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
     this->renderer->setModelMatrix(node->getTransform()->getWorldMatrix());
 
-    Material::ptr material = mesh->getMaterial();
+    MaterialPtr material = mesh->getMaterial();
 
 //    Mat4 textureMatrix;
 //    auto unit = material->getPass(0)->getTextureUnit(0);

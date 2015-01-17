@@ -27,22 +27,18 @@ void Skybox::Init()
 
     {
         GeometryPtr geometry = ShapeGenerater::getInstance().CreateBox(30, 30, 30, 30, 30, 30);
-        MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, tex);
-        InitMeshInHardward(mesh, "cubemap");
 
-        box = CreateNode();
-        AddMeshToNode(box, mesh);
+        box = CreateMeshNode();
+        SetMeshData(box, geometry, tex, "cubemap");
     }
 
     {
         GeometryPtr geometry = ShapeGenerater::getInstance().CreateBox(900, 900, 900, 30, 30, 30);
-        MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, tex);
-        InitMeshInHardward(mesh, "cubemap");
 
-        mesh->getMaterial()->getRenderState().faceCullMode = FaceCullMode::Off;
+        skybox = CreateMeshNode();
+        SetMeshData(skybox, geometry, tex, "cubemap");
 
-        skybox = CreateNode();
-        AddMeshToNode(skybox, mesh);
+        skybox->getComponent<re::Material>()->getRenderState().faceCullMode = FaceCullMode::Off;
     }
 
     rootNode->addChild(skybox);

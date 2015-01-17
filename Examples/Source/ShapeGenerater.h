@@ -18,10 +18,6 @@ public:
     GeometryPtr CreateRing(float innerRadius, float outerRadius, int thetaSegments=8, int phiSegments=8, float thetaStart=0, float thetaLength=PI* 2);
     GeometryPtr CreateTorus(float radius, float tubularRadius, int radialSegments=8, int tubularSegments=6, float tubularStart=0, float tubularLength=PI* 2);
     GeometryPtr CreateSphere(float radius, int widthSegments=8, int heightSegments=6, float phiStart=0, float phiLength=PI*2, float thetaStart=0, float thetaLenght=PI*2);
-
-    MeshPtr CreateBox(float side, Texture::ptr texture=nullptr);
-    MeshPtr CreateMesh(GeometryPtr &geometry, MaterialPtr &material);
-    MeshPtr CreateMesh(GeometryPtr &geometry, Texture::ptr texture=nullptr);
 };
 
 #endif // SHAPEGENERATER_H

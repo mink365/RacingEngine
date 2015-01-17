@@ -35,15 +35,14 @@ void FontTest::Init()
 {
     auto atlas = CreateDefaultFont();
 
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(150, atlas->getTexture());
-    InitMeshInHardward(mesh);
+    auto box = ShapeGenerater::getInstance().CreateBox(150, 150, 150);
 
-    box = CreateNode();
-    AddMeshToNode(box, mesh);
+    boxNode = CreateMeshNode();
+    SetMeshData(boxNode, box, atlas->getTexture());
 
-    box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
+    boxNode->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
 
-    rootNode->addChild(box);
+    rootNode->addChild(boxNode);
 }
 
 static float rotation = 0;
@@ -57,5 +56,5 @@ void FontTest::Update(float dt)
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
 
-    box->getTransform()->setLocalRotation(quat);
+    boxNode->getTransform()->setLocalRotation(quat);
 }

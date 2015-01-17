@@ -1,4 +1,5 @@
 #include "Material.h"
+#include <memory>
 
 namespace re {
 
@@ -74,22 +75,45 @@ void Material::setShder(Shader::ptr& value)
     shader = value;
 }
 
-Material::ptr Material::clone() const
+Material& Material::operator =(const Material &rhs)
 {
-    Material::ptr inst = Material::create();
+    // DO NOT COPY PASSES!
+    this->transparent = rhs.transparent;
+    this->queueID = rhs.queueID;
 
-    inst->queueID = this->queueID;
-    inst->renderState = this->renderState;
-    inst->shader = this->shader;
-    inst->transparent = this->transparent;
+    this->renderState = rhs.renderState;
+    this->shader = rhs.shader;
+}
 
-    for (auto pass : this->passes) {
-        auto passInst = pass->clone();
+ComponentPtr Material::createCloneInstance() const
+{
+    return CreateCloneInstance<Material>();
+}
 
-        inst->addPass(passInst);
+void Material::copyProperties(const Component *rhs)
+{
+    Component::copyProperties(rhs);
+
+    const Material* inst = dynamic_cast<const Material*>(rhs);
+    if (inst) {
+        this->queueID = inst->queueID;
+        this->renderState = inst->renderState;
+        this->shader = inst->shader;
+        this->transparent = inst->transparent;
+
+        for (auto& pass : inst->passes) {
+            auto passInst = pass->clone();
+
+            this->addPass(passInst);
+        }
     }
+}
 
-    return inst;
+MaterialPtr Material::clone()
+{
+    ComponentPtr inst = Component::clone();
+
+    return std::static_pointer_cast<Material>(inst);
 }
 
 }

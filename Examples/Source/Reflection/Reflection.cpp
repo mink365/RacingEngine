@@ -25,18 +25,16 @@ void Reflection::Init()
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
     auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
-    InitMeshInHardward(mesh, "reflection");
-//    InitMeshInHardward(mesh);
-    mesh->getMaterial()->setQueueID(51);
 
-    node = CreateNode();
-    AddMeshToNode(node, mesh);
+    node = CreateMeshNode();
+    SetMeshData(node, geometry, texture, "reflection");
 
     rootNode->addChild(node);
 
+    auto material = node->getComponent<re::Material>();
+    material->setQueueID(51);
     auto unit = TextureUnitState::create();
-    mesh->getMaterial()->getPass(0)->addTextureUnit(unit);
+    material->getPass(0)->addTextureUnit(unit);
     unit->setTexture(cubeTexture);
 }
 

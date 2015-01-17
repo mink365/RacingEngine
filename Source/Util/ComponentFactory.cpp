@@ -6,6 +6,13 @@
 #include "UI/Base/Sprite.h"
 #include "UI/Base/NinePatch.h"
 
+#include "Scene/Mesh.h"
+#include "Animation/Animation.h"
+#include "Animation/Skeleton.h"
+#include "Animation/SkeletonController.h"
+#include "Animation/Bone.h"
+#include "Animation/AnimationTrack.h"
+
 namespace re {
 
 NodePtr CreateNode()
@@ -25,6 +32,33 @@ template<>
 inline SpritePtr CreateComponent<Sprite>(string path)
 {
     return CreateNode2DComponent<Sprite>(path);
+}
+
+NodePtr CreateMeshNode()
+{
+    auto node = Create<Node>();
+
+    AddComponent<2, Mesh, Material>::Do(node);
+
+    return node;
+}
+
+NodePtr CreateSkinningMesh()
+{
+    auto node = Create<Node>();
+
+    AddComponent<5, Skeleton, SkeletonController, Animation, Mesh, Material>::Do(node);
+
+    return node;
+}
+
+NodePtr CreateBoneNode()
+{
+    auto node = Create<Node>();
+
+    AddComponent<2, Bone, AnimationTrack>::Do(node);
+
+    return node;
 }
 
 } // namespace re

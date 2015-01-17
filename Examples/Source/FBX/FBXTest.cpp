@@ -118,12 +118,6 @@ void FBXTest::Init()
 
     InitMeshInHardward(manController->getMesh());
     rootNode->addChild(manController->getMeshNode());
-
-//    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(2);
-//    InitMeshInHardward(mesh);
-
-//    auto box = CreateNode();
-//    AddMeshToNode(box, mesh);
 }
 
 static float rotation = 0;

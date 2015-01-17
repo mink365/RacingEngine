@@ -52,12 +52,9 @@ void ShadowTest::Init()
     GeometryPtr geometry = nullptr;
     geometry = ShapeGenerater::getInstance().CreatePlane(200, 200, 30, 30);
 //     geometry = ShapeGenerater::getInstance().CreateRing(50, 200);
-    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
-    InitMeshInHardward(groundMesh, "shadow_map");
-    groundMesh->getMaterial()->setQueueID(51);
 
-    ground = CreateNode();
-    AddMeshToNode(ground, groundMesh);
+    ground = CreateMeshNode();
+    SetMeshData(ground, geometry, texture, "shadow_map");
 
     // TODO: if the plane z > 100, shadow will be cull ?
     ground->getTransform()->setLocalTranslation(Vec3(0, 0, 0));
@@ -65,11 +62,10 @@ void ShadowTest::Init()
     rootNode->addChild(ground);
     ground->updateTransform();
 
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateBox(50, texture);
-    InitMeshInHardward(mesh);
+    geometry = ShapeGenerater::getInstance().CreateBox(50, 50, 50);
 
-    box = CreateNode();
-    AddMeshToNode(box, mesh);
+    box = CreateMeshNode();
+    SetMeshData(box, geometry, texture);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 22));
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));

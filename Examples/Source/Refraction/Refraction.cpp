@@ -22,25 +22,21 @@ void Refraction::Init()
 
     {
         GeometryPtr geometry = ShapeGenerater::getInstance().CreatePlane(300, 300, 30, 30);
-        MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
-        InitMeshInHardward(mesh);
-        mesh->getMaterial()->setQueueID(51);
 
-        auto node = CreateNode();
-        AddMeshToNode(node, mesh);
+        auto node = CreateMeshNode();
+        SetMeshData(node, geometry, texture);
+
+        node->getComponent<re::Material>()->setQueueID(51);
 
         rootNode->addChild(node);
 
         node->getTransform()->setLocalTranslation(Vec3(0, 0, -70));
     }
-    auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, texture);
-    InitMeshInHardward(mesh, "refraction");
-//    InitMeshInHardward(mesh);
-    mesh->getMaterial()->setQueueID(51);
 
-    node = CreateNode();
-    AddMeshToNode(node, mesh);
+    auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
+
+    node = CreateMeshNode();
+    SetMeshData(node, geometry, texture, "refraction");
 
     rootNode->addChild(node);
 }

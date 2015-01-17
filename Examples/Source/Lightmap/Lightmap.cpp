@@ -32,21 +32,19 @@ void Lightmap::Init()
     auto shadow = TextureManager::getInstance().getTexture("shadow");
 
     auto geometry = ShapeGenerater::getInstance().CreateTorus(30, 10, 30, 30);
-    MeshPtr mesh = ShapeGenerater::getInstance().CreateMesh(geometry, base);
-    InitMeshInHardward(mesh, "lightmap");
-//    InitMeshInHardward(mesh);
-    mesh->getMaterial()->setQueueID(51);
 
-    node = CreateNode();
-    AddMeshToNode(node, mesh);
+    node = CreateMeshNode();
+    SetMeshData(node, geometry, base, "lightmap");
+    auto material = node->getComponent<re::Material>();
 
     rootNode->addChild(node);
 
+    material->setQueueID(51);
     auto unit = TextureUnitState::create();
-    mesh->getMaterial()->getPass(0)->addTextureUnit(unit);
+    material->getPass(0)->addTextureUnit(unit);
     unit->setTexture(reflection);
     unit = TextureUnitState::create();
-    mesh->getMaterial()->getPass(0)->addTextureUnit(unit);
+    material->getPass(0)->addTextureUnit(unit);
     unit->setTexture(shadow);
 }
 
