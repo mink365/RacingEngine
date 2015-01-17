@@ -22,25 +22,11 @@
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Shader/ShaderManager.h"
 #include "UI/Manager/UIManager.h"
-#include <memory>
+#include "Util/ComponentFactory.h"
 
 using namespace re;
 
 class FeatureTestsApp;
-
-template<typename T>
-NodePtr CreateComponent()
-{
-    auto node = Create<Node>();
-
-    auto component = std::make_shared<T>();
-
-    node->addComponent(component);
-
-    return node;
-}
-
-NodePtr CreateNode();
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
 

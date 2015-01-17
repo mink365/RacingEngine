@@ -3,13 +3,6 @@
 
 #include "opengl.h"
 
-NodePtr CreateNode()
-{
-    auto node = Create<Node>();
-
-    return node;
-}
-
 int CheckShaderLinkError(GLint program) {
     GLint IsLinked;
     glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);

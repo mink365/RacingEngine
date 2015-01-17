@@ -94,16 +94,16 @@ void ShadowTest::Init()
     dirLight->spotAngle = 50;
     dirLight->shadowCameraFov = 50;
 
-    sprite = CreateView<Sprite>("diffuse.png");
+    sprite = CreateComponent<Sprite>("diffuse.png");
     sprite->rebind();
-    sprite->getTransform2D()->setScale(Vec2(1, 1));
-    sprite->getTransform2D()->setPosition(Vec2(0, 0));
+    sprite->getComponent<Transform2D>()->setScale(Vec2(1, 1));
+    sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));
 
     auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
-    window->addChild(sprite);
+    window->getNode()->addChild(sprite->getNode());
 
-    LayoutUtil::LayoutToParent(sprite, AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
+    LayoutUtil::LayoutToParent(sprite->getComponent<Transform2D>(), AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
 
     SetupShadowMapShader();
 

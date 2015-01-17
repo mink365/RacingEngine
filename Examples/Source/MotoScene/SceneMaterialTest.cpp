@@ -6,7 +6,6 @@
 #include "Resource/ResourceManager.h"
 #include "UI/Base/Sprite.h"
 #include "UI/Base/Label.h"
-#include "UI/Base/Node2d.h"
 #include "UI/Manager/UIManager.h"
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -93,11 +92,11 @@ void SceneMaterialTest::createUI()
         font = FontManager::getInstance().getFont("default");
     }
 
-    labelName = CreateView<Label>(font);
+    labelName = CreateComponent<Label>(font);
     labelName->setText("Name");
 
-    auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateComponent<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateComponent<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
@@ -116,13 +115,13 @@ void SceneMaterialTest::createUI()
 
     auto scene = stage->getLastLayer();
     auto window = scene->pushWindow("HelloWindow");
-    window->addChild(labelName);
-    window->addChild(buttonPrev);
-    window->addChild(buttonNext);
+    window->getNode()->addChild(labelName->getNode());
+    window->getNode()->addChild(buttonPrev->getNode());
+    window->getNode()->addChild(buttonNext->getNode());
 
-    LayoutUtil::LayoutToParent(labelName, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 0, 50);
-    LayoutUtil::LayoutToParent(buttonPrev, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, -30, 50);
-    LayoutUtil::LayoutToParent(buttonNext, AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 30, 50);
+    LayoutUtil::LayoutToParent(labelName->getComponent<Transform2D>(), AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 0, 50);
+    LayoutUtil::LayoutToParent(buttonPrev->getComponent<Transform2D>(), AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, -30, 50);
+    LayoutUtil::LayoutToParent(buttonNext->getComponent<Transform2D>(), AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 30, 50);
 }
 
 void SceneMaterialTest::changeTile(int index)

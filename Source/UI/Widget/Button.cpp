@@ -1,5 +1,6 @@
 #include "Button.h"
 
+#include "Util/ComponentFactory.h"
 #include "Util/LocalTime.h"
 
 namespace re {
@@ -10,6 +11,8 @@ BaseButton::BaseButton()
 
 void BaseButton::init()
 {
+    Widget::init();
+
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
@@ -108,9 +111,9 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
 {
     BaseButton::init();
 
-    this->defaultSprite = Create<Sprite>(texDefault);
-    this->pressedSprite = Create<Sprite>(texPress);
-    this->disabledSprite = Create<Sprite>(texDis);
+    this->defaultSprite = CreateNode2DComponent<Sprite>(texDefault);
+    this->pressedSprite = CreateNode2DComponent<Sprite>(texPress);
+    this->disabledSprite = CreateNode2DComponent<Sprite>(texDis);
 
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();

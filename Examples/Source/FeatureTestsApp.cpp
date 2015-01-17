@@ -13,7 +13,6 @@
 #include "Renderer/GLES2Renderer.h"
 #include "UI/Manager/UIManager.h"
 #include "UI/Base/Label.h"
-#include "UI/Base/Node2d.h"
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
 
@@ -159,15 +158,15 @@ void FeatureTestsApp::createBaseUI()
         font = FontManager::getInstance().getFont("default");
     }
 
-    labelTitle = CreateView<Label>(font);
-    labelTitle->setAnchorPoint(Vec2(0.5,0.5));
+    labelTitle = CreateNode2DComponent<Label>(font);
+    labelTitle->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
-    labelFps = CreateView<Label>(font);
+    labelFps = CreateNode2DComponent<Label>(font);
     labelFps->setText("HelleH");
 
-    auto buttonNext = CreateView<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateView<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateNode2DComponent<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateNode2DComponent<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
@@ -181,15 +180,16 @@ void FeatureTestsApp::createBaseUI()
     buttonPrev->setOnClickFunc(buttonClickFunc);
 
     auto scene = stage->pushTo("Scene1");
-    scene->addChild(labelTitle);
-    scene->addChild(labelFps);
-    scene->addChild(buttonNext);
-    scene->addChild(buttonPrev);
+    auto sceneNode = scene->getNode();
+    sceneNode->addChild(labelTitle->getNode());
+    sceneNode->addChild(labelFps->getNode());
+    sceneNode->addChild(buttonNext->getNode());
+    sceneNode->addChild(buttonPrev->getNode());
 
-    LayoutUtil::LayoutToParent(labelTitle, AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
-    LayoutUtil::LayoutToParent(labelFps, AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
-    LayoutUtil::LayoutToParent(buttonPrev, AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
-    LayoutUtil::LayoutToParent(buttonNext, AlignType::RIGHT_CENTER, AlignType::RIGHT_CENTER);
+    LayoutUtil::LayoutToParent(labelTitle->getComponent<Transform2D>(), AlignType::CENTER_TOP, AlignType::CENTER_TOP, 0, -80);
+    LayoutUtil::LayoutToParent(labelFps->getComponent<Transform2D>(), AlignType::LEFT_BOTTOM, AlignType::LEFT_BOTTOM);
+    LayoutUtil::LayoutToParent(buttonPrev->getComponent<Transform2D>(), AlignType::LEFT_CENTER, AlignType::LEFT_CENTER);
+    LayoutUtil::LayoutToParent(buttonNext->getComponent<Transform2D>(), AlignType::RIGHT_CENTER, AlignType::RIGHT_CENTER);
 }
 
 void FeatureTestsApp::initResources()
@@ -267,8 +267,8 @@ void FeatureTestsApp::initResources()
     rootNode = CreateNode();
     SceneManager::getInstance().addRootNode(rootNode);
 
-    this->stage = CreateView<ui::UIManager>();
-    SceneManager::getInstance().addRootNode(this->stage);
+    this->stage = CreateNode2DComponent<ui::UIManager>();
+    SceneManager::getInstance().addRootNode(this->stage->getNode());
     MessageManager::getInstance().addHandler(this->stage.get());
 
     this->registerScenes();
@@ -280,7 +280,7 @@ void FeatureTestsApp::initResources()
 void FeatureTestsApp::registerWindows()
 {
     stage->getWindowFactory().registerCreateFunc("HelloWindow", [](){
-        auto window = CreateView<Window>();
+        auto window = CreateNode2DComponent<Window>();
         window->setName("HelloWindow");
         return window;
     });
@@ -289,7 +289,7 @@ void FeatureTestsApp::registerWindows()
 void FeatureTestsApp::registerScenes()
 {
     stage->getSceneFactory().registerCreateFunc("Scene1", [](){
-        auto scene = CreateView<Scene>();
+        auto scene = CreateNode2DComponent<Scene>();
         scene->setName("Scene1");
         return scene;
     });

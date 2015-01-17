@@ -1,0 +1,89 @@
+#ifndef RE_COMPONENTFACTORY_H
+#define RE_COMPONENTFACTORY_H
+
+#include "PreDeclare.h"
+#include "Base/Singleton.h"
+#include "Scene/Node.h"
+
+#include "UI/Base/HierarchyColor.h"
+#include "UI/Base/Transform2D.h"
+#include "UI/Base/Label.h"
+#include "UI/Base/Sprite.h"
+#include "UI/Base/NinePatch.h"
+
+namespace re {
+
+class ComponentFactory : public Singleton<ComponentFactory>
+{
+public:
+    std::vector<NodePtr> nodes;
+};
+
+NodePtr CreateNode();
+
+template<typename T, typename... Args>
+inline std::shared_ptr<T> CreateComponent(Args... args)
+{
+    printf("Hello .......");
+
+    auto node = Create<Node>();
+
+    auto component = std::make_shared<T>();
+
+    node->addComponent(component);
+
+    // make an reference to the node, make sure it not be delected
+    ComponentFactory::getInstance().nodes.push_back(node);
+
+    return component;
+}
+
+// function can not partial specialization now, so we need this
+template<std::size_t INDEX, typename T, typename... TL>
+struct AddComponent
+{
+    static void Do(NodePtr& node)
+    {
+        auto component = std::make_shared<T>();
+        node->addComponent(component);
+
+        AddComponent<INDEX-1, TL...>::Do(node);
+    }
+};
+
+template<typename T, typename... TL>
+struct AddComponent<1, T, TL...>
+{
+    static void Do(NodePtr& node)
+    {
+        // the last one
+        auto component = std::make_shared<T>();
+        node->addComponent(component);
+    }
+};
+
+template<typename T, typename... Args>
+inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
+{
+    auto node = std::make_shared<Node>();
+
+    AddComponent<3, Transform2D, HierarchyColor, T>::Do(node);
+
+    auto label = node->getComponent<T>();
+    label->init(args...);
+
+    LOG_E("Hello, %d", node->getComponentCount());
+    for (size_t i = 0; i < node->getComponents().size(); ++i) {
+        auto component = node->getComponents()[i];
+
+        LOG_E("Type: %s", typeid(*(component.get())).name());
+    }
+
+    ComponentFactory::getInstance().nodes.push_back(node);
+
+    return label;
+}
+
+} // namespace re
+
+#endif // RE_COMPONENTFACTORY_H

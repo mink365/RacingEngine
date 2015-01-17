@@ -111,7 +111,7 @@ void Bumpmap::Init()
         mesh->getMaterial()->getPass(0)->getTextureUnit(1)->setTexture(normalTexture);
     }
 
-    auto box = CreateNode();
+    NodePtr box = CreateNode();
     AddMeshToNode(box, mesh);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

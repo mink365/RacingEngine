@@ -149,7 +149,10 @@ void LayoutUtil::Layout(Transform2DPtr view, AlignType from, Transform2DPtr targ
 }
 
 void LayoutUtil::LayoutToParent(Transform2DPtr view, AlignType from, AlignType to, float offsetx, float offsetY) {
-    LayoutToParent(view, from, to, offsetx, offsetY);
+    Vec2 fromV = AlignTypeToPoint(from);
+    Vec2 toV = AlignTypeToPoint(to);
+
+    LayoutToParent(view, fromV.x, fromV.y, toV.x, toV.y, offsetx, offsetY);
 }
 
 void LayoutUtil::Layout(Transform2DPtr src, float srcAlignX, float srcAlignY, Transform2DPtr target,
