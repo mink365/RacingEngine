@@ -4,7 +4,7 @@
 #include "Animation/SkeletonController.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
-#include "Animation/BoneNode.h"
+#include "Animation/Bone.h"
 
 #include "ShapeGenerater.h"
 

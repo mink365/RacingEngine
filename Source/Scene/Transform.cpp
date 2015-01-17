@@ -81,7 +81,7 @@ TransformPtr Transform::getParentTransform() const
     NodePtr parent = this->getNode()->getParent();
     if (parent != nullptr)
     {
-        return parent->getComponent<Transform>();
+        return parent->getTransform();
     }
 
     return nullptr;

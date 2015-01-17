@@ -13,7 +13,7 @@ class KeyFrame;
 class Skeleton;
 class SkeletonController;
 
-class BoneNode;
+class Bone;
 class Node;
 class Component;
 class Mesh;
@@ -51,7 +51,7 @@ typedef std::shared_ptr<KeyFrame> KeyFramePtr;
 typedef std::shared_ptr<Skeleton> SkeletonPtr;
 typedef std::shared_ptr<SkeletonController> SkeletonControllerPtr;
 
-typedef std::shared_ptr<BoneNode> BoneNodePtr;
+typedef std::shared_ptr<Bone> BonePtr;
 typedef std::shared_ptr<Node> NodePtr;
 typedef std::shared_ptr<Component> ComponentPtr;
 typedef std::shared_ptr<Mesh> MeshPtr;

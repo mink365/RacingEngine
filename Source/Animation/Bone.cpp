@@ -1,4 +1,4 @@
-#include "BoneNode.h"
+#include "Bone.h"
 
 #include "Scene/Node.h"
 #include "Scene/Transform.h"
@@ -7,33 +7,33 @@
 
 namespace re {
 
-BoneNode::BoneNode()
+Bone::Bone()
     :type(0), linkMode(LinkMode::Normalize)
 {
 }
 
-void BoneNode::setType(Int type)
+void Bone::setType(Int type)
 {
     this->type = type;
 }
 
-void BoneNode::setLinkMode(LinkMode type)
+void Bone::setLinkMode(LinkMode type)
 {
     this->linkMode = type;
 }
 
-Int BoneNode::getNumLinkedControlPoints()
+Int Bone::getNumLinkedControlPoints()
 {
     return this->linkIndices.size();
 }
 
-void BoneNode::setAnimationTrack(AnimationTrackPtr track)
+void Bone::setAnimationTrack(AnimationTrackPtr track)
 {
     this->animationTrack = track;
-    track->node = this->shared_from_this();
+    track->node = this->getNode();
 }
 
-Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix)
+Mat4 Bone::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix)
 {
     if (this->linkMode == LinkMode::Additive) {
         // TODO:
@@ -48,13 +48,13 @@ Mat4 BoneNode::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Ma
         Mat4 clusterRelativeInitPosition = transformLinkMatrixInverse * globalInitPosition;
 
         Mat4 globalCurrentPositionInverse = globalPositionMatrix.inverse();
-        Mat4 clusterRelativeCurrentPositionInverse = globalCurrentPositionInverse * getTransform()->getWorldMatrix();
+        Mat4 clusterRelativeCurrentPositionInverse = globalCurrentPositionInverse * getComponent<Transform>()->getWorldMatrix();
 
         return clusterRelativeCurrentPositionInverse * clusterRelativeInitPosition;
     }
 }
 
-void BoneNode::updateMatrix()
+void Bone::updateMatrix()
 {
     if (animationTrack != nullptr) {
         animationTrack->updateTimeInfo();
@@ -62,7 +62,7 @@ void BoneNode::updateMatrix()
         animationTrack->updateLocalMatrix();
     }
 
-    this->getTransform()->refresh();
+    this->getComponent<Transform>()->refresh();
 }
 
 }

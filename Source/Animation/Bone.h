@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Scene/Node.h"
+#include "Scene/Component.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 
@@ -13,17 +14,17 @@ namespace re {
 
 class AnimationTrack;
 class Mat4;
-class BoneNode;
+class Bone;
 
-typedef shared_ptr<BoneNode> BoneNodePtr;
+typedef shared_ptr<Bone> BonePtr;
 
-class BoneNode : public Node
+class Bone : public Component
 {
     friend class Skeleton;
     friend class FbxParser;
 
 public:
-    BoneNode();
+    Bone();
 
     void setType(Int type);
     void setLinkMode(LinkMode type);

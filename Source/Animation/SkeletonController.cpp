@@ -2,7 +2,7 @@
 
 #include "Skeleton.h"
 #include "Animation.h"
-#include "BoneNode.h"
+#include "Bone.h"
 #include "Scene/Node.h"
 #include "Math/Matrix.h"
 #include "Math/Vector.h"

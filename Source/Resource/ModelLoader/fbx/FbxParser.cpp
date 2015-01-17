@@ -4,7 +4,7 @@
 #include "Scene/Node.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
-#include "Animation/BoneNode.h"
+#include "Animation/Bone.h"
 #include "Animation/SkeletonController.h"
 
 #include <iostream>
@@ -12,6 +12,7 @@
 #include "Texture/TextureManager.h"
 #include "Material/MaterialManager.h"
 #include "Util/ContainerUtil.h"
+#include "Util/ComponentFactory.h"
 #include "Base/Buffer.h"
 #include "FileSystem/FileSystem.h"
 #include "Util/PrintUtil.h"
@@ -329,7 +330,7 @@ void FbxParser::readSkeleton(istream *st)
     SkeletonPtr skeleton = std::make_shared<Skeleton>();
     AnimationPtr animation = std::make_shared<Animation>();
 
-    BoneNodePtr bone = this->readBoneNode(st, animation);
+    BonePtr bone = this->readBoneNode(st, animation);
 
     skeleton->setRootBone(bone);
 
@@ -337,9 +338,9 @@ void FbxParser::readSkeleton(istream *st)
     this->animations.push_back(animation);
 }
 
-BoneNodePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
+BonePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 {
-    BoneNodePtr bone = std::make_shared<BoneNode>();
+    BonePtr bone = CreateComponent<Bone>();
 
     Long id = reader->ReadLong(st);
     string name = reader->ReadString(st);
@@ -355,7 +356,7 @@ BoneNodePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 
     vectorR *= DEG_TO_RAD;
 
-    TransformPtr& transform = bone->getTransform();
+    TransformPtr transform = bone->getComponent<Transform>();
     transform->setLocalTranslation(vectorT);
     transform->setLocalRotation(vectorR.toQuat());
     transform->setLocalScaling(vectorS);
@@ -378,9 +379,9 @@ BoneNodePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 
     Int childCount = reader->ReadInt(st);
     for (int i = 0; i < childCount; ++i) {
-        BoneNodePtr child = this->readBoneNode(st, animation);
+        BonePtr child = this->readBoneNode(st, animation);
 
-        bone->addChild(child);
+        bone->getNode()->addChild(child->getNode());
     }
 
     return bone;

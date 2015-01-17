@@ -285,6 +285,8 @@ void Widget::copyProperties(const Component *component)
         this->touchState = WidgetTouchState::TOUCH_CANCLE;
 
         // TODO: listener
+
+        this->init();
     }
 }
 

@@ -46,25 +46,25 @@ class Skeleton
 public:
     Skeleton();
 
-    void setRootBone(BoneNodePtr bone);
-    BoneNodePtr getRootBone() const;
+    void setRootBone(BonePtr bone);
+    BonePtr getRootBone() const;
 
-    BoneNodePtr getBone(Long id);
+    BonePtr getBone(Long id);
 
     void compute(vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
 private:
-    void cacheBones(BoneNodePtr bone);
+    void cacheBones(BonePtr bone);
 
-    void computeBone(BoneNodePtr bone, vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
+    void computeBone(BonePtr bone, vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
-    void updateBoneVertex(BoneNodePtr bone, vector<Vec3>& boneVertex, Int Index);
+    void updateBoneVertex(BonePtr bone, vector<Vec3>& boneVertex, Int Index);
 
 private:
     LinkMode linkMode;
 
-    BoneNodePtr rootBone;
-    std::vector<BoneNodePtr> bones;
+    BonePtr rootBone;
+    std::vector<BonePtr> bones;
 };
 
 } // namespace re

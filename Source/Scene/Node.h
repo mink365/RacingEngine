@@ -63,6 +63,7 @@ public:
     void updateTransform();
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
+    void resetTransform(TransformPtr &trans);
 
     NodePtr clone() const;
 

@@ -74,7 +74,7 @@ private:
     void readMesh(std::istream *st, NodePtr node);
 
     void readSkeleton(std::istream *st);
-    BoneNodePtr readBoneNode(std::istream* st, AnimationPtr animation);
+    BonePtr readBoneNode(std::istream* st, AnimationPtr animation);
     KeyFrame readKeyFrame(std::istream* st);
     FBXClusterPtr readCluster(std::istream* st);
 

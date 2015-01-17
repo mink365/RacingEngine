@@ -98,7 +98,7 @@ private:
 class AnimationTrack
 {
     friend class Animation;
-    friend class BoneNode;
+    friend class Bone;
 
 public:
     void addKeyFrame(const KeyFrame& frame);

@@ -61,12 +61,17 @@ inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 
     AddComponent<3, Transform2D, HierarchyColor, T>::Do(node);
 
-    auto label = node->getComponent<T>();
-    label->init(args...);
+    auto transform = node->getComponent<Transform2D>();
+    // TODO: can't auto convert?
+    std::shared_ptr<Transform> trans = std::dynamic_pointer_cast<Transform>(transform);
+    node->resetTransform(trans);
+
+    auto component = node->getComponent<T>();
+    component->init(args...);
 
     ComponentFactory::getInstance().nodes.push_back(node);
 
-    return label;
+    return component;
 }
 
 } // namespace re

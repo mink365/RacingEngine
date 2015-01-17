@@ -8,6 +8,7 @@
 #include "Node.h"
 #include <algorithm>
 #include "Transform.h"
+#include "UI/Base/Transform2D.h"
 
 namespace re {
 
@@ -44,44 +45,19 @@ const TransformPtr &Node::getTransform() const
     return transform;
 }
 
+void Node::resetTransform(TransformPtr& trans)
+{
+    RE_ASSERT(trans->getNode() == this->shared_from_this());
+
+    this->transform = trans;
+}
+
 void Node::updateChildrenTransform()
 {
     for (auto iter = this->children.begin(); iter != this->children.end(); ++iter) {
         auto child = *iter;
 
         child->updateTransform();
-    }
-}
-
-NodePtr Node::createCloneInstance() const
-{
-    return std::make_shared<Node>();
-}
-
-void Node::copyChildren(const Node *node)
-{
-    this->children.clear();
-    for (auto& child : node->children) {
-        NodePtr copyChild = child->clone();
-        this->children.push_back(copyChild);
-        copyChild->parent = this->shared_from_this();
-    }
-}
-
-void Node::copyProperties(const Node *node)
-{
-    this->name = node->name;
-
-    this->parent.reset();
-}
-
-void Node::copyComponents(const Node *node)
-{
-    this->components.clear();
-    for (auto& component : node->components) {
-        ComponentPtr copyComponent = component->clone();
-        this->components.push_back(copyComponent);
-        copyComponent->attachNode = this->shared_from_this();
     }
 }
 
@@ -219,12 +195,60 @@ const std::vector<ComponentPtr> &Node::getComponents() const
     return this->components;
 }
 
+NodePtr Node::createCloneInstance() const
+{
+    return std::make_shared<Node>();
+}
+
+void Node::copyChildren(const Node *node)
+{
+    this->children.clear();
+    for (auto& child : node->children) {
+        NodePtr copyChild = child->clone();
+        this->children.push_back(copyChild);
+        copyChild->parent = this->shared_from_this();
+    }
+}
+
+void Node::copyProperties(const Node *node)
+{
+    this->name = node->name;
+    this->parent.reset();
+
+    for (auto& component : this->components) {
+        std::type_index id = std::type_index(typeid(*component.get()));
+        if (this->componentMap.count(id) == 0) {
+            this->componentMap[id] = std::vector<ComponentPtr>();
+
+            std::vector<ComponentPtr>& list = this->componentMap[id];
+            list.push_back(component);
+        } else {
+            this->componentMap[id].push_back(component);
+        }
+    }
+
+    this->transform = this->getComponent<Transform>();
+    if (this->transform == nullptr) {
+        this->transform = std::dynamic_pointer_cast<Transform>(getComponent<Transform2D>());
+    }
+}
+
+void Node::copyComponents(const Node *node)
+{
+    this->components.clear();
+    for (auto& component : node->components) {
+        ComponentPtr copyComponent = component->clone();
+        this->components.push_back(copyComponent);
+        copyComponent->attachNode = this->shared_from_this();
+    }
+}
+
 NodePtr Node::clone() const
 {
     NodePtr cloned = this->createCloneInstance();
-    cloned->copyProperties(this);
     cloned->copyChildren(this);
     cloned->copyComponents(this);
+    cloned->copyProperties(this);
 
     return cloned;
 }
