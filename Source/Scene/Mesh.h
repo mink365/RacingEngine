@@ -104,8 +104,6 @@ public:
     MeshDataPtr getMeshData() const;
     void setMeshData(MeshDataPtr data);
 
-    MeshPtr clone();
-
 protected:
     virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* att) override;

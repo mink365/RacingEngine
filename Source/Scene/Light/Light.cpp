@@ -45,7 +45,4 @@ void Light::setOnlyShadow(bool value)
     onlyShadow = value;
 }
 
-
-
-
 }

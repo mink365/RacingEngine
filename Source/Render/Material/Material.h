@@ -35,8 +35,6 @@ public:
 
     Material& operator =(const Material& rhs);
 
-    MaterialPtr clone();
-
 protected:
     virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* rhs) override;

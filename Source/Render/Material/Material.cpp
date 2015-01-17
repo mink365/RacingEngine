@@ -109,11 +109,4 @@ void Material::copyProperties(const Component *rhs)
     }
 }
 
-MaterialPtr Material::clone()
-{
-    ComponentPtr inst = Component::clone();
-
-    return std::static_pointer_cast<Material>(inst);
-}
-
 }

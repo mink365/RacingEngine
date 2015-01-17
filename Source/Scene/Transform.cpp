@@ -140,13 +140,6 @@ void Transform::markWorldTransformRefreshFlag()
     this->refreshFlags |= RF_WORLD_TRANSFORM;
 }
 
-TransformPtr Transform::clone()
-{
-    ComponentPtr inst = Component::clone();
-
-    return std::static_pointer_cast<Transform>(inst);
-}
-
 ComponentPtr Transform::createCloneInstance() const
 {
     return std::make_shared<Transform>();

@@ -38,13 +38,6 @@ MaterialPtr Mesh::getMaterial()
     return material;
 }
 
-MeshPtr Mesh::clone()
-{
-    ComponentPtr inst = Component::clone();
-
-    return dynamic_pointer_cast<Mesh>(inst);
-}
-
 ComponentPtr Mesh::createCloneInstance() const
 {
     return std::make_shared<Mesh>();
@@ -56,7 +49,7 @@ void Mesh::copyProperties(const Component *att)
 
     const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {
-        this->material = inst->material->clone();
+        this->material = nullptr;
 
         this->data = inst->data;
 //        if (!inst->geometry->isStatic()) {

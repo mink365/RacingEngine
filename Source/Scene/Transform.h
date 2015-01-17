@@ -47,8 +47,6 @@ public:
 
     void refresh();
 
-    TransformPtr clone();
-
 protected:
     virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;
