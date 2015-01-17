@@ -7,6 +7,8 @@
 #include "Math/Matrix.h"
 #include "Math/Quaternion.h"
 
+#include "Scene/Component.h"
+
 namespace re {
 
 class AnimationTrack;
@@ -45,7 +47,7 @@ private:
 /*
  * one track on bone
  */
-class AnimationTrack
+class AnimationTrack : public Component
 {
     friend class Animation;
     friend class Bone;

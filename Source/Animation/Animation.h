@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "platform.h"
+#include "Scene/Component.h"
 
 namespace re {
 
@@ -14,7 +15,7 @@ class Animation;
 typedef shared_ptr<Animation> AnimationPtr;
 typedef shared_ptr<AnimationStack> AnimationStackPtr;
 
-class Animation : public enable_shared_from_this<Animation>
+class Animation : public Component, public enable_shared_from_this<Animation>
 {
 public:
     Animation();

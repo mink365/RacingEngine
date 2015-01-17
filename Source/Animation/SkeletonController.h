@@ -4,16 +4,18 @@
 #include "platform.h"
 #include <vector>
 #include "Math/Matrix.h"
+#include "Scene/Component.h"
 
 namespace re {
 
 class SkeletonController;
 typedef shared_ptr<SkeletonController> SkeletonControllerPtr;
 
-class SkeletonController
+class SkeletonController : public Component
 {
 public:
-    SkeletonController(NodePtr mesh, SkeletonPtr skeleton, AnimationPtr animation);
+    SkeletonController();
+    void init();
 
     SkeletonPtr getSkeleton();
     AnimationPtr getAnimation();

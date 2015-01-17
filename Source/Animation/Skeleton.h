@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "platform.h"
+#include "Scene/Component.h"
 
 namespace re {
 
@@ -39,7 +40,7 @@ enum class LinkMode {
 /**
  * @brief The Skeleton class
  */
-class Skeleton
+class Skeleton : public Component
 {
     friend class SkeletonController;
 
