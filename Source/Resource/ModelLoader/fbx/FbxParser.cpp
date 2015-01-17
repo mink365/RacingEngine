@@ -5,6 +5,7 @@
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 #include "Animation/Bone.h"
+#include "Animation/AnimationTrack.h"
 #include "Animation/SkeletonController.h"
 
 #include <iostream>

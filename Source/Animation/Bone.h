@@ -7,8 +7,9 @@
 
 #include "Scene/Node.h"
 #include "Scene/Component.h"
-#include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
+
+#include "Math/Matrix.h"
 
 namespace re {
 

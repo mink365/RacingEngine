@@ -3,6 +3,7 @@
 #include "ModelLoader/fbx/FbxParser.h"
 #include "Animation/SkeletonController.h"
 #include "Animation/Animation.h"
+#include "Animation/AnimationTrack.h"
 #include "Animation/Skeleton.h"
 #include "Animation/Bone.h"
 
