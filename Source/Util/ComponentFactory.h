@@ -5,12 +5,6 @@
 #include "Base/Singleton.h"
 #include "Scene/Node.h"
 
-#include "UI/Base/HierarchyColor.h"
-#include "UI/Base/Transform2D.h"
-#include "UI/Base/Label.h"
-#include "UI/Base/Sprite.h"
-#include "UI/Base/NinePatch.h"
-
 namespace re {
 
 class ComponentFactory : public Singleton<ComponentFactory>
@@ -24,8 +18,6 @@ NodePtr CreateNode();
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateComponent(Args... args)
 {
-    printf("Hello .......");
-
     auto node = Create<Node>();
 
     auto component = std::make_shared<T>();
@@ -71,13 +63,6 @@ inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 
     auto label = node->getComponent<T>();
     label->init(args...);
-
-    LOG_E("Hello, %d", node->getComponentCount());
-    for (size_t i = 0; i < node->getComponents().size(); ++i) {
-        auto component = node->getComponents()[i];
-
-        LOG_E("Type: %s", typeid(*(component.get())).name());
-    }
 
     ComponentFactory::getInstance().nodes.push_back(node);
 
