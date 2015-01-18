@@ -11,27 +11,17 @@ void SceneManager::addRootNode(NodePtr node)
 {
     node->resetParent();
 
-    this->roots.push_back(node);
+    root->addChild(node);
 }
 
 void SceneManager::removeRootNode(const NodePtr node)
 {
-    std::vector<NodePtr>::iterator iter;
-    iter = find(this->roots.begin(), this->roots.end(), node);
-
-    if (iter != this->roots.end()) {
-        this->roots.erase(iter);
-    }
+    root->removeChild(node);
 }
 
 void SceneManager::clearRootNodes()
 {
-    this->roots.clear();
-}
-
-std::vector<NodePtr> &SceneManager::getRootNodes()
-{
-    return this->roots;
+    root->removeAllChildren();
 }
 
 bool bucketComp (const NodePtr node1, const NodePtr node2) {
@@ -46,7 +36,11 @@ void SceneManager::renderScene()
 {
     this->clearFrame();
 
-    for (auto node : roots) {
+    DistpatchFunctionInHierarchy(root, [](NodePtr& node){
+        node->Update();
+    });
+
+    for (auto& node : root->getChildren()) {
         this->vist(node);
     }
 

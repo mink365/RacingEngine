@@ -19,7 +19,6 @@ public:
     void addRootNode(NodePtr node);
     void removeRootNode(const NodePtr node);
     void clearRootNodes();
-    std::vector<NodePtr> &getRootNodes();
 
     void renderScene();
 
@@ -38,7 +37,7 @@ private:
     SceneManager();
 
 private:
-    std::vector<NodePtr> roots;
+    NodePtr root;
 
     std::vector<NodePtr> sceneTransformUpdateBucket;
 

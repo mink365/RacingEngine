@@ -30,6 +30,7 @@ class Node;
 typedef std::shared_ptr<Node> NodePtr;
 
 class Node : public enable_shared_from_this<Node>, public Named, public Clonable<Node> {
+    friend class SceneManager;
     friend class FbxParser;
 public:
 	Node();
