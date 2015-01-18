@@ -4,7 +4,7 @@
 #include "Math/Rect.h"
 #include "Platform/NativeView.h"
 
-class GLFWwindow;
+struct GLFWwindow;
 
 namespace re {
 

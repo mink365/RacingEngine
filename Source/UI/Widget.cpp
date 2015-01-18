@@ -6,6 +6,19 @@
 
 namespace re {
 
+WidgetPtr GetWidgetComponent(Node& node)
+{
+    if (node.getComponentCount() < 3) {
+        return nullptr;
+    }
+
+    // TODO: can't use getComponent<Widget>, Widget is just a base class
+    auto component = node.getComponents().at(2);
+
+    // TODO: use UNIFY event/message distpach system
+    return std::dynamic_pointer_cast<Widget>(component);
+}
+
 Widget::Widget()
     : _touchEnable(true)
     , _blockTouch(true)
@@ -29,7 +42,7 @@ void Widget::addWidgets() {
 
 void Widget::layout() {
     auto func = [](NodePtr& node) {
-        auto widget = node->getComponent<Widget>();
+        auto widget = GetWidgetComponent(*node);
 
         if (widget) {
             widget->layoutSelf();
@@ -128,7 +141,7 @@ bool Widget::emitWidgetTouchEvent(WidgetTouchState oldTouchState, WidgetTouchSta
     bool r = false;
     bool lr = false;
     for (auto listener : this->_onTouchListeners) {
-        std::shared_ptr<Widget> ptr = this->getNode()->getComponent<Widget>();
+        auto ptr = GetWidgetComponent(*this->getNode());
 
         if (oldTouchState != newTouchState) {
             listener->onTouchStateChange(oldTouchState, newTouchState, event, ptr);
@@ -185,7 +198,7 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
     for (int i = size - 1; i >= 0; --i) {
         auto child = getNode()->getChildren()[i];
 
-        WidgetPtr childWidget = child->getComponent<Widget>();
+        WidgetPtr childWidget = GetWidgetComponent(*child);
 
         if (!childWidget) {
             continue;
@@ -193,8 +206,6 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
 
         Vec2 p = childWidget->getComponent<Transform2D>()->convertParentToLocalSpace(curr);
         event.setCurrPoint(p);
-
-        LOG_E("Touch: %s", p.toString().c_str());
 
         // 有控件处理了事件就阻止传递
         if (childWidget->onTouchEvent(event)) {

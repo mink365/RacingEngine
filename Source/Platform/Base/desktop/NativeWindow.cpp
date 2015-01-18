@@ -13,18 +13,14 @@
 
 namespace re {
 
-static bool _captured;
-static float _mouseX, _mouseY;
-
-static NativeWindow* nativeView;
-
 class GLFWEventHandler
 {
-//private:
-//    static bool _captured;
-//    static float _mouseX, _mouseY;
+private:
+    static bool _captured;
+    static float _mouseX, _mouseY;
 
-//    static NativeWindow* nativeView;
+public:
+    static NativeWindow* nativeView;
 
 public:
     static void onGLFWError(int errorID, const char* errorDesc)
@@ -114,6 +110,11 @@ private:
     }
 };
 
+bool GLFWEventHandler::_captured = false;
+float GLFWEventHandler::_mouseX = 0;
+float GLFWEventHandler::_mouseY = 0;
+NativeWindow* GLFWEventHandler::nativeView = NULL;
+
 NativeWindow::NativeWindow()
 {
     this->viewRect = Rect(0, 0, 500, 600);
@@ -152,7 +153,7 @@ bool NativeWindow::initView()
 
     glfwMakeContextCurrent(window);
 
-    nativeView = this;
+    GLFWEventHandler::nativeView = this;
 
     // check OpenGL version at first
     const GLubyte* glVendor = glGetString(GL_VENDOR);

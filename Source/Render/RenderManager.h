@@ -49,7 +49,7 @@ public:
     void renderList(const RenderableList &list);
 
     void renderAttribute(const ComponentPtr &attribute);
-    void renderMesh(const MeshPtr &mesh);
+    void renderMesh(Mesh &mesh);
 
     void applyMaterial(Material &material);
 

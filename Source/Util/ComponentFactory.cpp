@@ -22,18 +22,6 @@ NodePtr CreateNode()
     return node;
 }
 
-template<>
-LabelPtr CreateComponent<Label>(FontPtr font)
-{
-    return CreateNode2DComponent<Label>(font);
-}
-
-template<>
-SpritePtr CreateComponent<Sprite>(string path)
-{
-    return CreateNode2DComponent<Sprite>(path);
-}
-
 NodePtr CreateMeshNode()
 {
     auto node = Create<Node>();

@@ -70,7 +70,7 @@ void RenderManager::renderAttribute(const ComponentPtr &attribute)
     {
         MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
 
-        this->renderMesh(mesh);
+        this->renderMesh(*mesh);
     }
         break;
     }
@@ -171,9 +171,9 @@ void RenderManager::createRenderViews()
     this->renderViewDirty = false;
 }
 
-void RenderManager::renderMesh(const MeshPtr& mesh)
+void RenderManager::renderMesh(Mesh& mesh)
 {
-    NodePtr node = mesh->getNode();
+    NodePtr node = mesh.getNode();
     MaterialPtr material = node->getComponent<Material>();
 
     this->renderer->setModelMatrix(node->getTransform()->getWorldMatrix());
@@ -184,11 +184,11 @@ void RenderManager::renderMesh(const MeshPtr& mesh)
 
 //    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
-    this->renderer->bindBuffer(*(mesh->getMeshData()));
+    this->renderer->bindBuffer(*(mesh.getMeshData()));
 
     this->applyMaterial(*(material.get()));
 
-    this->renderer->renderMesh(*(mesh->getMeshData()));
+    this->renderer->renderMesh(*(mesh.getMeshData()));
 }
 
 void RenderManager::render()
