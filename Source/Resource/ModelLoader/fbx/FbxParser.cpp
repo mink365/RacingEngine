@@ -139,7 +139,7 @@ NodePtr FbxParser::readNode(std::istream *st) {
 
 void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
-    auto material = std::make_shared<Material>();
+    MaterialPtr material = std::make_shared<Material>();
     node->addComponent(mesh);
     node->addComponent(material);
 
@@ -310,18 +310,15 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     }
 
     if (pass != nullptr) {
-        MaterialPtr material = MaterialManager::getInstance().getMaterial(materialTextureKey);
-        if (material != nullptr) {
-            auto m = mesh->getComponent<Material>();
-
+        MaterialPtr preMaterial = MaterialManager::getInstance().getMaterial(materialTextureKey);
+        if (preMaterial != nullptr) {
             // copy renderstate from defined material
-            *m = *material;
-            m->addPass(pass); //TODO: if the pass is in material file ?
-
-        } else {
-            material->clearPasses();
-            material->addPass(pass);
+            *material = *preMaterial;
         }
+
+        //TODO: if the pass is in material file ?
+        material->clearPasses();
+        material->addPass(pass);
     } else {
         // TODO: don't show the node with no material
         node->setVisible(false);
