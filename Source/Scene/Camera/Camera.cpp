@@ -82,7 +82,7 @@ void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
     this->center = center;
 
     auto transform = this->getComponent<Transform>();
-    auto parent = this->getComponent<Transform>();
+    auto parent = this->getComponentInParent<Transform>();
 
     Vec3 position;
     if (parent) {
@@ -173,6 +173,11 @@ void Camera::setQueueCullFunc(std::function<bool (int)> func)
 std::function<bool (int queueID)> Camera::getQueueCullFunc() const
 {
     return this->queueCullFunc;
+}
+
+void Camera::update()
+{
+    this->onChange();
 }
 
 void Camera::recalcViewMatrix()

@@ -28,16 +28,6 @@ void Node::init()
     this->addComponent(transform);
 }
 
-void Node::refreshTransformInHierarchy()
-{
-    auto func = [](NodePtr& node) {
-        node->getTransform()->refresh();
-    };
-
-    auto node = this->shared_from_this();
-    DistpatchFunctionInHierarchy(node, func);
-}
-
 TransformPtr& Node::getTransform()
 {
     return transform;
@@ -53,6 +43,16 @@ void Node::resetTransform(TransformPtr& trans)
     RE_ASSERT(trans->getNode() == this->shared_from_this());
 
     this->transform = trans;
+}
+
+void Node::refreshTransformInHierarchy()
+{
+    auto func = [](NodePtr& node) {
+        node->getTransform()->refresh();
+    };
+
+    auto node = this->shared_from_this();
+    DistpatchFunctionInHierarchy(node, func);
 }
 
 NodePtr Node::getParent() const

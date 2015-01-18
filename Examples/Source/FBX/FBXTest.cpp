@@ -128,6 +128,13 @@ void FBXTest::Update(float dt)
 
 //    widget->setRotation(rotation * 20);
 
+    Vec3 position(0, 0, 57);
+//    position.x = rotation;
+    position.x = MathLib::sin(rotation * DEG_TO_RAD) * 300;
+    position.y = MathLib::cos(rotation * DEG_TO_RAD) * 300;
+
+    camera->setView(position, Vec3(0, 30, 20), Vec3(0, 0, 1));
+
     Quat quat;
     quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->getTransform()->setLocalRotation(quat);

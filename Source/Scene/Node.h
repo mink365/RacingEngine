@@ -69,10 +69,10 @@ public:
     std::shared_ptr<T> getComponentInParent();
 
     /*------ reference of components ------*/
-    void refreshTransformInHierarchy();
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
     void resetTransform(TransformPtr &trans);
+    void refreshTransformInHierarchy();
 
     NodePtr clone() const;
 
