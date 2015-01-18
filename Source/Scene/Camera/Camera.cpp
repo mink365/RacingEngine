@@ -82,10 +82,16 @@ void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
     this->center = center;
 
     auto transform = this->getComponent<Transform>();
+    auto parent = this->getComponent<Transform>();
 
-    // use the world position of the node
-    Vec3 p = transform->getWorldMatrix().inverse() * eye;
-    transform->setLocalTranslation(p);
+    Vec3 position;
+    if (parent) {
+        // use the world position of the node
+        position = parent->getWorldMatrix().inverse() * eye;
+    } else {
+        position = eye;
+    }
+    transform->setLocalTranslation(position);
 
     //       dir  up
     //         ^  ^

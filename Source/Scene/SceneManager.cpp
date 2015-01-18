@@ -5,7 +5,7 @@ namespace re {
 
 SceneManager::SceneManager()
 {
-    root = std::make_shared<Node>();
+    root = Create<Node>();
 }
 
 void SceneManager::addRootNode(NodePtr node)
