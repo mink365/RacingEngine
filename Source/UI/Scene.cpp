@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Layout/LayoutUtil.h"
 #include "Layout/Screen.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 
@@ -17,12 +18,11 @@ void Scene::init() {
 
     transform->setContentSize(Screen::getInstance().getSize());
     
-    // TODO:
-//    alphaBg = Create<Widget>();
-//    alphaBg->setColor(Color::Black);
+    alphaBg = CreateNode2DComponent<Widget>()->getNode();
+    alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
     
-//    alphaBg->setContentSize(this->getContentSize());
-//    alphaBg->setVisible(false);
+    alphaBg->getComponent<Transform2D>()->setContentSize(this->getComponent<Transform2D>()->getContentSize());
+    alphaBg->setVisible(false);
     
     return;
 }

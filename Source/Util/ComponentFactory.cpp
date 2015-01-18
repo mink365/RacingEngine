@@ -23,13 +23,13 @@ NodePtr CreateNode()
 }
 
 template<>
-inline LabelPtr CreateComponent<Label>(FontPtr font)
+LabelPtr CreateComponent<Label>(FontPtr font)
 {
     return CreateNode2DComponent<Label>(font);
 }
 
 template<>
-inline SpritePtr CreateComponent<Sprite>(string path)
+SpritePtr CreateComponent<Sprite>(string path)
 {
     return CreateNode2DComponent<Sprite>(path);
 }

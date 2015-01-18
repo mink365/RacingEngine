@@ -121,13 +121,13 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
 
     transform->setContentSize(this->defaultSprite->getComponent<Transform2D>()->getContentSize());
 
-//    this->addChild(defaultSprite);
-//    this->addChild(pressedSprite);
-//    this->addChild(disabledSprite);
+    getNode()->addChild(defaultSprite->getNode());
+    getNode()->addChild(pressedSprite->getNode());
+    getNode()->addChild(disabledSprite->getNode());
 
-//    this->defaultSprite->setVisible(true);
-//    this->pressedSprite->setVisible(false);
-//    this->disabledSprite->setVisible(false);
+    defaultSprite->getNode()->setVisible(true);
+    pressedSprite->getNode()->setVisible(false);
+    disabledSprite->getNode()->setVisible(false);
 
     this->switchState(WidgetState::DEFAULT);
 }
@@ -139,34 +139,34 @@ void ImageButton::switchState(WidgetState newState)
     }
     WidgetState oldState = this->state;
 
-//    switch (oldState) {
-//    case WidgetState::PRESSED:
-//        pressedSprite->setVisible(false);
-//        break;
-//    case WidgetState::DEFAULT:
-//        defaultSprite->setVisible(false);
-//        break;
-//    case WidgetState::SELECTED:
-//        pressedSprite->setVisible(false);
-//        break;
-//    case WidgetState::DISABLED:
-//        disabledSprite->setVisible(false);
-//        break;
-//    }
+    switch (oldState) {
+    case WidgetState::PRESSED:
+        pressedSprite->getNode()->setVisible(false);
+        break;
+    case WidgetState::DEFAULT:
+        defaultSprite->getNode()->setVisible(false);
+        break;
+    case WidgetState::SELECTED:
+        pressedSprite->getNode()->setVisible(false);
+        break;
+    case WidgetState::DISABLED:
+        disabledSprite->getNode()->setVisible(false);
+        break;
+    }
 
-//    switch (newState) {
-//    case WidgetState::PRESSED:
-//        pressedSprite->setVisible(true);
-//        break;
-//    case WidgetState::DEFAULT:
-//        defaultSprite->setVisible(true);
-//        break;
-//    case WidgetState::SELECTED:
-//        pressedSprite->setVisible(true);
-//        break;
-//    case WidgetState::DISABLED:
-//        disabledSprite->setVisible(true);
-//    }
+    switch (newState) {
+    case WidgetState::PRESSED:
+        pressedSprite->getNode()->setVisible(true);
+        break;
+    case WidgetState::DEFAULT:
+        defaultSprite->getNode()->setVisible(true);
+        break;
+    case WidgetState::SELECTED:
+        pressedSprite->getNode()->setVisible(true);
+        break;
+    case WidgetState::DISABLED:
+        disabledSprite->getNode()->setVisible(true);
+    }
     this->state = newState;
 }
 

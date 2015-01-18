@@ -10,7 +10,6 @@ namespace re {
 
 void NinePatch::init(const std::string& tex)
 {
-    mesh = this->getComponent<Mesh>();
     color = this->getComponent<HierarchyColor>();
     transform = this->getComponent<Transform2D>();
 
@@ -18,6 +17,8 @@ void NinePatch::init(const std::string& tex)
 
     NodePtr node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
+
+    mesh = this->getComponent<Mesh>();
 
     this->rebind();
 }

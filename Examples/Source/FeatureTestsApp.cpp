@@ -105,7 +105,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<Bumpmap>();
     this->tests.push_back(test);
 
-    currIndex = 0;
+    currIndex = 4;
 
     this->onCurrentTestChanged();
 }

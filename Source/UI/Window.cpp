@@ -22,6 +22,8 @@ Window::Window()
 }
 
 void Window::init() {
+    Widget::init();
+
     // window default is full screen
     transform->setContentSize(Screen::getInstance().getSize());
     
