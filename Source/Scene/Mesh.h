@@ -96,8 +96,6 @@ public:
      */
     void init();
 
-    MaterialPtr getMaterial();
-
     Geometry::ptr getGeometry();
     void setGeometry(const GeometryPtr &g);
 
@@ -109,8 +107,6 @@ protected:
     virtual void copyProperties(const Component* att) override;
 
 protected:
-    MaterialPtr material;
-
     MeshDataPtr data;
     Geometry::ptr geometry;
 };

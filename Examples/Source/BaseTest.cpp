@@ -173,7 +173,7 @@ void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
-    mesh->getMaterial()->setShder(shader);
+    mesh->getComponent<re::Material>()->setShder(shader);
 }
 
 void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, const std::string& shaderName)

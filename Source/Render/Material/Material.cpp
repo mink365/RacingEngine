@@ -5,6 +5,7 @@ namespace re {
 
 Material::Material()
 {
+    this->type = ComponentType::Material;
     this->transparent = false;
     this->queueID = 50;
 }

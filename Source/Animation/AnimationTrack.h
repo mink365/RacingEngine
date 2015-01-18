@@ -46,8 +46,10 @@ private:
 
 /*
  * one track on bone
+ * AnimationTrack will reference a bone, but it is't a
+ * component of bone node
  */
-class AnimationTrack : public Component
+class AnimationTrack
 {
     friend class Animation;
     friend class Bone;

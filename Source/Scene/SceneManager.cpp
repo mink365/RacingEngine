@@ -5,6 +5,7 @@ namespace re {
 
 SceneManager::SceneManager()
 {
+    root = std::make_shared<Node>();
 }
 
 void SceneManager::addRootNode(NodePtr node)
@@ -73,8 +74,9 @@ void SceneManager::vist(const NodePtr &node)
     if (node->isVisible()) {
         for (auto& component : node->getComponents()) {
             if (component->getType() == ComponentType::Mesh) {
-                MeshPtr mesh = dynamic_pointer_cast<Mesh>(component);
-                this->renderManger.getRenderQueue().addRenderable(mesh, mesh->getMaterial()->getQueueID());
+                auto mesh = dynamic_pointer_cast<Mesh>(component);
+                auto material = node->getComponent<Material>();
+                this->renderManger.getRenderQueue().addRenderable(mesh, material->getQueueID());
             }
         }
 

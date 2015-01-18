@@ -15,7 +15,7 @@
 #include <memory>
 #include <algorithm>
 #include <unordered_map>
-#include <map>
+#include <list>
 
 #include "platform.h"
 #include "Base/Named.h"
@@ -98,7 +98,7 @@ protected:
     std::vector<NodePtr> children;
 
     std::vector<ComponentPtr> components;
-    std::unordered_map<std::type_index, std::vector<ComponentPtr>> componentMap;
+    std::unordered_map<std::type_index, std::list<ComponentPtr>> componentMap;
 
 protected:
     TransformPtr transform;
@@ -113,7 +113,7 @@ inline std::shared_ptr<T> Node::getComponent()
     auto iter = this->componentMap.find(std::type_index(typeid(T)));
 
     if (iter != componentMap.end() && iter->second.size() > 0) {
-        return std::static_pointer_cast<T>(iter->second[0]);
+        return std::static_pointer_cast<T>(iter->second.front());
     }
 
     return nullptr;

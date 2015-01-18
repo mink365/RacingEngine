@@ -183,24 +183,20 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GLES2Renderer::bindBuffer(const Mesh &mesh)
+void GLES2Renderer::bindBuffer(const MeshData &meshData)
 {
-    const MeshDataPtr& meshData = mesh.getMeshData();
-
-    for (auto& stream : meshData->vertexStreams) {
+    for (auto& stream : meshData.vertexStreams) {
         glBindBuffer(GL_ARRAY_BUFFER, stream.stream.vbo);
     }
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.vboIB);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.indexStream.vboIB);
 }
 
-void GLES2Renderer::renderMesh(const Mesh &mesh)
+void GLES2Renderer::renderMesh(const MeshData &meshData)
 {
-    const MeshDataPtr& meshData = mesh.getMeshData();
-
-    glDrawElements(GL_TRIANGLES, meshData->indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
+    glDrawElements(GL_TRIANGLES, meshData.indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
 
     this->addDrawCall();
-    this->addDrawTrangles(meshData->indexStream.nIndices / 3);
+    this->addDrawTrangles(meshData.indexStream.nIndices / 3);
 }
 
 void GLES2Renderer::setClearColor(const Color &color)

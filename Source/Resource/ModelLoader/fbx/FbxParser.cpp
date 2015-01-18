@@ -319,8 +319,8 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
             m->addPass(pass); //TODO: if the pass is in material file ?
 
         } else {
-            mesh->getMaterial()->clearPasses();
-            mesh->getMaterial()->addPass(pass);
+            material->clearPasses();
+            material->addPass(pass);
         }
     } else {
         // TODO: don't show the node with no material

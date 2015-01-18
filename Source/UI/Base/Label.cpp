@@ -24,8 +24,7 @@ void Label::init(Font::ptr &font)
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
     InitNodeForLeaf(node, font->getTexture(), shaderName);
 
-    auto mesh = node->getComponent<Mesh>();
-    MaterialPtr material = mesh->getMaterial();
+    auto material = node->getComponent<Material>();
     material->getRenderState().blendState.blendModeAlpha = BlendMode::Alpha;
     material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
 }

@@ -166,9 +166,7 @@ void Node::addComponent(ComponentPtr component)
 
     std::type_index id = std::type_index(typeid(*component.get()));
     if (this->componentMap.count(id) == 0) {
-        this->componentMap[id] = std::vector<ComponentPtr>();
-
-        std::vector<ComponentPtr>& list = this->componentMap[id];
+        auto& list = this->componentMap[id];
         list.push_back(component);
     } else {
         this->componentMap[id].push_back(component);
@@ -232,9 +230,7 @@ void Node::copyProperties(const Node *node)
     for (auto& component : this->components) {
         std::type_index id = std::type_index(typeid(*component.get()));
         if (this->componentMap.count(id) == 0) {
-            this->componentMap[id] = std::vector<ComponentPtr>();
-
-            std::vector<ComponentPtr>& list = this->componentMap[id];
+            auto& list = this->componentMap[id];
             list.push_back(component);
         } else {
             this->componentMap[id].push_back(component);

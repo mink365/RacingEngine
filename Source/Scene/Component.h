@@ -13,6 +13,7 @@ namespace re {
 enum class ComponentType {
     Transform,
     Mesh,
+    Material,
     Camera,
     Light,
 };

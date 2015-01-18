@@ -109,10 +109,11 @@ void Bumpmap::Init()
         auto diffuseTexture = TextureManager::getInstance().getTexture("diffuse");
         auto normalTexture = TextureManager::getInstance().getTexture("diffusenormalmap");
 
-        mesh->getMaterial()->getPass(0)->addTextureUnit(TextureUnitState::create());
+        auto material = mesh->getComponent<re::Material>();
+        material->getPass(0)->addTextureUnit(TextureUnitState::create());
 
-        mesh->getMaterial()->getPass(0)->getTextureUnit(0)->setTexture(diffuseTexture);
-        mesh->getMaterial()->getPass(0)->getTextureUnit(1)->setTexture(normalTexture);
+        material->getPass(0)->getTextureUnit(0)->setTexture(diffuseTexture);
+        material->getPass(0)->getTextureUnit(1)->setTexture(normalTexture);
     }
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

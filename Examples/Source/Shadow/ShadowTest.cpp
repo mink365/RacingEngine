@@ -170,8 +170,8 @@ void ShadowTest::Update(float dt)
 
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
-    auto spriteMesh = sprite->getComponent<Mesh>();
-    auto groundMesh = ground->getComponent<Mesh>();
+    auto spriteMaterial = sprite->getComponent<re::Material>();
+    auto groundMaterial = ground->getComponent<re::Material>();
 
     auto& renderManager = SceneManager::getInstance().getRenderManager();
 
@@ -179,15 +179,15 @@ void ShadowTest::Update(float dt)
         auto view = renderManager.renderViewList[0];
         auto texture = view->renderTarget->getTexture();
 
-        TextureUnitState::ptr unit = spriteMesh->getMaterial()->getPass(0)->getTextureUnit(0);
+        TextureUnitState::ptr unit = spriteMaterial->getPass(0)->getTextureUnit(0);
         unit->setTexture(texture);
 
-        if (groundMesh->getMaterial()->getPass(0)->getTextureUnitCount() < 2) {
-            groundMesh->getMaterial()->getPass(0)->addTextureUnit(TextureUnitState::create());
-            groundMesh->getMaterial()->getPass(0)->addTextureUnit(TextureUnitState::create());
+        if (groundMaterial->getPass(0)->getTextureUnitCount() < 2) {
+            groundMaterial->getPass(0)->addTextureUnit(TextureUnitState::create());
+            groundMaterial->getPass(0)->addTextureUnit(TextureUnitState::create());
 
-            groundMesh->getMaterial()->getPass(0)->getTextureUnit(1)->setTexture(texture);
-            groundMesh->getMaterial()->getPass(0)->getTextureUnit(2)->setTexture(texture);
+            groundMaterial->getPass(0)->getTextureUnit(1)->setTexture(texture);
+            groundMaterial->getPass(0)->getTextureUnit(2)->setTexture(texture);
         }
     }
 

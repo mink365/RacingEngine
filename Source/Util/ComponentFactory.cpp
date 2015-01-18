@@ -56,7 +56,7 @@ NodePtr CreateBoneNode()
 {
     auto node = Create<Node>();
 
-    AddComponent<2, Bone, AnimationTrack>::Do(node);
+    AddComponent<1, Bone>::Do(node);
 
     return node;
 }

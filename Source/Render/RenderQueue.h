@@ -58,7 +58,7 @@ public:
 
     /**
      * @brief list
-     * 有序的渲染队列列表
+     * renderable lists with order
      */
     std::vector<RenderableList *> lists;
 };

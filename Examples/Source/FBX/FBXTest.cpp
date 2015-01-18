@@ -95,9 +95,6 @@ void FBXTest::Init()
     motoRoot->addChild(moto);
     motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));
 
-    // TODO:
-//    moto->getMaterial()->getRenderState().setDepthTest(true);
-
     rootNode->addChild(motoRoot);
     black_box = black;
 

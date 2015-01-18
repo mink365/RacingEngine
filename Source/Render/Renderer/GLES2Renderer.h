@@ -18,9 +18,9 @@ public:
     virtual void resetRenderTarget();
 
     virtual void bindShader(const Shader &shader);
-    virtual void bindBuffer(const Mesh &mesh);
+    virtual void bindBuffer(const MeshData &meshData);
 
-    virtual void renderMesh(const Mesh &mesh);
+    virtual void renderMesh(const MeshData &meshData);
 
     virtual void setClearColor(const Color& color);
     virtual void cleanBuffers(bool color, bool depth, bool stencil);

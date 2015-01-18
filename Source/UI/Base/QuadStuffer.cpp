@@ -11,17 +11,20 @@ namespace re {
 void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
     MeshPtr mesh = std::make_shared<Mesh>();
-    mesh->init();
+    MaterialPtr material = std::make_shared<Material>();
+    node->addComponent(mesh);
+    node->addComponent(material);
+
+    material->initDefaultPass();
 
     mesh->setGeometry(Geometry::create());
 
-    MaterialPtr material = mesh->getMaterial();
     material->setQueueID(RENDER_QUEUE_UI);
     material->getRenderState().depthState.depthTestEnable = false;
     material->getRenderState().depthWrite = false;
     material->getRenderState().depthState.function = TestFunction::LessOrEqual;
     if (texture) {
-        TextureUnitState::ptr unit = mesh->getMaterial()->getPass(0)->getTextureUnit(0);
+        TextureUnitState::ptr unit = material->getPass(0)->getTextureUnit(0);
         unit->setUVstate(0, 0, 1, 1, 0);
         unit->setTexture(texture);
     }
@@ -29,11 +32,8 @@ void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& sha
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 
     Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
-    mesh->getMaterial()->setShder(shader);
-
-    node->addComponent(mesh);
+    material->setShder(shader);
 }
-
 
 QuadStuffer::QuadStuffer()
 {

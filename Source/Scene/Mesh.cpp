@@ -9,8 +9,7 @@ Mesh::Mesh()
 
 void Mesh::init()
 {
-    this->material = this->getComponent<Material>();
-    this->material->initDefaultPass();
+
 }
 
 Geometry::ptr Mesh::getGeometry()
@@ -33,11 +32,6 @@ void Mesh::setMeshData(MeshDataPtr data)
     this->data = data;
 }
 
-MaterialPtr Mesh::getMaterial()
-{
-    return material;
-}
-
 ComponentPtr Mesh::createCloneInstance() const
 {
     return std::make_shared<Mesh>();
@@ -49,7 +43,6 @@ void Mesh::copyProperties(const Component *att)
 
     const Mesh* inst = dynamic_cast<const Mesh*>(att);
     if (inst) {
-        this->material = nullptr;
 
         this->data = inst->data;
 //        if (!inst->geometry->isStatic()) {
