@@ -6,9 +6,9 @@
 
 #include "TextureUnitState.h"
 
-class Material;
-
 namespace re {
+
+class Material;
 
 class Pass : public Shared<Pass>,
              public Clonable<Pass>,

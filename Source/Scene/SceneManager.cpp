@@ -6,6 +6,7 @@ namespace re {
 SceneManager::SceneManager()
 {
     root = Create<Node>();
+    root->_inScene = true;
 }
 
 void SceneManager::addRootNode(NodePtr node)

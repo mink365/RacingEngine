@@ -80,6 +80,8 @@ public:
     void setVisible(bool v) {this->_visible = v;};
 
 protected:
+    void OnEnter();
+    void OnExit();
     void Start();
     void Update();
 
@@ -102,7 +104,7 @@ protected:
     TransformPtr transform;
 
     bool _visible = true;
-    bool _inScene;
+    bool _inScene = false;
 };
 
 template<typename T>

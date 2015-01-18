@@ -52,12 +52,6 @@ protected:
     virtual void addWidgets();
     
     virtual void layoutSelf();
-    
-    /*
-     * 插入剪切等效果
-     */
-    virtual void beforeDraw();
-    virtual void afterDraw();
 
     virtual void initView() {};
 

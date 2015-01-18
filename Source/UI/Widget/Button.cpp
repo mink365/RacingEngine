@@ -76,11 +76,6 @@ void BaseButton::initTouchListener()
     this->_onTouchListeners.push_back(listener);
 }
 
-bool BaseButton::onTouchEvent(TouchEvent &event)
-{
-    return Widget::onTouchEvent(event);
-}
-
 void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
 {
     this->onButtonClickFunc = func;

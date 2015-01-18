@@ -130,6 +130,10 @@ void Node::addChild(NodePtr node, Int index)
     }
 
     this->children.insert(iter, node);
+
+    if (this->_inScene) {
+        node->OnEnter();
+    }
 }
 
 void Node::removeChild(NodePtr node)
@@ -140,12 +144,20 @@ void Node::removeChild(NodePtr node)
         this->children.erase(iter);
         node->parent.reset();
     }
+
+    if (this->_inScene) {
+        node->OnExit();
+    }
 }
 
 void Node::removeAllChildren()
 {
     for (auto& child : children) {
         child->parent.reset();
+
+        if (this->_inScene) {
+            child->OnExit();
+        }
     }
 
     this->children.clear();
@@ -185,20 +197,6 @@ ComponentPtr Node::getComponent(size_t index)
 const std::vector<ComponentPtr> &Node::getComponents() const
 {
     return this->components;
-}
-
-void Node::Start()
-{
-    for (auto& component : components) {
-        component->start();
-    }
-}
-
-void Node::Update()
-{
-    for (auto& component : components) {
-        component->update();
-    }
 }
 
 NodePtr Node::createCloneInstance() const
@@ -255,6 +253,48 @@ NodePtr Node::clone() const
     cloned->copyProperties(this);
 
     return cloned;
+}
+
+void Node::OnEnter()
+{
+    auto func = [](NodePtr& node) {
+        node->_inScene = true;
+
+        for (auto& component : node->components) {
+            component->onEnter();
+        }
+    };
+
+    auto node = this->shared_from_this();
+    DistpatchFunctionInHierarchy(node, func);
+}
+
+void Node::OnExit()
+{
+    auto func = [](NodePtr& node) {
+        node->_inScene = false;
+
+        for (auto& component : node->components) {
+            component->onExit();
+        }
+    };
+
+    auto node = this->shared_from_this();
+    DistpatchFunctionInHierarchy(node, func);
+}
+
+void Node::Start()
+{
+    for (auto& component : components) {
+        component->start();
+    }
+}
+
+void Node::Update()
+{
+    for (auto& component : components) {
+        component->update();
+    }
 }
 
 void DistpatchFunctionInHierarchy(NodePtr &root, std::function<void (NodePtr &)> func)

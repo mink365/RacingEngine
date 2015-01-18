@@ -18,8 +18,6 @@ public:
 
     virtual void initTouchListener();
 
-    virtual bool onTouchEvent(TouchEvent& event);
-
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 protected:
     virtual ComponentPtr createCloneInstance() const;

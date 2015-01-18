@@ -194,6 +194,8 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
         Vec2 p = childWidget->getComponent<Transform2D>()->convertParentToLocalSpace(curr);
         event.setCurrPoint(p);
 
+        LOG_E("Touch: %s", p.toString().c_str());
+
         // 有控件处理了事件就阻止传递
         if (childWidget->onTouchEvent(event)) {
             handled = true;
@@ -236,12 +238,6 @@ bool Widget::hitTest(Transform2DPtr node, Vec2 p) {
     }
     
     return false;
-}
-
-void Widget::beforeDraw() {
-}
-
-void Widget::afterDraw() {
 }
 
 ComponentPtr Widget::createCloneInstance() const
