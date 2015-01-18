@@ -38,7 +38,7 @@ void Skybox::Init()
         skybox = CreateMeshNode();
         SetMeshData(skybox, geometry, tex, "cubemap");
 
-        skybox->getComponent<re::Material>()->getRenderState().faceCullMode = FaceCullMode::Off;
+        skybox->getComponent<Material>()->getRenderState().faceCullMode = FaceCullMode::Off;
     }
 
     rootNode->addChild(skybox);

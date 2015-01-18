@@ -170,8 +170,8 @@ void ShadowTest::Update(float dt)
 
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, rotateValue, rotateValue)));
 
-    auto spriteMaterial = sprite->getComponent<re::Material>();
-    auto groundMaterial = ground->getComponent<re::Material>();
+    auto spriteMaterial = sprite->getComponent<Material>();
+    auto groundMaterial = ground->getComponent<Material>();
 
     auto& renderManager = SceneManager::getInstance().getRenderManager();
 

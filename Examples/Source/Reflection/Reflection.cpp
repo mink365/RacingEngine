@@ -31,7 +31,7 @@ void Reflection::Init()
 
     rootNode->addChild(node);
 
-    auto material = node->getComponent<re::Material>();
+    auto material = node->getComponent<Material>();
     material->setQueueID(51);
     auto unit = TextureUnitState::create();
     material->getPass(0)->addTextureUnit(unit);

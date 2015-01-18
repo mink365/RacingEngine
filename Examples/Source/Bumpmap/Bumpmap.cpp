@@ -109,7 +109,7 @@ void Bumpmap::Init()
         auto diffuseTexture = TextureManager::getInstance().getTexture("diffuse");
         auto normalTexture = TextureManager::getInstance().getTexture("diffusenormalmap");
 
-        auto material = mesh->getComponent<re::Material>();
+        auto material = mesh->getComponent<Material>();
         material->getPass(0)->addTextureUnit(TextureUnitState::create());
 
         material->getPass(0)->getTextureUnit(0)->setTexture(diffuseTexture);

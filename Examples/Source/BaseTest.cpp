@@ -183,7 +183,7 @@ void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, cons
 
     mesh->setGeometry(geometry);
 
-    TextureUnitState::ptr unit = node->getComponent<re::Material>()->getPass(0)->getTextureUnit(0);
+    TextureUnitState::ptr unit = node->getComponent<Material>()->getPass(0)->getTextureUnit(0);
     unit->setUVstate(0, 0, 1, 1, 0);
 
     if (texture == nullptr) {

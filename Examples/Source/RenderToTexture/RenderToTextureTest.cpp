@@ -83,7 +83,7 @@ void RenderToTextureTest::Init()
 static float rotateValue = 0;
 void RenderToTextureTest::Update(float dt)
 {
-    auto material = cylinderNode->getComponent<re::Material>();
+    auto material = cylinderNode->getComponent<Material>();
     TextureUnitState::ptr state = material->getPass(0)->getTextureUnit(0);
     Texture::ptr tex = state->getTexture();
 
