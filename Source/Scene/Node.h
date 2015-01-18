@@ -55,7 +55,7 @@ public:
     virtual void removeChild(NodePtr node);
     virtual void removeAllChildren();
 
-    /*------- manager the components --------*/
+    /*------- manage the components --------*/
     void addComponent(ComponentPtr component);
     void clearComponent();
     size_t getComponentCount() const;
@@ -68,8 +68,8 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponentInParent();
 
-    /* reference of components */
-    void updateTransform();
+    /*------ reference of components ------*/
+    void refreshTransformInHierarchy();
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
     void resetTransform(TransformPtr &trans);
@@ -80,8 +80,6 @@ public:
     void setVisible(bool v) {this->_visible = v;};
 
 protected:
-    void updateChildrenTransform();
-
     void Start();
     void Update();
 

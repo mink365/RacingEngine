@@ -203,7 +203,7 @@ void Camera::recalcProjectionMatrix()
 
 void Camera::onChange()
 {
-    this->getNode()->updateTransform();
+    this->getNode()->refreshTransformInHierarchy();
 
     this->recalcViewMatrix();
     this->recalcProjectionMatrix();

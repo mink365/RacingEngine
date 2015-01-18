@@ -54,7 +54,7 @@ void LightTest::Init()
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
     rootNode->addChild(box);
-    box->updateTransform();
+    box->refreshTransformInHierarchy();
 
     InitLightData();
 }

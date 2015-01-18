@@ -47,7 +47,7 @@ void SceneManager::renderScene()
 
     sort(this->sceneTransformUpdateBucket.begin(), this->sceneTransformUpdateBucket.end(), bucketComp);
     for (auto node : sceneTransformUpdateBucket) {
-        node->updateTransform();
+        node->refreshTransformInHierarchy();
     }
 
     this->renderManger.render();
