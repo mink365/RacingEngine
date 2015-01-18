@@ -16,12 +16,11 @@
 namespace re {
 
 ReadCommon::ReadCommon() {
-	// TODO Auto-generated constructor stub
 
 }
 
 ReadCommon::~ReadCommon() {
-	// TODO Auto-generated destructor stub
+
 }
 
 bool ReadCommon::ReadBoolean(std::istream *stream) {

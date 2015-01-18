@@ -103,7 +103,7 @@ protected:
 protected:
     TransformPtr transform;
 
-    bool _visible;
+    bool _visible = true;
     bool _inScene;
 };
 

@@ -32,6 +32,7 @@ TexturePtr RenderTarget::getTexture() const
 {
     return this->texture;
 }
+
 bool RenderTarget::getHasDepthBuffer() const
 {
     return hasDepthBuffer;
@@ -41,6 +42,7 @@ void RenderTarget::setHasDepthBuffer(bool value)
 {
     hasDepthBuffer = value;
 }
+
 bool RenderTarget::getHasStencilBuffer() const
 {
     return hasStencilBuffer;
@@ -50,6 +52,7 @@ void RenderTarget::setHasStencilBuffer(bool value)
 {
     hasStencilBuffer = value;
 }
+
 bool RenderTarget::getGenerateMipmaps() const
 {
     return generateMipmaps;
@@ -59,6 +62,7 @@ void RenderTarget::setGenerateMipmaps(bool value)
 {
     generateMipmaps = value;
 }
+
 Size RenderTarget::getSize() const
 {
     return size;
@@ -68,7 +72,6 @@ void RenderTarget::setSize(const Size &value)
 {
     size = value;
 }
-
 
 RenderTargetCube::RenderTargetCube()
 {
