@@ -63,7 +63,6 @@ RenderManager &SceneManager::getRenderManager()
     return this->renderManger;
 }
 
-
 void SceneManager::clearFrame()
 {
     this->sceneTransformUpdateBucket.clear();

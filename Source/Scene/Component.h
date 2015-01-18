@@ -42,6 +42,12 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponentInParent();
 
+    /* fuction of event */
+    virtual void onEnter() {};
+    virtual void onExit() {};
+    virtual void start() {};
+    virtual void update() {};
+
     ComponentPtr clone() const;
 
 protected:

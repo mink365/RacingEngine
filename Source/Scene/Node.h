@@ -37,6 +37,7 @@ public:
 
     virtual void init();
 
+    /*------ code of hierarchy ------*/
     NodePtr getParent() const;
     void setParent(NodePtr value);
     void removeFromParent();
@@ -53,6 +54,7 @@ public:
     virtual void removeChild(NodePtr node);
     virtual void removeAllChildren();
 
+    /*------- manager the components --------*/
     void addComponent(ComponentPtr component);
     void clearComponent();
     size_t getComponentCount() const;
@@ -65,6 +67,7 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponentInParent();
 
+    /* reference of components */
     void updateTransform();
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
@@ -78,6 +81,10 @@ public:
 protected:
     void updateChildrenTransform();
 
+    void Start();
+    void Update();
+
+protected:
     virtual NodePtr createCloneInstance() const;
     virtual void copyChildren(const Node* node);
     virtual void copyProperties(const Node *node);
@@ -96,6 +103,7 @@ protected:
     TransformPtr transform;
 
     bool _visible;
+    bool _inScene;
 };
 
 template<typename T>

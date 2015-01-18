@@ -195,6 +195,20 @@ const std::vector<ComponentPtr> &Node::getComponents() const
     return this->components;
 }
 
+void Node::Start()
+{
+    for (auto& component : components) {
+        component->start();
+    }
+}
+
+void Node::Update()
+{
+    for (auto& component : components) {
+        component->update();
+    }
+}
+
 NodePtr Node::createCloneInstance() const
 {
     return std::make_shared<Node>();
