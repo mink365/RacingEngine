@@ -39,7 +39,7 @@ bool Scene::onBackKeyEvent() {
     }
 }
 
-void Scene::updateSelf(float delta)
+void Scene::update()
 {
     WindowManager::tick();
 }

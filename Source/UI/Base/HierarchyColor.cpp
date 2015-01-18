@@ -44,25 +44,22 @@ const Color &HierarchyColor::getDisplayColor() const
 
 void HierarchyColor::updateColor()
 {
-    auto node = this->getNode();
+    auto func = [](NodePtr& node)
+    {
+        auto curr = node->getComponent<HierarchyColor>();
+        auto parent = node->getComponentInParent<HierarchyColor>();
 
-    auto parent = getComponentInParent<HierarchyColor>();
-
-    if (parent) {
-        worldColor = color * parent->getDisplayColor();
-    } else {
-        worldColor = color;
-    }
-
-//    this->updateViewColor();
-
-    for (auto& child : node->getChildren()) {
-        auto node = child->getComponent<HierarchyColor>();
-
-        if (node) {
-            node->updateColor();
+        if (parent) {
+            curr->worldColor = curr->color * parent->getDisplayColor();
+        } else {
+            curr->worldColor = curr->color;
         }
-    }
+
+    //    this->updateViewColor();
+    };
+
+    NodePtr node = getNode();
+    DistpatchFunctionInHierarchy(node, func);
 }
 
 ComponentPtr HierarchyColor::createCloneInstance() const

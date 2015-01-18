@@ -21,7 +21,7 @@ public:
     virtual bool onBackKeyEvent();
     
 protected:
-    virtual void updateSelf(float delta) override;
+    virtual void update();
     
     virtual void onEnter();
     

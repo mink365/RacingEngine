@@ -28,46 +28,23 @@ void Widget::addWidgets() {
 }
 
 void Widget::layout() {
-//    CCAssert(this->getParent(), "you should add it to scene before you can layout the layer");
+    auto func = [](NodePtr& node) {
+        auto widget = node->getComponent<Widget>();
 
-    this->dispatchLayout();
-    
-    this->layoutSelf();
-    
-    this->dispatchLayout();
-}
-
-void Widget::dispatchLayout() {
-    for (auto child : getNode()->getChildren()) {
-        std::shared_ptr<Widget> childWidget = dynamic_pointer_cast<Widget>(child);
-
-        if (childWidget) {
-            childWidget->layout();
+        if (widget) {
+            widget->layoutSelf();
         }
-    }
+    };
+
+    auto node = getNode();
+    DistpatchFunctionInHierarchy(node, func);
 }
 
 void Widget::layoutSelf() {
 
 }
 
-void Widget::update(float delta) {
-    this->dispatchUpdate(delta);
-    
-    this->updateSelf(delta);
-}
-
-void Widget::dispatchUpdate(float delta) {
-    for (auto child : getNode()->getChildren()) {
-        std::shared_ptr<Widget> childWidget = dynamic_pointer_cast<Widget>(child);
-
-        if (childWidget) {
-            childWidget->update(delta);
-        }
-    }
-}
-
-void Widget::updateSelf(float delta) {
+void Widget::update() {
 
 }
 

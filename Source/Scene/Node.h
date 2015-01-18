@@ -24,6 +24,8 @@
 
 namespace re {
 
+void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
+
 class Node;
 typedef std::shared_ptr<Node> NodePtr;
 
@@ -59,6 +61,9 @@ public:
 
     template<typename T>
     std::shared_ptr<T> getComponent();
+
+    template<typename T>
+    std::shared_ptr<T> getComponentInParent();
 
     void updateTransform();
     TransformPtr& getTransform();
@@ -100,6 +105,18 @@ inline std::shared_ptr<T> Node::getComponent()
 
     if (iter != componentMap.end() && iter->second.size() > 0) {
         return std::static_pointer_cast<T>(iter->second[0]);
+    }
+
+    return nullptr;
+}
+
+template<typename T>
+inline std::shared_ptr<T> Node::getComponentInParent()
+{
+    auto parent = this->getParent();
+
+    if (parent != nullptr) {
+        return parent->getComponent<T>();
     }
 
     return nullptr;

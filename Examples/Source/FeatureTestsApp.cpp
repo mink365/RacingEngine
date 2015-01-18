@@ -302,7 +302,7 @@ void FeatureTestsApp::update(Long dt)
     if (this->current) {
         this->current->Update(dt / 1000.0f);
     }
-    this->stage->update(dt/1000.0f);
+    this->stage->update();
 
     this->labelFps->setText(std::to_string(GameHub::getInstance().getFps()));
 }

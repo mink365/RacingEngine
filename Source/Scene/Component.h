@@ -68,13 +68,7 @@ inline std::shared_ptr<T> Component::getComponent()
 template<typename T>
 inline std::shared_ptr<T> Component::getComponentInParent()
 {
-    auto parent = getNode()->getParent();
-
-    if (parent != nullptr) {
-        return parent->getComponent<T>();
-    }
-
-    return nullptr;
+    return getNode()->getComponentInParent<T>();
 }
 
 } //namespace re

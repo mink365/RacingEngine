@@ -150,7 +150,7 @@ void Node::removeChild(NodePtr node)
 
 void Node::removeAllChildren()
 {
-    for (auto child : children) {
+    for (auto& child : children) {
         child->parent.reset();
     }
 
@@ -251,6 +251,15 @@ NodePtr Node::clone() const
     cloned->copyProperties(this);
 
     return cloned;
+}
+
+void DistpatchFunctionInHierarchy(NodePtr &root, std::function<void (NodePtr &)> func)
+{
+    func(root);
+
+    for (NodePtr child : root->getChildren()) {
+        DistpatchFunctionInHierarchy(child, func);
+    }
 }
 
 }

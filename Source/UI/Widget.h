@@ -29,7 +29,7 @@ public:
     
     void layout();
 
-    void update(float delta);
+    void update();
     
     bool isVisible() {return true;};
     bool isRunning() {return true;};
@@ -51,11 +51,7 @@ protected:
 protected:
     virtual void addWidgets();
     
-    void dispatchLayout();
     virtual void layoutSelf();
-    
-    void dispatchUpdate(float delta);
-    virtual void updateSelf(float delta);
     
     /*
      * 插入剪切等效果

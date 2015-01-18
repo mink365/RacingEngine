@@ -55,11 +55,11 @@ public:
     void compute(vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
 private:
-    void cacheBones(BonePtr bone);
+    void cacheBones();
 
     void computeBone(BonePtr bone, vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
-    void updateBoneVertex(BonePtr bone, vector<Vec3>& boneVertex, Int Index);
+    void updateBoneVertex(vector<Vec3>& boneVertex);
 
 private:
     LinkMode linkMode;

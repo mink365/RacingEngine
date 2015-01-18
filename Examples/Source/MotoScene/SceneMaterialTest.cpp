@@ -18,16 +18,15 @@ SceneMaterialTest::SceneMaterialTest()
 }
 
 void InitNodeShader(NodePtr& node) {
-    MeshPtr mesh = node->getComponent<Mesh>();
+    auto func = [](NodePtr& node) {
+        MeshPtr mesh = node->getComponent<Mesh>();
 
-    if (mesh) {
-        InitMeshInHardward(mesh);
-    }
+        if (mesh) {
+            InitMeshInHardward(mesh);
+        }
+    };
 
-    for (auto child : node->getChildren()) {
-        auto childNode = std::dynamic_pointer_cast<Node>(child);
-        InitNodeShader(childNode);
-    }
+    DistpatchFunctionInHierarchy(node, func);
 }
 
 void SceneMaterialTest::Init()

@@ -29,9 +29,9 @@ BonePtr Skeleton::getRootBone() const
 BonePtr Skeleton::getBone(Long id)
 {
     this->bones.clear();
-    this->cacheBones(this->rootBone);
+    this->cacheBones();
 
-    for (auto bone : this->bones) {
+    for (auto& bone : this->bones) {
         if (bone->getId() == id) {
             return bone;
         }
@@ -40,20 +40,30 @@ BonePtr Skeleton::getBone(Long id)
     return nullptr;
 }
 
-void Skeleton::cacheBones(BonePtr bone)
+void Skeleton::cacheBones()
 {
-    this->bones.push_back(bone);
+    auto func = [&](NodePtr& node) {
+        auto bone = node->getComponent<Bone>();
+        if (bone) {
+            bones.push_back(bone);
+        }
+    };
 
-    for (auto& childBone : bone->getNode()->getChildren()) {
-        this->cacheBones(childBone->getComponent<Bone>());
-    }
+    auto node = rootBone->getNode();
+    DistpatchFunctionInHierarchy(node, func);
 }
 
 void Skeleton::compute(vector<Mat4> &boneDeformations, vector<float> &boneWeights, const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix)
 {
-    BonePtr rootBone = this->getRootBone();
+    auto func = [&](NodePtr& node) {
+        auto bone = node->getComponent<Bone>();
+        if (bone) {
+            computeBone(bone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
+        }
+    };
 
-    this->computeBone(rootBone, boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
+    auto root = rootBone->getNode();
+    DistpatchFunctionInHierarchy(root, func);
 }
 
 void Skeleton::computeBone(BonePtr bone, vector<Mat4> &boneDeformations, vector<float> &boneWeights, const Mat4 &meshGeometryMatrix, const Mat4 &globalPositionMatrix)
@@ -85,24 +95,23 @@ void Skeleton::computeBone(BonePtr bone, vector<Mat4> &boneDeformations, vector<
             boneWeights[index] += weight;
         }
     }
-
-    for (auto childBone : bone->getNode()->getChildren()) {
-        this->computeBone(childBone->getComponent<Bone>(), boneDeformations, boneWeights, meshGeometryMatrix, globalPositionMatrix);
-    }
 }
 
-void Skeleton::updateBoneVertex(BonePtr bone, vector<Vec3> &boneVertex, Int index)
+void Skeleton::updateBoneVertex(vector<Vec3> &boneVertex)
 {
-    Vec3 v = bone->getComponent<Transform>()->getWorldMatrix().getTranslation();
+    size_t index = 0;
 
-    Vec3 vertex = boneVertex.at(index);
-    vertex = v;
+    auto func = [&](NodePtr& node) {
+        Vec3 v = node->getComponent<Transform>()->getWorldMatrix().getTranslation();
 
-    for (auto childBone : bone->getNode()->getChildren()) {
+        Vec3& vertex = boneVertex.at(index);
+        vertex = v;
+
         index++;
+    };
 
-        this->updateBoneVertex(childBone->getComponent<Bone>(), boneVertex, index);
-    }
+    auto root = rootBone->getNode();
+    DistpatchFunctionInHierarchy(root, func);
 }
 
 }
