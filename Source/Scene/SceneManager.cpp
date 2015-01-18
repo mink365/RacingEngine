@@ -77,7 +77,9 @@ void SceneManager::vist(const NodePtr &node)
             if (component->getType() == ComponentType::Mesh) {
                 auto mesh = dynamic_pointer_cast<Mesh>(component);
                 auto material = node->getComponent<Material>();
-                this->renderManger.getRenderQueue().addRenderable(mesh, material->getQueueID());
+                if (mesh && material) {
+                    this->renderManger.getRenderQueue().addRenderable(mesh, material->getQueueID());
+                }
             }
         }
 

@@ -13,10 +13,8 @@
 #define MAX_PROXIES (ARRAY_SIZE_X*ARRAY_SIZE_Y*ARRAY_SIZE_Z + 1024)
 
 ///scaling of the objects (0.1 = 20 centimeter boxes )
-#define SCALING 3.
-#define START_POS_X -5
-#define START_POS_Y -5
-#define START_POS_Z -3
+#define SCALING 3
+#define START_POS_Y 15
 
 ///The MyOverlapCallback is used to show how to collect object that overlap with a given bounding box defined by aabbMin and aabbMax.
 ///See m_dynamicsWorld->getBroadphase()->aabbTest.
@@ -157,9 +155,9 @@ void BulletTest::initPhysics()
         if (isDynamic)
             colShape->calculateLocalInertia(mass,localInertia);
 
-        float start_x = START_POS_X - ARRAY_SIZE_X/2;
+        float start_x = -(ARRAY_SIZE_X - 1);
         float start_y = START_POS_Y;
-        float start_z = START_POS_Z - ARRAY_SIZE_Z/2;
+        float start_z = -(ARRAY_SIZE_Z - 1);
 
         for (int k=0;k<ARRAY_SIZE_Y;k++)
         {
@@ -169,9 +167,11 @@ void BulletTest::initPhysics()
                 {
                     startTransform.setOrigin(SCALING*btVector3(
                                         btScalar(2.0*i + start_x),
-                                        btScalar(20+2.0*k + start_y),
+                                        btScalar(2.0*k + start_y),
                                         btScalar(2.0*j + start_z)));
 
+                    LOG_E("DDDD: %f", 2.0*i + start_x);
+                    LOG_E("Posiztion: %f %f %f", startTransform.getOrigin().x(), startTransform.getOrigin().y(), startTransform.getOrigin().z());
 
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -249,7 +249,7 @@ void BulletTest::initView()
     auto box = ShapeGenerater::getInstance().CreateBox(6, 6, 6);
 
     auto boxNode = CreateMeshNode();
-    SetMeshData(groundNode, box, texture);
+    SetMeshData(boxNode, box, texture);
 
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {

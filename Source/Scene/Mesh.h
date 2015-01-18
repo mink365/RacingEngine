@@ -104,7 +104,7 @@ public:
 
 protected:
     virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* att) override;
+    virtual void copyProperties(const Component* component) override;
 
 protected:
     MeshDataPtr data;

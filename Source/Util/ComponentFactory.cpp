@@ -28,6 +28,8 @@ NodePtr CreateMeshNode()
 
     AddComponent<2, Mesh, Material>::Do(node);
 
+    node->getComponent<Material>()->initDefaultPass();
+
     return node;
 }
 
@@ -36,6 +38,8 @@ NodePtr CreateSkinningMesh()
     auto node = Create<Node>();
 
     AddComponent<5, Skeleton, SkeletonController, Animation, Mesh, Material>::Do(node);
+
+    node->getComponent<Material>()->initDefaultPass();
 
     return node;
 }

@@ -37,20 +37,13 @@ ComponentPtr Mesh::createCloneInstance() const
     return std::make_shared<Mesh>();
 }
 
-void Mesh::copyProperties(const Component *att)
+void Mesh::copyProperties(const Component *component)
 {
-    Component::copyProperties(att);
+    Component::copyProperties(component);
 
-    const Mesh* inst = dynamic_cast<const Mesh*>(att);
+    const Mesh* inst = dynamic_cast<const Mesh*>(component);
     if (inst) {
-
         this->data = inst->data;
-//        if (!inst->geometry->isStatic()) {
-//            // only dynamic geometry need to be copy
-//            this->geometry = inst->geometry;
-//        } else {
-//            this->geometry = inst->geometry;
-//        }
     }
 }
 

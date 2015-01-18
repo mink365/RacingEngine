@@ -90,7 +90,7 @@ void ShadowTest::Init()
     dirLight->spotAngle = 50;
     dirLight->shadowCameraFov = 50;
 
-    sprite = CreateComponent<Sprite>("diffuse.png");
+    sprite = CreateNode2DComponent<Sprite>("diffuse.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setScale(Vec2(1, 1));
     sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));

@@ -25,11 +25,11 @@ void TweenTest::Init()
     TextureParser::getInstance().addTextures("UI/", "png");
     TextureManager::getInstance().loadTextures();
 
-    SpritePtr sprite = CreateComponent<Sprite>("store_icon_coin.png");
+    SpritePtr sprite = CreateNode2DComponent<Sprite>("store_icon_coin.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
-    NinePatchPtr patch = CreateComponent<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateNode2DComponent<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setContentSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
@@ -43,11 +43,11 @@ void TweenTest::Init()
         font = FontManager::getInstance().getFont("default");
     }
 
-    LabelPtr label = CreateComponent<Label>(font);
+    LabelPtr label = CreateNode2DComponent<Label>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
     label->getComponent<Transform2D>()->setPosition(Vec2(300, 500 + 40));
 
-    LabelPtr label2 = CreateComponent<Label>(font);
+    LabelPtr label2 = CreateNode2DComponent<Label>(font);
     label2->setText("xHtbo xx");
     label2->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 40));
 
@@ -60,7 +60,7 @@ void TweenTest::Init()
 
     PredefineTweenAccessor::registerAccessor();
 
-    Tween::to(label, FlatNodeAccessor::POSITION_X, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
+    Tween::to(label->getNode(), FlatNodeAccessor::POSITION_X, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
 
     Timeline::createSequence()
         // First, set all objects to their initial positions

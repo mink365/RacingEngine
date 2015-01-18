@@ -91,11 +91,12 @@ void SceneMaterialTest::createUI()
         font = FontManager::getInstance().getFont("default");
     }
 
-    labelName = CreateComponent<Label>(font);
+    labelName = CreateNode2DComponent<Label>(font);
     labelName->setText("Name");
+    labelName->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5f, 0.5f));
 
-    auto buttonNext = CreateComponent<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateComponent<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateNode2DComponent<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateNode2DComponent<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
@@ -132,4 +133,6 @@ void SceneMaterialTest::changeTile(int index)
     auto blockRootNode = this->tiles[tileIndex];
 
     rootNode->addChild(blockRootNode);
+
+    labelName->setText(blockRootNode->getName());
 }
