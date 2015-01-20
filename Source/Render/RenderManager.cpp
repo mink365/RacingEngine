@@ -160,7 +160,19 @@ void RenderManager::createRenderViews()
         }
     }
 
-    for (auto camera : this->cameraList) {
+    if (this->cameraList.size() > 2) {
+        CameraPtr camera = this->cameraList.at(2);
+
+        auto renderView = RenderView::create();
+
+        renderView->init(camera);
+
+        this->renderViewList.push_back(renderView);
+    }
+
+    for (int i = 0; i < 2; ++i) {
+        CameraPtr camera = this->cameraList.at(i);
+
         auto renderView = RenderView::create();
 
         renderView->init(camera);

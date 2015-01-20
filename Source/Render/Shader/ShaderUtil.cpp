@@ -51,6 +51,13 @@ UniformType getUniformType(GLenum type) {
         case GL_FLOAT_MAT2: return UniformType::MAT2;
         case GL_FLOAT_MAT3: return UniformType::MAT3;
         case GL_FLOAT_MAT4: return UniformType::MAT4;
+        case GL_SAMPLER_1D: return UniformType::SAMPLER_1D;
+        case GL_SAMPLER_2D: return UniformType::SAMPLER_2D;
+        case GL_SAMPLER_3D: return UniformType::SAMPLER_3D;
+        case GL_SAMPLER_CUBE:     return UniformType::SAMPLER_CUBE;
+        case GL_SAMPLER_1D_ARRAY: return UniformType::SAMPLER_1D_ARRAY;
+        case GL_SAMPLER_2D_ARRAY: return UniformType::SAMPLER_2D_ARRAY;
+
     }
 
     return (UniformType) -1;
@@ -73,6 +80,13 @@ ShaderUtil::ShaderUtil()
     uniformFuncs[(int)UniformType::MAT2]  = (void *) glUniformMatrix2fv;
     uniformFuncs[(int)UniformType::MAT3]  = (void *) glUniformMatrix3fv;
     uniformFuncs[(int)UniformType::MAT4]  = (void *) glUniformMatrix4fv;
+    uniformFuncs[(int)UniformType::SAMPLER_1D] = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::SAMPLER_2D] = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::SAMPLER_3D] = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::SAMPLER_CUBE]     = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::SAMPLER_1D_ARRAY] = (void *) glUniform1iv;
+    uniformFuncs[(int)UniformType::SAMPLER_2D_ARRAY] = (void *) glUniform1iv;
+
 }
 
 typedef void (*GLInfoFunction) (GLuint program, GLenum pname, GLint* params);
@@ -141,14 +155,6 @@ void ShaderUtil::bindShader(Shader *shader)
     for (Uniform* uniform : shader->getUniforms()) {
         this->applyUniformToHardware(uniform);
     }
-
-    for (auto sampler : shader->samplers) {
-
-        for (int i=0; i < sampler->nElements; ++i) {
-            glUniform1i(sampler->location, sampler->unit + i);
-        }
-
-    }
 }
 
 void ShaderUtil::applyAttributeToHardware(Attribute *attr)
@@ -159,10 +165,10 @@ void ShaderUtil::applyAttributeToHardware(Attribute *attr)
 
 void ShaderUtil::applyUniformToHardware(Uniform *uniform)
 {
-    if ((uniform->getType()) >= UniformType::MAT2){
-        ((UNIFORM_MAT_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), GL_FALSE, uniform->getData());
+    if (uniform->getType() >= UniformType::MAT2 && uniform->getType() <= UniformType::MAT4) {
+        ((UNIFORM_MAT_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), GL_FALSE, uniform->getData<float>());
     } else {
-        ((UNIFORM_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), uniform->getData());
+        ((UNIFORM_FUNC) uniformFuncs[(int)uniform->getType()])(uniform->getLocation(), uniform->getElementCount(), uniform->getData<float>());
     }
 }
 
@@ -200,7 +206,6 @@ void ShaderUtil::fetchUniforms(Shader *shader)
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORMS, &uniformCount);
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
 
-    int nSamplers = 0;
     int nUniforms = 0;
     char *name = new char[maxLength];
     for (int i = 0; i < uniformCount; i++){
@@ -208,17 +213,7 @@ void ShaderUtil::fetchUniforms(Shader *shader)
         GLint length, size;
         glGetActiveUniform(shader->program, i, maxLength, &length, &size, &type, name);
 
-        if (type >= GL_SAMPLER_1D && type <= GL_SAMPLER_2D_RECT_SHADOW){
-            // Assign samplers to image units
-            GLint location = glGetUniformLocation(shader->program, name);
-
-            Sampler *sampler = new Sampler(name, location, nSamplers);
-            sampler->nElements = size;
-
-            shader->samplers.push_back(sampler);
-
-            nSamplers += size;
-        } else {
+        {
             // Store all non-gl uniforms
             if (strncmp(name, "gl_", 3) != 0){
                 char *bracket = strchr(name, '[');

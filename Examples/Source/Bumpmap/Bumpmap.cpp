@@ -2,6 +2,7 @@
 
 #include "ShapeGenerater.h"
 
+
 Bumpmap::Bumpmap()
 {
     this->name = "NormalMapTest";
@@ -32,7 +33,7 @@ void Bumpmap::Init()
         return true;
     });
 
-    auto shader = ShaderManager::getInstance().getShader("normal_map");
+    Shader::ptr shader = ShaderManager::getInstance().getShader("normal_map");
     {
         // set vertex attribute
         Attribute *vertAttr = shader->getAttribute("inVertex");
@@ -60,12 +61,16 @@ void Bumpmap::Init()
         colorAttr->setOffset((8) * 4);
     }
 
+    // set the uniform
+    shader->getUniform("sBaseTex")->setData(std::vector<int32_t>{0}.data());
+    shader->getUniform("sNormalMap")->setData(std::vector<int32_t>{1}.data());
+
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
     auto geometry = ShapeGenerater::getInstance().CreateSphere(50, 30, 30);
 
     auto box = CreateMeshNode();
-    SetMeshData(box, geometry, texture);
+    SetMeshData(box, geometry, texture, "normal_map");
     MeshPtr mesh = box->getComponent<Mesh>();
     mesh->getGeometry()->calculateTangents();
     {

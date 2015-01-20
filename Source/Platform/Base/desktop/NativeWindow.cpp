@@ -117,7 +117,7 @@ NativeWindow* GLFWEventHandler::nativeView = NULL;
 
 NativeWindow::NativeWindow()
 {
-    this->viewRect = Rect(0, 0, 500, 600);
+    this->viewRect = Rect(0, 0, 800, 600);
 }
 
 bool NativeWindow::initView()

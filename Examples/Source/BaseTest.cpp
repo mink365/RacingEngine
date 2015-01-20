@@ -146,6 +146,10 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
         setPTCShaderAttribute(shader);
     }
 
+    if (shader->getUniform("textureSampler")) {
+        shader->getUniform("textureSampler")->setData(std::vector<int32_t>{0}.data());
+    }
+
     ShaderManager::getInstance().registerShader(shader);
 
     return 1;

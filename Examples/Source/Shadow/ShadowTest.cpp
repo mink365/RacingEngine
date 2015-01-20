@@ -35,6 +35,10 @@ void ShadowTest::Init()
     LoadShader("simple_shadow_map", shaderDir + "simple_shadow_map.vert",
                              shaderDir + "simple_shadow_map.frag");
 
+    auto shader = ShaderManager::getInstance().getShader("shadow_map");
+    shader->getUniform("textureSampler")->setData(std::vector<int32_t>{0}.data());
+    shader->getUniform("shadowMap")->setData(std::vector<int32_t>{1}.data());
+
     TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
 
     this->camera->setDepthField(10, 1320);

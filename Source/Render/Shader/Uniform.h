@@ -21,6 +21,14 @@ enum class UniformType {
     MAT2,
     MAT3,
     MAT4,
+    SAMPLER_1D,
+    SAMPLER_2D,
+    SAMPLER_3D,
+    SAMPLER_CUBE,
+    SAMPLER_1D_ARRAY,
+    SAMPLER_2D_ARRAY,
+    SAMPLER_3D_ARRAY,
+    SAMPLER_CUBE_ARRAY,
 
     _COUNT
 };
@@ -41,14 +49,21 @@ public:
     int getLocation() const;
     UniformType getType() const;
 
-    float* getData() const;
+    template<typename T>
+    const T* getData() const;
+
     void setData(float* value);
+    void setData(int32_t* value);
+    void setData(int16_t* value);
+    void setData(int8_t*  value);
+
+private:
+    void setValue_(void* value);
 
 protected:
     void init();
 
     void initData();
-    void initMatrixData(int dimension);
 
     int getDataByteSize();
     void allocData();
@@ -74,7 +89,13 @@ private:
      * Specifies a pointer to an array of count values
      * that will be used to update the specified uniform variable.
      */
-    float *data;
+    union
+    {
+        float *floatData;
+        int32_t *intData;
+        int16_t *shortData;
+        int8_t *byteData;
+    };
 };
 
 inline int Uniform::getElementCount() const
@@ -92,9 +113,25 @@ inline UniformType Uniform::getType() const
     return this->type;
 }
 
-inline float *Uniform::getData() const
+inline void Uniform::setData(int32_t *value)
 {
-    return data;
+    setValue_(value);
+}
+
+inline void Uniform::setData(int16_t *value)
+{
+    setValue_(value);
+}
+
+inline void Uniform::setData(int8_t *value)
+{
+    setValue_(value);
+}
+
+template <typename T>
+inline const T *Uniform::getData() const
+{
+    return floatData;
 }
 
 } // namespace re

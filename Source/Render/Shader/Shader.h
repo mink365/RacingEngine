@@ -55,7 +55,6 @@ private:
     GPU_ID vertexShader;
     GPU_ID fragmentShader;
 
-    std::vector<Sampler *> samplers;
     std::vector<Uniform *> uniforms;
     std::vector<Attribute *> attributes;
 

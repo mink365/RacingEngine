@@ -16,6 +16,10 @@ void Reflection::Init()
     LoadShader("reflection", shaderDir + "reflection.vsh",
                              shaderDir + "reflection.fsh");
 
+    auto shader = ShaderManager::getInstance().getShader("reflection");
+    shader->getUniform("s2DMap")->setData(std::vector<int32_t>{0}.data());
+    shader->getUniform("sCubeMap")->setData(std::vector<int32_t>{1}.data());
+
     auto file = FileSystem::getInstance().getFile("Textures/Cubemap/FishermansBastion_rgba8888.pvr");
     TexturePtr cubeTexture = Texture::create();
     cubeTexture->setFile(file);

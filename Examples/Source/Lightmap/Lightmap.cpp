@@ -26,6 +26,11 @@ void Lightmap::Init()
     LoadShader("lightmap", shaderDir + "lightmap.vsh",
                              shaderDir + "lightmap.fsh");
 
+    auto shader = ShaderManager::getInstance().getShader("lightmap");
+    shader->getUniform("sBasetex")->setData(std::vector<int32_t>{0}.data());
+    shader->getUniform("sReflect")->setData(std::vector<int32_t>{1}.data());
+    shader->getUniform("sShadow")->setData(std::vector<int32_t>{2}.data());
+
     TextureParser::getInstance().addTextures("Textures/Lightmap", "png|jpg");
     auto base = TextureManager::getInstance().getTexture("tex_base");
     auto reflection = TextureManager::getInstance().getTexture("reflection");

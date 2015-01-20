@@ -22,7 +22,7 @@ void RenderToTextureTest::Init()
     camera->setDepthField(10, 1320);
     camera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
     camera->setQueueCullFunc([](int queue) {
-        if (queue == 51) {
+        if (queue == 50) {
             return true;
         }
         return false;
@@ -42,6 +42,7 @@ void RenderToTextureTest::Init()
 
     cylinderNode = CreateMeshNode();
     SetMeshData(cylinderNode, geometry, texture);
+    cylinderNode->getComponent<Material>()->setQueueID(52);
 
     rootNode->addChild(cylinderNode);
 
@@ -72,7 +73,7 @@ void RenderToTextureTest::Init()
     SceneManager::getInstance().addRootNode(presCamera->getNode());
 
     // create the normal geometry
-    geometry = ShapeGenerater::getInstance().CreateBox(100, 100, 100, 10, 10, 10);
+    geometry = ShapeGenerater::getInstance().CreateBox(100, 10, 100, 20, 20, 20);
 
     boxNode = CreateMeshNode();
     SetMeshData(boxNode, geometry, renderTarget->getTexture());
