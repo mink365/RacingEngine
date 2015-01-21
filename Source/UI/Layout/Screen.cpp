@@ -2,6 +2,11 @@
 
 namespace re {
 
+void Screen::setRealFrameSize(const Size &size)
+{
+    this->setRealFrameSize(size.width, size.height);
+}
+
 void Screen::setRealFrameSize(float screenWidth, float screenHeight) {
     _realSize.width = screenWidth;
     _realSize.height = screenHeight;
@@ -31,11 +36,6 @@ void Screen::setDesignSize(float width, float height)
 {
     this->_designSize.width = width;
     this->_designSize.height = height;
-}
-
-void Screen::setRealFrameSize(const Size &size)
-{
-    this->setRealFrameSize(size.width, size.height);
 }
 
 float Screen::getWidth() const {

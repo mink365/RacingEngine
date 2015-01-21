@@ -29,7 +29,8 @@ protected:
     bool initGlew();
 private:
     GLFWwindow *window;
-    Rect viewRect;
+    Size framebufferSize;
+    Size windowSize;
 };
 
 } // namespace re

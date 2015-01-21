@@ -35,7 +35,7 @@ public:
             if(GLFW_PRESS == action)
             {
                 _captured = true;
-                if (getViewPortRect().containsPoint(Vec2(_mouseX,_mouseY)))
+                if (getWindowRect().containsPoint(Vec2(_mouseX,_mouseY)))
                 {
                     dispatchTouchEvent(TouchEventType::DOWN, _mouseX, _mouseY);
                 }
@@ -85,7 +85,7 @@ public:
 
     static void onGLFWframebuffersize(GLFWwindow* window, int w, int h)
     {
-
+        nativeView->setFrameSize(w, h);
     }
 
     static void onGLFWWindowSizeFunCallback(GLFWwindow *window, int width, int height)
@@ -94,17 +94,18 @@ public:
     }
 
 private:
-    static const Rect& getViewPortRect() {
-        return nativeView->viewRect;
+    static Rect getWindowRect() {
+        return Rect(Vec2(0, 0),nativeView->windowSize);
     }
 
     static void dispatchTouchEvent(TouchEventType type, float x, float y) {
         auto event = std::make_shared<TouchEvent>();
 
-        const Rect& rect = getViewPortRect();
+        const Rect rect = getWindowRect();
 
-        event->setInfo(type, x - rect.origin.x,
-                       rect.size.height - (y - rect.origin.y));
+        float x_ = (x - rect.origin.x) / rect.size.width * nativeView->framebufferSize.width;
+        float y_ = (rect.size.height - (y - rect.origin.y)) / rect.size.height * nativeView->framebufferSize.height;
+        event->setInfo(type, x_, y_);
 
         MessageManager::getInstance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
     }
@@ -117,12 +118,11 @@ NativeWindow* GLFWEventHandler::nativeView = NULL;
 
 NativeWindow::NativeWindow()
 {
-    this->viewRect = Rect(0, 0, 800, 600);
+    this->windowSize = Size(800, 600);
 }
 
 bool NativeWindow::initView()
 {
-    Rect rect = viewRect;
     std::string _viewName = "Hello";
     GLFWmonitor* _monitor = nullptr;
 
@@ -140,8 +140,8 @@ bool NativeWindow::initView()
 //    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 //    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    window = glfwCreateWindow(rect.size.width,
-                                   rect.size.height,
+    window = glfwCreateWindow(windowSize.width,
+                                   windowSize.height,
                                    _viewName.c_str(),
                                    _monitor,
                                    nullptr);
@@ -154,6 +154,10 @@ bool NativeWindow::initView()
     glfwMakeContextCurrent(window);
 
     GLFWEventHandler::nativeView = this;
+
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    this->setFrameSize(width, height);
 
     // check OpenGL version at first
     const GLubyte* glVendor = glGetString(GL_VENDOR);
@@ -199,12 +203,12 @@ void NativeWindow::bindEventHandler()
 
 void NativeWindow::setFrameSize(float width, float height)
 {
-    this->viewRect.set(0, 0, width, height);
+    this->framebufferSize.set(width, height);
 }
 
 Size NativeWindow::getFrameSize() const
 {
-    return this->viewRect.size;
+    return this->framebufferSize;
 }
 
 bool NativeWindow::shouldClose()
