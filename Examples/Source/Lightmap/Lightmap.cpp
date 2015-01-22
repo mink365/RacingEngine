@@ -15,7 +15,7 @@ void Lightmap::Init()
     this->camera->setView(Vec3(0, 0, 150), Vec3(0, 0, 0), Vec3(0, 1, 0));
 //    this->camera->setFieldOfView();
     this->camera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return false;
         }
         return true;

@@ -21,7 +21,7 @@ void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& sha
     material->setShder(shader);
 
     material->initDefaultPass();
-    material->setQueueID(RENDER_QUEUE_UI);
+    material->setQueueID(RenderQueues::UI);
     material->getRenderState().depthState.depthTestEnable = false;
     material->getRenderState().depthWrite = false;
     material->getRenderState().depthState.function = TestFunction::LessOrEqual;

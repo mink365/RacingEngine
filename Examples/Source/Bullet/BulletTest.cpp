@@ -232,7 +232,7 @@ void BulletTest::initView()
     this->camera->setView(Vec3(0, 100, 170), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setDepthField(10, 1320);
     this->camera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return false;
         }
         return true;

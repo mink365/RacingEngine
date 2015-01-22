@@ -13,11 +13,6 @@ RenderTarget::RenderTarget()
     this->hasStencilBuffer = false;
 }
 
-RenderTarget::~RenderTarget()
-{
-
-}
-
 RenderTargetType RenderTarget::getType() const
 {
     return this->type;

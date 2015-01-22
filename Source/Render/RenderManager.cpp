@@ -145,7 +145,7 @@ void RenderManager::createRenderViews()
             }
 
             renderView->queueCullFunc = [](int queue) {
-                    if (queue == RENDER_QUEUE_UI
+                    if (queue == RenderQueues::UI
                             || queue == 51) {
                         return false;
                     }

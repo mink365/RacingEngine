@@ -77,7 +77,6 @@ enum class BlendMode {
      */
     Additive,
     /**
-     * 预混合？当前默认的方法，在UI和model中都使用
      * Premultiplied alpha blending, for use with premult alpha textures.
      * <p>
      * Result = Source Color + (Dest Color * (1 - Source Alpha) ) -> (GL_ONE, GL_ONE_MINUS_SRC_ALPHA)

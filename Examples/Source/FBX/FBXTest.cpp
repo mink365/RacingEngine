@@ -28,7 +28,7 @@ void FBXTest::Init()
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
     this->camera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return false;
         }
         return true;

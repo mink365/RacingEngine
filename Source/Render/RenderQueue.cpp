@@ -18,7 +18,7 @@ RenderQueue::~RenderQueue()
 
 void RenderQueue::addRenderable(ComponentPtr node)
 {
-    this->addRenderable(node, RENDER_QUEUE_MAIN);
+    this->addRenderable(node, RenderQueues::Geometry);
 }
 
 void RenderQueue::addRenderable(ComponentPtr node, int type)

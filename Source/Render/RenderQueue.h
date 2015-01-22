@@ -7,21 +7,18 @@
 
 namespace re {
 
-/// Use this queue for objects which must be rendered first e.g. backgrounds
-static const int RENDER_QUEUE_BACKGROUND = 0;
-/// First queue (after backgrounds), used for skyboxes if rendered first
-static const int RENDER_QUEUE_SKIES_EARLY = 5;
-static const int RENDER_QUEUE_WORLD_GEOMETRY_1 = 25;
-/// The default render queue
-static const int RENDER_QUEUE_MAIN = 50;
-static const int RENDER_QUEUE_WORLD_GEOMETRY_2 = 75;
-/// Penultimate queue(before overlays), used for skyboxes if rendered last
-static const int RENDER_QUEUE_SKIES_LATE = 95;
-/// Use this queue for objects which must be rendered last e.g. overlays UI层
-static const int RENDER_QUEUE_OVERLAY = 100;
-static const int RENDER_QUEUE_UI = 103;
-/// Final possible render queue, don't exceed this
-static const int RENDER_QUEUE_MAX = 105;
+namespace RenderQueues
+{
+    // Use this queue for objects which must be rendered first e.g. backgrounds
+    const int Background  = 1000;
+    // The default render queue
+    const int Geometry    = 2000;
+    const int AlphaTest   = 3000;
+    const int Transparent = 4000;
+    // Use this queue for objects which must be rendered last e.g. overlays
+    const int Overlay     = 5000;
+    const int UI          = 6000;
+}
 
 class RenderableList
 {

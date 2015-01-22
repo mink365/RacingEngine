@@ -37,7 +37,7 @@ void LightTest::Init()
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(0, 0, 260), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return false;
         }
         return true;

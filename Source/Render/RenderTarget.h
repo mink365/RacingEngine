@@ -17,7 +17,7 @@ class RenderTarget
 {
 public:
     RenderTarget();
-    virtual ~RenderTarget();
+    virtual ~RenderTarget() {};
 
     RenderTargetType getType() const;
 

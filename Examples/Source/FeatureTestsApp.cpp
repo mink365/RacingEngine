@@ -209,7 +209,7 @@ void FeatureTestsApp::initResources()
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
     presCamera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return false;
         }
         return true;
@@ -227,7 +227,7 @@ void FeatureTestsApp::initResources()
     uiCamera->setBuffersClearFlag(ClearBufferBit::DEPTH_BUFFER_BIT
                                   | ClearBufferBit::STENCIL_BUFFER_BIT);
     uiCamera->setQueueCullFunc([](int queue) {
-        if (queue == RENDER_QUEUE_UI) {
+        if (queue == RenderQueues::UI) {
             return true;
         }
         return false;
