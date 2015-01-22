@@ -4,25 +4,19 @@
 #include <memory>
 #include <vector>
 
-#include "TextureUnitState.h"
+#include "SamplerParameter.h"
 
 namespace re {
 
 class Material;
 
 class Pass : public Shared<Pass>,
-             public Clonable<Pass>,
-             public enable_shared_from_this<Pass>
+             public Clonable<Pass>
 {
     friend class Material;
 
 public:
     Pass();
-
-    void addTextureUnit(const TextureUnitState::ptr& unit);
-    TextureUnitState::ptr getTextureUnit(int index);
-    int getTextureUnitCount() const;
-    void clearTextureUnits();
 
     Pass::ptr clone() const override;
 private:
@@ -30,8 +24,6 @@ private:
 
     std::string name;
     int index;
-
-    std::vector<TextureUnitState::ptr> units;
 };
 
 } // namespace re

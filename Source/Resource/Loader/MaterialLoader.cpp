@@ -75,14 +75,12 @@ void MaterialLoader::loadPass(Statement::ptr &statement, Pass::ptr &pass)
 {
     for(auto childState : statement->children) {
         if (childState->type == "texture_unit") {
-            TextureUnitState::ptr unit = TextureUnitState::create();
-            loadTextureUnit(childState, unit);
-            pass->addTextureUnit(unit);
+
         }
     }
 }
 
-void MaterialLoader::loadTextureUnit(Statement::ptr &statement, TextureUnitState::ptr& unit)
+void MaterialLoader::loadTextureUnit(Statement::ptr &statement, SamplerParameter::ptr& unit)
 {
     for (auto child : statement->children) {
         if (child->type == "texture_frames") {

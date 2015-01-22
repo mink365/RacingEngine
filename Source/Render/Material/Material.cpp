@@ -15,9 +15,6 @@ void Material::initDefaultPass()
     // init default pass and unit
     auto pass = Pass::create();
     this->addPass(pass);
-
-    auto unit = TextureUnitState::create();
-    pass->addTextureUnit(unit);
 }
 
 bool Material::isTransparent() const
@@ -76,6 +73,48 @@ void Material::setShder(Shader::ptr& value)
     shader = value;
 }
 
+std::vector<SamplerParameter::ptr> &Material::getSamplers()
+{
+    return samplers;
+}
+
+SamplerParameter::ptr Material::getSampler(const string &name)
+{
+    auto iter = std::find_if(samplers.begin(), samplers.end(), [&](SamplerParameter::ptr& item) {
+        if (item->name == name) {
+            return true;
+        }
+
+        return false;
+    });
+
+    if (iter != samplers.end()) {
+        return *iter;
+    }
+
+    // TODO: some walkround
+    if (!shader || !shader->getUniform(name)) {
+        return nullptr;
+    }
+
+    auto parameter = SamplerParameter::create(name);
+    this->samplers.push_back(parameter);
+
+    return parameter;
+}
+
+void Material::addSampler(SamplerParameter::ptr rhs)
+{
+    this->samplers.push_back(rhs);
+}
+
+void Material::setTexture(const string &name, TexturePtr &tex)
+{
+    auto parameter = this->getSampler(name);
+
+    parameter->setTexture(tex);
+}
+
 Material& Material::operator =(const Material &rhs)
 {
     // DO NOT COPY PASSES!
@@ -84,6 +123,8 @@ Material& Material::operator =(const Material &rhs)
 
     this->renderState = rhs.renderState;
     this->shader = rhs.shader;
+
+    return *this;
 }
 
 ComponentPtr Material::createCloneInstance() const
@@ -106,6 +147,12 @@ void Material::copyProperties(const Component *rhs)
             auto passInst = pass->clone();
 
             this->addPass(passInst);
+        }
+
+        for (auto& param : inst->samplers) {
+            auto paramInst = param->clone();
+
+            this->samplers.push_back(paramInst);
         }
     }
 }

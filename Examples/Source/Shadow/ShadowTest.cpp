@@ -35,10 +35,6 @@ void ShadowTest::Init()
     LoadShader("simple_shadow_map", shaderDir + "simple_shadow_map.vert",
                              shaderDir + "simple_shadow_map.frag");
 
-    auto shader = ShaderManager::getInstance().getShader("shadow_map");
-    shader->getUniform("textureSampler")->setData(std::vector<int32_t>{0}.data());
-    shader->getUniform("shadowMap")->setData(std::vector<int32_t>{1}.data());
-
     TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
 
     this->camera->setDepthField(10, 1320);
@@ -183,16 +179,9 @@ void ShadowTest::Update(float dt)
         auto view = renderManager.renderViewList[0];
         auto texture = view->renderTarget->getTexture();
 
-        TextureUnitState::ptr unit = spriteMaterial->getPass(0)->getTextureUnit(0);
-        unit->setTexture(texture);
+        spriteMaterial->setTexture("textureSampler", texture);
 
-        if (groundMaterial->getPass(0)->getTextureUnitCount() < 2) {
-            groundMaterial->getPass(0)->addTextureUnit(TextureUnitState::create());
-            groundMaterial->getPass(0)->addTextureUnit(TextureUnitState::create());
-
-            groundMaterial->getPass(0)->getTextureUnit(1)->setTexture(texture);
-            groundMaterial->getPass(0)->getTextureUnit(2)->setTexture(texture);
-        }
+        groundMaterial->setTexture("shadowMap", texture);
     }
 
 //    // TODO: clear func?

@@ -1,16 +1,16 @@
-attribute highp vec3  inVertex;
-attribute highp vec3  inNormal;
-attribute highp vec2  inTexCoord;
-attribute highp vec3  inTangent;
+attribute vec3  inVertex;
+attribute vec3  inNormal;
+attribute vec2  inTexCoord;
+attribute vec3  inTangent;
 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform highp vec3  LightPosModel;	// Light position (point light) in model space
+uniform vec3  LightPosModel;	// Light position (point light) in model space
 
-varying lowp vec3  LightVec;
-varying mediump vec2  TexCoord;
+varying vec3  LightVec;
+varying vec2  TexCoord;
 
 void main()
 {
@@ -19,11 +19,11 @@ void main()
 	
 	// Calculate light direction from light position in model space
 	// You can skip this step for directional lights
-	highp vec3 lightDirection = normalize(LightPosModel - inVertex);
+	vec3 lightDirection = normalize(LightPosModel - inVertex);
 	
 	// transform light direction from model space to tangent space
-	highp vec3 bitangent = cross(inNormal, inTangent);
-	highp mat3 tangentSpaceXform = mat3(inTangent, bitangent, inNormal);
+	vec3 bitangent = cross(inNormal, inTangent);
+	mat3 tangentSpaceXform = mat3(inTangent, bitangent, inNormal);
 	LightVec = lightDirection * tangentSpaceXform;
 	
 	TexCoord = inTexCoord;

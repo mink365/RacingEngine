@@ -146,10 +146,6 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
         setPTCShaderAttribute(shader);
     }
 
-    if (shader->getUniform("textureSampler")) {
-        shader->getUniform("textureSampler")->setData(std::vector<int32_t>{0}.data());
-    }
-
     ShaderManager::getInstance().registerShader(shader);
 
     return 1;
@@ -187,15 +183,13 @@ void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, cons
 
     mesh->setGeometry(geometry);
 
-    TextureUnitState::ptr unit = node->getComponent<Material>()->getPass(0)->getTextureUnit(0);
-    unit->setUVstate(0, 0, 1, 1, 0);
-
-    if (texture == nullptr) {
-        texture = TextureManager::getInstance().getTexture("girl");
-    }
-    unit->setTexture(texture);
-
     InitMeshInHardward(mesh, shaderName);
+
+    SamplerParameter::ptr unit = node->getComponent<Material>()->getSampler("textureSampler");
+    if (texture == nullptr && unit != nullptr) {
+        texture = TextureManager::getInstance().getTexture("girl");
+        unit->setTexture(texture);
+    }
 }
 
 BaseTest::BaseTest()
@@ -233,8 +227,6 @@ void BaseTest::setDefaultEnv()
         }
         return true;
     });
-
-
 }
 
 void BaseTest::Init()

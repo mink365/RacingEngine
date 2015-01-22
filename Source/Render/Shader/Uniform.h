@@ -89,13 +89,7 @@ private:
      * Specifies a pointer to an array of count values
      * that will be used to update the specified uniform variable.
      */
-    union
-    {
-        float *floatData;
-        int32_t *intData;
-        int16_t *shortData;
-        int8_t *byteData;
-    };
+    byte* data;
 };
 
 inline int Uniform::getElementCount() const
@@ -131,7 +125,7 @@ inline void Uniform::setData(int8_t *value)
 template <typename T>
 inline const T *Uniform::getData() const
 {
-    return floatData;
+    return (T*)(data);
 }
 
 } // namespace re

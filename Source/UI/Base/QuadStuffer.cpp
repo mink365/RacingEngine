@@ -15,24 +15,22 @@ void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& sha
     node->addComponent(mesh);
     node->addComponent(material);
 
-    material->initDefaultPass();
-
     mesh->setGeometry(Geometry::create());
 
+    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
+    material->setShder(shader);
+
+    material->initDefaultPass();
     material->setQueueID(RENDER_QUEUE_UI);
     material->getRenderState().depthState.depthTestEnable = false;
     material->getRenderState().depthWrite = false;
     material->getRenderState().depthState.function = TestFunction::LessOrEqual;
     if (texture) {
-        TextureUnitState::ptr unit = material->getPass(0)->getTextureUnit(0);
-        unit->setUVstate(0, 0, 1, 1, 0);
+        SamplerParameter::ptr unit = material->getSampler("textureSampler");
         unit->setTexture(texture);
     }
 
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
-
-    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
-    material->setShder(shader);
 }
 
 QuadStuffer::QuadStuffer()

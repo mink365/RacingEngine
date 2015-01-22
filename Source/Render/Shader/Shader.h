@@ -5,7 +5,6 @@
 #include <vector>
 #include "Attribute.h"
 #include "Uniform.h"
-#include "Sampler.h"
 #include "Base/Named.h"
 #include "Base/Shared.h"
 

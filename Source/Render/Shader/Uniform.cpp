@@ -24,7 +24,7 @@ void Uniform::init()
     this->location = -1;
     this->type = UniformType::FLOAT;
     this->nElements = 0;
-    this->floatData = NULL;
+    this->data = NULL;
 }
 
 void Uniform::init(const char* name, UniformType type, int location, int n)
@@ -48,7 +48,7 @@ void Uniform::initData()
 {
     this->allocData();
 
-    memset(floatData, 0, getDataByteSize());
+    memset(data, 0, getDataByteSize());
 }
 
 uint GetUniformSize(UniformType type) {
@@ -103,9 +103,9 @@ void Uniform::setData(float *value)
             }
         }
 
-        memcpy(floatData, mat, dataSize);
+        memcpy(data, mat, dataSize);
     } else {
-        memcpy(floatData, value, dataSize);
+        memcpy(data, value, dataSize);
     }
 }
 
@@ -113,7 +113,7 @@ void Uniform::setValue_(void *value)
 {
     int dataSize = getDataByteSize();
 
-    memcpy(floatData, value, dataSize);
+    memcpy(data, value, dataSize);
 }
 
 int Uniform::getDataByteSize()
@@ -125,14 +125,14 @@ void Uniform::allocData()
 {
     this->freeData();
 
-    this->floatData = (float*)malloc(getDataByteSize());
+    this->data = (byte*)malloc(getDataByteSize());
 }
 
 void Uniform::freeData()
 {
-    if (floatData) {
-        free(floatData);
-        floatData = NULL;
+    if (data) {
+        free(data);
+        data = NULL;
     }
 }
 

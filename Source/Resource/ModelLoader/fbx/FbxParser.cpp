@@ -285,7 +285,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     }
 
     // material and pass
-    PassPtr pass = this->readMaterialPass(st);
+    PassPtr pass = this->readMaterialPass(st, material);
 
     // bone and link
     len = reader->ReadInt(st);
@@ -428,7 +428,7 @@ FBXClusterPtr FbxParser::readCluster(istream *st)
     return cluster;
 }
 
-PassPtr FbxParser::readMaterialPass(std::istream *st) {
+PassPtr FbxParser::readMaterialPass(std::istream *st, MaterialPtr &material) {
     PassPtr pass = nullptr;
 
     int id = -1;
@@ -446,8 +446,8 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
             float scaleU = reader->ReadFloat(st);
             float scaleV = reader->ReadFloat(st);
 
-            TextureUnitState::ptr unit = TextureUnitState::create();
-            unit->setUVstate(offsetU, offsetV, scaleU, scaleV, 0);
+            SamplerParameter::ptr unit = SamplerParameter::create("textureSampler");
+            unit->setUVstate(Vec2(offsetU, offsetV), Vec2(scaleU, scaleV), 0);
 
             Texture::ptr tex = TextureManager::getInstance().getTexture(name);
             if (tex == nullptr) {
@@ -455,13 +455,14 @@ PassPtr FbxParser::readMaterialPass(std::istream *st) {
             }
             unit->setTexture(tex);
 
+            material->addSampler(unit);
+
             // TODO: fix the material name
             materialTextureKey = name;
 
             if (pass == nullptr) {
                 pass = Pass::create();
             }
-            pass->addTextureUnit(unit);
 
             LOG_D("id: %d, offset: %f, %f, scale: %f, %f", id, offsetU, offsetV, scaleU, scaleV);
         }

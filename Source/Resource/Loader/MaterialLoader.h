@@ -38,7 +38,7 @@ public:
 private:
     MaterialPtr loadMaterial(Statement::ptr& statement);
     void loadPass(Statement::ptr& statement, Pass::ptr& pass);
-    void loadTextureUnit(Statement::ptr& statement, TextureUnitState::ptr& unit);
+    void loadTextureUnit(Statement::ptr& statement, SamplerParameter::ptr& unit);
 };
 
 } // namespace re

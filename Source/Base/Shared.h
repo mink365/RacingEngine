@@ -16,7 +16,7 @@ std::shared_ptr<T> Create(Args... args) {
     return obj;
 }
 
-template<class T, typename... Args>
+template<typename T, typename... Args>
 class Shared
 {
 public:
@@ -24,14 +24,11 @@ public:
     typedef std::shared_ptr<const T> constPtr;
 
 public:
-    static std::shared_ptr<T> create(Args... args);
+    static std::shared_ptr<T> create(Args... args)
+    {
+        return std::make_shared<T>(args...);
+    }
 };
-
-template<class T, typename... Args>
-std::shared_ptr<T> Shared<T, Args...>::create(Args... args)
-{
-    return std::make_shared<T>(args...);
-}
 
 }
 

@@ -92,16 +92,12 @@ void RenderManager::applyMaterial(Material &material)
 
     ShaderUtil::getInstance().bindShader(shader);
 
-    // TODO: mult pass
-    Pass::ptr pass = material.getPass(0);
-    int size = pass->getTextureUnitCount();
-    for (int i = 0; i < size; ++i) {
-        TextureUnitState::ptr state = pass->getTextureUnit(i);
+    for (auto param : material.getSamplers()) {
+        auto name = param->getName();
+        auto uniform = shader->getUniform(name);
+        int index = uniform->getData<int32_t>()[0];
 
-        this->renderer->bindTexture(i, true, *(state->getTexture().get()));
-
-        // TODO: set the matrix of textue in shader ?
-    //    this->renderer->setTextureMatrix(0, Mat4().identity());
+        this->renderer->bindTexture(index, true, *(param->getTexture().get()));
     }
 
     this->renderer->applyRenderState(material.getRenderState());

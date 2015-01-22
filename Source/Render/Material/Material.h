@@ -3,7 +3,7 @@
 
 #include "Scene/Component.h"
 #include "Render/RenderState.h"
-#include "TextureUnitState.h"
+#include "SamplerParameter.h"
 #include "Shader/Shader.h"
 #include "Pass.h"
 
@@ -33,6 +33,11 @@ public:
     Shader::ptr getShader() const;
     void setShder(Shader::ptr &value);
 
+    std::vector<SamplerParameter::ptr>& getSamplers();
+    SamplerParameter::ptr getSampler(const string& name);
+    void addSampler(SamplerParameter::ptr rhs);
+    void setTexture(const string& name, TexturePtr& tex);
+
     Material& operator =(const Material& rhs);
 
 protected:
@@ -46,6 +51,7 @@ private:
     RenderState renderState;
 
     std::vector<Pass::ptr> passes;
+    std::vector<SamplerParameter::ptr> samplers;
 
     Shader::ptr shader;
 };

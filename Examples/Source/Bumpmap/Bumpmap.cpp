@@ -61,10 +61,6 @@ void Bumpmap::Init()
         colorAttr->setOffset((8) * 4);
     }
 
-    // set the uniform
-    shader->getUniform("sBaseTex")->setData(std::vector<int32_t>{0}.data());
-    shader->getUniform("sNormalMap")->setData(std::vector<int32_t>{1}.data());
-
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
     auto geometry = ShapeGenerater::getInstance().CreateSphere(50, 30, 30);
@@ -115,10 +111,8 @@ void Bumpmap::Init()
         auto normalTexture = TextureManager::getInstance().getTexture("diffusenormalmap");
 
         auto material = mesh->getComponent<Material>();
-        material->getPass(0)->addTextureUnit(TextureUnitState::create());
-
-        material->getPass(0)->getTextureUnit(0)->setTexture(diffuseTexture);
-        material->getPass(0)->getTextureUnit(1)->setTexture(normalTexture);
+        material->setTexture("sBaseTex", diffuseTexture);
+        material->setTexture("sNormalMap", normalTexture);
     }
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

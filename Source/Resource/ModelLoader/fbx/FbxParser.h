@@ -81,7 +81,7 @@ private:
 
     void readNodeTransform(std::istream *st, NodePtr node);
 
-    PassPtr readMaterialPass(std::istream *st);
+    PassPtr readMaterialPass(std::istream *st, MaterialPtr& material);
 
     void bindClusterData();
 

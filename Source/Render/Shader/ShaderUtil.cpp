@@ -25,6 +25,9 @@ typedef GLvoid (APIENTRY *UNIFORM_FUNC)(GLint location, GLsizei count, const voi
 typedef GLvoid (APIENTRY *UNIFORM_MAT_FUNC)(GLint location, GLsizei count, GLboolean transpose, const GLfloat *value);
 void *uniformFuncs[(int)UniformType::_COUNT];
 
+// we just support 16 texture unit now
+int32_t TextureUnits[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+
 AttributeFormat getAttributeType(GLenum type) {
     switch(type) {
         case GL_FLOAT: return AttributeFormat::FLOAT;
@@ -107,21 +110,6 @@ const char* logForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunc
     free(logBytes);
     return log->c_str();
 }
-
-//const char* vertexShaderLog(int id)
-//{
-//    return logForOpenGLObject(id, (GLInfoFunction)&glGetShaderiv, (GLLogFunction)&glGetShaderInfoLog);
-//}
-
-//const char* fragmentShaderLog(int id)
-//{
-//    return logForOpenGLObject(id, (GLInfoFunction)&glGetShaderiv, (GLLogFunction)&glGetShaderInfoLog);
-//}
-
-//const char* programLog(int id)
-//{
-//    return logForOpenGLObject(id, (GLInfoFunction)&glGetProgramiv, (GLLogFunction)&glGetProgramInfoLog);
-//}
 
 void ShaderUtil::compileShader(Shader *shader)
 {
@@ -206,7 +194,7 @@ void ShaderUtil::fetchUniforms(Shader *shader)
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORMS, &uniformCount);
     glGetProgramiv(shader->program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
 
-    int nUniforms = 0;
+    int nUniforms = 0, nSamplers = 0;
     char *name = new char[maxLength];
     for (int i = 0; i < uniformCount; i++){
         GLenum type;
@@ -220,7 +208,7 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 
                 // not a array or just array[0]
                 if (bracket == NULL
-                        || (bracket[1] == '0' && bracket[2] == ']'))
+                    || (bracket[1] == '0' && bracket[2] == ']'))
                 {
                     if (bracket){
                         *bracket = '\0';
@@ -229,7 +217,14 @@ void ShaderUtil::fetchUniforms(Shader *shader)
 
                     Uniform *uniform = new Uniform();
 
-                    uniform->init(name, getUniformType(type), glGetUniformLocation(shader->program, name), size);
+                    UniformType uniformType = getUniformType(type);
+                    uniform->init(name, uniformType, glGetUniformLocation(shader->program, name), size);
+                    if (uniformType >= UniformType::SAMPLER_1D && uniformType <= UniformType::SAMPLER_CUBE_ARRAY) {
+                        RE_ASSERT(nSamplers + size < 15);
+
+                        uniform->setData(TextureUnits + nSamplers);
+                        nSamplers += size;
+                    }
 
                     shader->addUniform(uniform);
 

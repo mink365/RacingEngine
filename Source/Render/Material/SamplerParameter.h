@@ -11,20 +11,22 @@ namespace re {
 
 class Pass;
 
-class TextureUnitState : public Shared<TextureUnitState>, public Clonable<TextureUnitState>
+class SamplerParameter : public Shared<SamplerParameter, string>, public Clonable<SamplerParameter>
 {
-    friend class Pass;
+    friend class Material;
 
 public:
-    TextureUnitState();
+    SamplerParameter(const string &name);
 
-    void setUVstate(float offsetU, float offsetV, float scaleU, float scaleV, float rotation);
+    void setUVstate(const Vec2& offset, const Vec2& scale, float rotation);
+
+    const string& getName() const;
 
     const Vec2& getOffset() const;
-    void setOffset(float u, float v);
+    void setOffset(const Vec2& rhs);
 
     const Vec2& getScale() const;
-    void setScale(float u, float v);
+    void setScale(const Vec2& rhs);
 
     float getRotation() const;
     void setRotation(float value);
@@ -32,10 +34,10 @@ public:
     Texture::ptr getTexture();
     void setTexture(TexturePtr& tex);
 
-    TextureUnitState::ptr clone() const override;
+    SamplerParameter::ptr clone() const override;
 
 private:
-    std::weak_ptr<Pass> pass;
+    std::string name;
 
     Texture::ptr texture;
 
