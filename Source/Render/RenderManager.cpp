@@ -92,9 +92,12 @@ void RenderManager::applyMaterial(Material &material)
 
     ShaderUtil::getInstance().bindShader(shader);
 
-    for (auto param : material.getSamplers()) {
-        auto name = param->getName();
+    for (auto& param : material.getSamplers()) {
+        auto& name = param->getName();
         auto uniform = shader->getUniform(name);
+        if (uniform == nullptr) {
+            continue;
+        }
         int index = uniform->getData<int32_t>()[0];
 
         this->renderer->bindTexture(index, true, *(param->getTexture().get()));

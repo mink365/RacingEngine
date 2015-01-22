@@ -19,7 +19,6 @@ void Refraction::Init()
     TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
     auto texture = TextureManager::getInstance().getTexture("diffuse");
 
-
     {
         GeometryPtr geometry = ShapeGenerater::getInstance().CreatePlane(300, 300, 30, 30);
 
@@ -37,6 +36,7 @@ void Refraction::Init()
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, texture, "refraction");
+    node->getComponent<Material>()->setTexture("sTexture", texture);
 
     rootNode->addChild(node);
 }

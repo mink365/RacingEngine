@@ -185,9 +185,9 @@ void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, cons
 
     InitMeshInHardward(mesh, shaderName);
 
+    RE_ASSERT(texture != nullptr);
     SamplerParameter::ptr unit = node->getComponent<Material>()->getSampler("textureSampler");
-    if (texture == nullptr && unit != nullptr) {
-        texture = TextureManager::getInstance().getTexture("girl");
+    if (unit != nullptr) {
         unit->setTexture(texture);
     }
 }
