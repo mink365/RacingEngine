@@ -5,6 +5,10 @@
 #include <list>
 #include <vector>
 
+#ifdef emit
+    #undef emit
+#endif
+
 namespace re {
 
 /// ProtoSignal is the template implementation for callback list.
