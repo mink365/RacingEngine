@@ -61,7 +61,7 @@ void AudioTest::Update(float dt)
 
 void AudioTest::End()
 {
-    // have to release the AudioSource first
+    // have to release the AudioSource before AudioEngine, or alc error will be got
 
     sourceNode = nullptr;
     listenerNode = nullptr;
