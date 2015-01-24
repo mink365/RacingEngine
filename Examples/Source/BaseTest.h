@@ -46,6 +46,7 @@ public:
 
     virtual void Init();
     virtual void Update(float dt);
+    virtual void End();
 
 protected:
     std::string name;

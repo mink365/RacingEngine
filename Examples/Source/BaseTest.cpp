@@ -238,3 +238,8 @@ void BaseTest::Update(float dt)
 {
 
 }
+
+void BaseTest::End()
+{
+
+}

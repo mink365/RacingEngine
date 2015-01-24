@@ -10,6 +10,7 @@
 #define RE_AUDIOSOURCE_H
 
 #include "Math/Vector.h"
+#include "Scene/Component.h"
 
 namespace re {
 
@@ -21,7 +22,7 @@ enum class AudioSourceState
     STOPPED
 };
 
-class AudioSource
+class AudioSource : public Component
 {
 public:
     AudioSource();

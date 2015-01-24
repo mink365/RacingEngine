@@ -105,7 +105,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<Bumpmap>();
     this->tests.push_back(test);
 
-    currIndex = 14;
+    currIndex = 0;
 
     this->onCurrentTestChanged();
 }
@@ -132,6 +132,10 @@ void FeatureTestsApp::onCurrentTestChanged()
 {
     SceneManager::getInstance().getRenderManager().initDefaultRenderState();
     SceneManager::getInstance().getRenderManager().lightList.clear();
+
+    if (this->current) {
+        this->current->End();
+    }
 
     this->current = tests[currIndex];
 

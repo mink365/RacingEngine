@@ -1,7 +1,6 @@
-﻿#include "Bumpmap.h"
+#include "Bumpmap.h"
 
 #include "ShapeGenerater.h"
-
 
 Bumpmap::Bumpmap()
 {

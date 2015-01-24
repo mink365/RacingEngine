@@ -20,10 +20,7 @@ public:
 
     virtual void Init();
     virtual void Update(float dt) override;
-
-private:
-    std::shared_ptr<AudioSource> source;
-    std::shared_ptr<AudioListener> listener;
+    virtual void End() override;
 };
 
 #endif // AUDIOTEST_H

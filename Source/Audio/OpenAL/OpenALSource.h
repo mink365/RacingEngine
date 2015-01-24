@@ -18,10 +18,12 @@ namespace re {
 class OpenALSource : public AudioSource
 {
 public:
-    OpenALSource(OpenALBuffer::ptr buffer, ALuint source);
+    OpenALSource();
     ~OpenALSource();
 
 public:
+    void bindBuffer(OpenALBuffer::ptr& buffer);
+
     virtual void play() override;
     virtual void pause() override;
     virtual void resume() override;

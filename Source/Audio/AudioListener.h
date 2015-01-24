@@ -11,10 +11,11 @@
 
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
+#include "Scene/Component.h"
 
 namespace re {
 
-class AudioListener
+class AudioListener : public Component
 {
 public:
     AudioListener();
