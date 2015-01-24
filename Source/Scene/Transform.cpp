@@ -94,6 +94,8 @@ void Transform::refresh()
     }
 
     this->updateWorldMatrix();
+
+    this->transformRefresh.emit();
 }
 
 void Transform::setWorldTranslation(const Vec3 &t)

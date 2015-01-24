@@ -68,10 +68,13 @@ public:
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
 protected:
-    void update() override;
+    void onEnter() override;
     void recalcViewMatrix();
     void recalcProjectionMatrix();
     void onChange();
+
+private:
+    TransformPtr transform;
 
 private:
     Vec3 center;

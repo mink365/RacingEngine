@@ -104,20 +104,14 @@ void Camera::setView(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
     left = up.cross(direction).normalize();
 
     this->up = direction.cross(left).normalize();
-
-    this->setAxes(this->left, this->up, direction);
 }
 
 void Camera::setAxes(const Vec3 &left, const Vec3 &up, const Vec3 &direction)
 {
-    Quat quat;
-    quat.fromAxes(left, up, direction);
+    this->left = left;
+    this->up = up;
 
-    // TODO: error, not need it
-    auto transform = this->getComponent<Transform>();
-    transform->setWorldRotation(quat);
-
-    this->onChange();
+    // TODO: set the center with direction vector
 }
 
 const Mat4 &Camera::getViewMatrix() const
@@ -175,15 +169,15 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
     return this->queueCullFunc;
 }
 
-void Camera::update()
+void Camera::onEnter()
 {
-    this->onChange();
+    transform = this->getComponent<Transform>();
+
+    transform->transformRefresh += slot(this, &Camera::onChange);
 }
 
 void Camera::recalcViewMatrix()
 {
-    auto transform = this->getComponent<Transform>();
-
     this->viewMatrix.lookAt(transform->getWorldMatrix().getTranslation(), this->center, this->up);
 
     return;
@@ -203,12 +197,11 @@ void Camera::recalcProjectionMatrix()
                                                -ortho.height / 2.0, ortho.height / 2.0,
                                                zNear, zFar);
     }
-
 }
 
 void Camera::onChange()
 {
-    this->getNode()->refreshTransformInHierarchy();
+    transform = this->getComponent<Transform>();
 
     this->recalcViewMatrix();
     this->recalcProjectionMatrix();

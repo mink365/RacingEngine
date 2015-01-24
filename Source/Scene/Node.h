@@ -57,7 +57,7 @@ public:
 
     /*------- manage the components --------*/
     void addComponent(ComponentPtr component);
-    void clearComponent();
+    void clearComponents();
     size_t getComponentCount() const;
     ComponentPtr getComponent(size_t index);
     const std::vector<ComponentPtr>& getComponents() const;

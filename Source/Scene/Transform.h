@@ -66,6 +66,9 @@ protected:
     void markLocalTransformRefreshFlag();
     void markWorldTransformRefreshFlag();
 
+public:
+    Signal<void()> transformRefresh;
+
 protected:
     Vec3 localTranslation;
     Vec3 localScaling;

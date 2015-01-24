@@ -7,6 +7,7 @@
 #include "Base/Uncopyable.h"
 #include "Base/Clonable.h"
 #include "Scene/Node.h"
+#include "Message/Signal.h"
 
 namespace re {
 

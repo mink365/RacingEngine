@@ -177,11 +177,22 @@ void Node::addComponent(ComponentPtr component)
     } else {
         this->componentMap[id].push_back(component);
     }
+
+    if (ptr->_inScene) {
+        component->onEnter();
+    }
 }
 
-void Node::clearComponent()
+void Node::clearComponents()
 {
+    if (this->_inScene) {
+        for (auto& comp : components) {
+            comp->onExit();
+        }
+    }
+
     this->components.clear();
+    this->componentMap.clear();
 }
 
 size_t Node::getComponentCount() const
