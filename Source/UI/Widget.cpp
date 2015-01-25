@@ -57,10 +57,6 @@ void Widget::layoutSelf() {
 
 }
 
-void Widget::update() {
-
-}
-
 void Widget::setTouchEnabled(bool value) {
     this->_touchEnable = value;
 }

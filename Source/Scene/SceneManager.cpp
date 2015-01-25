@@ -73,14 +73,10 @@ void SceneManager::vist(const NodePtr &node)
     }
 
     if (node->isVisible()) {
-        for (auto& component : node->getComponents()) {
-            if (component->getType() == ComponentType::Mesh) {
-                auto mesh = dynamic_pointer_cast<Mesh>(component);
-                auto material = node->getComponent<Material>();
-                if (mesh && material) {
-                    this->renderManger.getRenderQueue().addRenderable(mesh, material->getQueueID());
-                }
-            }
+        auto mesh = node->getComponent<Mesh>();
+        auto material = node->getComponent<Material>();
+        if (mesh && material) {
+            this->renderManger.getRenderQueue().addRenderable(mesh, material->getQueueID());
         }
 
         for (auto& child : node->getChildren()) {

@@ -29,8 +29,6 @@ public:
     
     void layout();
 
-    void update();
-    
     bool isVisible() {return true;};
     bool isRunning() {return true;};
 
