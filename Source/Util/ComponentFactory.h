@@ -14,6 +14,7 @@ public:
 };
 
 NodePtr CreateNode();
+NodePtr CreateNode(const string& name);
 NodePtr CreateMeshNode();
 NodePtr CreateSkinningMesh();
 NodePtr CreateBoneNode();

@@ -42,7 +42,7 @@ void UIManager::addWidgets() {
 
 }
 
-void UIManager::updateSelf(float delta) {
+void UIManager::update() {
     LayerManager::tick();
 }
 
@@ -56,7 +56,7 @@ ScenePtr UIManager::createLayer(const std::string &name) {
 void UIManager::addLayerToScene(ScenePtr& node) {
     getNode()->addChild(node->getNode(), -2);
     
-    LayoutUtil::LayoutToParentCenter(node->getComponent<Transform2D>());
+    LayoutUtil::LayoutToParent(node->getComponent<Transform2D>(), AlignType::CENTER, AlignType::CENTER);
 
     return;
 }

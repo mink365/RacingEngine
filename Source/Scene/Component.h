@@ -8,6 +8,7 @@
 #include "Base/Clonable.h"
 #include "Scene/Node.h"
 #include "Message/Signal.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 
@@ -51,6 +52,17 @@ public:
     virtual void update() {};
 
     ComponentPtr clone() const;
+
+//public:
+//    operator Transform2DPtr()
+//    {
+//        return this->getComponent<Transform2D>();
+//    }
+
+//    operator NodePtr()
+//    {
+//        return this->getNode();
+//    }
 
 protected:
     virtual ComponentPtr createCloneInstance() const;

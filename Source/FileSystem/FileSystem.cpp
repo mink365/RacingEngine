@@ -1,4 +1,4 @@
-﻿#include "FileSystem.h"
+#include "FileSystem.h"
 
 #ifdef WIN32
     #include <io.h>	// for _read
@@ -269,7 +269,9 @@ int FileSystem::ListOSFiles(const std::string &directory, const std::string &ext
             }
         }
     }
-    closedir(dirp);
+    if (dirp) {
+        closedir(dirp);
+    }
 
     return list.size();
 }
@@ -286,7 +288,9 @@ int FileSystem::ListOSDirectories(const std::string &directory, StrList &list)
             list.push_back(dp->d_name);
         }
     }
-    closedir(dirp);
+    if (dirp) {
+        closedir(dirp);
+    }
 
     return list.size();
 }

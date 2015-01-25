@@ -54,7 +54,7 @@ void Scene::addWindowToScene(std::shared_ptr<Window> &win) {
     // TODO: zorder
     getNode()->addChild(win->getNode());
     
-    LayoutUtil::LayoutToParentCenter(win->getComponent<Transform2D>());
+    LayoutUtil::LayoutToParent(win->getComponent<Transform2D>(), AlignType::CENTER, AlignType::CENTER);
     win->layout();
 
     return;

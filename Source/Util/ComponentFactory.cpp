@@ -19,12 +19,22 @@ NodePtr CreateNode()
 {
     auto node = Create<Node>();
 
+    ComponentFactory::getInstance().nodes.push_back(node);
+
+    return node;
+}
+
+NodePtr CreateNode(const string &name)
+{
+    auto node = CreateNode();
+    node->setName(name);
+
     return node;
 }
 
 NodePtr CreateMeshNode()
 {
-    auto node = Create<Node>();
+    auto node = CreateNode();
 
     AddComponent<2, Mesh, Material>::Do(node);
 
@@ -35,7 +45,7 @@ NodePtr CreateMeshNode()
 
 NodePtr CreateSkinningMesh()
 {
-    auto node = Create<Node>();
+    auto node = CreateNode();
 
     AddComponent<5, Skeleton, SkeletonController, Animation, Mesh, Material>::Do(node);
 
@@ -46,7 +56,7 @@ NodePtr CreateSkinningMesh()
 
 NodePtr CreateBoneNode()
 {
-    auto node = Create<Node>();
+    auto node = CreateNode();
 
     AddComponent<1, Bone>::Do(node);
 

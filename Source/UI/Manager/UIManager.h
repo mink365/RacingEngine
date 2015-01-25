@@ -25,7 +25,7 @@ public:
     
 public:
     void handleMessage(Message *message);
-    void updateSelf(float delta);
+    void update();
     
     void addWidgets();
     
