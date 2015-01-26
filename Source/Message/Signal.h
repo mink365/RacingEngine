@@ -351,7 +351,7 @@ public:
 };
 
 template<class R, class... Args>
-Slot<R (Args...)> slot (std::function<R (Args...)> func)
+Slot<R (Args...)> slot (const std::function<R (Args...)>& func)
 {
     return Slot<R (Args...)>(func);
 }
