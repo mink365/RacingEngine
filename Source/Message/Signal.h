@@ -4,6 +4,8 @@
 #include <functional>
 #include <list>
 #include <vector>
+#include <memory>
+#include <algorithm>
 
 #ifdef emit
     #undef emit
@@ -16,6 +18,10 @@ template<typename,typename> class ProtoSignal;
 
 /// CollectorInvocation invokes signal handlers differently depending on return type.
 template<typename,typename> class CollectorInvocation;
+
+template<typename> class Slot;
+
+template<typename, typename> class Connection;
 
 /// CollectorLast returns the result of the last signal handler from a signal emission.
 template<typename Result>
@@ -70,18 +76,19 @@ protected:
 template<class Collector, class R, class... Args>
 class ProtoSignal<R (Args...), Collector> : private CollectorInvocation<Collector, R (Args...)>
 {
-    protected:
-    typedef std::function<R (Args...)> CbFunction;
+protected:
+    typedef Slot<R (Args...)> SlotType;
+    typedef Connection<R (Args...), Collector> ConnectionType;
+    typedef typename SlotType::CbFunction CbFunction;
     typedef typename CbFunction::result_type Result;
     typedef typename Collector::CollectorResult CollectorResult;
 
-    private:
-    std::list<CbFunction> callback_ring_; // linked ring of callback nodes
+private:
     /*copy-ctor*/
     ProtoSignal (const ProtoSignal&) = delete;
     ProtoSignal&  operator=   (const ProtoSignal&) = delete;
 
-    public:
+public:
     /// ProtoSignal constructor, connects default callback if non-NULL.
     ProtoSignal ()
     {
@@ -91,22 +98,35 @@ class ProtoSignal<R (Args...), Collector> : private CollectorInvocation<Collecto
     {
     }
     /// Operator to add a new function or lambda as signal handler, returns a handler connection ID.
-    size_t operator+= (const CbFunction &cb)
+    ConnectionType operator+= (const SlotType &slot)
     {
-        callback_ring_.push_back (cb);
-
-        return callback_ring_.size();
+        return connect(slot);
     }
 
     /// Operator to remove a signal handler through it connection ID, returns if a handler was removed.
-    bool   operator-= (size_t connection)
+    bool   operator-= (const ConnectionType& connection)
     {
-        size_t index = 0;
-        auto iter = callback_ring_.begin();
-        while(iter != callback_ring_.end()) {
-            index ++;
-            if (index == connection) {
-                callback_ring_.erase(iter);
+        return disconnect(connection);
+    }
+
+    ConnectionType connect(const SlotType &slot)
+    {
+        std::shared_ptr<SlotType> slot_ = std::make_shared<SlotType>(slot);
+
+        slot_->connect();
+        slot_ring_.push_back (slot_);
+
+        return ConnectionType(*this, slot_);
+    }
+
+    bool disconnect(const ConnectionType& connection)
+    {
+        auto iter = slot_ring_.begin();
+        while(iter != slot_ring_.end()) {
+            auto& slot = *iter;
+            if (connection.containSlot(slot)) {
+                slot->disconnect();
+                slot_ring_.erase(iter);
                 return true;
             }
 
@@ -120,22 +140,44 @@ class ProtoSignal<R (Args...), Collector> : private CollectorInvocation<Collecto
     CollectorResult emit (Args... args)
     {
         Collector collector;
-        if (!callback_ring_.size())
+        if (!slot_ring_.size())
             return collector.result();
 
-        auto iter = callback_ring_.begin();
+        auto iter = slot_ring_.begin();
         do
         {
-            CbFunction& function = *iter;
-            const bool continue_emission = this->invoke (collector, function, args...);
-            if (!continue_emission)
-                break;
-
+            auto& slot = *iter;
+            if (slot->useable()) {
+                CbFunction& function = slot->_func;
+                const bool continue_emission = this->invoke (collector, function, args...);
+                
+                if (!continue_emission)
+                    break;
+            } else {
+                slot->disconnect();
+            }
+            
             iter ++;
-        } while (iter != callback_ring_.end());
+        } while (iter != slot_ring_.end());
+        
+        // TODO: should we support recurse?
+        clearDisconnected();
 
         return collector.result();
     }
+    
+private:
+    void clearDisconnected()
+    {
+        auto iter = std::remove_if(slot_ring_.begin(), slot_ring_.end(), [](const std::shared_ptr<SlotType>& slot){
+            return !slot->connected();
+        });
+        
+        slot_ring_.erase(iter, slot_ring_.end());
+    }
+    
+private:
+    std::list<std::shared_ptr<SlotType>> slot_ring_; // linked ring of callback nodes
 };
 
 /**
@@ -153,7 +195,7 @@ class ProtoSignal<R (Args...), Collector> : private CollectorInvocation<Collecto
  * The overhead of an unused signal is intentionally kept very low, around the size of a single pointer.
  * Note that the Signal template types is non-copyable.
  */
-template <typename SignalSignature, class Collector = CollectorDefault<typename std::function<SignalSignature>::result_type> >
+template<typename SignalSignature, class Collector = CollectorDefault<typename std::function<SignalSignature>::result_type> >
 struct Signal : ProtoSignal<SignalSignature, Collector>
 {
     Signal ()
@@ -161,18 +203,175 @@ struct Signal : ProtoSignal<SignalSignature, Collector>
     }
 };
 
+template<class R, class... Args>
+class Slot<R (Args...)>
+{
+public:
+    typedef std::function<R (Args...)> CbFunction;
+    typedef std::list<std::weak_ptr<void>> TrackedContainer;
+
+public:
+    Slot(CbFunction func)
+        : _func(func), _connected(false)
+    {
+
+    }
+
+    Slot(const Slot& rhs)
+    {
+        this->_func = rhs._func;
+        this->_tracked_objects = rhs._tracked_objects;
+    }
+
+    Slot<R (Args...)> track(const std::weak_ptr<void> &object)
+    {
+        _tracked_objects.push_back(object);
+
+        return *this;
+    }
+    
+    bool useable() const
+    {
+        if (_tracked_objects.size() == 0) {
+            return true;
+        }
+        
+        for (auto& object : _tracked_objects) {
+            if (object.use_count() == 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    inline bool connected() const
+    {
+        return _connected;
+    }
+    
+    inline void connect()
+    {
+        _connected = true;
+    }
+    
+    inline void disconnect()
+    {
+        _connected = false;
+    }
+
+public:
+    bool _connected;
+    CbFunction _func;
+    TrackedContainer _tracked_objects;
+};
+
+template<typename SignalSignature, class Collector>
+class Connection
+{
+protected:
+    typedef Slot<SignalSignature> SlotType;
+    typedef ProtoSignal<SignalSignature, Collector> SignalType;
+
+public:
+    Connection()
+        : _signal(nullptr)
+    {
+    }
+
+    Connection(SignalType& signal, const std::weak_ptr<SlotType>& slot)
+        : _signal(&signal), _slot(slot)
+    {
+
+    }
+    
+    Connection& operator=(const Connection<SignalSignature, Collector>& rhs)
+    {
+        _signal = rhs._signal;
+        _slot = rhs._slot;
+        
+        return *this;
+    }
+
+    bool containSlot(const std::shared_ptr<SlotType>& rhs) const
+    {
+        auto slot = _slot.lock();
+
+        if (slot && slot == rhs) {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool connected()
+    {
+        auto slot = _slot.lock();
+        return slot != nullptr && slot->connected();
+    }
+
+    bool disconnect()
+    {
+        auto slot = _slot.lock();
+        if (_signal && slot) {
+            return _signal->disconnect(*this);
+        }
+
+        return false;
+    }
+
+private:
+    SignalType* _signal;
+    std::weak_ptr<SlotType> _slot;
+};
+
+template<typename SignalSignature, class Collector>
+class ScopedConnection : public Connection<SignalSignature, Collector>
+{
+protected:
+    typedef Connection<SignalSignature, Collector> ConnectionType;
+    
+public:
+    ScopedConnection(const ConnectionType& rhs)
+        : ConnectionType(rhs)
+    {
+    }
+    
+    ~ScopedConnection()
+    {
+        this->disconnect();
+    }
+    
+    ScopedConnection& operator= (const ConnectionType& rhs)
+    {
+        this->disconnect();
+        ConnectionType::operator=(rhs);
+        return *this;
+    }
+};
+
+template<class R, class... Args>
+Slot<R (Args...)> slot (std::function<R (Args...)> func)
+{
+    return Slot<R (Args...)>(func);
+}
+    
 /// This function creates a std::function by binding a object to the member function pointer a method.
 template<class Instance, class Class, class R, class... Args>
-std::function<R (Args...)> slot (Instance &object, R (Class::*method) (Args...))
+Slot<R (Args...)> slot (Instance &object, R (Class::*method) (Args...))
 {
-    return [&object, method] (Args... args) { return (object .* method) (args...); };
+    auto func = [&object, method] (Args... args) { return (object .* method) (args...); };
+
+    return Slot<R (Args...)>(func);
 }
 
 /// This function creates a std::function by binding a object to the member function pointer a method.
 template<class Class, class R, class... Args>
-std::function<R (Args...)> slot (Class *object, R (Class::*method) (Args...))
+Slot<R (Args...)> slot (Class *object, R (Class::*method) (Args...))
 {
-    return [object, method] (Args... args) { return (object ->* method) (args...); };
+    auto func = [object, method] (Args... args) { return (object ->* method) (args...); };
+
+    return Slot<R (Args...)>(func);
 }
 
 /// Keep signal emissions going while all handlers return !0 (true).
