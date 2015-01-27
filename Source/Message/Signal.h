@@ -212,7 +212,7 @@ public:
 
 public:
     Slot(CbFunction func)
-        : _func(func), _connected(false)
+        : _connected(false), _func(func)
     {
 
     }
@@ -223,10 +223,17 @@ public:
         this->_tracked_objects = rhs._tracked_objects;
     }
 
-    Slot<R (Args...)> track(const std::weak_ptr<void> &object)
+    Slot<R (Args...)>& track(const std::weak_ptr<void> &object)
     {
         _tracked_objects.push_back(object);
 
+        return *this;
+    }
+
+    Slot<R (Args...)>& trackObjects(const std::vector<std::weak_ptr<void>>& objects)
+    {
+        _tracked_objects.insert(_tracked_objects.begin(), objects.begin(), objects.end());
+        
         return *this;
     }
     
@@ -356,7 +363,7 @@ Slot<R (Args...)> slot (const std::function<R (Args...)>& func)
     return Slot<R (Args...)>(func);
 }
     
-/// This function creates a std::function by binding a object to the member function pointer a method.
+/// This function creates a Slot by binding a object to the member function pointer a method.
 template<class Instance, class Class, class R, class... Args>
 Slot<R (Args...)> slot (Instance &object, R (Class::*method) (Args...))
 {
@@ -365,7 +372,7 @@ Slot<R (Args...)> slot (Instance &object, R (Class::*method) (Args...))
     return Slot<R (Args...)>(func);
 }
 
-/// This function creates a std::function by binding a object to the member function pointer a method.
+/// This function creates a Slot by binding a object to the member function pointer a method.
 template<class Class, class R, class... Args>
 Slot<R (Args...)> slot (Class *object, R (Class::*method) (Args...))
 {
