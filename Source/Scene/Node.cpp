@@ -301,13 +301,6 @@ void Node::Start()
     }
 }
 
-void Node::Update()
-{
-    for (auto& component : components) {
-        component->update();
-    }
-}
-
 void DistpatchFunctionInHierarchy(NodePtr &root, std::function<void (NodePtr &)> func)
 {
     func(root);

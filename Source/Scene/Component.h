@@ -49,7 +49,6 @@ public:
     virtual void onEnter() {};
     virtual void onExit() {};
     virtual void start() {};
-    virtual void update() {};
 
     ComponentPtr clone() const;
 

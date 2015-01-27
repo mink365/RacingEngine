@@ -1,4 +1,4 @@
-﻿#ifndef RE_GAMEHUB_H
+#ifndef RE_GAMEHUB_H
 #define RE_GAMEHUB_H
 
 #include "Base/Singleton.h"
@@ -7,6 +7,7 @@
 #include <functional>
 #include "NativeView.h"
 #include "ApplicationProtocol.h"
+#include "Message/Signal.h"
 
 namespace TweenEngine {
     class TweenManager;
@@ -25,7 +26,6 @@ public:
     void init(ApplicationProtocol* app);
 
     void mainLoop(int64_t dt);
-    void bindUpdateFunc(std::function<void(int64_t time)> func);
 
     Renderer& GetRenderer();
     TweenEngine::TweenManager &GetTweenManager();
@@ -33,13 +33,15 @@ public:
 
     const Time& GetGameTime() const;
     const Time& GetDeltaTime() const;
-    int getFps();
+    int GetFps();
+
+public:
+    Signal<void()> updateEvent;
 
 private:
     void updateFps(int64_t dt, int &fps);
 
 private:
-    std::function<void(int64_t time)> updateFunc;
     TweenEngine::TweenManager* tweenManager;
 
     ApplicationProtocol* app;

@@ -14,7 +14,7 @@ typedef std::shared_ptr<Scene> ScenePtr;
 
     namespace ui {
 
-class UIManager : public LogicalScene, public LayerManager<Scene> {
+class UIManager : public Widget, public LayerManager<Scene>, public IMessageHandler {
 public:
     UIManager();
     void init();

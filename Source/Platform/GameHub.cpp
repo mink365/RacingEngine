@@ -14,7 +14,6 @@ GameHub::GameHub()
 {
     fps = 0;
 
-    this->updateFunc = nullptr;
     this->tweenManager = nullptr;
 }
 
@@ -46,16 +45,10 @@ void GameHub::mainLoop(int64_t dt)
         tweenManager->update(dt/1000.0);
     }
 
+    this->updateEvent.emit();
+
     SceneManager::getInstance().renderScene();
 
-    if (this->updateFunc) {
-        this->updateFunc(dt);
-    }
-}
-
-void GameHub::bindUpdateFunc(std::function<void (int64_t)> func)
-{
-    this->updateFunc = func;
 }
 
 Renderer &GameHub::GetRenderer()
@@ -83,7 +76,7 @@ const Time &GameHub::GetDeltaTime() const
     return _lastSpanTime;
 }
 
-int GameHub::getFps()
+int GameHub::GetFps()
 {
     return this->fps;
 }

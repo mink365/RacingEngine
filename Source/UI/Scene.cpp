@@ -17,59 +17,44 @@ void Scene::init() {
     Widget::init();
 
     transform->setContentSize(Screen::getInstance().getSize());
-    
-    alphaBg = CreateNode2DComponent<Widget>()->getNode();
-    alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
-    
-    alphaBg->getComponent<Transform2D>()->setContentSize(this->getComponent<Transform2D>()->getContentSize());
-    alphaBg->setVisible(false);
+
+    auto windowManager = std::make_shared<WindowManager>();
+    getNode()->addComponent(windowManager);
+    windowManager->start();
     
     return;
+}
+
+void Scene::handleMessage(Message *message)
+{
+
 }
 
 // TODO: modify the dispatch of touch event
 
 bool Scene::onBackKeyEvent() {
-    if (this->windowStack.size() > 0) {
-        std::shared_ptr<Window> win = getFocusedWindow();
+    auto windowManager = this->getComponent<WindowManager>();
+
+    if (windowManager->getStackSize() > 0) {
+        std::shared_ptr<Window> win = windowManager->getFocusedWindow();
         
         return win->onBackKeyEvent();
     } else {
-        return LogicalScene::onBackKeyEvent();
+        return false;
     }
 }
 
-void Scene::update()
-{
-    WindowManager::tick();
-}
-
 void Scene::onEnter() {
-    LogicalScene::onEnter();
-    
-    this->popAllWindow();
+    Widget::onEnter();
+
+    MessageManager::getInstance().addHandler(this);
 }
 
-void Scene::addWindowToScene(std::shared_ptr<Window> &win) {
-    // TODO: zorder
-    getNode()->addChild(win->getNode());
-    
-    LayoutUtil::LayoutToParent(win->getComponent<Transform2D>(), AlignType::CENTER, AlignType::CENTER);
-    win->layout();
+void Scene::onExit()
+{
+    MessageManager::getInstance().removeHandler(this);
 
-    return;
-}
-
-void Scene::removeWindowFromScene(std::shared_ptr<Window>& win) {
-    win->getNode()->removeFromParent();
-}
-
-NodePtr Scene::getAlphaBackground() {
-    return this->alphaBg;
-}
-
-void Scene::changeAlphaBackgroundIndex(std::shared_ptr<Window>& win) {
-//    this->alphaBg->setZOrder(win->getZOrder() - 1);
+    Widget::onExit();
 }
 
 }

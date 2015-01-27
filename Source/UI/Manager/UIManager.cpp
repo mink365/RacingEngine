@@ -28,8 +28,6 @@ WindowFactory &UIManager::getWindowFactory()
 }
 
 void UIManager::handleMessage(Message *message) {
-//    LogicalScene::handleMessage(message);
-
     if (message->getType() == MessageConstant::MessageType::TOUCHSCREEN_MESSAGE) {
         TouchEvent* event = static_cast<TouchEvent*>(message->getData());
 
@@ -48,7 +46,7 @@ void UIManager::update() {
 
 ScenePtr UIManager::createLayer(const std::string &name) {
     ScenePtr scene = this->sceneFactory.createInstance(name);
-    scene->setWindowFactory(&windowFactory);
+    scene->getComponent<WindowManager>()->setWindowFactory(&windowFactory);
     
     return scene;
 }
@@ -70,11 +68,15 @@ ScenePtr UIManager::getDefaultLayer() {
 }
 
 void UIManager::onEnter() {
-    LogicalScene::onEnter();
+    Widget::onEnter();
+
+    MessageManager::getInstance().addHandler(this);
 }
 
 void UIManager::onExit() {
-    LogicalScene::onExit();
+    MessageManager::getInstance().removeHandler(this);
+
+    Widget::onExit();
 }
 
 void UIManager::keyBackClicked() {

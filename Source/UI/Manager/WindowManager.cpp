@@ -3,13 +3,23 @@
 #include <algorithm>
 #include "Message/MessageConstant.h"
 #include "Message/MessageManager.h"
+#include "UI/Layout/LayoutUtil.h"
 
 namespace re {
 
 WindowManager::WindowManager()
-: factory(nullptr)
+: factory(nullptr), alphaBg(nullptr)
 {
 
+}
+
+void WindowManager::start()
+{
+    alphaBg = CreateNode2DComponent<Widget>()->getNode();
+    alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
+
+    alphaBg->getComponent<Transform2D>()->setContentSize(this->getComponent<Transform2D>()->getContentSize());
+    alphaBg->setVisible(false);
 }
 
 WindowPtr WindowManager::getFocusedWindow() {
@@ -29,6 +39,16 @@ WindowPtr WindowManager::getWindowByName(string name) {
     } else {
         return NULL;
     }
+}
+
+void WindowManager::onEnter()
+{
+
+}
+
+void WindowManager::onExit()
+{
+
 }
 
 WindowPtr WindowManager::pushWindow(string name) {
@@ -125,6 +145,11 @@ void WindowManager::popAllWindow() {
     }
 }
 
+size_t WindowManager::getStackSize() const
+{
+    return this->windowStack.size();
+}
+
 void WindowManager::changeFocusedWindow(WindowPtr &win) {
     auto bg = this->getAlphaBackground();
     
@@ -167,6 +192,29 @@ void WindowManager::onWindowHidden(WindowPtr &win) {
     win->manager = NULL;
     
     this->changeFocusedWindowToStackTop();
+}
+
+void WindowManager::addWindowToScene(WindowPtr &win)
+{
+    getNode()->addChild(win->getNode());
+
+    LayoutUtil::LayoutToParent(win->getComponent<Transform2D>(), AlignType::CENTER, AlignType::CENTER);
+    win->layout();
+}
+
+void WindowManager::removeWindowFromScene(WindowPtr &win)
+{
+    win->getNode()->removeFromParent();
+}
+
+NodePtr WindowManager::getAlphaBackground()
+{
+    return this->alphaBg;
+}
+
+void WindowManager::changeAlphaBackgroundIndex(WindowPtr &win)
+{
+    //    this->alphaBg->setZOrder(win->getZOrder() - 1);
 }
 
 }

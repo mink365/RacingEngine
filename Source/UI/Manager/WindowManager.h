@@ -17,9 +17,11 @@ namespace re {
 typedef NamedFactory<Window> WindowFactory;
 typedef std::shared_ptr<Window> WindowPtr;
 
-class WindowManager : public Uncopyable {
+class WindowManager : public Component {
 public:
     WindowManager();
+
+    virtual void start();
     
     WindowPtr pushWindow(string name);
     WindowPtr pushWindow(WindowPtr& window);
@@ -30,16 +32,20 @@ public:
     
     void popAllWindow();
     
+    size_t getStackSize() const;
     WindowPtr getFocusedWindow();
     WindowPtr getWindowByName(string name);
 
     void setWindowFactory(WindowFactory* factory);
 
 protected:
-    virtual void addWindowToScene(WindowPtr& win) = 0;
-    virtual void removeWindowFromScene(WindowPtr& win) = 0;
-    virtual NodePtr getAlphaBackground() = 0;
-    virtual void changeAlphaBackgroundIndex(WindowPtr& win) = 0;
+    virtual void onEnter();
+    virtual void onExit();
+
+    virtual void addWindowToScene(WindowPtr& win);
+    virtual void removeWindowFromScene(WindowPtr& win);
+    virtual NodePtr getAlphaBackground();
+    virtual void changeAlphaBackgroundIndex(WindowPtr& win);
     
     void changeFocusedWindow(WindowPtr& win);
     void changeFocusedWindowToStackTop();
@@ -52,6 +58,8 @@ protected:
     list<WindowPtr> windowStack;
 
     WindowFactory* factory;
+
+    NodePtr alphaBg;
 };
 
 inline void WindowManager::setWindowFactory(WindowFactory* factory) {

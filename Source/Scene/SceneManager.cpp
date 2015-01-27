@@ -38,10 +38,6 @@ void SceneManager::renderScene()
 {
     this->clearFrame();
 
-    DistpatchFunctionInHierarchy(root, [](NodePtr& node){
-        node->Update();
-    });
-
     for (auto& node : root->getChildren()) {
         this->vist(node);
     }

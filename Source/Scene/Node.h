@@ -83,7 +83,6 @@ protected:
     void OnEnter();
     void OnExit();
     void Start();
-    void Update();
 
 protected:
     virtual NodePtr createCloneInstance() const;
