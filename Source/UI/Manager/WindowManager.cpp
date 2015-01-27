@@ -4,6 +4,7 @@
 #include "Message/MessageConstant.h"
 #include "Message/MessageManager.h"
 #include "UI/Layout/LayoutUtil.h"
+#include "GameHub.h"
 
 namespace re {
 
@@ -43,12 +44,15 @@ WindowPtr WindowManager::getWindowByName(string name) {
 
 void WindowManager::onEnter()
 {
-
+    // TODO: easy to get the type
+    auto connection = GameHub::getInstance().updateEvent.connect(slot(this, &WindowManager::tick));
+    connections_.push_back(std::make_shared<ScopedConnection<void(), CollectorDefault<void>>>(connection));
 }
 
 void WindowManager::onExit()
 {
-
+    // auto disconnect
+    connections_.clear();
 }
 
 WindowPtr WindowManager::pushWindow(string name) {

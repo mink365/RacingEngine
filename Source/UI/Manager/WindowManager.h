@@ -60,6 +60,8 @@ protected:
     WindowFactory* factory;
 
     NodePtr alphaBg;
+
+    std::vector<std::shared_ptr<ScopedConnection<void(), CollectorDefault<void>>>> connections_;
 };
 
 inline void WindowManager::setWindowFactory(WindowFactory* factory) {

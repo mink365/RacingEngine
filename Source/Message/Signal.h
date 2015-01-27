@@ -143,7 +143,9 @@ public:
         if (!slot_ring_.size())
             return collector.result();
 
-        auto iter = slot_ring_.begin();
+        std::list<std::shared_ptr<SlotType>> ring = slot_ring_;
+
+        auto iter = ring.begin();
         do
         {
             auto& slot = *iter;
@@ -158,7 +160,7 @@ public:
             }
             
             iter ++;
-        } while (iter != slot_ring_.end());
+        } while (iter != ring.end());
         
         // TODO: should we support recurse?
         clearDisconnected();
