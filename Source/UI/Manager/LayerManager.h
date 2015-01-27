@@ -58,9 +58,6 @@ protected:
      * get the default layer, if we have no layer in the stack, we will jump to it
      */
     virtual ViewPtr getDefaultLayer() = 0;
-    
-    virtual void onItemPushToManager(ViewPtr& item);
-    virtual void onItemPopFromManager(ViewPtr& item);
 
     virtual void onLayerStackPopToEmpty() {};
     
@@ -72,11 +69,7 @@ private:
 template <class T>
 inline LayerManager<T>::~LayerManager<T>() {
     while (!this->stack.empty()) {
-        ViewPtr item = stack.back();
-        
         this->stack.pop_back();
-
-        this->onItemPopFromManager(item);
     }
 }
 
@@ -126,11 +119,7 @@ inline std::shared_ptr<T> LayerManager<T>::pop() {
             return NULL;
         }
     } else {
-        ViewPtr item = stack.back();
-        
         this->stack.pop_back();
-
-        this->onItemPopFromManager(item);
     }
     
     ViewPtr scene = this->stack.back();
@@ -153,9 +142,6 @@ inline std::shared_ptr<T> LayerManager<T>::popTo(const std::string &name) {
     
     while (!this->stack.empty()
            && top->getName() != name) {
-        ViewPtr item = stack.back();
-        this->onItemPopFromManager(item);
-
         this->stack.pop_back();
         
         if (this->stack.empty()) {
@@ -169,7 +155,6 @@ inline std::shared_ptr<T> LayerManager<T>::popTo(const std::string &name) {
         ViewPtr scene = this->getDefaultLayer();
         if (scene != NULL) {
             this->stack.push_back(scene);
-            this->onItemPushToManager(scene);
             
             this->replaceCurLayer(old, scene);
             
@@ -196,11 +181,7 @@ inline std::shared_ptr<T> LayerManager<T>::popToRoot() {
     
     if (this->stack.size() > 1) {
         while (this->stack.size() > 1) {
-            ViewPtr item = stack.back();
-            
             this->stack.pop_back();
-            
-            this->onItemPopFromManager(item);
         }
     } else {
         ViewPtr scene = this->getDefaultLayer();
@@ -244,7 +225,6 @@ inline std::shared_ptr<T> LayerManager<T>::pushTo(ViewPtr &scene) {
         return old;
     } else {
         this->stack.push_back(scene);
-        this->onItemPushToManager(scene);
         
         MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                    MessageConstant::LayerMessage::PUSH_LAYER,
@@ -286,15 +266,10 @@ inline std::shared_ptr<T> LayerManager<T>::cleanTo(ViewPtr &target) {
     }
     
     while (!this->stack.empty()) {
-        ViewPtr item = stack.back();
-        
         this->stack.pop_back();
-        
-        this->onItemPopFromManager(item);
     }
     
     this->stack.push_back(scene);
-    this->onItemPushToManager(scene);
     
     MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                MessageConstant::LayerMessage::CLEAN_TO_LAYER,
@@ -313,11 +288,7 @@ inline void LayerManager<T>::cleanAllLayer() {
     }
     
     while (!this->stack.empty()) {
-        ViewPtr item = stack.back();
-        
         this->stack.pop_back();
-        
-        this->onItemPopFromManager(item);
     }
     
     if (old != NULL) {
@@ -370,16 +341,6 @@ inline void LayerManager<T>::tick() {
 template <class T>
 inline void LayerManager<T>::onLayerHidden(ViewPtr &node) {
     this->removeLayerFromScene(node);
-}
-
-template <class T>
-inline void LayerManager<T>::onItemPushToManager(ViewPtr& item) {
-//    item->retain();
-}
-
-template <class T>
-inline void LayerManager<T>::onItemPopFromManager(ViewPtr& item) {
-//    item->release();
 }
 
 }
