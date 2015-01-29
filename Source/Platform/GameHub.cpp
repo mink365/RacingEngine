@@ -41,11 +41,11 @@ void GameHub::mainLoop(int64_t dt)
     this->_lastSpanTime.SetTime(dt);
     this->_gameTime.SetTime(_gameTime.GetMilliSecond() + dt);
 
+    this->updateEvent.emit();
+
     if (tweenManager) {
         tweenManager->update(dt/1000.0);
     }
-
-    this->updateEvent.emit();
 
     SceneManager::getInstance().renderScene();
 

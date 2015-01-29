@@ -1,4 +1,4 @@
-﻿#include "PredefineTweenAccessor.h"
+#include "PredefineTweenAccessor.h"
 
 #include "UI/Base/Transform2D.h"
 #include "UI/Base/HierarchyColor.h"
