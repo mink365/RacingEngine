@@ -9,7 +9,7 @@ public:
     Bumpmap();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // BUMPMAP_H

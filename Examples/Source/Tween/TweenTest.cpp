@@ -31,7 +31,7 @@ void TweenTest::Init()
 
     NinePatchPtr patch = CreateNode2DComponent<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
-    patch->getComponent<Transform2D>()->setContentSize(Size(200, 100));
+    patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
     patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
     patch->rebind();
@@ -52,7 +52,7 @@ void TweenTest::Init()
     label2->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 40));
 
     auto scene = stage->getLastLayer();
-    auto window = scene->pushWindow("HelloWindow");
+    auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
     window->getNode()->addChild(sprite->getNode());
     window->getNode()->addChild(patch->getNode());
     window->getNode()->addChild(label->getNode());
@@ -91,7 +91,7 @@ void TweenTest::Init()
         .start(*tweenManager);
 }
 
-void TweenTest::Update(float dt)
+void TweenTest::Update()
 {
     tweenManager->update(1/50.0);
 }

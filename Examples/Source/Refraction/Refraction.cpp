@@ -42,7 +42,7 @@ void Refraction::Init()
 }
 
 static float rotateValue = 0;
-void Refraction::Update(float dt)
+void Refraction::Update()
 {
     this->setupShader();
 

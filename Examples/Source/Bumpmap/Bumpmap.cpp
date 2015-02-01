@@ -122,8 +122,9 @@ void Bumpmap::Init()
 
 static Vec3 lightPos;
 static float angle;
-void Bumpmap::Update(float dt)
+void Bumpmap::Update()
 {
+    float dt = GameHub::getInstance().GetGameTime().GetSecond();
     angle += dt * 60 * PI / 1000;
     lightPos.x = sin(angle) * 200;
     lightPos.y = cos(angle) * 200;

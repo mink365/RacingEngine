@@ -9,7 +9,7 @@ public:
     Skybox();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // SKYBOX_H

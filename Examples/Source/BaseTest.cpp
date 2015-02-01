@@ -234,12 +234,7 @@ void BaseTest::Init()
 
 }
 
-void BaseTest::Update(float dt)
-{
-
-}
-
-void BaseTest::End()
+void BaseTest::Update()
 {
 
 }

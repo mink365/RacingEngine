@@ -19,8 +19,11 @@ public:
     AudioTest();
 
     virtual void Init();
-    virtual void Update(float dt) override;
-    virtual void End() override;
+    virtual void Update() override;
+
+private:
+    NodePtr sourceNode;
+    NodePtr listenerNode;
 };
 
 #endif // AUDIOTEST_H

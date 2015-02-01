@@ -57,7 +57,7 @@ void BulletTest::Init()
     this->initView();
 }
 
-void BulletTest::Update(float dt)
+void BulletTest::Update()
 {
     //simple dynamics world doesn't handle fixed-time-stepping
     float ms = 20000;

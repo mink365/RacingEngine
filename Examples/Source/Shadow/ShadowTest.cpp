@@ -96,7 +96,7 @@ void ShadowTest::Init()
     sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));
 
     auto scene = stage->getLastLayer();
-    auto window = scene->pushWindow("HelloWindow");
+    auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
     window->getNode()->addChild(sprite->getNode());
 
     LayoutUtil::LayoutToParent(sprite->getComponent<Transform2D>(), AlignType::RIGHT_BOTTOM, AlignType::RIGHT_BOTTOM);
@@ -161,7 +161,7 @@ void SetupShadowMapShader() {
 }
 
 static float rotateValue = 0;
-void ShadowTest::Update(float dt)
+void ShadowTest::Update()
 {
     rotateValue += 0.02;
     if (rotateValue > 360) {

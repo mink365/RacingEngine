@@ -38,7 +38,7 @@ void Reflection::Init()
 }
 
 static float rotateValue = 0;
-void Reflection::Update(float dt)
+void Reflection::Update()
 {
     this->setupShader();
 

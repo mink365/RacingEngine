@@ -19,6 +19,7 @@
 #include "Font/TextureAtlas.h"
 #include "Font/FreeTypeUtil.h"
 
+#include "Platform/GameHub.h"
 #include "FileSystem/File.h"
 #include "FileSystem/FileSystem.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -45,8 +46,7 @@ public:
     void setDefaultEnv();
 
     virtual void Init();
-    virtual void Update(float dt);
-    virtual void End();
+    virtual void Update();
 
 protected:
     std::string name;

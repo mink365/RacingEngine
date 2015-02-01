@@ -9,7 +9,7 @@ public:
     FontTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 
 private:
     NodePtr boxNode;

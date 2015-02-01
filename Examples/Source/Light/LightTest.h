@@ -9,7 +9,7 @@ public:
     LightTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // LIGHTTEST_H

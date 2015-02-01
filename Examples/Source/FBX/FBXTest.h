@@ -9,7 +9,7 @@ public:
     FBXTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // FBXTEST_H

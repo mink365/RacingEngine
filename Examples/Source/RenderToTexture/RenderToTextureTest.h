@@ -9,7 +9,7 @@ public:
     RenderToTextureTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 
 protected:
     void RenderScene1();

@@ -52,8 +52,8 @@ bool FeatureTestsApp::initEnvironment()
 
     Screen::getInstance().setRealFrameSize(this->view->getFrameSize());
 
-    std::function<void(Long)> func = std::bind(&FeatureTestsApp::update, this, std::placeholders::_1);
-    GameHub::getInstance().bindUpdateFunc(func);
+    std::function<void()> func = std::bind(&FeatureTestsApp::update, this);
+    GameHub::getInstance().updateEvent.connect(func);
 
     this->initResources();
     this->createTests();
@@ -133,13 +133,9 @@ void FeatureTestsApp::onCurrentTestChanged()
     SceneManager::getInstance().getRenderManager().initDefaultRenderState();
     SceneManager::getInstance().getRenderManager().lightList.clear();
 
-    if (this->current) {
-        this->current->End();
-    }
-
     this->current = tests[currIndex];
 
-    this->stage->getLastLayer()->popAllWindow();
+    this->stage->getLastLayer()->getComponent<WindowManager>()->popAllWindow();
     this->rootNode->removeAllChildren();
 
     this->current->init(*this);
@@ -299,14 +295,14 @@ void FeatureTestsApp::registerScenes()
     });
 }
 
-void FeatureTestsApp::update(Long dt)
+void FeatureTestsApp::update()
 {
     MessageManager::getInstance().handleMessages();
 
     if (this->current) {
-        this->current->Update(dt / 1000.0f);
+        this->current->Update();
     }
     this->stage->update();
 
-    this->labelFps->setText(std::to_string(GameHub::getInstance().getFps()));
+    this->labelFps->setText(std::to_string(GameHub::getInstance().GetFps()));
 }

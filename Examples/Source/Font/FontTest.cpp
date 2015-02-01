@@ -46,7 +46,7 @@ void FontTest::Init()
 }
 
 static float rotation = 0;
-void FontTest::Update(float dt)
+void FontTest::Update()
 {
     rotation += 0.04 * 0.3;
     if (rotation > 360) {

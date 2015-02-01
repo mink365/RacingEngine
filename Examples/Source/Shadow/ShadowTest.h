@@ -9,7 +9,7 @@ public:
     ShadowTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // SHADOWTEST_H

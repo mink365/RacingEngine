@@ -173,7 +173,7 @@ void InitLightData() {
 
 }
 
-void LightTest::Update(float dt)
+void LightTest::Update()
 {
     rotateValue += 0.04;
     if (rotateValue > 360) {

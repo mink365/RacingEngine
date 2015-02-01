@@ -9,7 +9,7 @@ public:
     TweenTest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 };
 
 #endif // TWEENTEST_H

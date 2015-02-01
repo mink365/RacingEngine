@@ -65,7 +65,7 @@ void SceneMaterialTest::Init()
 
 static float s = 1;
 static float dir = -1;
-void SceneMaterialTest::Update(float dt)
+void SceneMaterialTest::Update()
 {
     if (s < 0.1) {
         dir = 1;
@@ -114,7 +114,7 @@ void SceneMaterialTest::createUI()
     buttonPrev->setOnClickFunc(buttonClickFunc);
 
     auto scene = stage->getLastLayer();
-    auto window = scene->pushWindow("HelloWindow");
+    auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
     window->getNode()->addChild(labelName->getNode());
     window->getNode()->addChild(buttonPrev->getNode());
     window->getNode()->addChild(buttonNext->getNode());

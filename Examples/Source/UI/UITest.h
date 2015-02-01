@@ -9,7 +9,7 @@ public:
     UITest();
 
     virtual void Init();
-    virtual void Update(float dt);
+    virtual void Update();
 
 private:
     std::shared_ptr<Window> createWin();

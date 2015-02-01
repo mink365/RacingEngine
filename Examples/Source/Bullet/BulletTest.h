@@ -20,7 +20,7 @@ public:
     BulletTest();
 
     virtual void Init() override;
-    virtual void Update(float dt) override;
+    virtual void Update() override;
 
 protected:
     void initPhysics();

@@ -46,7 +46,7 @@ void Lightmap::Init()
 }
 
 static float rotateValue = 0;
-void Lightmap::Update(float dt)
+void Lightmap::Update()
 {
     this->setupShader();
 

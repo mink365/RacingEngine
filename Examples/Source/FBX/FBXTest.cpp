@@ -113,13 +113,14 @@ void FBXTest::Init()
     animation->setIsUseAnimationStack(true);
 
 //    manController->setDefaultFrame(1);
+    man->getComponent<SkeletonController>()->play();
 
     InitMeshInHardward(man->getComponent<Mesh>());
     rootNode->addChild(man);
 }
 
 static float rotation = 0;
-void FBXTest::Update(float dt)
+void FBXTest::Update()
 {
     rotation += 0.04;
     if (rotation > 360) {
@@ -139,7 +140,6 @@ void FBXTest::Update(float dt)
     quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->getTransform()->setLocalRotation(quat);
 
-//    man->update();
     MeshPtr mesh = man->getComponent<Mesh>();
 
     BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh.get()));

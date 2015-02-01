@@ -15,9 +15,7 @@
 #include "Audio/OpenAL/OpenALBuffer.h"
 #include "Audio/OpenAL/OpenALAudioFactory.h"
 #include "Audio/OpenAL/OpenALAudioEngine.h"
-
-NodePtr sourceNode;
-NodePtr listenerNode;
+#include "GameHub.h"
 
 AudioTest::AudioTest()
 {
@@ -44,8 +42,9 @@ void AudioTest::Init()
 float t = 0;
 Vec3 pos;
 
-void AudioTest::Update(float dt)
+void AudioTest::Update()
 {
+    float dt = GameHub::getInstance().GetDeltaTime().GetSecond();
     t += dt;
 
     if (t > 3) {
@@ -57,13 +56,5 @@ void AudioTest::Update(float dt)
     pos += Vec3(-1, 0, 0) * dt * 3;
 
     listenerNode->getComponent<OpenALListener>()->setPosition(pos);
-}
-
-void AudioTest::End()
-{
-    // have to release the AudioSource before AudioEngine, or alc error will be got
-
-    sourceNode = nullptr;
-    listenerNode = nullptr;
 }
 

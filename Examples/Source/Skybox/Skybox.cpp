@@ -56,7 +56,7 @@ void Skybox::Init()
 
 static Quat quat;
 static float r = 0;
-void Skybox::Update(float dt)
+void Skybox::Update()
 {
     r += 0.02;
 

@@ -82,7 +82,7 @@ void RenderToTextureTest::Init()
 }
 
 static float rotateValue = 0;
-void RenderToTextureTest::Update(float dt)
+void RenderToTextureTest::Update()
 {
     rotateValue += 0.02;
     if (rotateValue > 360) {
