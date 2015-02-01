@@ -35,11 +35,10 @@ namespace LayoutUtil {
     Vec2 GetBoundBoxPosition(Transform2DPtr node, AlignType type);
     
     void Layout(Transform2DPtr view, AlignType from, Transform2DPtr target, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
-    void LayoutToParent(Transform2DPtr view, AlignType from, AlignType to, float offsetx = 0.0, float offsetY = 0.0);
+    void LayoutToParent(Transform2DPtr view, AlignType from, AlignType to, float offsetX = 0.0, float offsetY = 0.0);
     
-    void Layout(Transform2DPtr view, float viewAlignX, float viewAlignY, Transform2DPtr target,
-                float targetAlignX, float targetAlignY, bool targetIsParent = false, float offsetX = 0.0, float offsetY = 0.0);
-    void LayoutToParent(Transform2DPtr view, float viewAlignX, float viewAlignY, float targetAlignX, float targetAlignY,float offsetX = 0.0, float offsetY = 0.0);
+    void Layout(Transform2DPtr view, const Vec2& viewAlign, Transform2DPtr target, const Vec2& targetAlign, bool targetIsParent = false, const Vec2& offset=Vec2::Zero);
+    void LayoutToParent(Transform2DPtr view, const Vec2& viewAlign, const Vec2& targetAlign, const Vec2& offset=Vec2::Zero);
     
 }
 
