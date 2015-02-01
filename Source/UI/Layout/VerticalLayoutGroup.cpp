@@ -4,7 +4,7 @@ namespace re {
 
 VerticalLayoutGroup::VerticalLayoutGroup()
 {
-
+    this->_axis = Axis::Vertical;
 }
 
 VerticalLayoutGroup::~VerticalLayoutGroup()

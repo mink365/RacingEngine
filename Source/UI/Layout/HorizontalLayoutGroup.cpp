@@ -4,7 +4,7 @@ namespace re {
 
 HorizontalLayoutGroup::HorizontalLayoutGroup()
 {
-
+    this->_axis = Axis::Horizontal;
 }
 
 HorizontalLayoutGroup::~HorizontalLayoutGroup()
