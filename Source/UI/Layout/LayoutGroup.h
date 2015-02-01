@@ -7,6 +7,8 @@
 
 namespace re {
 
+void LayoutRoot(NodePtr& root);
+
 class LayoutGroup : public Component
 {
 public:
@@ -14,6 +16,8 @@ public:
     ~LayoutGroup();
 
     std::vector<Transform2DPtr> GetChildrenTransform() const;
+
+    void virtual CalculateLayout();
 
 protected:
     RectOffset _padding;

@@ -24,7 +24,7 @@ public:
     LinearLayoutGroup();
     ~LinearLayoutGroup();
 
-    void Layout();
+    void CalculateLayout();
 
 protected:
     Axis _axis;

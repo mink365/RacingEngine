@@ -8,12 +8,12 @@ namespace re {
 
 WidgetPtr GetWidgetComponent(Node& node)
 {
-    if (node.getComponentCount() < 3) {
+    if (node.getComponentCount() < 4) {
         return nullptr;
     }
 
     // TODO: can't use getComponent<Widget>, Widget is just a base class
-    auto component = node.getComponents().at(2);
+    auto component = node.getComponents().at(3);
 
     // TODO: use UNIFY event/message distpach system
     return std::dynamic_pointer_cast<Widget>(component);

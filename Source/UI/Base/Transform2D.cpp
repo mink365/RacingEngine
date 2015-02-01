@@ -117,6 +117,16 @@ const Size& Transform2D::getSize() const
     return this->size;
 }
 
+void Transform2D::setWidth(float v)
+{
+    this->size.width = v;
+}
+
+void Transform2D::setHeight(float v)
+{
+    this->size.height = v;
+}
+
 Rect Transform2D::getBoundingBox() const
 {
     Rect rect = Rect(0, 0, size.width, size.height);

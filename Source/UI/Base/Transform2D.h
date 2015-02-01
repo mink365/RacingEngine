@@ -41,6 +41,8 @@ public:
 
     void setSize(const Size& size);
     const Size &getSize() const;
+    void setWidth(float v);
+    void setHeight(float v);
 
     Rect getBoundingBox() const;
 

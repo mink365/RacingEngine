@@ -15,5 +15,20 @@ LayoutElement::~LayoutElement()
 
 }
 
+bool LayoutElement::getFillWidth()
+{
+    return this->fillWidth;
+}
+
+bool LayoutElement::getFillHeight()
+{
+    return this->fillHeight;
+}
+
+Alignment::ptr LayoutElement::getAlignment()
+{
+    return alignment;
+}
+
 } // namespace re
 

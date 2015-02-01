@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "UI/Base/HierarchyColor.h"
 #include "UI/Base/Transform2D.h"
+#include "UI/Layout/LayoutElement.h"
+#include "UI/Layout/LayoutGroup.h"
 #include "Layout/Screen.h"
 #include "TouchEvent.h"
 

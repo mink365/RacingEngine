@@ -21,6 +21,10 @@ public:
     LayoutElement();
     ~LayoutElement();
 
+    bool getFillWidth();
+    bool getFillHeight();
+    Alignment::ptr getAlignment();
+
 protected:
     Size preferredSize;
     Size minSize;

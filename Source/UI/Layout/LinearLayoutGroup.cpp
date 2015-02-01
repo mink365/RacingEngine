@@ -16,7 +16,7 @@ LinearLayoutGroup::~LinearLayoutGroup()
 
 }
 
-void LinearLayoutGroup::Layout()
+void LinearLayoutGroup::CalculateLayout()
 {
     auto transform = this->getComponent<Transform2D>();
     auto childTransforms = GetChildrenTransform();
