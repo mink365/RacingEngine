@@ -84,8 +84,8 @@ void NinePatch::rebind()
     this->vertexGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
     this->textureGrid.lb.set(0, 0, this->centerRect.origin.x, this->centerRect.origin.y);
 
-    this->vertexGrid.rt.set(transform->getContentSize().width - this->getRightPadding(),
-                            transform->getContentSize().height - this->getTopPadding(),
+    this->vertexGrid.rt.set(transform->getSize().width - this->getRightPadding(),
+                            transform->getSize().height - this->getTopPadding(),
                             this->getRightPadding(),
                             this->getTopPadding());
 

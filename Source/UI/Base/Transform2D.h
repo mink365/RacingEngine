@@ -39,8 +39,8 @@ public:
     void setAnchorPointInPixels(const Vec2& v);
     Vec2 getAnchorPointInPixels() const;
 
-    void setContentSize(const Size& size);
-    const Size &getContentSize() const;
+    void setSize(const Size& size);
+    const Size &getSize() const;
 
     Rect getBoundingBox() const;
 

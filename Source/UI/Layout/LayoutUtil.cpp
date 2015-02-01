@@ -90,8 +90,8 @@ void LayoutUtil::Layout(Transform2DPtr src, float srcAlignX, float srcAlignY, Tr
     const Vec2& targetAnchorPoint = target->getAnchorPoint();
     float targetAlignXPosition,targetAlignYPosition;
     if (targetIsParent) {
-        targetAlignXPosition = target->getContentSize().width * targetAlignX;
-        targetAlignYPosition = target->getContentSize().height * targetAlignY;
+        targetAlignXPosition = target->getSize().width * targetAlignX;
+        targetAlignYPosition = target->getSize().height * targetAlignY;
     } else {
         const Vec2 position = target->getPosition();
         targetAlignXPosition = position.x + target->getBoundingBox().size.width * (targetAlignX - targetAnchorPoint.x);

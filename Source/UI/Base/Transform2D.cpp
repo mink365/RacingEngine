@@ -103,7 +103,7 @@ Vec2 Transform2D::getAnchorPointInPixels() const
     return Vec2(x, y);
 }
 
-void Transform2D::setContentSize(const Size &size)
+void Transform2D::setSize(const Size &size)
 {
     this->size = size;
 
@@ -112,7 +112,7 @@ void Transform2D::setContentSize(const Size &size)
     markLocalTransformRefreshFlag();
 }
 
-const Size& Transform2D::getContentSize() const
+const Size& Transform2D::getSize() const
 {
     return this->size;
 }

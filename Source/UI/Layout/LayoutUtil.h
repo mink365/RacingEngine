@@ -17,6 +17,18 @@ enum class AlignType {
     RIGHT_BOTTOM,
 };
 
+enum class Corner {
+    UpperLeft,
+    UpperRight,
+    LowLeft,
+    LowRight,
+};
+
+enum class Axis {
+    Horizontal,
+    Vertical,
+};
+
 namespace LayoutUtil {
     Vec2 AlignTypeToPoint(AlignType type);
     

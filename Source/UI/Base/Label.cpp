@@ -41,7 +41,7 @@ void Label::setText(const string &text)
 
     const Rect& textRect = TextStuffer::getInstance().getTextRect();
 
-    transform->setContentSize(textRect.size);
+    transform->setSize(textRect.size);
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
 //    transform->setAnchorPointInPixels(textRect.origin); // TODO: just an offset of vertext
 

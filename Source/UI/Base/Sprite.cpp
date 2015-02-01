@@ -34,7 +34,7 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
     this->frame = tex;
     this->rect = rect;
 
-    this->getComponent<Transform2D>()->setContentSize(rect.size);
+    this->getComponent<Transform2D>()->setSize(rect.size);
 
     auto node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");

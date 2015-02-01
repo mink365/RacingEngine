@@ -16,7 +16,7 @@ Scene::~Scene() {
 void Scene::init() {
     Widget::init();
 
-    transform->setContentSize(Screen::getInstance().getSize());
+    transform->setSize(Screen::getInstance().getSize());
 
     auto windowManager = std::make_shared<WindowManager>();
     getNode()->addComponent(windowManager);

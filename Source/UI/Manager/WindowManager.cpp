@@ -19,7 +19,7 @@ void WindowManager::start()
     alphaBg = CreateNode2DComponent<Widget>()->getNode();
     alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
 
-    alphaBg->getComponent<Transform2D>()->setContentSize(this->getComponent<Transform2D>()->getContentSize());
+    alphaBg->getComponent<Transform2D>()->setSize(this->getComponent<Transform2D>()->getSize());
     alphaBg->setVisible(false);
 }
 

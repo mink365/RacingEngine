@@ -10,7 +10,7 @@ UIManager::UIManager()
 }
 
 void UIManager::init() {
-    this->getComponent<Transform2D>()->setContentSize(Screen::getInstance().getSize());
+    this->getComponent<Transform2D>()->setSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
     

@@ -114,7 +114,7 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
     this->pressedSprite->rebind();
     this->disabledSprite->rebind();
 
-    transform->setContentSize(this->defaultSprite->getComponent<Transform2D>()->getContentSize());
+    transform->setSize(this->defaultSprite->getComponent<Transform2D>()->getSize());
 
     getNode()->addChild(defaultSprite->getNode());
     getNode()->addChild(pressedSprite->getNode());

@@ -222,7 +222,7 @@ bool Widget::hitFromWorldPoint(const Vec2 &p) {
 
 bool Widget::hit(const Vec2 &p) {
     // rect local space
-    Rect rect(0, 0, transform->getContentSize().width, transform->getContentSize().height);
+    Rect rect(0, 0, transform->getSize().width, transform->getSize().height);
     
     if (rect.containsPoint(p)) {
         return true;

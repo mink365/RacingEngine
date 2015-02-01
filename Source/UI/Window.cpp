@@ -25,7 +25,7 @@ void Window::init() {
     Widget::init();
 
     // window default is full screen
-    transform->setContentSize(Screen::getInstance().getSize());
+    transform->setSize(Screen::getInstance().getSize());
     
     transform->setAnchorPoint(Vec2(0.5, 0.5));
 
