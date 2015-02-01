@@ -25,6 +25,8 @@ public:
     bool getFillHeight();
     Alignment::ptr getAlignment();
 
+    void setAlignment(Alignment::ptr& alignment);
+
 protected:
     Size preferredSize;
     Size minSize;

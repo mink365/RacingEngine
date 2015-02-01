@@ -15,7 +15,13 @@ LayoutGroup::~LayoutGroup()
 
 std::vector<Transform2DPtr> LayoutGroup::GetChildrenTransform() const
 {
-    return std::vector<Transform2DPtr>();
+    auto list =  std::vector<Transform2DPtr>();
+
+    for (auto& child : getNode()->getChildren()) {
+        list.push_back(child->getComponent<Transform2D>());
+    }
+
+    return list;
 }
 
 void LayoutGroup::CalculateLayout()
@@ -37,8 +43,8 @@ void LayoutNode(NodePtr& node)
         transform->setHeight(parentTransform->getSize().height);
     }
 
-    if (element->getAlignment() == nullptr) {
-        auto alignment = element->getAlignment();
+    auto alignment = element->getAlignment();
+    if (alignment != nullptr) {
         LayoutUtil::LayoutToParent(transform, alignment->alignFrom, alignment->alignTo, alignment->offset);
     }
 }
@@ -59,7 +65,7 @@ std::shared_ptr<LayoutGroup> GetLayoutGroup(NodePtr& node)
 
 void LayoutRoot(NodePtr &root)
 {
-    auto func = [](NodePtr& node){
+    auto func = [](NodePtr node){
         auto group = GetLayoutGroup(node);
         if (group) {
             group->CalculateLayout();

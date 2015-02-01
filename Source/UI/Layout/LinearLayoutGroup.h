@@ -26,6 +26,10 @@ public:
 
     void CalculateLayout();
 
+    void SetSpacing(float v);
+    void SetAlign(LinearAlign align);
+    void SetExpand(bool v);
+
 protected:
     Axis _axis;
     float _spacing;

@@ -26,6 +26,7 @@
 #include "FBX/FBXTest.h"
 #include "Tween/TweenTest.h"
 #include "UI/UITest.h"
+#include "UI/LayoutTest.h"
 #include "MotoScene/SceneMaterialTest.h"
 #include "Light/LightTest.h"
 #include "Shadow/ShadowTest.h"
@@ -84,6 +85,8 @@ void FeatureTestsApp::createTests()
     this->tests.push_back(test);
     test = std::make_shared<UITest>();
     this->tests.push_back(test);
+    test = std::make_shared<LayoutTest>();
+    this->tests.push_back(test);
     test = std::make_shared<SceneMaterialTest>();
     this->tests.push_back(test);
     test = std::make_shared<LightTest>();
@@ -105,7 +108,7 @@ void FeatureTestsApp::createTests()
     test = std::make_shared<Bumpmap>();
     this->tests.push_back(test);
 
-    currIndex = 0;
+    currIndex = 5;
 
     this->onCurrentTestChanged();
 }

@@ -77,10 +77,29 @@ void LinearLayoutGroup::CalculateLayout()
         LayoutUtil::LayoutToParent(child, alignType, alignType, offset.x, offset.y);
 
         if (_axis == Axis::Horizontal) {
-            offset.x += child->getSize().width;
+            offset.x += child->getSize().width + _spacing;
         } else {
-            offset.y += child->getSize().height;
+            offset.y += child->getSize().height + _spacing;
         }
+    }
+}
+
+void LinearLayoutGroup::SetSpacing(float v)
+{
+    this->_spacing = v;
+}
+
+void LinearLayoutGroup::SetAlign(LinearAlign align)
+{
+    this->_align = align;
+}
+
+void LinearLayoutGroup::SetExpand(bool v)
+{
+    if (_axis == Axis::Horizontal) {
+        this->_forceExpandHeight = v;
+    } else {
+        this->_forceExpandWidth = v;
     }
 }
 

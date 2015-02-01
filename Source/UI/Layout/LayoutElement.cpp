@@ -30,5 +30,10 @@ Alignment::ptr LayoutElement::getAlignment()
     return alignment;
 }
 
+void LayoutElement::setAlignment(Alignment::ptr &alignment)
+{
+    this->alignment = alignment;
+}
+
 } // namespace re
 
