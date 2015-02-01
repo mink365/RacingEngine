@@ -35,7 +35,7 @@ void LinearLayoutGroup::CalculateLayout()
                     break;
                 case LinearAlign::Center:
                     offset.y = (transform->getSize().height - _padding.getVertical()) / 2.0f;
-                    alignType = AlignType::CENTER;
+                    alignType = AlignType::LEFT_CENTER;
                     break;
                 case LinearAlign::Right:
                     offset.y = transform->getSize().height - _padding.getBottom();
