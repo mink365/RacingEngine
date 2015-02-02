@@ -201,6 +201,11 @@ Rect Rect::unionWithRect(const Rect &rect) const
     return Rect(combinedLeftX, combinedBottomY, combinedRightX - combinedLeftX, combinedTopY - combinedBottomY);
 }
 
+string Rect::toString() const
+{
+    return StringUtil::Printf("Rect(%f, %f, %f, %f)", origin.x, origin.y, size.width, size.height);
+}
+
 
 Rect RectApplyMatrix(const Rect& rect, const Mat4& transform)
 {

@@ -53,6 +53,8 @@ public:
     bool containsRect(const Rect& rect) const;
     Rect unionWithRect(const Rect & rect) const;
 
+    std::string toString() const;
+
 public:
     Vec2 origin;
     Size size;
