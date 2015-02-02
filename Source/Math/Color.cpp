@@ -154,6 +154,38 @@ const Color Color::operator -() const
     return Color(-r, -g, -b, -a);
 }
 
+Color Color::FromHex(const string &hex)
+{
+    int start = 0;
+    int len = hex.size();
+
+    if (hex[0] == '#') {
+        start = 1;
+        len -= 1;
+    }
+
+    Color color;
+    if (len >= 6) {
+        color.r = std::stoi(hex.substr(start, 2), 0, 16) / 255.0f;
+        color.g = std::stoi(hex.substr(start + 2, 2), 0, 16) / 255.0f;
+        color.b = std::stoi(hex.substr(start + 4, 2), 0, 16) / 255.0f;
+
+        if (len == 8) {
+            color.a = std::stoi(hex.substr(start + 6, 2), 0, 16) / 255.0f;
+        }
+    } else {
+        color.r = std::stoi(hex.substr(start, 1), 0, 16) / 15.0f;
+        color.g = std::stoi(hex.substr(start + 1, 1), 0, 16) / 15.0f;
+        color.b = std::stoi(hex.substr(start + 2, 1), 0, 16) / 15.0f;
+
+        if (len == 4) {
+            color.a = std::stoi(hex.substr(start + 3, 1), 0, 16) / 15.0f;
+        }
+    }
+
+    return color;
+}
+
 }
 
 

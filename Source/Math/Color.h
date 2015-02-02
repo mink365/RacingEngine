@@ -51,6 +51,9 @@ public:
     const Color operator +() const;
     const Color operator -() const;
 
+public:
+    static Color FromHex(const std::string& hex);
+
     std::string toString();
 
 public:
