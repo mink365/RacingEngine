@@ -20,7 +20,7 @@ void LayoutTest::Init()
 
     {
         auto container = CreateNode2DComponent<Widget>();
-        container->getComponent<Transform2D>()->setSize(Size(200, 100));
+        container->getComponent<Transform2D>()->setSize(Size(500, 100));
 
         auto alignment = Alignment::create();
         alignment->alignFrom = LayoutUtil::AlignTypeToPoint(AlignType::CENTER);
@@ -29,7 +29,7 @@ void LayoutTest::Init()
         container->getComponent<LayoutElement>()->setAlignment(alignment);
 
         auto group = std::make_shared<HorizontalLayoutGroup>();
-        group->SetAlign(LinearAlign::Left);
+        group->SetAlign(LinearAlign::Right);
         container->getNode()->addComponent(group);
         container->getNode()->setName("Container");
 
@@ -62,6 +62,7 @@ void LayoutTest::Init()
 
         auto group = std::make_shared<VerticalLayoutGroup>();
         group->SetSpacing(-20);
+        group->SetAlign(LinearAlign::Center);
         container->getNode()->addComponent(group);
         container->getNode()->setName("Container");
 

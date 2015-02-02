@@ -81,6 +81,7 @@ void UITest::Update()
 std::shared_ptr<Window> UITest::createWin()
 {
     auto win = CreateNode2DComponent<Window>();
+    win->getNode()->setName("Window1");
     win->getComponent<Transform2D>()->setSize(Size(400, 500));
 
     NinePatchPtr patch = CreateNode2DComponent<NinePatch>("tab_press.png");

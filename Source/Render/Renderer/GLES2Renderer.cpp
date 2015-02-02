@@ -374,6 +374,7 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
         GLenum mode = GetPolygonMode(state.polygonMode);
 
         glPolygonMode(GL_FRONT_AND_BACK, mode);
+        glLineWidth(3.0f);
 
         context.renderState.polygonMode = state.polygonMode;
     }

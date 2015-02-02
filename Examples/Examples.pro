@@ -2,7 +2,6 @@ TEMPLATE = app
 
 ENGINE_DIR = ../
 
-include($${ENGINE_DIR}/common.pri)
 include($${ENGINE_DIR}/Source/Source.pri)
 
 SOURCES += \

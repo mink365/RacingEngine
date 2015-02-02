@@ -71,6 +71,10 @@ void DebugRenderer::Step(NodePtr &node)
     geometry->clear();
 
     auto func = [&](NodePtr& node) {
+        if (!node->isVisible()) {
+            return;
+        }
+
         auto transform = node->getComponent<Transform2D>();
         size_t level = node->getLevel();
 
@@ -93,25 +97,21 @@ void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
 
     Color color = Color::FromHex(buf);
 
-    Rect rect = transform->getBoundingBox();
-
     /*
      *  p4 -------- p3
      *  |           |
      *  |           |
      *  p1 -------- p2
      */
-    Vec2 p1 = Vec2(rect.getMinX(), rect.getMinY());
-    Vec2 p2 = Vec2(rect.getMaxX(), rect.getMinY());
-    Vec2 p3 = Vec2(rect.getMaxX(), rect.getMaxY());
-    Vec2 p4 = Vec2(rect.getMinX(), rect.getMaxY());
+    Vec2 p1 = Vec2(0, 0);
+    Vec2 p2 = Vec2(transform->getSize().width, 0);
+    Vec2 p3 = Vec2(transform->getSize().width, transform->getSize().height);
+    Vec2 p4 = Vec2(0, transform->getSize().height);
 
     p1 = transform->convertToWorldSpace(p1);
     p2 = transform->convertToWorldSpace(p2);
     p3 = transform->convertToWorldSpace(p3);
     p4 = transform->convertToWorldSpace(p4);
-
-    LOG_E("Append  Level: %d, position: %f, %f", level, p1.x, p1.y);
 
     std::vector<Vec2> posList = {p1, p2, p3, p4};
 
