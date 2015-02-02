@@ -117,7 +117,11 @@ NodePtr Node::getChild(const string &name)
 void Node::addChild(NodePtr node, Int index)
 {
     node->parent = this->shared_from_this();
-    node->level = node->getParent()->level + 1;
+
+    auto func = [](NodePtr& node){
+        node->level = node->getParent()->level + 1;
+    };
+    DistpatchFunctionInHierarchy(node, func);
 
     vector<NodePtr>::iterator iter;
     if (index >= 0) {
