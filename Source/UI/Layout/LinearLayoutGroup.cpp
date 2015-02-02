@@ -30,40 +30,42 @@ void LinearLayoutGroup::CalculateLayout()
         if (!_forceExpandHeight) {
             switch (this->_align) {
                 case LinearAlign::Left:
-                    offset.y = this->_padding.getTop();
+                    offset.y = -_padding.getTop();
                     alignType = AlignType::LEFT_TOP;
                     break;
                 case LinearAlign::Center:
-                    offset.y = (transform->getSize().height - _padding.getVertical()) / 2.0f;
                     alignType = AlignType::LEFT_CENTER;
                     break;
                 case LinearAlign::Right:
-                    offset.y = transform->getSize().height - _padding.getBottom();
+                    offset.y = _padding.getBottom();
                     alignType = AlignType::LEFT_BOTTOM;
                     break;
             }
         } else {
             alignType = AlignType::CENTER_TOP;
         }
-    } else {
+
+        offset.x = _padding.getLeft();
+    } else if (_axis == Axis::Vertical) {
         if (!_forceExpandWidth) {
             switch (this->_align) {
                 case LinearAlign::Left:
-                    offset.x = this->_padding.getLeft();
+                    offset.x = _padding.getLeft();
                     alignType = AlignType::LEFT_TOP;
                     break;
                 case LinearAlign::Center:
-                    offset.x = (transform->getSize().width - _padding.getHorizontal()) / 2.0f;
                     alignType = AlignType::CENTER_TOP;
                     break;
                 case LinearAlign::Right:
-                    offset.x = transform->getSize().width - _padding.getRight();
+                    offset.x = -_padding.getRight();
                     alignType = AlignType::RIGHT_TOP;
                     break;
             }
         } else {
             alignType = AlignType::LEFT_CENTER;
         }
+
+        offset.y = -_padding.getTop();
     }
 
     for (auto& child : childTransforms) {
@@ -79,7 +81,7 @@ void LinearLayoutGroup::CalculateLayout()
         if (_axis == Axis::Horizontal) {
             offset.x += child->getSize().width + _spacing;
         } else {
-            offset.y += child->getSize().height + _spacing;
+            offset.y -= child->getSize().height + _spacing;
         }
     }
 }

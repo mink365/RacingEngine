@@ -4,6 +4,7 @@
 namespace re {
 
 LayoutGroup::LayoutGroup()
+    : _padding(5, 5, 5, 5)
 {
 
 }

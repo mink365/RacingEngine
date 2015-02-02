@@ -29,7 +29,7 @@ void LayoutTest::Init()
         container->getComponent<LayoutElement>()->setAlignment(alignment);
 
         auto group = std::make_shared<HorizontalLayoutGroup>();
-        group->SetAlign(LinearAlign::Right);
+        group->SetAlign(LinearAlign::Left);
         container->getNode()->addComponent(group);
         container->getNode()->setName("Container");
 

@@ -13,7 +13,7 @@ class LayoutGroup : public Component
 {
 public:
     LayoutGroup();
-    ~LayoutGroup();
+    virtual ~LayoutGroup();
 
     std::vector<Transform2DPtr> GetChildrenTransform() const;
 
