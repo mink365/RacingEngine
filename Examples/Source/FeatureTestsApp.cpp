@@ -15,6 +15,7 @@
 #include "UI/Base/Label.h"
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
+#include "UI/Rendering/DebugRenderer.h"
 
 #include <iostream>
 #include <fstream>
@@ -256,6 +257,9 @@ void FeatureTestsApp::initResources()
 
 //    LoadShader("Shader_Default", shaderDir + "light.vert", shaderDir + "light.frag");
 
+    LoadShader("Shader_Debug", shaderDir + "debug.vert",
+                             shaderDir + "debug.frag");
+
     LoadShader("Shader_PTC", shaderDir + "position_texture_color.vert",
                              shaderDir + "position_texture_color.frag");
 
@@ -266,6 +270,8 @@ void FeatureTestsApp::initResources()
                               shaderDir + "v3f-t2f-c4f.frag");
 
     TextureManager::getInstance().setImageLoader(new ImageLoader());
+
+    DebugRenderer::getInstance().InitNode();
 
     rootNode = CreateNode();
     SceneManager::getInstance().addRootNode(rootNode);
@@ -308,4 +314,7 @@ void FeatureTestsApp::update()
     this->stage->update();
 
     this->labelFps->setText(std::to_string(GameHub::getInstance().GetFps()));
+
+    auto node = stage->getNode();
+    DebugRenderer::getInstance().Step(node);
 }

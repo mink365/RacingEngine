@@ -218,6 +218,12 @@ enum class FaceCullMode {
     FrontAndBack
 };
 
+enum class PolygonMode {
+    Fill,
+    Line,
+    Point,
+};
+
 // ---------------------- TextureUnitContextState ----------------------//
 
 struct TextureUnitContextState {
@@ -237,6 +243,7 @@ public:
 
     bool depthWrite;
     FaceCullMode faceCullMode;
+    PolygonMode polygonMode;
 };
 
 } // namespace re

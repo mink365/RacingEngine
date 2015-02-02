@@ -297,6 +297,17 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
     return GL_FRONT;
 }
 
+GLenum GetPolygonMode(PolygonMode mode) {
+    switch(mode) {
+        case PolygonMode::Fill:
+            return GL_FILL;
+        case PolygonMode::Line:
+            return GL_LINE;
+        case PolygonMode::Point:
+            return GL_POINT;
+    }
+}
+
 void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 {
     if (force || this->context.renderState.depthWrite != state.depthWrite) {
@@ -356,6 +367,15 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
         }
 
         context.renderState.faceCullMode = state.faceCullMode;
+    }
+
+    if (force || context.renderState.polygonMode != state.polygonMode) {
+
+        GLenum mode = GetPolygonMode(state.polygonMode);
+
+        glPolygonMode(GL_FRONT_AND_BACK, mode);
+
+        context.renderState.polygonMode = state.polygonMode;
     }
 
     if (force || context.renderState.stencilState != state.stencilState) {
