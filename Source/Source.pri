@@ -20,8 +20,8 @@ RE_PLATFORM_MAC {
 }
 
 unix {
-	LIBS += -L$$OUT_PWD/../Source/
-#        PRE_TARGETDEPS += $$OUT_PWD/../Source/Source.a
+    LIBS += -L$$OUT_PWD/../Source/
+#    PRE_TARGETDEPS += $$OUT_PWD/../Source/Source.a
 
     message($$OUT_PWD/../Source/)
 }
