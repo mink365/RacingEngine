@@ -84,7 +84,34 @@ void LayoutUtil::LayoutToParent(Transform2DPtr view, AlignType from, AlignType t
 }
 
 void LayoutUtil::Layout(Transform2DPtr src, const Vec2 &viewAlign, Transform2DPtr target, const Vec2 &targetAlign, bool targetIsParent /* = false */, const Vec2 &offset) {
-    const Vec2& srcAnchorPoint = src->getAnchorPoint();
+
+    Vec2 result = CalculateLayout(src, viewAlign, target, targetAlign, targetIsParent, offset);
+
+    src->setPosition(result);
+}
+
+void LayoutUtil::LayoutToParent(Transform2DPtr view, const Vec2 &viewAlign, const Vec2 &targetAlign, const Vec2 &offset)
+{
+    Layout(view, viewAlign, view->getComponentInParent<Transform2D>(), targetAlign, true, offset);
+}
+
+Vec2 LayoutUtil::CalculateLayout(Transform2DPtr view, AlignType from, Transform2DPtr target, AlignType to, float offsetX, float offsetY)
+{
+    Vec2 fromV = AlignTypeToPoint(from);
+    Vec2 toV = AlignTypeToPoint(to);
+    Vec2 offset = Vec2(offsetX, offsetY);
+
+    bool targetIsParent = false;
+    if (view->getComponentInParent<Transform2D>() == target) {
+        targetIsParent = true;
+    }
+
+    return CalculateLayout(view, fromV, target, toV, targetIsParent, offset);
+}
+
+Vec2 LayoutUtil::CalculateLayout(Transform2DPtr view, const Vec2 &viewAlign, Transform2DPtr target, const Vec2 &targetAlign, bool targetIsParent, const Vec2 &offset)
+{
+    const Vec2& srcAnchorPoint = view->getAnchorPoint();
     const Vec2 anchorPointDiff = viewAlign - srcAnchorPoint;
     const Vec2& targetAnchorPoint = target->getAnchorPoint();
     float targetAlignXPosition,targetAlignYPosition;
@@ -97,14 +124,21 @@ void LayoutUtil::Layout(Transform2DPtr src, const Vec2 &viewAlign, Transform2DPt
         targetAlignXPosition = position.x + target->getBoundingBox().size.width * targetAnchorPointDiff.x;
         targetAlignYPosition = position.y + target->getBoundingBox().size.height * targetAnchorPointDiff.y;
     }
-    src->setPosition(Vec2(targetAlignXPosition - anchorPointDiff.x * src->getBoundingBox().size.width + offset.x,
-                         targetAlignYPosition - anchorPointDiff.y * src->getBoundingBox().size.height + offset.y));
 
+    Vec2 result = Vec2(targetAlignXPosition - anchorPointDiff.x * view->getBoundingBox().size.width + offset.x,
+                       targetAlignYPosition - anchorPointDiff.y * view->getBoundingBox().size.height + offset.y);
+
+    return result;
 }
 
-void LayoutUtil::LayoutToParent(Transform2DPtr view, const Vec2 &viewAlign, const Vec2 &targetAlign, const Vec2 &offset)
+Vec2 LayoutUtil::CalculateLayoutToParent(Transform2DPtr view, AlignType from, AlignType to, float offsetX, float offsetY)
 {
-    Layout(view, viewAlign, view->getComponentInParent<Transform2D>(), targetAlign, true, offset);
+    return CalculateLayout(view, from, view->getComponentInParent<Transform2D>(), to, offsetX, offsetY);
+}
+
+Vec2 LayoutUtil::CalculateLayoutToParent(Transform2DPtr view, const Vec2 &viewAlign, const Vec2 &targetAlign, const Vec2 &offset)
+{
+    return CalculateLayout(view, viewAlign, view->getComponentInParent<Transform2D>(), targetAlign, true, offset);
 }
 
 }
