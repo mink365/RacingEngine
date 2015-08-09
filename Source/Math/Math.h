@@ -113,6 +113,10 @@ inline bool InBound(float p, float min, float max)
             return rand() / (float)RAND_MAX;
         }
 
+        inline float sign(float v) {
+            return v >= 0 ? 1 : -1;
+        }
+
         template<typename T>
         T lerp(const T& lhs, const T& rhs, float s);
 

@@ -1,8 +1,13 @@
 #ifndef AXISDATA_H
 #define AXISDATA_H
 
+#include "Math/Math.h"
+#include "Message/Signal.h"
+
 namespace re
 {
+
+class ScrollParam;
 
 enum class FlickableDirection
 {
@@ -28,13 +33,67 @@ enum class MoveState
     Backing,
 };
 
+class BaseAnimation
+{
+public:
+    enum class State
+    {
+        Running,
+        Stopped,
+    };
+
+public:
+    virtual void update();
+    void start();
+    void stop();
+
+private:
+    void switchState(State state);
+
+protected:
+    float _runTime;
+    float _duration;
+
+    State _state;
+
+public:
+    Signal<void(State)> stateEvent;
+};
+
+class BackAnimation : public BaseAnimation
+{
+public:
+    void start(float currPos, float endPos, float time);
+    float getPosition();
+    float getDistance();
+
+private:
+    float _distance;
+    float _endPos;
+};
+
+class FlipAnimation : public BaseAnimation
+{
+public:
+    void start(float currPos, float velocity);
+    float getPosition();
+
+    float calculateStartVelocity(float currPos, float endPos);
+
+private:
+    float _endPos;
+    float _realDcc;
+public:
+    float _dcc;
+};
+
 class AxisData
 {
 public:
     friend class ScrollView;
 
 public:
-    AxisData();
+    AxisData(const ScrollParam &param);
 
     void update();
     void reset();
@@ -43,7 +102,7 @@ public:
     void fixup();
 
 protected:
-    void changState(MoveState state);
+    void switchState(MoveState state);
 
 private:
     float minBound, maxBound;
@@ -54,6 +113,11 @@ private:
     float currentVelocity;
     float currentPos;
     float flickTarget;
+
+    const ScrollParam& param;
+
+    BackAnimation backAnim;
+    FlipAnimation flipAnim;
 
     MoveState state;
 };

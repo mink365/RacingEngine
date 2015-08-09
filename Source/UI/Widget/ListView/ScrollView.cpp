@@ -1,6 +1,7 @@
 #include "ScrollView.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "Math/Rect.h"
+#include "Util/LocalTime.h"
 
 namespace re
 {
@@ -61,9 +62,26 @@ void ScrollView::initTouchListener()
 {
     auto listener = TouchEventListener::create();
 
-    listener->onTouchDown = [&](TouchEvent&, WidgetPtr&){
+    listener->onTouchDown = [&](TouchEvent& event, WidgetPtr&) {
+        this->handleTouchDownEvent(event);
 
         return true;
+    };
+
+    listener->onTouchMoveInside = [&](TouchEvent& event, WidgetPtr&) {
+        this->handleTouchMoveEvent(event);
+    };
+
+    listener->onTouchMoveOutside = [&](TouchEvent& event, WidgetPtr&) {
+        this->handleTouchMoveEvent(event);
+    };
+
+    listener->onTouchUpInside = [&](TouchEvent& event, WidgetPtr&) {
+        this->handleTouchUpEvent(event);
+    };
+
+    listener->onTouchUpOutside = [&](TouchEvent& event, WidgetPtr&) {
+        this->handleTouchMoveEvent(event);
     };
 
     this->_onTouchListeners.push_back(listener);
@@ -71,7 +89,21 @@ void ScrollView::initTouchListener()
 
 void ScrollView::update()
 {
+    switch (param.scrollType) {
+    case FlickableDirection::All:
+    case FlickableDirection::Auto:
+        hAxis.update();
+        vAxis.update();
+        break;
+    case FlickableDirection::Horizonal:
+        hAxis.update();
+    case FlickableDirection::Vertical:
+        vAxis.update();
+    default:
+        break;
+    }
 
+    container->setPosition(Vec2(hAxis.currentPos, vAxis.currentPos));
 }
 
 void ScrollView::resetAxis()
@@ -112,6 +144,8 @@ void ScrollView::handleTouchMoveEvent(TouchEvent &event)
     prevTouch = currTouch;
     currTouch = event.getCurrPoint();
 
+    tracker.addPoint(currTouch, LocalTime::getInstance().getCurrentTime());
+
     diffTouch = currTouch - pressTouch;
 
     if (!this->isMoved && diffTouch.lengthSqr() > 144) {
@@ -137,7 +171,26 @@ void ScrollView::handleTouchUpEvent(TouchEvent &event)
 
     diffTouch = currTouch - pressTouch;
 
+    tracker.computeVelocity();
+    const Vec2& velocity = tracker.getVelocity();
 
+    if (this->isHFlickable()) {
+        if (MathLib::abs(velocity.x) >= param.miniFlickVeclocity
+                && MathLib::abs(diffTouch.x) >= param.flickThreshhold) {
+            hAxis.flick(velocity.x);
+        } else {
+            hAxis.fixup();
+        }
+    }
+
+    if (this->isVFlickable()) {
+        if (MathLib::abs(velocity.y) >= param.miniFlickVeclocity
+                && MathLib::abs(diffTouch.y) >= param.flickThreshhold) {
+            vAxis.flick(velocity.y);
+        } else {
+            vAxis.fixup();
+        }
+    }
 }
 
 }

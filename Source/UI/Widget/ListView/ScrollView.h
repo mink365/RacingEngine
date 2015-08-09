@@ -3,6 +3,7 @@
 
 #include "UI/Widget.h"
 #include "AxisData.h"
+#include "VelocityTracker.h"
 
 namespace re {
 
@@ -59,6 +60,7 @@ private:
     Transform2DPtr transform;
     Transform2DPtr container;
 
+    VelocityTracker tracker;
     bool isMoved;
 };
 
