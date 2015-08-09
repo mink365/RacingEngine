@@ -9,7 +9,6 @@
 #include "Texture/TextureManager.h"
 #include "Texture/TextureParser.h"
 #include "Shader/ShaderUtil.h"
-#include "Shader/ShaderManager.h"
 #include "Renderer/GLES2Renderer.h"
 #include "UI/Manager/UIManager.h"
 #include "UI/Base/Label.h"
@@ -39,6 +38,7 @@
 #include "Lightmap/Lightmap.h"
 #include "Bumpmap/Bumpmap.h"
 #include "Audio/AudioTest.h"
+#include "Resource/ResourceManager.h"
 
 #include "Util/LogUtil.h"
 
@@ -155,11 +155,11 @@ void FeatureTestsApp::createBaseUI()
 
     TextureManager::getInstance().loadTextures();
 
-    std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
+    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().getFont("default");
+        font = FontManager::getInstance().GetResource("default");
     }
 
     labelTitle = CreateNode2DComponent<Label>(font);

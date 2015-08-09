@@ -146,7 +146,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
         setPTCShaderAttribute(shader);
     }
 
-    ShaderManager::getInstance().registerShader(shader);
+    ShaderManager::getInstance().Register(shader);
 
     return 1;
 }
@@ -172,7 +172,7 @@ int LoadShader(const std::string& name, const std::string& pfilePath_vs, const s
 void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
+    Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
     mesh->getComponent<Material>()->setShder(shader);
 }
 

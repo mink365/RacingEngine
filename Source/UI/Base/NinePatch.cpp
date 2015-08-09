@@ -3,7 +3,6 @@
 #include "HierarchyColor.h"
 #include "Scene/Mesh.h"
 #include "QuadStuffer.h"
-#include "Texture/Frame/TextureFrameManager.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
@@ -13,7 +12,7 @@ void NinePatch::init(const std::string& tex)
     color = this->getComponent<HierarchyColor>();
     transform = this->getComponent<Transform2D>();
 
-    this->frame = TextureFrameManager::getInstance().getFrame(tex);
+    this->frame = TextureFrameManager::getInstance().GetResource(tex);
 
     NodePtr node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");

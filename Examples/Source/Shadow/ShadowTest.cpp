@@ -149,14 +149,14 @@ void SetupShadowMapShader() {
         0.000032, 0.000032
     };
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader("shadow_map");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("shadow_map");
 
     shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
 //    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
     shader->getUniform("shadowDarkness")->setData(shadowDarkness.data());
     shader->getUniform("shadowBias")->setData(shadowBias.data());
 
-    shader = ShaderManager::getInstance().getShader("depth_rgba");
+    shader = ShaderManager::getInstance().GetResource("depth_rgba");
 //    shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
 }
 

@@ -8,7 +8,6 @@
 
 #include "BaseAtlasParser.h"
 #include "Texture/Frame/TextureFrame.h"
-#include "Texture/Frame/TextureFrameManager.h"
 #include "Texture/TextureManager.h"
 
 namespace re {
@@ -72,7 +71,7 @@ TextureFramePtr BaseAtlasParser::getTextureFrameFromData(const TextureFrameData 
     frame->offset = data.offset;
     frame->originalSize = data.originalSize;
 
-    TextureFrameManager::getInstance().registerFrame(frame);
+    TextureFrameManager::getInstance().Register(frame);
 
     return frame;
 }

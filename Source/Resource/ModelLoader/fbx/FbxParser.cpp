@@ -11,7 +11,6 @@
 #include <iostream>
 #include <vector>
 #include "Texture/TextureManager.h"
-#include "Material/MaterialManager.h"
 #include "Util/ContainerUtil.h"
 #include "Util/ComponentFactory.h"
 #include "Base/Buffer.h"
@@ -310,7 +309,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     }
 
     if (pass != nullptr) {
-        MaterialPtr preMaterial = MaterialManager::getInstance().getMaterial(materialTextureKey);
+        MaterialPtr preMaterial = MaterialManager::getInstance().GetResource(materialTextureKey);
         if (preMaterial != nullptr) {
             // copy renderstate from defined material
             *material = *preMaterial;

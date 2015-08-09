@@ -36,11 +36,11 @@ void TweenTest::Init()
     patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
     patch->rebind();
 
-    std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
+    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().getFont("default");
+        font = FontManager::getInstance().GetResource("default");
     }
 
     LabelPtr label = CreateNode2DComponent<Label>(font);

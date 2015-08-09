@@ -2,7 +2,7 @@
 
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
-#include "Texture/Frame/TextureFrameManager.h"
+#include "Texture/Frame/TextureFrame.h"
 #include "Resource/AtlasParser/BaseAtlasParser.h"
 #include "Resource/AtlasParser/JSONAtlasParser.h"
 #include <iostream>
@@ -48,7 +48,7 @@ void TextureParser::parseSingle(FilePtr &file)
     frame->setTexture(texture);
     frame->init(file->getName(), false, 0, 0, texture->getWidth(), texture->getHeight());
 
-    TextureFrameManager::getInstance().registerFrame(frame);
+    TextureFrameManager::getInstance().Register(frame);
 }
 
 } // namespace re

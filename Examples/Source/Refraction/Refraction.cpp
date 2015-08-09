@@ -56,7 +56,7 @@ void Refraction::Update()
 
 void Refraction::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().getShader("refraction");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("refraction");
 
     Vec3 lightPosition = Vec3(100, 100, 0);
 

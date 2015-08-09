@@ -13,7 +13,6 @@
 #include "Light/SpotLight.h"
 #include "Renderer/Renderer.h"
 #include "RenderTarget.h"
-#include "Shader/ShaderManager.h"
 
 namespace re {
 
@@ -127,7 +126,7 @@ void RenderManager::createRenderViews()
             renderView->init(light);
 
             // set shader to shadowMap shader
-            renderView->forceShader = ShaderManager::getInstance().getShader("depth_rgba");
+            renderView->forceShader = ShaderManager::getInstance().GetResource("depth_rgba");
 
             if (renderView->renderTarget == nullptr) {
                 auto renderTarget = std::make_shared<RenderTarget>();

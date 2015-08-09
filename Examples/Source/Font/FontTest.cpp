@@ -1,6 +1,5 @@
 #include "FontTest.h"
 
-#include "Font/FontManager.h"
 #include "Font/Font.h"
 #include "Font/TextureAtlas.h"
 #include "Font/FreeTypeUtil.h"
@@ -19,7 +18,7 @@ std::shared_ptr<TextureAtlas> CreateDefaultFont()
 
     auto font = std::make_shared<Font>(FontType::TTF, 32, file);
     font->setName("default");
-    FontManager::getInstance().registerFont(font);
+    FontManager::getInstance().Register(font);
 
     auto atlas = TextureAtlas::create();
     atlas->init(1024, 1024, 1);

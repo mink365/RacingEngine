@@ -5,14 +5,13 @@
 
 #include "Scene/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
-#include "Texture/Frame/TextureFrameManager.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
 
 void Sprite::init(const std::string& tex)
 {
-    TextureFrame::ptr texture = TextureFrameManager::getInstance().getFrame(tex);
+    TextureFrame::ptr texture = TextureFrameManager::getInstance().GetResource(tex);
     assert(texture != nullptr);
 
     Rect rect;
@@ -23,7 +22,7 @@ void Sprite::init(const std::string& tex)
 
 void Sprite::init(const string &tex, const Rect &rect)
 {
-    TextureFrame::ptr texture = TextureFrameManager::getInstance().getFrame(tex);
+    TextureFrame::ptr texture = TextureFrameManager::getInstance().GetResource(tex);
     assert(texture != nullptr);
 
     this->init(texture, rect);

@@ -52,7 +52,7 @@ void Reflection::Update()
 
 void Reflection::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().getShader("reflection");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("reflection");
 
     Vec3 cameraPosition = camera->getNode()->getTransform()->getWorldMatrix().getTranslation();
     Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();

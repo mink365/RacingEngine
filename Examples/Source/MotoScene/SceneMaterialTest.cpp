@@ -1,6 +1,5 @@
 #include "SceneMaterialTest.h"
 #include "Material/Material.h"
-#include "Material/MaterialManager.h"
 #include "Loader/MaterialLoader.h"
 #include "Resource/ModelLoader/fbx/FbxParser.h"
 #include "Resource/ResourceManager.h"
@@ -84,11 +83,11 @@ static LabelPtr labelName;
 
 void SceneMaterialTest::createUI()
 {
-    std::shared_ptr<Font> font = FontManager::getInstance().getFont("default");
+    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().getFont("default");
+        font = FontManager::getInstance().GetResource("default");
     }
 
     labelName = CreateNode2DComponent<Label>(font);

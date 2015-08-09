@@ -1,7 +1,6 @@
 #include "MaterialLoader.h"
 #include "Resource/Common/BlockParser.h"
 #include "Texture/TextureManager.h"
-#include "Material/MaterialManager.h"
 
 namespace re {
 
@@ -16,7 +15,7 @@ MaterialPtr MaterialLoader::Load(FilePtr &file)
     for (auto child : root->children) {
         auto material = this->loadMaterial(child);
 
-        MaterialManager::getInstance().registerMaterial(material);
+        MaterialManager::getInstance().Register(material);
     }
 
     return nullptr;

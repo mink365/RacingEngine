@@ -182,7 +182,7 @@ void LightTest::Update()
 
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, 20, rotateValue)));
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader(CURRENT_SHADER_NAME);
+    Shader::ptr shader = ShaderManager::getInstance().GetResource(CURRENT_SHADER_NAME);
     if (!PHONG_LIGHT) {
     } else {
         shader->getUniform("shininess")->setData(&shininess);

@@ -5,7 +5,6 @@
 #include "UI/Base/Label.h"
 #include "UI/Manager/UIManager.h"
 #include "UI/Widget/Button.h"
-#include "Font/FontManager.h"
 #include "Font/TextureAtlas.h"
 #include "Font/FreeTypeUtil.h"
 
@@ -29,11 +28,11 @@ void UITest::Init()
     patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
     patch->rebind();
 
-    FontPtr font = FontManager::getInstance().getFont("default");
+    FontPtr font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().getFont("default");
+        font = FontManager::getInstance().GetResource("default");
     }
 
     LabelPtr label = CreateNode2DComponent<Label>(font);

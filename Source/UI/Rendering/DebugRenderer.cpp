@@ -1,6 +1,5 @@
 #include "DebugRenderer.h"
 #include "UI/Base/Transform2D.h"
-#include "Render/Shader/ShaderManager.h"
 #include "BufferObject/BufferObjectUtil.h"
 #include "Scene/SceneManager.h"
 
@@ -55,7 +54,7 @@ void DebugRenderer::InitNode()
 
     auto material = node->getComponent<Material>();
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader("Shader_Debug");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("Shader_Debug");
     material->setShder(shader);
 
     material->setQueueID(RenderQueues::UI);

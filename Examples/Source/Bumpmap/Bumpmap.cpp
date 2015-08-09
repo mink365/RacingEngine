@@ -32,7 +32,7 @@ void Bumpmap::Init()
         return true;
     });
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader("normal_map");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("normal_map");
     {
         // set vertex attribute
         Attribute *vertAttr = shader->getAttribute("inVertex");
@@ -130,6 +130,6 @@ void Bumpmap::Update()
     lightPos.y = cos(angle) * 200;
     lightPos.z = 0;
 
-    auto shader = ShaderManager::getInstance().getShader("normal_map");
+    auto shader = ShaderManager::getInstance().GetResource("normal_map");
     shader->getUniform("LightPosModel")->setData(lightPos);
 }

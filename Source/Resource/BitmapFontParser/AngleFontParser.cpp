@@ -13,10 +13,8 @@
 #include "FileSystem/File.h"
 #include "Font/Glyph.h"
 #include "Font/Font.h"
-#include "Font/FontManager.h"
 
 #include "Texture/TextureManager.h"
-#include "Texture/Frame/TextureFrameManager.h"
 
 using namespace tinyxml2;
 
@@ -112,7 +110,7 @@ void AngleFontParser::createFont(FilePtr& file)
 {
     this->font = std::make_shared<Font>(FontType::Bitmap, this->size, file);
     this->font->setName(this->family);
-    FontManager::getInstance().registerFont(this->font);
+    FontManager::getInstance().Register(this->font);
 
     FilePtr imageFile = GetImageFile(file, this->imageName);
     this->texture = GetTextureByImageFile(imageFile);

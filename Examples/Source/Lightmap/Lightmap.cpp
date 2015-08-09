@@ -60,7 +60,7 @@ void Lightmap::Update()
 
 void Lightmap::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().getShader("lightmap");
+    Shader::ptr shader = ShaderManager::getInstance().GetResource("lightmap");
 
     re::Mat4 modelM = node->getTransform()->getWorldMatrix();
     re::Mat4 modelViewM = camera->getViewMatrix() * modelM;

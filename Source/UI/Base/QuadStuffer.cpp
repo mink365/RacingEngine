@@ -3,7 +3,6 @@
 #include "Scene/Mesh.h"
 
 #include "Render/BufferObject/BufferObjectUtil.h"
-#include "Shader/ShaderManager.h"
 #include "Render/RenderQueue.h"
 
 namespace re {
@@ -17,7 +16,7 @@ void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& sha
 
     mesh->setGeometry(Geometry::create());
 
-    Shader::ptr shader = ShaderManager::getInstance().getShader(shaderName);
+    Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
     material->setShder(shader);
 
     material->initDefaultPass();

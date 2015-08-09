@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Base/Buffer.h"
+#include "Resource/ResourceManager.h"
 
 namespace re {
 
@@ -24,6 +25,7 @@ class Geometry;
 class RenderTarget;
 class Renderer;
 class Material;
+class Shader;
 class Pass;
 class Texture;
 class TextureFrame;
@@ -85,6 +87,12 @@ typedef std::shared_ptr<Label> LabelPtr;
 
 typedef std::shared_ptr<Widget> WidgetPtr;
 typedef std::shared_ptr<BaseButton> ButtonPtr;
+
+// define the ResourceManageres
+typedef ResourceManager<Shader> ShaderManager;
+typedef ResourceManager<Material> MaterialManager;
+typedef ResourceManager<TextureFrame> TextureFrameManager;
+typedef ResourceManager<Font> FontManager;
 
 }
 

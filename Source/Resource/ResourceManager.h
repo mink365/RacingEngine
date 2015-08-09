@@ -3,14 +3,14 @@
 
 #include "Base/Singleton.h"
 #include <memory>
-#include <map>
+#include <unordered_map>
 
-#include "Texture/Texture.h"
+using namespace std;
 
 namespace re {
 
-template<class T, class V>
-class ResouceManager : public Singleton<V>
+template<class T>
+class ResourceManager : public Singleton<ResourceManager<T>>
 {
 public:
     void Register(std::shared_ptr<T> r);
@@ -20,17 +20,17 @@ public:
     std::shared_ptr<T> GetResource(const std::string& name);
 
 private:
-    std::map<std::string, std::shared_ptr<T>> map;
+    std::unordered_map<std::string, std::shared_ptr<T>> map;
 };
 
-template<class T, class V>
-inline void ResouceManager<T, V>::Register(std::shared_ptr<T> r)
+template<class T>
+inline void ResourceManager<T>::Register(std::shared_ptr<T> r)
 {
     map[r->getName()] = r;
 }
 
-template<class T, class V>
-inline void ResouceManager<T, V>::Dispose(std::shared_ptr<T> r)
+template<class T>
+inline void ResourceManager<T>::Dispose(std::shared_ptr<T> r)
 {
     auto iter = map.find(r->getName());
 
@@ -39,28 +39,17 @@ inline void ResouceManager<T, V>::Dispose(std::shared_ptr<T> r)
     }
 }
 
-template<class T, class V>
-inline bool ResouceManager<T, V>::Contain(const string &name)
+template<class T>
+inline bool ResourceManager<T>::Contain(const string &name)
 {
     return (map.find(name) != map.end());
 }
 
-template<class T, class V>
-inline std::shared_ptr<T> ResouceManager<T, V>::GetResource(const string &name)
+template<class T>
+inline std::shared_ptr<T> ResourceManager<T>::GetResource(const string &name)
 {
     return map[name];
 }
-
-class TexManager : public ResouceManager<Texture, TexManager>
-{
-public:
-    TexManager() {
-    }
-
-    void Hello() {
-        int i = 0;
-    }
-};
 
 }
 

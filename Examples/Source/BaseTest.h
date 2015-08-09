@@ -14,8 +14,6 @@
 #include "Texture/TextureManager.h"
 #include "Texture/TextureParser.h"
 #include "Shader/ShaderUtil.h"
-#include "Shader/ShaderManager.h"
-#include "Font/FontManager.h"
 #include "Font/TextureAtlas.h"
 #include "Font/FreeTypeUtil.h"
 
@@ -23,7 +21,6 @@
 #include "FileSystem/File.h"
 #include "FileSystem/FileSystem.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
-#include "Shader/ShaderManager.h"
 #include "UI/Manager/UIManager.h"
 #include "Util/ComponentFactory.h"
 

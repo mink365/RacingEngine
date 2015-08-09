@@ -1,7 +1,6 @@
 #include "TextStuffer.h"
 
 #include "UI/Base/QuadStuffer.h"
-#include "FontManager.h"
 
 #include <stack>
 #include <sstream>
@@ -387,7 +386,7 @@ void TextStuffer::defaultMarkup(Markup &markup)
     markup.foregroundColor = Color::White;
     markup.backgroundColor = Color::White;
     markup.size = 25;
-    markup.font = FontManager::getInstance().getFont("default");
+    markup.font = FontManager::getInstance().GetResource("default");
 }
 
 Color FromARGBToColor(int color) {
@@ -418,7 +417,7 @@ void TextStuffer::tagStackToMarkup(const std::vector<Tag::ptr>& stack, Markup &m
         }
         case TagType::Font:
         {
-            markup.font = FontManager::getInstance().getFont(tag->fontName);
+            markup.font = FontManager::getInstance().GetResource(tag->fontName);
 
             break;
         }
