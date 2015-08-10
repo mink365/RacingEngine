@@ -1,6 +1,4 @@
-unix: CONFIG +=c++11
-
-unix: QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 #CONFIG += RE_PLATFORM_ANDROID
 ## macros in source code

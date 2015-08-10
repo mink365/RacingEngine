@@ -97,7 +97,13 @@ public:
     ~ProtoSignal ()
     {
     }
+
     /// Operator to add a new function or lambda as signal handler, returns a handler connection ID.
+    ConnectionType operator+= (const CbFunction &func)
+    {
+        return connect(func);
+    }
+
     ConnectionType operator+= (const SlotType &slot)
     {
         return connect(slot);
@@ -107,6 +113,11 @@ public:
     bool   operator-= (const ConnectionType& connection)
     {
         return disconnect(connection);
+    }
+
+    ConnectionType connect(const CbFunction& func)
+    {
+        return connect(SlotType(func));
     }
 
     ConnectionType connect(const SlotType &slot)

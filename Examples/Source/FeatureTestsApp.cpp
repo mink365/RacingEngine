@@ -54,8 +54,7 @@ bool FeatureTestsApp::initEnvironment()
 
     Screen::getInstance().setRealFrameSize(this->view->getFrameSize());
 
-    std::function<void()> func = std::bind(&FeatureTestsApp::update, this);
-    GameHub::getInstance().updateEvent.connect(func);
+    GameHub::getInstance().updateEvent += std::bind(&FeatureTestsApp::update, this);
 
     this->initResources();
     this->createTests();
