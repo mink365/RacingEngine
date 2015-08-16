@@ -1,6 +1,7 @@
 #include "NinePatch.h"
 
 #include "HierarchyColor.h"
+#include "Scene/RenderElement.h"
 #include "Scene/Mesh.h"
 #include "QuadStuffer.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -17,7 +18,7 @@ void NinePatch::init(const std::string& tex)
     NodePtr node = this->getNode();
     InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
 
-    mesh = this->getComponent<Mesh>();
+    mesh = this->getComponent<RenderElement>()->getMesh();
 
     this->rebind();
 }

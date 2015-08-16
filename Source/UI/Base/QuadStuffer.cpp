@@ -1,5 +1,6 @@
 #include "QuadStuffer.h"
 
+#include "Scene/RenderElement.h"
 #include "Scene/Mesh.h"
 
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -9,10 +10,13 @@ namespace re {
 
 void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
+    RenderElementPtr element = CreateComponent<RenderElement>();
+    node->addComponent(element);
+
     MeshPtr mesh = std::make_shared<Mesh>();
     MaterialPtr material = std::make_shared<Material>();
-    node->addComponent(mesh);
-    node->addComponent(material);
+    element->setMaterial(material);
+    element->setMesh(mesh);
 
     mesh->setGeometry(Geometry::create());
 

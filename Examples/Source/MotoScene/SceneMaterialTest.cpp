@@ -1,3 +1,4 @@
+#include "BaseTest.h"
 #include "SceneMaterialTest.h"
 #include "Material/Material.h"
 #include "Loader/MaterialLoader.h"
@@ -18,10 +19,10 @@ SceneMaterialTest::SceneMaterialTest()
 
 void InitNodeShader(NodePtr& node) {
     auto func = [](NodePtr& node) {
-        MeshPtr mesh = node->getComponent<Mesh>();
+        auto element = node->getComponent<RenderElement>();
 
-        if (mesh) {
-            InitMeshInHardward(mesh);
+        if (element) {
+            InitMeshInHardward(element);
         }
     };
 

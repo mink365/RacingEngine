@@ -7,6 +7,7 @@
 #include "UI/Base/QuadStuffer.h"
 #include "Math/Color.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
+#include "Scene/RenderElement.h"
 #include "Scene/Mesh.h"
 
 namespace re {
@@ -24,14 +25,14 @@ void Label::init(Font::ptr &font)
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
     InitNodeForLeaf(node, font->getTexture(), shaderName);
 
-    auto material = node->getComponent<Material>();
+    auto material = node->getComponent<RenderElement>()->getMaterial();
     material->getRenderState().blendState.blendModeAlpha = BlendMode::Alpha;
     material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
 }
 
 void Label::setText(const string &text)
 {
-    auto mesh = this->getComponent<Mesh>();
+    auto mesh = this->getComponent<RenderElement>()->getMesh();
     auto color = this->getComponent<HierarchyColor>();
     auto transform = this->getComponent<Transform2D>();
 

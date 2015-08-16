@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include <algorithm>
+#include "RenderElement.h"
 #include "Mesh.h"
 
 namespace re {
@@ -70,10 +71,11 @@ void SceneManager::vist(const NodePtr &node)
     }
 
     if (node->isVisible()) {
-        auto mesh = node->getComponent<Mesh>();
-        auto material = node->getComponent<Material>();
+        auto renderElement = node->getComponent<RenderElement>();
         auto transform = node->getTransform();
-        if (mesh && material && transform) {
+        if (renderElement && transform) {
+            auto material = renderElement->getMaterial();
+            auto mesh = renderElement->getMesh();
             this->renderManger.getRenderQueue().addRenderable(transform->getWorldMatrix(),
                                                               material, mesh->getMeshData(), material->getQueueID());
         }

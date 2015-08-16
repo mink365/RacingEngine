@@ -1,7 +1,8 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-#include "Scene/Component.h"
+#include "Base/Named.h"
+#include "Base/Clonable.h"
 #include "Render/RenderState.h"
 #include "SamplerParameter.h"
 #include "Shader/Shader.h"
@@ -9,7 +10,7 @@
 
 namespace re {
 
-class Material : public Component, public enable_shared_from_this<Material>
+class Material : public Shared<Material>, public Named, public std::enable_shared_from_this<Material>
 {
 public:
     Material();
@@ -39,10 +40,6 @@ public:
     void setTexture(const string& name, TexturePtr& tex);
 
     Material& operator =(const Material& rhs);
-
-protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* rhs) override;
 
 private:
     bool transparent;

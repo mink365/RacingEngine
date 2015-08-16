@@ -6,6 +6,7 @@
 #include "UI/Base/Sprite.h"
 #include "UI/Base/NinePatch.h"
 
+#include "Scene/RenderElement.h"
 #include "Scene/Mesh.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
@@ -36,9 +37,9 @@ NodePtr CreateMeshNode()
 {
     auto node = CreateNode();
 
-    AddComponent<2, Mesh, Material>::Do(node);
+    AddComponent<1, RenderElement>::Do(node);
 
-    node->getComponent<Material>()->initDefaultPass();
+    node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
     return node;
 }
@@ -47,9 +48,9 @@ NodePtr CreateSkinningMesh()
 {
     auto node = CreateNode();
 
-    AddComponent<5, Skeleton, SkeletonController, Animation, Mesh, Material>::Do(node);
+    AddComponent<4, Skeleton, SkeletonController, Animation, RenderElement>::Do(node);
 
-    node->getComponent<Material>()->initDefaultPass();
+    node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
     return node;
 }

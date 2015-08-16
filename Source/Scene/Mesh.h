@@ -1,6 +1,8 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "Base/Named.h"
+#include "Base/Clonable.h"
 #include "Scene/Node.h"
 #include "Geometry/Geometry.h"
 #include "Material/Material.h"
@@ -11,7 +13,6 @@
 namespace re {
 
 class Mesh;
-typedef std::shared_ptr<Mesh> MeshPtr;
 
 enum class VertexElementType {
     Position,
@@ -85,7 +86,7 @@ public:
     IndexBuffer indexStream;
 };
 
-class Mesh : public Component
+class Mesh : public Shared<Mesh>, public Named
 {
 public:
     Mesh();
@@ -101,10 +102,6 @@ public:
 
     MeshDataPtr getMeshData() const;
     void setMeshData(MeshDataPtr data);
-
-protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
 
 protected:
     MeshDataPtr data;

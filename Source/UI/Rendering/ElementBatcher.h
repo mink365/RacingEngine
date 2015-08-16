@@ -6,7 +6,7 @@
 #include "PreDeclare.h"
 #include "Component.h"
 #include "ElementBatch.h"
-#include "RenderElement.h"
+#include "CanvasRenderElement.h"
 
 namespace re {
 namespace ui {
@@ -29,7 +29,7 @@ public:
     void Render();
 
 private:
-    ElementBatch::ptr FindBatchForElement(const RenderElement& element);
+    ElementBatch::ptr FindBatchForElement(const CanvasRenderElement& element);
 
 private:
     std::unordered_map<uint32_t, std::set<ElementBatch::ptr>> layerToElementBatchs;

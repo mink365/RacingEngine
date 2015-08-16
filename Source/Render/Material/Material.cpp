@@ -5,7 +5,6 @@ namespace re {
 
 Material::Material()
 {
-    this->type = ComponentType::Material;
     this->transparent = false;
     this->queueID = 50;
 }
@@ -127,34 +126,34 @@ Material& Material::operator =(const Material &rhs)
     return *this;
 }
 
-ComponentPtr Material::createCloneInstance() const
-{
-    return CreateCloneInstance<Material>();
-}
+//ComponentPtr Material::createCloneInstance() const
+//{
+//    return CreateCloneInstance<Material>();
+//}
 
-void Material::copyProperties(const Component *rhs)
-{
-    Component::copyProperties(rhs);
+//void Material::copyProperties(const Component *rhs)
+//{
+//    Component::copyProperties(rhs);
 
-    const Material* inst = dynamic_cast<const Material*>(rhs);
-    if (inst) {
-        this->queueID = inst->queueID;
-        this->renderState = inst->renderState;
-        this->shader = inst->shader;
-        this->transparent = inst->transparent;
+//    const Material* inst = dynamic_cast<const Material*>(rhs);
+//    if (inst) {
+//        this->queueID = inst->queueID;
+//        this->renderState = inst->renderState;
+//        this->shader = inst->shader;
+//        this->transparent = inst->transparent;
 
-        for (auto& pass : inst->passes) {
-            auto passInst = pass->clone();
+//        for (auto& pass : inst->passes) {
+//            auto passInst = pass->clone();
 
-            this->addPass(passInst);
-        }
+//            this->addPass(passInst);
+//        }
 
-        for (auto& param : inst->samplers) {
-            auto paramInst = param->clone();
+//        for (auto& param : inst->samplers) {
+//            auto paramInst = param->clone();
 
-            this->samplers.push_back(paramInst);
-        }
-    }
-}
+//            this->samplers.push_back(paramInst);
+//        }
+//    }
+//}
 
 }

@@ -7,10 +7,10 @@
 namespace re {
 namespace ui {
 
-class RenderElement : public Component
+class CanvasRenderElement : public Component
 {
 public:
-    RenderElement();
+    CanvasRenderElement();
 
 private:
     MaterialPtr material;

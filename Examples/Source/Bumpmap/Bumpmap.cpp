@@ -1,6 +1,7 @@
 #include "Bumpmap.h"
 
 #include "ShapeGenerater.h"
+#include "RenderElement.h"
 
 Bumpmap::Bumpmap()
 {
@@ -66,7 +67,8 @@ void Bumpmap::Init()
 
     auto box = CreateMeshNode();
     SetMeshData(box, geometry, texture, "normal_map");
-    MeshPtr mesh = box->getComponent<Mesh>();
+    auto renderElement = box->getComponent<RenderElement>();
+    auto mesh = renderElement->getMesh();
     mesh->getGeometry()->calculateTangents();
     {
         auto meshData = std::make_shared<MeshData>();
@@ -103,13 +105,13 @@ void Bumpmap::Init()
         }
     };
     mesh->getGeometry()->setMeshDataAppendFunc(func);
-    InitMeshInHardward(mesh, "normal_map");
+    InitMeshInHardward(renderElement, "normal_map");
 
     {
         auto diffuseTexture = TextureManager::getInstance().getTexture("diffuse");
         auto normalTexture = TextureManager::getInstance().getTexture("diffusenormalmap");
 
-        auto material = mesh->getComponent<Material>();
+        auto material = renderElement->getMaterial();
         material->setTexture("sBaseTex", diffuseTexture);
         material->setTexture("sNormalMap", normalTexture);
     }

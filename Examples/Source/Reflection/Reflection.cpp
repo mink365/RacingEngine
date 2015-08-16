@@ -31,7 +31,7 @@ void Reflection::Init()
 
     rootNode->addChild(node);
 
-    auto material = node->getComponent<Material>();
+    auto material = node->getComponent<RenderElement>()->getMaterial();
     material->setQueueID(51);
     material->setTexture("s2DMap", texture);
     material->setTexture("sCubeMap", cubeTexture);

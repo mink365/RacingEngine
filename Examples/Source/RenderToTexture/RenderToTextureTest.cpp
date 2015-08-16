@@ -42,7 +42,7 @@ void RenderToTextureTest::Init()
 
     cylinderNode = CreateMeshNode();
     SetMeshData(cylinderNode, geometry, texture);
-    cylinderNode->getComponent<Material>()->setQueueID(52);
+    cylinderNode->getComponent<RenderElement>()->getMaterial()->setQueueID(52);
 
     rootNode->addChild(cylinderNode);
 

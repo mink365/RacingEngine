@@ -25,7 +25,7 @@ void Refraction::Init()
         auto node = CreateMeshNode();
         SetMeshData(node, geometry, texture);
 
-        node->getComponent<Material>()->setQueueID(51);
+        node->getComponent<RenderElement>()->getMaterial()->setQueueID(51);
 
         rootNode->addChild(node);
 
@@ -36,7 +36,7 @@ void Refraction::Init()
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, texture, "refraction");
-    node->getComponent<Material>()->setTexture("sTexture", texture);
+    node->getComponent<RenderElement>()->getMaterial()->setTexture("sTexture", texture);
 
     rootNode->addChild(node);
 }

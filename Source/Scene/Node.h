@@ -27,7 +27,6 @@ namespace re {
 void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
 
 class Node;
-typedef std::shared_ptr<Node> NodePtr;
 
 class Node : public enable_shared_from_this<Node>, public Named, public Clonable<Node> {
     friend class SceneManager;

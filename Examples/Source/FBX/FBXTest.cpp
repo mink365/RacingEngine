@@ -68,9 +68,9 @@ void FBXTest::Init()
     meshs.push_back(moto);
 
     for (NodePtr node : meshs) {
-        MeshPtr mesh = node->getComponent<Mesh>();
+        auto element = node->getComponent<RenderElement>();
 
-        InitMeshInHardward(mesh);
+        InitMeshInHardward(element);
     }
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
@@ -115,7 +115,7 @@ void FBXTest::Init()
 //    manController->setDefaultFrame(1);
     man->getComponent<SkeletonController>()->play();
 
-    InitMeshInHardward(man->getComponent<Mesh>());
+    InitMeshInHardward(man->getComponent<RenderElement>());
     rootNode->addChild(man);
 }
 
@@ -140,7 +140,7 @@ void FBXTest::Update()
     quat.fromAngles(Vec3(0, 0, rotation));
     motoRoot->getTransform()->setLocalRotation(quat);
 
-    MeshPtr mesh = man->getComponent<Mesh>();
+    MeshPtr mesh = man->getComponent<RenderElement>()->getMesh();
 
     BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh.get()));
 

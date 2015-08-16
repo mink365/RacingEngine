@@ -169,24 +169,25 @@ int LoadShader(const std::string& name, const std::string& pfilePath_vs, const s
     return LoadShaderData(name, vertexShaderString, fragmentShaderString);
 }
 
-void InitMeshInHardward(MeshPtr mesh, const string &shaderName) {
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+void InitMeshInHardward(RenderElementPtr element, const string &shaderName) {
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(element->getMesh().get()));
 
     Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
-    mesh->getComponent<Material>()->setShder(shader);
+    element->getMaterial()->setShder(shader);
 }
 
 void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, const std::string& shaderName)
 {
-    MeshPtr mesh = node->getComponent<Mesh>();
+    RenderElementPtr element = node->getComponent<RenderElement>();
+    MeshPtr mesh = element->getMesh();
     mesh->init();
 
     mesh->setGeometry(geometry);
 
-    InitMeshInHardward(mesh, shaderName);
+    InitMeshInHardward(element, shaderName);
 
     RE_ASSERT(texture != nullptr);
-    SamplerParameter::ptr unit = node->getComponent<Material>()->getSampler("textureSampler");
+    SamplerParameter::ptr unit = element->getMaterial()->getSampler("textureSampler");
     if (unit != nullptr) {
         unit->setTexture(texture);
     }

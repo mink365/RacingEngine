@@ -2,7 +2,7 @@
 #define RE_UI_ELEMENTBATCH_H
 
 #include "PreDeclare.h"
-#include "RenderElement.h"
+#include "CanvasRenderElement.h"
 
 namespace re {
 namespace ui {
@@ -12,7 +12,7 @@ class ElementBatch : public Shared<ElementBatch>
 public:
     ElementBatch();
 
-    void AddElement(const RenderElement& element);
+    void AddElement(const CanvasRenderElement& element);
 
 private:
     MaterialPtr material;

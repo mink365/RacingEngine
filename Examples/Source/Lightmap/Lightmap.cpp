@@ -35,7 +35,7 @@ void Lightmap::Init()
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, base, "lightmap");
-    auto material = node->getComponent<Material>();
+    auto material = node->getComponent<RenderElement>()->getMaterial();
 
     rootNode->addChild(node);
 

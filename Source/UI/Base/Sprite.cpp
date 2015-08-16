@@ -3,6 +3,7 @@
 #include "HierarchyColor.h"
 #include "Transform2D.h"
 
+#include "Scene/RenderElement.h"
 #include "Scene/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -43,7 +44,7 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 
 void Sprite::rebind()
 {
-    auto mesh = this->getComponent<Mesh>();
+    auto mesh = this->getComponent<RenderElement>()->getMesh();
     auto color = this->getComponent<HierarchyColor>();
 
     QuadStuffer::FillQuad(frame, rect.size, color->getDisplayColor(), mesh->getGeometry());

@@ -2,6 +2,7 @@
 #include "ModelLoader/ReadCommon.h"
 #include "Math/Vector.h"
 #include "Scene/Node.h"
+#include "Scene/RenderElement.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 #include "Animation/Bone.h"
@@ -139,11 +140,13 @@ NodePtr FbxParser::readNode(std::istream *st) {
 void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     MaterialPtr material = std::make_shared<Material>();
-    node->addComponent(mesh);
-    node->addComponent(material);
+
+    RenderElementPtr renderElement = CreateComponent<RenderElement>();
+    renderElement->setMaterial(material);
+    renderElement->setMesh(mesh);
 
     mesh->init();
-    mesh->name = node->name;
+    mesh->setName(node->name);
 
     SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();
     mesh->setMeshData(meshData);

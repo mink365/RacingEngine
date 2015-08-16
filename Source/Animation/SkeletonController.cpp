@@ -6,6 +6,7 @@
 #include "Bone.h"
 #include "Scene/Node.h"
 #include "Scene/Mesh.h"
+#include "Scene/RenderElement.h"
 #include "Scene/Transform.h"
 #include "Platform/GameHub.h"
 
@@ -23,7 +24,7 @@ void re::SkeletonController::init()
     this->skeleton = this->getComponent<Skeleton>();
     this->animation = this->getComponent<Animation>();
 
-    this->mesh = this->getComponent<Mesh>();
+    this->mesh = this->getComponent<RenderElement>()->getMesh();
     this->meshData = std::dynamic_pointer_cast<SkinnedMeshData>(this->mesh->getMeshData());
 }
 

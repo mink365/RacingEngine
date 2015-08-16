@@ -1,5 +1,6 @@
 #include "DebugRenderer.h"
 #include "UI/Base/Transform2D.h"
+#include "Scene/RenderElement.h"
 #include "BufferObject/BufferObjectUtil.h"
 #include "Scene/SceneManager.h"
 
@@ -49,10 +50,10 @@ DebugRenderer::~DebugRenderer()
 void DebugRenderer::InitNode()
 {
     node = CreateMeshNode();
-    mesh = node->getComponent<Mesh>();
+    mesh = node->getComponent<RenderElement>()->getMesh();
     mesh->setMeshData(meshData);
 
-    auto material = node->getComponent<Material>();
+    auto material = node->getComponent<RenderElement>()->getMaterial();
 
     Shader::ptr shader = ShaderManager::getInstance().GetResource("Shader_Debug");
     material->setShder(shader);

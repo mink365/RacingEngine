@@ -4,7 +4,7 @@ namespace re {
 
 Mesh::Mesh()
 {
-    this->type = ComponentType::Mesh;
+
 }
 
 void Mesh::init()
@@ -30,21 +30,6 @@ MeshDataPtr Mesh::getMeshData() const
 void Mesh::setMeshData(MeshDataPtr data)
 {
     this->data = data;
-}
-
-ComponentPtr Mesh::createCloneInstance() const
-{
-    return std::make_shared<Mesh>();
-}
-
-void Mesh::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const Mesh* inst = dynamic_cast<const Mesh*>(component);
-    if (inst) {
-        this->data = inst->data;
-    }
 }
 
 void re::ControlPoints::cacheVertex() {
