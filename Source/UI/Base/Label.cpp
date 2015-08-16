@@ -14,6 +14,7 @@ namespace re {
 namespace ui {
 
 Label::Label()
+    : Graphic()
 {
 }
 
@@ -21,25 +22,26 @@ void Label::init(Font::ptr &font)
 {
     this->font = font;
 
-    NodePtr node = this->getNode();
-
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
-    InitNodeForRender(node, font->getTexture(), shaderName);
 
-    auto material = node->getComponent<RenderElement>()->getMaterial();
+    this->getNode()->addComponent(CreateComponent<CanvasRenderElement>());
+    auto element = this->getComponent<CanvasRenderElement>();
+    auto material = CreateDefaultMaterial(font->getTexture(), shaderName);
+    element->setMaterial(material);
+    element->setTexture(font->getTexture());
+    element->setGeometry(geometry);
+
     material->getRenderState().blendState.blendModeAlpha = BlendMode::Alpha;
     material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
 }
 
 void Label::setText(const string &text)
 {
-    auto mesh = this->getComponent<RenderElement>()->getMesh();
     auto color = this->getComponent<HierarchyColor>();
     auto transform = this->getComponent<Transform2D>();
 
-    mesh->getGeometry()->clear();
-
-    TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), mesh->getGeometry(), this->font);
+    geometry->clear();
+    TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), geometry, this->font);
 
     const Rect& textRect = TextStuffer::getInstance().getTextRect();
 
@@ -47,7 +49,6 @@ void Label::setText(const string &text)
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
 //    transform->setAnchorPointInPixels(textRect.origin); // TODO: just an offset of vertext
 
-    UploadMeshToHardware(mesh);
 }
 
 ComponentPtr Label::createCloneInstance() const

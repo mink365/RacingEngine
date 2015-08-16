@@ -16,10 +16,13 @@ void NinePatch::init(const std::string& tex)
 
     this->frame = TextureFrameManager::getInstance().GetResource(tex);
 
-    NodePtr node = this->getNode();
-    InitNodeForRender(node, frame->getTexture(), "Shader_PTC");
+    this->getNode()->addComponent(CreateComponent<CanvasRenderElement>());
+    auto element = this->getComponent<CanvasRenderElement>();
 
-    mesh = this->getComponent<RenderElement>()->getMesh();
+    auto material = CreateDefaultMaterial(frame->getTexture(), "Shader_PTC");
+    element->setMaterial(material);
+    element->setTexture(frame->getTexture());
+    element->setGeometry(geometry);
 
     this->rebind();
 }
@@ -93,7 +96,7 @@ void NinePatch::rebind()
     this->textureGrid.rt.set(this->centerRect.getMaxX(), this->centerRect.getMaxY(),
                              this->getRightPadding(), this->getTopPadding());
 
-    mesh->getGeometry()->clear();
+    geometry->clear();
 
     this->addQuad(AlignType::LEFT_BOTTOM);
     this->addQuad(AlignType::LEFT_CENTER);
@@ -104,8 +107,6 @@ void NinePatch::rebind()
     this->addQuad(AlignType::RIGHT_BOTTOM);
     this->addQuad(AlignType::CENTER_BOTTOM);
     this->addQuad(AlignType::CENTER);
-
-    UploadMeshToHardware(mesh);
 }
 
 void NinePatch::addQuad(AlignType type)
@@ -113,17 +114,15 @@ void NinePatch::addQuad(AlignType type)
     Rect vRect = vertexGrid.getRect(type);
     Rect tRect = textureGrid.getRect(type);
 
-    QuadStuffer::AddOriginalQuad(vRect, tRect, color->getDisplayColor(), this->frame, mesh->getGeometry());
+    QuadStuffer::AddOriginalQuad(vRect, tRect, color->getDisplayColor(), this->frame, geometry);
 }
 
 void NinePatch::updateViewColor()
 {
-    auto& colors = mesh->getGeometry()->getDiffuseColors();
+    auto& colors = geometry->getDiffuseColors();
     for (size_t i = 0; i < colors.size(); ++i) {
         colors[i] = color->getDisplayColor();
     }
-
-    UploadMeshToHardware(mesh);
 }
 
 ComponentPtr NinePatch::createCloneInstance() const

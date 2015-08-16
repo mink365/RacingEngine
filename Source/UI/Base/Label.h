@@ -1,13 +1,13 @@
 #ifndef RE_UI_LABEL_H
 #define RE_UI_LABEL_H
 
-#include "Component.h"
+#include "Graphic.h"
 #include "Font/Font.h"
 
 namespace re {
 namespace ui {
 
-class Label : public Component
+class Label : public Graphic
 {
 public:
     Label();

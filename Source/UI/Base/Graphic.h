@@ -3,6 +3,7 @@
 
 #include "PreDeclare.h"
 #include "Component.h"
+#include "UI/Rendering/CanvasRenderElement.h"
 
 
 namespace re {

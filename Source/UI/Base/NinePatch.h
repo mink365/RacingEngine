@@ -1,7 +1,7 @@
 #ifndef RE_UI_NINEPATCH_H
 #define RE_UI_NINEPATCH_H
 
-#include "Component.h"
+#include "Graphic.h"
 #include "Math/Rect.h"
 #include "Texture/Frame/TextureFrame.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -17,10 +17,12 @@ public:
     const Rect getRect(AlignType type) const;
 };
 
-class NinePatch : public Component
+class NinePatch : public Graphic
 {
 public:
-    NinePatch() {};
+    NinePatch()
+        : Graphic()
+    {};
 
     void init(const std::string& tex);
 
@@ -33,7 +35,7 @@ public:
     float getBottomPadding() const;
     float getTopPadding() const;
 
-    virtual void rebind();
+    void rebind();
 
 protected:
     void addQuad(AlignType type);
@@ -53,7 +55,6 @@ protected:
     NineGrid textureGrid;
 
 private:
-    MeshPtr mesh;
     HierarchyColorPtr color;
     Transform2DPtr transform;
 };
