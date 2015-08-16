@@ -4,8 +4,8 @@
 #include "Math/Math.h"
 #include "Message/Signal.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 class ScrollParam;
 
@@ -122,6 +122,7 @@ private:
     MoveState state;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif // AXISDATA_H

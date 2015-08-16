@@ -21,7 +21,7 @@ public:
 
     static void FillQuad(const TextureFrame::constPtr& frame, const Size& size, const Color &color, const Geometry::ptr& geomerty);
     static void AddOriginalQuad(const Rect& rect, const Rect& textureRect, const Color& color, const TextureFrame::constPtr& frame, const Geometry::ptr& geomerty);
-    static void AddVertex(const Rect& rect, const Rect& textureRect, const Color& color, AlignType align, const TextureFrame::constPtr& frame, const Geometry::ptr& geomerty);
+    static void AddVertex(const Rect& rect, const Rect& textureRect, const Color& color, ui::AlignType align, const TextureFrame::constPtr& frame, const Geometry::ptr& geomerty);
     static void AddVertex(const Vec2& p, const Uv& uv, const Color& color, const Geometry::ptr& geomerty);
 };
 

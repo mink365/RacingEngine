@@ -1,11 +1,12 @@
-#ifndef RE_LAYOUTELEMENT_H
-#define RE_LAYOUTELEMENT_H
+#ifndef RE_UI_LAYOUTELEMENT_H
+#define RE_UI_LAYOUTELEMENT_H
 
 #include "Component.h"
 #include "Math/Size.h"
 #include "LayoutUtil.h"
 
 namespace re {
+namespace ui {
 
 class Alignment : public Shared<Alignment>
 {
@@ -38,6 +39,7 @@ protected:
     Alignment::ptr alignment;
 };
 
+} // namespace ui
 } // namespace re
 
-#endif // RE_LAYOUTELEMENT_H
+#endif // RE_UI_LAYOUTELEMENT_H

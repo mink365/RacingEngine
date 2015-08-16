@@ -4,8 +4,7 @@
 #include <array>
 #include <Math/Vector.h>
 
-namespace re
-{
+namespace re {
 
 class VelocityTracker
 {

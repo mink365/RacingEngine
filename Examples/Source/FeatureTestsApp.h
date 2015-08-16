@@ -53,8 +53,8 @@ private:
     NodePtr rootNode;
     std::shared_ptr<ui::UIManager> stage;
 
-    LabelPtr labelTitle;
-    LabelPtr labelFps;
+    ui::LabelPtr labelTitle;
+    ui::LabelPtr labelFps;
 };
 
 #endif // FEATURETESTSAPP_H

@@ -17,7 +17,7 @@ public:
     void Step(NodePtr &node);
 
 private:
-    void AppendNode(Transform2DPtr& transform, size_t level);
+    void AppendNode(ui::Transform2DPtr& transform, size_t level);
 
 private:
     MeshPtr mesh;

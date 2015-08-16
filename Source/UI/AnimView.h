@@ -6,6 +6,7 @@
 #include <functional>
 
 namespace re {
+namespace ui {
 
 using namespace std;
 
@@ -60,6 +61,7 @@ protected:
     vector<AnimationEventListener> animListeners;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif /* defined(__AnimView__) */

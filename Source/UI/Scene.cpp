@@ -4,6 +4,7 @@
 #include "Util/ComponentFactory.h"
 
 namespace re {
+namespace ui {
 
 Scene::Scene()
 {
@@ -57,4 +58,5 @@ void Scene::onExit()
     Widget::onExit();
 }
 
-}
+} // namespace ui
+} // namespace re

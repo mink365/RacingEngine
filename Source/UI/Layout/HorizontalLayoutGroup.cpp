@@ -1,6 +1,7 @@
 #include "HorizontalLayoutGroup.h"
 
 namespace re {
+namespace ui {
 
 HorizontalLayoutGroup::HorizontalLayoutGroup()
 {
@@ -12,5 +13,6 @@ HorizontalLayoutGroup::~HorizontalLayoutGroup()
 
 }
 
+} // namespace ui
 } // namespace re
 

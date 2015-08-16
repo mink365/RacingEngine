@@ -12,6 +12,7 @@
 #include <assert.h>
 
 namespace re {
+namespace ui {
 
 using namespace std;
 
@@ -343,6 +344,7 @@ inline void LayerManager<T>::onLayerHidden(ViewPtr &node) {
     this->removeLayerFromScene(node);
 }
 
-}
+} // namespace ui
+} // namespace re
 
 #endif

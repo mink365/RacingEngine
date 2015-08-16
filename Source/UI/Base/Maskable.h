@@ -1,5 +1,5 @@
-#ifndef RE_UI_MASK_H
-#define RE_UI_MASK_H
+#ifndef RE_UI_MASKABLE_H
+#define RE_UI_MASKABLE_H
 
 #include "PreDeclare.h"
 #include "Component.h"
@@ -7,13 +7,13 @@
 namespace re {
 namespace ui {
 
-class Mask : public Component
+class Maskable : public Component
 {
 public:
-    Mask();
+    Maskable();
 };
 
 } // namespace ui
 } // namespace re
 
-#endif // RE_UI_MASK_H
+#endif // RE_UI_MASKABLE_H

@@ -8,6 +8,7 @@
 #include "IBackKeyHandler.h"
 
 namespace re {
+namespace ui {
 
 class Scene :  public Widget, public AnimationView, public IMessageHandler, public IBackKeyHandler
 {
@@ -26,6 +27,7 @@ protected:
     virtual void onExit();
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif /* defined(__Scene__) */

@@ -1,7 +1,7 @@
 #include "HierarchyColor.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 HierarchyColor::HierarchyColor()
 {
@@ -78,5 +78,6 @@ void HierarchyColor::copyProperties(const Component* node)
     }
 }
 
-}
+} // namespace ui
+} // namespace re
 

@@ -6,14 +6,15 @@
 
 ******************************************************************************/
 
-#ifndef RE_TRANSFORM2D_H
-#define RE_TRANSFORM2D_H
+#ifndef RE_UI_TRANSFORM2D_H
+#define RE_UI_TRANSFORM2D_H
 
 #include "Math/Size.h"
 #include "Math/Rect.h"
 #include "Scene/Transform.h"
 
 namespace re {
+namespace ui {
 
 class Transform2D;
 typedef std::shared_ptr<Transform2D> Transform2DPtr;
@@ -75,6 +76,7 @@ private:
 
 };
 
+} // namespace ui
 } // namespace re
 
-#endif // RE_TRANSFORM2D_H
+#endif // RE_UI_TRANSFORM2D_H

@@ -1,7 +1,7 @@
 #include "LinearLayoutGroup.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 LinearLayoutGroup::LinearLayoutGroup()
     : _axis(Axis::Horizontal), _spacing(0)
@@ -105,5 +105,6 @@ void LinearLayoutGroup::SetExpand(bool v)
     }
 }
 
-}
+} // namespace ui
+} // namespace re
 

@@ -3,6 +3,7 @@
 #include "UI/Base/Transform2D.h"
 
 namespace re {
+namespace ui {
 
 Vec2 LayoutUtil::AlignTypeToPoint(AlignType type) {
     switch (type) {
@@ -141,4 +142,5 @@ Vec2 LayoutUtil::CalculateLayoutToParent(Transform2DPtr view, const Vec2 &viewAl
     return CalculateLayout(view, viewAlign, view->getComponentInParent<Transform2D>(), targetAlign, true, offset);
 }
 
-}
+} // namespace ui
+} // namespace re

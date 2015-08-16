@@ -8,6 +8,8 @@ using namespace TweenEngine;
 
 namespace re {
 
+using namespace ui;
+
 void PredefineTweenAccessor::registerAccessor()
 {
     auto func = [=](std::shared_ptr<void> obj, int tweenType, TweenCMD cmd, float *values)->int

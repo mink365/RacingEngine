@@ -6,6 +6,7 @@
 #include "VelocityTracker.h"
 
 namespace re {
+namespace ui {
 
 class ScrollParam
 {
@@ -64,6 +65,7 @@ private:
     bool isMoved;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif // SCROLLVIEW_H

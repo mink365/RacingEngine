@@ -1,5 +1,5 @@
-#ifndef NINEPATCH_H
-#define NINEPATCH_H
+#ifndef RE_UI_NINEPATCH_H
+#define RE_UI_NINEPATCH_H
 
 #include "Component.h"
 #include "Math/Rect.h"
@@ -7,6 +7,7 @@
 #include "UI/Layout/LayoutUtil.h"
 
 namespace re {
+namespace ui {
 
 class NineGrid {
 public:
@@ -57,6 +58,7 @@ private:
     Transform2DPtr transform;
 };
 
-}
+} // namespace ui
+} // namespace re
 
-#endif // NINEPATCH_H
+#endif // RE_UI_NINEPATCH_H

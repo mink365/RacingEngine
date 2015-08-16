@@ -5,6 +5,7 @@
 #include <thread>
 
 namespace re {
+namespace ui {
 
 AnimationView::AnimationView()
 : viewState(ViewState::HIDDEN)
@@ -106,4 +107,5 @@ void AnimationView::emitAnimEvent(ViewAnimEvent event) {
     }
 }
 
-}
+} // namespace ui
+} // namespace re

@@ -4,6 +4,7 @@
 #include "Util/LocalTime.h"
 
 namespace re {
+namespace ui {
 
 BaseButton::BaseButton()
 {
@@ -97,7 +98,7 @@ void BaseButton::copyProperties(const Component *component)
     }
 }
 
-void re::ImageButton::init(const string &texDefault, const string &texPress)
+void ImageButton::init(const string &texDefault, const string &texPress)
 {
     this->init(texDefault, texPress, texDefault);
 }
@@ -197,4 +198,5 @@ void LabelButton::copyProperties(const Component *component)
     }
 }
 
-}
+} // namespace ui
+} // namespace re

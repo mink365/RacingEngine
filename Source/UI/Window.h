@@ -6,6 +6,7 @@
 #include "IBackKeyHandler.h"
 
 namespace re {
+namespace ui {
 
 class WindowManager;
 
@@ -54,6 +55,7 @@ protected:
     WindowManager* manager;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif // WINDOW_H

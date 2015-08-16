@@ -13,6 +13,8 @@
 
 namespace re {
 
+using namespace ui;
+
 class GLFWEventHandler
 {
 private:

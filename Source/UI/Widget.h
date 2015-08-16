@@ -13,6 +13,7 @@
 using namespace std;
 
 namespace re {
+namespace ui {
 
 enum class WidgetState {
     DEFAULT,
@@ -83,6 +84,7 @@ protected:
     Transform2DPtr transform;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif // WIDGETCONTAINER_H

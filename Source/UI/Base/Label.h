@@ -1,10 +1,11 @@
-#ifndef LABEL_H
-#define LABEL_H
+#ifndef RE_UI_LABEL_H
+#define RE_UI_LABEL_H
 
 #include "Component.h"
 #include "Font/Font.h"
 
 namespace re {
+namespace ui {
 
 class Label : public Component
 {
@@ -26,6 +27,7 @@ protected:
     bool dirtyFlag;
 };
 
-}
+} // namespace ui
+} // namespace re
 
-#endif // LABEL_H
+#endif // RE_UI_LABEL_H

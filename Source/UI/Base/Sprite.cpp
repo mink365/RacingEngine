@@ -9,6 +9,7 @@
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
+namespace ui {
 
 void Sprite::init(const std::string& tex)
 {
@@ -72,4 +73,5 @@ void Sprite::copyProperties(const Component *component)
     }
 }
 
-}
+} // namespace ui
+} // namespace re

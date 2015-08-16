@@ -9,6 +9,7 @@
 #include "Transform2D.h"
 
 namespace re {
+namespace ui {
 
 Transform2D::Transform2D()
 {
@@ -256,5 +257,6 @@ void Transform2D::copyProperties(const Component *component)
     }
 }
 
+} // namespace ui
 } // namespace re
 

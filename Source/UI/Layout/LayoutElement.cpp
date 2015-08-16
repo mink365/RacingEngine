@@ -2,6 +2,7 @@
 #include <cfloat>
 
 namespace re {
+namespace ui {
 
 LayoutElement::LayoutElement()
     : fillWidth(false), fillHeight(false)
@@ -35,5 +36,6 @@ void LayoutElement::setAlignment(Alignment::ptr &alignment)
     this->alignment = alignment;
 }
 
+} // namespace ui
 } // namespace re
 

@@ -10,6 +10,7 @@
 using namespace TweenEngine;
 
 namespace re {
+namespace ui {
 
 Window::Window()
 : isFullScreen(true)
@@ -128,4 +129,5 @@ void Window::initAnimFunc()
     };
 }
 
-}
+} // namespace ui
+} // namespace re

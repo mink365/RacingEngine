@@ -8,11 +8,11 @@
 #include "Base/NamedFactory.h"
 
 namespace re {
+namespace ui {
+
 typedef NamedFactory<Window> WindowFactory;
 typedef NamedFactory<Scene> SceneFactory;
 typedef std::shared_ptr<Scene> ScenePtr;
-
-    namespace ui {
 
 class UIManager : public Widget, public LayerManager<Scene>, public IMessageHandler {
 public:
@@ -51,7 +51,7 @@ private:
     WindowFactory windowFactory;
 };
 
-    }
-}
+} // namespace ui
+} // namespace re
 
 #endif /* defined(__SceneManager__) */

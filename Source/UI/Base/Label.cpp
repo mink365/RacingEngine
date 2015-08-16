@@ -11,6 +11,7 @@
 #include "Scene/Mesh.h"
 
 namespace re {
+namespace ui {
 
 Label::Label()
 {
@@ -66,4 +67,5 @@ void Label::copyProperties(const Component *component)
     }
 }
 
-}
+} // namespace ui
+} // namespace re

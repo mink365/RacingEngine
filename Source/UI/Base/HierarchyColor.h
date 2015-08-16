@@ -1,11 +1,11 @@
-#ifndef HIERARCHYCOLOR_H
-#define HIERARCHYCOLOR_H
+#ifndef RE_UI_HIERARCHYCOLOR_H
+#define RE_UI_HIERARCHYCOLOR_H
 
 #include "Math/Color.h"
 #include "Scene/Transform.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 class HierarchyColor;
 typedef std::shared_ptr<HierarchyColor> HierarchyColorPtr;
@@ -40,6 +40,7 @@ protected:
     Color worldColor;
 };
 
-}
+} // namespace ui
+} // namespace re
 
-#endif // HIERARCHYCOLOR_H
+#endif // RE_UI_HIERARCHYCOLOR_H

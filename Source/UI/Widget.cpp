@@ -5,6 +5,7 @@
 #include "Layout/LayoutUtil.h"
 
 namespace re {
+namespace ui {
 
 WidgetPtr GetWidgetComponent(Node& node)
 {
@@ -270,4 +271,5 @@ void Widget::copyProperties(const Component *component)
     }
 }
 
-}
+} // namespace ui
+} // namespace re

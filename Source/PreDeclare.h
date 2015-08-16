@@ -38,6 +38,8 @@ class Light;
 class File;
 class Font;
 
+namespace ui {
+
 class Transform2D;
 class HierarchyColor;
 class Sprite;
@@ -46,6 +48,10 @@ class NinePatch;
 
 class Widget;
 class BaseButton;
+
+class LayoutElement;
+
+}
 
 typedef std::shared_ptr<Animation> AnimationPtr;
 typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
@@ -81,6 +87,8 @@ typedef std::shared_ptr<Font> FontPtr;
 
 typedef std::shared_ptr<ByteBuffer> ByteBufferPtr;
 
+namespace ui {
+
 typedef std::shared_ptr<Transform2D> Transform2DPtr;
 typedef std::shared_ptr<HierarchyColor> HierarchyColorPtr;
 typedef std::shared_ptr<Sprite> SpritePtr;
@@ -89,6 +97,8 @@ typedef std::shared_ptr<Label> LabelPtr;
 
 typedef std::shared_ptr<Widget> WidgetPtr;
 typedef std::shared_ptr<BaseButton> ButtonPtr;
+
+}
 
 // define the ResourceManageres
 typedef ResourceManager<Shader> ShaderManager;

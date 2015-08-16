@@ -6,6 +6,8 @@
 
 namespace re {
 
+using namespace ui;
+
 DebugRenderer::DebugRenderer()
 {
     meshData = std::make_shared<MeshData>();

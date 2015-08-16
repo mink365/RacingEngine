@@ -2,8 +2,8 @@
 #include "GameHub.h"
 #include "ScrollView.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 AxisData::AxisData(const ScrollParam& param)
     : param(param)
@@ -221,5 +221,6 @@ void BaseAnimation::switchState(BaseAnimation::State state)
     _state = state;
 }
 
-}
+} // namespace ui
+} // namespace re
 

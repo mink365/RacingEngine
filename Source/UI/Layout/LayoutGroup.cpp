@@ -2,6 +2,7 @@
 #include "LayoutElement.h"
 
 namespace re {
+namespace ui {
 
 LayoutGroup::LayoutGroup()
     : _padding(5, 5, 5, 5)
@@ -80,5 +81,6 @@ void LayoutRoot(NodePtr &root)
     DistpatchFunctionInHierarchy(root, func);
 }
 
+} // namespace ui
 } // namespace re
 

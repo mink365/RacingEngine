@@ -1,10 +1,10 @@
-#ifndef LINEARLAYOUTGROUP_H
-#define LINEARLAYOUTGROUP_H
+#ifndef RE_UI_LINEARLAYOUTGROUP_H
+#define RE_UI_LINEARLAYOUTGROUP_H
 
 #include "LayoutGroup.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 enum class LinearAlign {
     Left,
@@ -39,5 +39,6 @@ protected:
     bool _forceExpandHeight;
 };
 
-}
-#endif // LINEARLAYOUTGROUP_H
+} // namespace ui
+} // namespace re
+#endif // RE_UI_LINEARLAYOUTGROUP_H

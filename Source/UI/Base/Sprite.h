@@ -1,12 +1,14 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef RE_UI_SPRITE_H
+#define RE_UI_SPRITE_H
 
 #include "Texture/Frame/TextureFrame.h"
 #include "Component.h"
+#include "Graphic.h"
 
 namespace re {
+namespace ui {
 
-class Sprite : public Component
+class Sprite : public Graphic
 {
 public:
     Sprite() {};
@@ -30,6 +32,7 @@ private:
     TextureFrame::ptr frame;
 };
 
-}
+} // namespace ui
+} // namespace re
 
-#endif // SPRITE_H
+#endif // RE_UI_SPRITE_H

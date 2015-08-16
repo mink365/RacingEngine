@@ -1,9 +1,10 @@
-#ifndef __LayoutUtil__
-#define __LayoutUtil__
+#ifndef __RE_UI_LayoutUtil__
+#define __RE_UI_LayoutUtil__
 
 #include "UI/Base/Transform2D.h"
 
 namespace re {
+namespace ui {
 
 enum class AlignType {
     CENTER,
@@ -46,6 +47,7 @@ namespace LayoutUtil {
     Vec2 CalculateLayout(Transform2DPtr view, const Vec2& viewAlign, Transform2DPtr target, const Vec2& targetAlign, bool targetIsParent = false, const Vec2& offset=Vec2::Zero);
 }
 
-}
+} // namespace ui
+} // namespace re
 
-#endif /* defined(__LayoutUtil__) */
+#endif /* defined(__RE_UI_LayoutUtil__) */

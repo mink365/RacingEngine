@@ -7,8 +7,6 @@
 
 namespace re {
 
-class LayoutElement;
-
 class ComponentFactory : public Singleton<ComponentFactory>
 {
 public:
@@ -65,9 +63,9 @@ inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 {
     auto node = std::make_shared<Node>();
 
-    AddComponent<4, Transform2D, HierarchyColor, LayoutElement, T>::Do(node);
+    AddComponent<4, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>::Do(node);
 
-    auto transform = node->getComponent<Transform2D>();
+    auto transform = node->getComponent<ui::Transform2D>();
     // TODO: can't auto convert?
     std::shared_ptr<Transform> trans = std::dynamic_pointer_cast<Transform>(transform);
     node->resetTransform(trans);

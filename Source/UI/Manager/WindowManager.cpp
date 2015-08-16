@@ -7,6 +7,7 @@
 #include "GameHub.h"
 
 namespace re {
+namespace ui {
 
 WindowManager::WindowManager()
 : factory(nullptr), alphaBg(nullptr)
@@ -221,4 +222,5 @@ void WindowManager::changeAlphaBackgroundIndex(WindowPtr &win)
     //    this->alphaBg->setZOrder(win->getZOrder() - 1);
 }
 
-}
+} // namespace ui
+} // namespace re

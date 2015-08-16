@@ -9,8 +9,7 @@
 #include <memory>
 
 namespace re {
-
-class Widget;
+namespace ui {
 
 enum class TouchEventType {
     DOWN,
@@ -46,8 +45,6 @@ protected:
     Vec2 point;
 };
 
-typedef std::shared_ptr<Widget> WidgetPtr;
-
 class TouchEventListener : public Shared<TouchEventListener>
 {
 public:
@@ -67,6 +64,7 @@ public:
                        TouchEvent& event, WidgetPtr& widget)> onTouchStateChange;
 };
 
+} // namespace ui
 } // namespace re
 
 #endif // RE_TOUCHEVENT_H

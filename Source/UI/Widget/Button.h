@@ -6,6 +6,7 @@
 #include "UI/Base/Label.h"
 
 namespace re {
+namespace ui {
 
 class BaseButton : public Widget
 {
@@ -57,6 +58,7 @@ protected:
     LabelPtr label;
 };
 
-}
+} // namespace ui
+} // namespace re
 
 #endif // BUTTON_H

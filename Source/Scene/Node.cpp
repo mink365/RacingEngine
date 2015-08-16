@@ -246,7 +246,7 @@ void Node::copyProperties(const Node *node)
 
     this->transform = this->getComponent<Transform>();
     if (this->transform == nullptr) {
-        this->transform = std::dynamic_pointer_cast<Transform>(getComponent<Transform2D>());
+        this->transform = std::dynamic_pointer_cast<Transform>(getComponent<ui::Transform2D>());
     }
 }
 

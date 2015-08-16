@@ -26,6 +26,7 @@
 #include "Util/ComponentFactory.h"
 
 using namespace re;
+using namespace re::ui;
 
 class FeatureTestsApp;
 

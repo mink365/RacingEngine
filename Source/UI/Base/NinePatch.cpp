@@ -7,6 +7,7 @@
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
+namespace ui {
 
 void NinePatch::init(const std::string& tex)
 {
@@ -227,4 +228,5 @@ const Rect NineGrid::getRect(AlignType type) const
     return rect;
 }
 
-}
+} // namespace ui
+} // namespace re

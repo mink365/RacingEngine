@@ -1,11 +1,12 @@
-#ifndef RE_LAYOUTGROUP_H
-#define RE_LAYOUTGROUP_H
+#ifndef RE_UI_LAYOUTGROUP_H
+#define RE_UI_LAYOUTGROUP_H
 
 #include "Component.h"
 #include "Math/RectOffset.h"
 #include "LayoutUtil.h"
 
 namespace re {
+namespace ui {
 
 void LayoutRoot(NodePtr& root);
 
@@ -23,6 +24,7 @@ protected:
     RectOffset _padding;
 };
 
+} // namespace ui
 } // namespace re
 
-#endif // RE_LAYOUTGROUP_H
+#endif // RE_UI_LAYOUTGROUP_H

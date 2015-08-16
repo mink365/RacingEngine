@@ -1,19 +1,20 @@
-#ifndef RE_UI_MASK_H
-#define RE_UI_MASK_H
+#ifndef RE_UI_GRAPHIC_H
+#define RE_UI_GRAPHIC_H
 
 #include "PreDeclare.h"
 #include "Component.h"
 
+
 namespace re {
 namespace ui {
 
-class Mask : public Component
+class Graphic : public Component
 {
 public:
-    Mask();
+    Graphic();
 };
 
 } // namespace ui
 } // namespace re
 
-#endif // RE_UI_MASK_H
+#endif // RE_UI_GRAPHIC_H

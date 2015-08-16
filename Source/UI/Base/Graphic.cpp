@@ -1,9 +1,9 @@
-#include "Mask.h"
+#include "Graphic.h"
 
 namespace re {
 namespace ui {
 
-Mask::Mask()
+Graphic::Graphic()
 {
 
 }

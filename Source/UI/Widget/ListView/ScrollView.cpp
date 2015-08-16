@@ -3,8 +3,8 @@
 #include "Math/Rect.h"
 #include "Util/LocalTime.h"
 
-namespace re
-{
+namespace re {
+namespace ui {
 
 bool ScrollView::isHFlickable()
 {
@@ -193,5 +193,6 @@ void ScrollView::handleTouchUpEvent(TouchEvent &event)
     }
 }
 
-}
+} // namespace ui
+} // namespace re
 

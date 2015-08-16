@@ -2,7 +2,7 @@
 #include "UI/Layout/LayoutUtil.h"
 
 namespace re {
-    namespace ui {
+namespace ui {
 
 UIManager::UIManager()
     : isKeyBackActive(false)
@@ -94,5 +94,5 @@ void UIManager::setKeyBackActive(bool active){
     isKeyBackActive = active;
 }
 
-    }
-}
+} // namespace ui
+} // namespace re

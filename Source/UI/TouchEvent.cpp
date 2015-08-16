@@ -1,6 +1,7 @@
 #include "TouchEvent.h"
 
 namespace re {
+namespace ui {
 
 TouchEvent::TouchEvent()
 {
@@ -47,4 +48,5 @@ TouchEventListener::TouchEventListener()
             TouchEvent&, WidgetPtr){};
 }
 
+} // namespace ui
 } // namespace re

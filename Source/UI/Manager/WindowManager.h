@@ -13,6 +13,7 @@
 using namespace std;
 
 namespace re {
+namespace ui {
 
 typedef NamedFactory<Window> WindowFactory;
 typedef std::shared_ptr<Window> WindowPtr;
@@ -68,6 +69,7 @@ inline void WindowManager::setWindowFactory(WindowFactory* factory) {
     this->factory = factory;
 }
 
-}
+} // namespace ui
+} // namespace re
 
 #endif /* defined(__WindowManager__) */

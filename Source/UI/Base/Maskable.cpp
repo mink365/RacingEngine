@@ -1,9 +1,9 @@
-#include "Mask.h"
+#include "Maskable.h"
 
 namespace re {
 namespace ui {
 
-Mask::Mask()
+Maskable::Maskable()
 {
 
 }
