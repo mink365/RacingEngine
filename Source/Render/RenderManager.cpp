@@ -57,21 +57,8 @@ Renderer &RenderManager::getRenderer()
 
 void RenderManager::renderList(const RenderableList &list)
 {
-    for (auto att : list.attributes) {
-        this->renderAttribute(att);
-    }
-}
-
-void RenderManager::renderAttribute(const ComponentPtr &attribute)
-{
-    switch(attribute->getType()) {
-    case ComponentType::Mesh:
-    {
-        MeshPtr mesh = std::dynamic_pointer_cast<Mesh>(attribute);
-
-        this->renderMesh(*mesh);
-    }
-        break;
+    for (auto& att : list.attributes) {
+        this->renderElement(att);
     }
 }
 
@@ -181,12 +168,12 @@ void RenderManager::createRenderViews()
     this->renderViewDirty = false;
 }
 
-void RenderManager::renderMesh(Mesh& mesh)
+void RenderManager::renderElement(const Renderable &element)
 {
-    NodePtr node = mesh.getNode();
-    MaterialPtr material = node->getComponent<Material>();
+    MaterialPtr material = element.material;
+    MeshDataPtr meshData = element.meshData;
 
-    this->renderer->setModelMatrix(node->getTransform()->getWorldMatrix());
+    this->renderer->setModelMatrix(element.matrix);
 
 //    Mat4 textureMatrix;
 //    auto unit = material->getPass(0)->getTextureUnit(0);
@@ -194,11 +181,11 @@ void RenderManager::renderMesh(Mesh& mesh)
 
 //    shader->getUniform("textureMatrix")->setData((float*)textureMatrix);
 
-    this->renderer->bindBuffer(*(mesh.getMeshData()));
+    this->renderer->bindBuffer(*(meshData));
 
     this->applyMaterial(*(material.get()));
 
-    this->renderer->renderMesh(*(mesh.getMeshData()));
+    this->renderer->renderMesh(*(meshData));
 }
 
 void RenderManager::render()

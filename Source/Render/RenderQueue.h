@@ -3,7 +3,7 @@
 
 #include <map>
 #include <vector>
-#include "Scene/Component.h"
+#include "Renderable.h"
 
 namespace re {
 
@@ -31,7 +31,7 @@ public:
 
 public:
     int listType;
-    std::vector<ComponentPtr> attributes;
+    std::vector<Renderable> attributes;
 };
 
 class RenderQueue
@@ -42,8 +42,7 @@ public:
     RenderQueue();
     virtual ~RenderQueue();
 
-    void addRenderable(ComponentPtr node);
-    void addRenderable(ComponentPtr node, int type);
+    void addRenderable(const Mat4& mat, MaterialPtr material, MeshDataPtr meshData, int type);
 
     RenderableList &getRenderableList(int type);
 

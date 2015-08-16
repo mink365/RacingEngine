@@ -13,6 +13,7 @@
 #include "RenderQueue.h"
 #include "Render/Renderer/Renderer.h"
 #include "RenderView.h"
+#include "Renderable.h"
 
 namespace re {
 
@@ -48,8 +49,7 @@ public:
 
     void renderList(const RenderableList &list);
 
-    void renderAttribute(const ComponentPtr &attribute);
-    void renderMesh(Mesh &mesh);
+    void renderElement(const Renderable& element);
 
     void applyMaterial(Material &material);
 

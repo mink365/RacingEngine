@@ -16,16 +16,12 @@ RenderQueue::~RenderQueue()
     }
 }
 
-void RenderQueue::addRenderable(ComponentPtr node)
-{
-    this->addRenderable(node, RenderQueues::Geometry);
-}
-
-void RenderQueue::addRenderable(ComponentPtr node, int type)
+void RenderQueue::addRenderable(const Mat4 &mat, MaterialPtr material, MeshDataPtr meshData, int type)
 {
     RenderableList &list = this->getRenderableList(type);
 
-    list.attributes.push_back(node);
+    Renderable element(mat, material, meshData);
+    list.attributes.push_back(element);
 }
 
 RenderableList &RenderQueue::getRenderableList(int type)
