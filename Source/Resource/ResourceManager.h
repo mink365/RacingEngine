@@ -5,8 +5,6 @@
 #include <memory>
 #include <unordered_map>
 
-using namespace std;
-
 namespace re {
 
 template<class T>
@@ -40,13 +38,13 @@ inline void ResourceManager<T>::Dispose(std::shared_ptr<T> r)
 }
 
 template<class T>
-inline bool ResourceManager<T>::Contain(const string &name)
+inline bool ResourceManager<T>::Contain(const std::string &name)
 {
     return (map.find(name) != map.end());
 }
 
 template<class T>
-inline std::shared_ptr<T> ResourceManager<T>::GetResource(const string &name)
+inline std::shared_ptr<T> ResourceManager<T>::GetResource(const std::string &name)
 {
     return map[name];
 }

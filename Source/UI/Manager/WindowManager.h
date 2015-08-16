@@ -10,8 +10,6 @@
 #include "UI/Window.h"
 #include "Base/NamedFactory.h"
 
-using namespace std;
-
 namespace re {
 namespace ui {
 

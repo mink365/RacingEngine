@@ -14,8 +14,6 @@
 namespace re {
 namespace ui {
 
-using namespace std;
-
 template <class T>
 class LayerManager {
 public:
@@ -127,7 +125,7 @@ inline std::shared_ptr<T> LayerManager<T>::pop() {
     
     MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                MessageConstant::LayerMessage::POP_LAYER,
-                                               make_shared<string>(scene->getName()));
+                                               std::make_shared<std::string>(scene->getName()));
     
     this->replaceCurLayer(old, scene);
     
@@ -202,7 +200,7 @@ template <class T>
 inline std::shared_ptr<T> LayerManager<T>::pushTo(const std::string& name) {
     ViewPtr lastLayer = getLastLayer();
     if (lastLayer) {
-        string lastLayerName = lastLayer->getName();
+        std::string lastLayerName = lastLayer->getName();
         if (lastLayerName == name) {
             return lastLayer;
         }
@@ -229,7 +227,7 @@ inline std::shared_ptr<T> LayerManager<T>::pushTo(ViewPtr &scene) {
         
         MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                    MessageConstant::LayerMessage::PUSH_LAYER,
-                                                   make_shared<string>(scene->getName()));
+                                                   std::make_shared<std::string>(scene->getName()));
         
         this->replaceCurLayer(old, scene);
         
@@ -274,7 +272,7 @@ inline std::shared_ptr<T> LayerManager<T>::cleanTo(ViewPtr &target) {
     
     MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                MessageConstant::LayerMessage::CLEAN_TO_LAYER,
-                                               make_shared<string>(scene->getName()));
+                                               std::make_shared<std::string>(scene->getName()));
     this->replaceCurLayer(old, scene);
     
     return this->stack.back();

@@ -10,7 +10,6 @@
 #include "TouchEvent.h"
 
 #include <string>
-using namespace std;
 
 namespace re {
 namespace ui {

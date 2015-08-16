@@ -7,8 +7,6 @@
 #include <list>
 #include <memory>
 
-using namespace std;
-
 class IMessageHandler {
 public:
     virtual void handleMessage(Message *message) = 0;
@@ -21,8 +19,8 @@ public:
 
 public:
     void sendSimpleMessage(int type, int id);
-    void sendMessage(int type, int id, shared_ptr<void> obj=nullptr);
-    void sendNoKeyMessage(int type, shared_ptr<void> obj=nullptr);
+    void sendMessage(int type, int id, std::shared_ptr<void> obj=nullptr);
+    void sendNoKeyMessage(int type, std::shared_ptr<void> obj=nullptr);
 
     void addHandler(IMessageHandler *handler);
     void removeHandler(IMessageHandler *handler);

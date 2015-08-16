@@ -12,7 +12,7 @@ void MessageManager::sendSimpleMessage(int type, int id)
     this->messageQueue.push_back(message);
 }
 
-void MessageManager::sendMessage(int type, int id, shared_ptr<void> obj)
+void MessageManager::sendMessage(int type, int id, std::shared_ptr<void> obj)
 {
     Message *message = Message::obtainMessage();
     message->set(type, id, obj);
@@ -20,7 +20,7 @@ void MessageManager::sendMessage(int type, int id, shared_ptr<void> obj)
     this->messageQueue.push_back(message);
 }
 
-void MessageManager::sendNoKeyMessage(int type, shared_ptr<void> obj)
+void MessageManager::sendNoKeyMessage(int type, std::shared_ptr<void> obj)
 {
     Message *message = Message::obtainMessage();
     message->set(type, DEFAULT_MESSAGE_ID, obj);

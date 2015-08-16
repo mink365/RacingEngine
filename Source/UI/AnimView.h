@@ -8,8 +8,6 @@
 namespace re {
 namespace ui {
 
-using namespace std;
-
 enum class ViewState {
     IN_SHOW_ANIM,
     IN_HIDE_ANIM,
@@ -58,7 +56,7 @@ public:
 protected:
     ViewState viewState;
     
-    vector<AnimationEventListener> animListeners;
+    std::vector<AnimationEventListener> animListeners;
 };
 
 } // namespace ui
