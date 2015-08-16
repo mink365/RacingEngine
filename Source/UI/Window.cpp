@@ -89,7 +89,7 @@ void Window::initAnimFunc()
 {
     auto ptr = this->getNode();
 
-    std::function<void(TweenCallbackType type, BaseTween *source)> animCallback = [=](TweenCallbackType type, BaseTween *source) {
+    std::function<void(TweenCallbackType type, BaseTween *source)> animCallback = [=](TweenCallbackType, BaseTween*) {
         this->actionCallback();
     };
 

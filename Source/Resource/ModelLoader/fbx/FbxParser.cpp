@@ -141,9 +141,8 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     MaterialPtr material = std::make_shared<Material>();
 
-    RenderElementPtr renderElement = CreateComponent<RenderElement>();
-    renderElement->setMaterial(material);
-    renderElement->setMesh(mesh);
+    RenderElementPtr renderElement = CreateComponent<RenderElement>(material, mesh);
+    node->addComponent(renderElement);
 
     mesh->init();
     mesh->setName(node->name);

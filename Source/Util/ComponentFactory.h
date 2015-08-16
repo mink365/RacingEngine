@@ -26,7 +26,7 @@ inline std::shared_ptr<T> CreateComponent(Args... args)
 {
     auto node = Create<Node>();
 
-    auto component = std::make_shared<T>();
+    auto component = std::make_shared<T>(args...);
 
     node->addComponent(component);
 
