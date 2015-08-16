@@ -11,7 +11,9 @@ namespace ui {
 class Sprite : public Graphic
 {
 public:
-    Sprite() {};
+    Sprite()
+        : Graphic()
+    {};
 
     void init(const std::string& tex);
     void init(const std::string& tex, const Rect& rect);

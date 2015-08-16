@@ -5,18 +5,17 @@
 
 namespace re {
 
-class Mesh;
+class MeshData;
 
 class BufferObjectUtil : public Singleton<BufferObjectUtil>
 {
     friend class Singleton;
 public:
-    void loadGeometryToHardware(Mesh &geometry);
+    void loadGeometryToHardware(MeshData &meshData);
 
-    void updateGeometryToHardware(Mesh &geometry);
+    void updateGeometryToHardware(const MeshData &meshData);
 private:
     BufferObjectUtil();
-
 };
 
 } // namespace re

@@ -12,6 +12,9 @@ class Graphic : public Component
 {
 public:
     Graphic();
+
+protected:
+    GeometryPtr geometry;
 };
 
 } // namespace ui

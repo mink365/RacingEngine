@@ -1,5 +1,6 @@
 #include "BaseTest.h"
 #include "FeatureTestsApp.h"
+#include "UI/Base/QuadStuffer.h"
 
 #include "opengl.h"
 
@@ -170,7 +171,15 @@ int LoadShader(const std::string& name, const std::string& pfilePath_vs, const s
 }
 
 void InitMeshInHardward(RenderElementPtr element, const string &shaderName) {
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(element->getMesh().get()));
+    auto mesh = element->getMesh();
+
+    auto meshData = mesh->getMeshData();
+    if (meshData == nullptr) {
+        meshData = CreateDefaultMeshData();
+        mesh->setMeshData(meshData);
+    }
+
+    UploadMeshToHardware(mesh);
 
     Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
     element->getMaterial()->setShder(shader);
@@ -180,7 +189,6 @@ void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, cons
 {
     RenderElementPtr element = node->getComponent<RenderElement>();
     MeshPtr mesh = element->getMesh();
-    mesh->init();
 
     mesh->setGeometry(geometry);
 

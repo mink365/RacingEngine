@@ -47,7 +47,7 @@ void Label::setText(const string &text)
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
 //    transform->setAnchorPointInPixels(textRect.origin); // TODO: just an offset of vertext
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    UploadMeshToHardware(mesh);
 }
 
 ComponentPtr Label::createCloneInstance() const

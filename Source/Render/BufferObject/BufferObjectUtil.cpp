@@ -9,38 +9,19 @@ BufferObjectUtil::BufferObjectUtil()
 {
 }
 
-void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
+void BufferObjectUtil::loadGeometryToHardware(MeshData &meshData)
 {
-    GeometryPtr geometry = mesh.getGeometry();
-    MeshDataPtr meshData = mesh.getMeshData();
-
-    if (!meshData) {
-        meshData = std::make_shared<MeshData>();
-        mesh.setMeshData(meshData);
-
-        StreamUnit unit;
-        unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));
-        unit.format.push_back(VertexElement(VertexElementType::TextureCoord, AttributeFormat::FLOAT, 2));
-        unit.format.push_back(VertexElement(VertexElementType::Normal, AttributeFormat::FLOAT, 3));
-        unit.format.push_back(VertexElement(VertexElementType::Diffuse, AttributeFormat::FLOAT, 4));
-        meshData->vertexStreams.push_back(unit);
-    }
-
-    if (geometry) {
-        geometry->appendToMeshData(meshData);
-    }
-
     // transform from uint to short
-    int index_count = meshData->indices.getSize();
+    int index_count = meshData.indices.getSize();
 
-    auto indexPointer = Map<uint>(meshData->indices);
+    auto indexPointer = Map<uint>(meshData.indices);
     GLushort short_index_buffer[index_count];
     for (int i = 0; i < index_count; ++i) {
         short_index_buffer[i] = indexPointer[i];
     }
 
-    meshData->indexStream.nIndices = index_count;
-    meshData->indexStream.indexSize = index_count * sizeof(GLushort);
+    meshData.indexStream.nIndices = index_count;
+    meshData.indexStream.indexSize = index_count * sizeof(GLushort);
 
     GLint mode;
 //    if (geometry.isStatic()) {
@@ -49,16 +30,16 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
         mode = GL_DYNAMIC_DRAW;
 //    }
 
-    if (meshData->indexStream.vboIB == 0) {
-        glGenBuffers(1, &(meshData->indexStream.vboIB));
+    if (meshData.indexStream.vboIB == 0) {
+        glGenBuffers(1, &(meshData.indexStream.vboIB));
     }
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.vboIB);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData->indexStream.indexSize, short_index_buffer, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshData.indexStream.vboIB);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData.indexStream.indexSize, short_index_buffer, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    for (auto& unit : meshData->vertexStreams) {
+    for (auto& unit : meshData.vertexStreams) {
         VertexBuffer& stream = unit.stream;
 
         stream.size = unit.vertices.getByteSize();
@@ -74,12 +55,10 @@ void BufferObjectUtil::loadGeometryToHardware(Mesh &mesh)
     }
 }
 
-void BufferObjectUtil::updateGeometryToHardware(Mesh &mesh)
+void BufferObjectUtil::updateGeometryToHardware(const MeshData &meshData)
 {
-    MeshDataPtr meshData = mesh.getMeshData();
-
-    for (auto& unit : meshData->vertexStreams) {
-        VertexBuffer& stream = unit.stream;
+    for (auto& unit : meshData.vertexStreams) {
+        const VertexBuffer& stream = unit.stream;
 
         glBindBuffer(GL_ARRAY_BUFFER, stream.vbo);
         glBufferSubData(GL_ARRAY_BUFFER, 0, stream.size, (GLvoid*)unit.vertices.getData());

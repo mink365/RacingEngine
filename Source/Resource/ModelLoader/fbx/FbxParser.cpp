@@ -144,7 +144,6 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     RenderElementPtr renderElement = CreateComponent<RenderElement>(material, mesh);
     node->addComponent(renderElement);
 
-    mesh->init();
     mesh->setName(node->name);
 
     SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();

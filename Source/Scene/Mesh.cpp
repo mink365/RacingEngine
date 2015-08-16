@@ -7,11 +7,6 @@ Mesh::Mesh()
 
 }
 
-void Mesh::init()
-{
-
-}
-
 Geometry::ptr Mesh::getGeometry()
 {
     return geometry;

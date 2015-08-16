@@ -91,12 +91,6 @@ class Mesh : public Shared<Mesh>, public Named
 public:
     Mesh();
 
-    /**
-     * @brief init
-     * init a material and geometry
-     */
-    void init();
-
     Geometry::ptr getGeometry();
     void setGeometry(const GeometryPtr &g);
 

@@ -12,7 +12,13 @@ class ElementBatch : public Shared<ElementBatch>
 public:
     ElementBatch();
 
+    void Clear();
     void AddElement(const CanvasRenderElement& element);
+    void FillMeshData();
+
+    MaterialPtr getMaterial() const;
+    TexturePtr getTexture() const;
+    MeshDataPtr getMeshData() const;
 
 private:
     MaterialPtr material;

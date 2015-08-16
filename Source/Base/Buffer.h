@@ -42,7 +42,7 @@ public:
         _size = 0;
     };
 
-    T* getData() {
+    T* getData() const {
         return _data;
     };
 
@@ -53,15 +53,15 @@ public:
         this->_data = data;
     }
 
-    size_t getSize() {
+    size_t getSize() const {
         return _size;
     };
 
-    size_t getByteSize() {
+    size_t getByteSize() const {
         return _size * sizeof(T);
     }
 
-    bool isNull() {
+    bool isNull() const {
         return (this->_size == 0) || (this->_data == nullptr);
     };
 private:

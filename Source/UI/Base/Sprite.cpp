@@ -3,7 +3,7 @@
 #include "HierarchyColor.h"
 #include "Transform2D.h"
 
-#include "Scene/RenderElement.h"
+#include "UI/Rendering/CanvasRenderElement.h"
 #include "Scene/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
@@ -32,24 +32,29 @@ void Sprite::init(const string &tex, const Rect &rect)
 
 void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 {
+
     this->frame = tex;
     this->rect = rect;
 
     this->getComponent<Transform2D>()->setSize(rect.size);
 
-    auto node = this->getNode();
-    InitNodeForRender(node, frame->getTexture(), "Shader_PTC");
+    this->getNode()->addComponent(CreateComponent<CanvasRenderElement>());
+
+    auto element = this->getComponent<CanvasRenderElement>();
+
+    auto material = CreateDefaultMaterial(tex->getTexture(), "Shader_PTC");
+    element->setMaterial(material);
+    element->setTexture(tex->getTexture());
+    element->setGeometry(geometry);
 
     this->rebind();
 }
 
 void Sprite::rebind()
 {
-    auto mesh = this->getComponent<RenderElement>()->getMesh();
     auto color = this->getComponent<HierarchyColor>();
 
-    QuadStuffer::FillQuad(frame, rect.size, color->getDisplayColor(), mesh->getGeometry());
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    QuadStuffer::FillQuad(frame, rect.size, color->getDisplayColor(), geometry);
 }
 
 void Sprite::updateViewColor()

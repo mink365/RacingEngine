@@ -105,7 +105,7 @@ void NinePatch::rebind()
     this->addQuad(AlignType::CENTER_BOTTOM);
     this->addQuad(AlignType::CENTER);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    UploadMeshToHardware(mesh);
 }
 
 void NinePatch::addQuad(AlignType type)
@@ -123,7 +123,7 @@ void NinePatch::updateViewColor()
         colors[i] = color->getDisplayColor();
     }
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    UploadMeshToHardware(mesh);
 }
 
 ComponentPtr NinePatch::createCloneInstance() const

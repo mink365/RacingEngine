@@ -38,7 +38,7 @@ public:
     NodePtr getNode() const;
 
     template<typename T>
-    std::shared_ptr<T> getComponent();
+    std::shared_ptr<T> getComponent() const;
 
     template<typename T>
     std::shared_ptr<T> getComponentInParent();
@@ -49,17 +49,6 @@ public:
     virtual void start() {};
 
     ComponentPtr clone() const;
-
-//public:
-//    operator Transform2DPtr()
-//    {
-//        return this->getComponent<Transform2D>();
-//    }
-
-//    operator NodePtr()
-//    {
-//        return this->getNode();
-//    }
 
 protected:
     virtual ComponentPtr createCloneInstance() const;
@@ -77,7 +66,7 @@ inline ComponentType Component::getType()
 }
 
 template<typename T>
-inline std::shared_ptr<T> Component::getComponent()
+inline std::shared_ptr<T> Component::getComponent() const
 {
     return getNode()->getComponent<T>();
 }

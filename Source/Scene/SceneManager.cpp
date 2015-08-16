@@ -1,9 +1,14 @@
 #include "SceneManager.h"
 #include <algorithm>
 #include "RenderElement.h"
+#include "UI/Rendering/ElementBatcher.h"
 #include "Mesh.h"
 
 namespace re {
+
+namespace ui {
+    class ElementBatcher;
+}
 
 SceneManager::SceneManager()
 {
@@ -72,12 +77,16 @@ void SceneManager::vist(const NodePtr &node)
 
     if (node->isVisible()) {
         auto renderElement = node->getComponent<RenderElement>();
-        auto transform = node->getTransform();
-        if (renderElement && transform) {
+        if (renderElement) {
+            auto transform = node->getTransform();
             auto material = renderElement->getMaterial();
             auto mesh = renderElement->getMesh();
             this->renderManger.getRenderQueue().addRenderable(transform->getWorldMatrix(),
                                                               material, mesh->getMeshData(), material->getQueueID());
+        } else if (node->getComponent<ui::ElementBatcher>()) {
+            auto batcher = node->getComponent<ui::ElementBatcher>();
+
+            batcher->Render();
         }
 
         for (auto& child : node->getChildren()) {

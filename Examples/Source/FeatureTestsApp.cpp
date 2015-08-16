@@ -15,6 +15,7 @@
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "UI/Rendering/DebugRenderer.h"
+#include "UI/Rendering/ElementBatcher.h"
 
 #include <iostream>
 #include <fstream>
@@ -276,6 +277,7 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().addRootNode(rootNode);
 
     this->stage = CreateNode2DComponent<ui::UIManager>();
+    this->stage->getNode()->addComponent(CreateComponent<ElementBatcher>());
     SceneManager::getInstance().addRootNode(this->stage->getNode());
     MessageManager::getInstance().addHandler(this->stage.get());
 
@@ -315,5 +317,5 @@ void FeatureTestsApp::update()
     this->labelFps->setText(std::to_string(GameHub::getInstance().GetFps()));
 
     auto node = stage->getNode();
-    DebugRenderer::getInstance().Step(node);
+//    DebugRenderer::getInstance().Step(node);
 }

@@ -32,7 +32,7 @@ private:
     ElementBatch::ptr FindBatchForElement(const CanvasRenderElement& element);
 
 private:
-    std::unordered_map<uint32_t, std::set<ElementBatch::ptr>> layerToElementBatchs;
+    std::set<ElementBatch::ptr> elementBatchs;
 };
 
 } // namespace ui

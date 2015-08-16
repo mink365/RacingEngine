@@ -16,11 +16,19 @@ void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& s
     node->addComponent(element);
 
     MeshPtr mesh = std::make_shared<Mesh>();
-    MaterialPtr material = std::make_shared<Material>();
+    MaterialPtr material = CreateDefaultMaterial(texture, shaderName);
     element->setMaterial(material);
     element->setMesh(mesh);
 
+    mesh->setMeshData(CreateDefaultMeshData());
     mesh->setGeometry(Geometry::create());
+
+    UploadMeshToHardware(mesh);
+}
+
+MaterialPtr CreateDefaultMaterial(Texture::ptr texture, const string &shaderName)
+{
+    MaterialPtr material = std::make_shared<Material>();
 
     Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
     material->setShder(shader);
@@ -35,7 +43,28 @@ void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& s
         unit->setTexture(texture);
     }
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    return material;
+}
+
+MeshDataPtr CreateDefaultMeshData()
+{
+    auto meshData = std::make_shared<MeshData>();
+
+    StreamUnit unit;
+    unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));
+    unit.format.push_back(VertexElement(VertexElementType::TextureCoord, AttributeFormat::FLOAT, 2));
+    unit.format.push_back(VertexElement(VertexElementType::Normal, AttributeFormat::FLOAT, 3));
+    unit.format.push_back(VertexElement(VertexElementType::Diffuse, AttributeFormat::FLOAT, 4));
+    meshData->vertexStreams.push_back(unit);
+
+    return meshData;
+}
+
+void UploadMeshToHardware(MeshPtr &mesh)
+{
+    auto meshData = mesh->getMeshData();
+    mesh->getGeometry()->appendToMeshData(meshData);
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
 }
 
 QuadStuffer::QuadStuffer()

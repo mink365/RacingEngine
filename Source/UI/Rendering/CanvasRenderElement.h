@@ -12,6 +12,15 @@ class CanvasRenderElement : public Component
 public:
     CanvasRenderElement();
 
+    MaterialPtr getMaterial() const;
+    void setMaterial(const MaterialPtr &value);
+
+    TexturePtr getTexture() const;
+    void setTexture(const TexturePtr &value);
+
+    GeometryPtr getGeometry() const;
+    void setGeometry(const GeometryPtr &value);
+
 private:
     MaterialPtr material;
     TexturePtr texture;

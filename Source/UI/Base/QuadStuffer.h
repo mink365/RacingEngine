@@ -13,6 +13,9 @@
 namespace re {
 
 void InitNodeForRender(NodePtr& node, Texture::ptr texture, const string &shaderName);
+void UploadMeshToHardware(MeshPtr& mesh);
+MaterialPtr CreateDefaultMaterial(Texture::ptr texture, const string& shaderName);
+MeshDataPtr CreateDefaultMeshData();
 
 class QuadStuffer
 {

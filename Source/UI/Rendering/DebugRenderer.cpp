@@ -87,7 +87,7 @@ void DebugRenderer::Step(NodePtr &node)
 
     geometry->appendToMeshData(meshData);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(mesh.get()));
+    BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
 }
 
 void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
