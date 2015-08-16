@@ -47,6 +47,8 @@ void ElementBatcher::Render()
 
     Mat4 identity = Mat4::Identity;
     for (auto& batch : this->elementBatchs) {
+        batch->FillMeshData();
+
         renderQueue.addRenderable(identity, batch->getMaterial(), batch->getMeshData(), RenderQueues::UI);
     }
 }

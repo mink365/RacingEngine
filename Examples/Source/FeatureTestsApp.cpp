@@ -317,5 +317,5 @@ void FeatureTestsApp::update()
     this->labelFps->setText(std::to_string(GameHub::getInstance().GetFps()));
 
     auto node = stage->getNode();
-//    DebugRenderer::getInstance().Step(node);
+    DebugRenderer::getInstance().Step(node);
 }
