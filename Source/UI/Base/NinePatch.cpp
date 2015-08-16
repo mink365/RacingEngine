@@ -17,7 +17,7 @@ void NinePatch::init(const std::string& tex)
     this->frame = TextureFrameManager::getInstance().GetResource(tex);
 
     NodePtr node = this->getNode();
-    InitNodeForLeaf(node, frame->getTexture(), "Shader_PTC");
+    InitNodeForRender(node, frame->getTexture(), "Shader_PTC");
 
     mesh = this->getComponent<RenderElement>()->getMesh();
 

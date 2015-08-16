@@ -10,7 +10,7 @@ namespace re {
 
 using namespace ui;
 
-void InitNodeForLeaf(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
+void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
     RenderElementPtr element = CreateComponent<RenderElement>();
     node->addComponent(element);

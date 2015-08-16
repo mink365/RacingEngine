@@ -12,7 +12,7 @@
 
 namespace re {
 
-void InitNodeForLeaf(NodePtr& node, Texture::ptr texture, const string &shaderName);
+void InitNodeForRender(NodePtr& node, Texture::ptr texture, const string &shaderName);
 
 class QuadStuffer
 {
