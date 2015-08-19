@@ -16,7 +16,7 @@ void NinePatch::init(const std::string& tex)
 
     this->frame = TextureFrameManager::getInstance().GetResource(tex);
 
-    this->getNode()->addComponent(CreateComponent<CanvasRenderElement>());
+    this->getEntity()->addComponent(CreateComponent<CanvasRenderElement>());
     auto element = this->getComponent<CanvasRenderElement>();
 
     auto material = CreateDefaultMaterial(frame->getTexture(), "Shader_PTC");

@@ -41,7 +41,7 @@ void FontTest::Init()
 
     boxNode->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
 
-    rootNode->addChild(boxNode);
+    rootNode->addChild(boxNode->getNode());
 }
 
 static float rotation = 0;

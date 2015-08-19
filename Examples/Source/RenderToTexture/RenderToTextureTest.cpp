@@ -15,7 +15,7 @@ Renderer* renderer;
 RenderManager* renderManager;
 RenderTargetPtr renderTarget;
 
-NodePtr cylinderNode, boxNode;
+EntityPtr cylinderNode, boxNode;
 
 void RenderToTextureTest::Init()
 {
@@ -44,7 +44,7 @@ void RenderToTextureTest::Init()
     SetMeshData(cylinderNode, geometry, texture);
     cylinderNode->getComponent<RenderElement>()->getMaterial()->setQueueID(52);
 
-    rootNode->addChild(cylinderNode);
+    rootNode->addChild(cylinderNode->getNode());
 
     // create a render target
     renderTarget = std::make_shared<RenderTarget>();
@@ -78,7 +78,7 @@ void RenderToTextureTest::Init()
     boxNode = CreateMeshNode();
     SetMeshData(boxNode, geometry, renderTarget->getTexture());
 
-    rootNode->addChild(boxNode);
+    rootNode->addChild(boxNode->getNode());
 }
 
 static float rotateValue = 0;

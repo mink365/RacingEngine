@@ -12,7 +12,7 @@ public:
     virtual void Update();
 
 private:
-    NodePtr boxNode;
+    EntityPtr boxNode;
 };
 
 #endif // FONTTEST_H

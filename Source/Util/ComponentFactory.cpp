@@ -16,16 +16,16 @@
 
 namespace re {
 
-NodePtr CreateNode()
+EntityPtr CreateNode()
 {
-    auto node = Create<Node>();
+    auto node = std::make_shared<Entity>();
 
     ComponentFactory::getInstance().nodes.push_back(node);
 
     return node;
 }
 
-NodePtr CreateNode(const string &name)
+EntityPtr CreateNode(const string &name)
 {
     auto node = CreateNode();
     node->setName(name);
@@ -33,7 +33,7 @@ NodePtr CreateNode(const string &name)
     return node;
 }
 
-NodePtr CreateMeshNode()
+EntityPtr CreateMeshNode()
 {
     auto node = CreateNode();
 
@@ -44,7 +44,7 @@ NodePtr CreateMeshNode()
     return node;
 }
 
-NodePtr CreateSkinningMesh()
+EntityPtr CreateSkinningMesh()
 {
     auto node = CreateNode();
 
@@ -55,7 +55,7 @@ NodePtr CreateSkinningMesh()
     return node;
 }
 
-NodePtr CreateBoneNode()
+EntityPtr CreateBoneNode()
 {
     auto node = CreateNode();
 

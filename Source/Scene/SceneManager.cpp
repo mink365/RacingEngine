@@ -12,7 +12,7 @@ namespace ui {
 
 SceneManager::SceneManager()
 {
-    root = Create<Node>();
+    root = std::make_shared<Entity>()->getNode();
     root->_inScene = true;
 }
 
@@ -51,7 +51,7 @@ void SceneManager::renderScene()
 
     sort(this->sceneTransformUpdateBucket.begin(), this->sceneTransformUpdateBucket.end(), bucketComp);
     for (auto node : sceneTransformUpdateBucket) {
-        node->refreshTransformInHierarchy();
+        node->getEntity()->refreshTransformInHierarchy();
     }
 
     this->renderManger.render();
@@ -71,14 +71,14 @@ void SceneManager::clearFrame()
 
 void SceneManager::vist(const NodePtr &node)
 {
-    if (node->getTransform()->refreshFlags & Transform::RF_LOCAL_TRANSFORM) {
+    if (node->getEntity()->getTransform()->refreshFlags & Transform::RF_LOCAL_TRANSFORM) {
         this->sceneTransformUpdateBucket.push_back(node);
     }
 
     if (node->isVisible()) {
         auto renderElement = node->getComponent<RenderElement>();
         if (renderElement) {
-            auto transform = node->getTransform();
+            auto transform = node->getEntity()->getTransform();
             auto material = renderElement->getMaterial();
             auto mesh = renderElement->getMesh();
             this->renderManger.getRenderQueue().addRenderable(transform->getWorldMatrix(),

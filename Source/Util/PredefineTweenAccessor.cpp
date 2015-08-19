@@ -1,5 +1,6 @@
 #include "PredefineTweenAccessor.h"
 
+#include "Scene/Node.h"
 #include "UI/Base/Transform2D.h"
 #include "UI/Base/HierarchyColor.h"
 #include "Tween.h"

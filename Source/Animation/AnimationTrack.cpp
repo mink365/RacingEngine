@@ -180,9 +180,9 @@ void AnimationTrack::linearDeformation()
     Vec3 scale = slerp(this->interpolationBeginKeyFrame->getScaling(),
                        this->interpolationEndKeyFrame->getScaling(), this->frameProportion);
 
-    std::shared_ptr<Node> node =  this->node.lock();
+    auto entity =  this->entity.lock();
 
-    TransformPtr& transform = node->getTransform();
+    TransformPtr& transform = entity->getTransform();
     transform->setLocalTranslation(trans);
     transform->setLocalRotation(rotate);
     transform->setLocalScaling(scale);

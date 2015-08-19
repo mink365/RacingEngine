@@ -1,4 +1,5 @@
 #include "UIManager.h"
+#include "Scene/Node.h"
 #include "UI/Layout/LayoutUtil.h"
 
 namespace re {

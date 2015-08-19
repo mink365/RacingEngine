@@ -8,7 +8,7 @@ Refraction::Refraction()
     this->name = "Refraction";
 }
 
-static NodePtr node;
+static EntityPtr node;
 void Refraction::Init()
 {
     std::string shaderDir = "Shaders/";
@@ -27,7 +27,7 @@ void Refraction::Init()
 
         node->getComponent<RenderElement>()->getMaterial()->setQueueID(51);
 
-        rootNode->addChild(node);
+        rootNode->addChild(node->getNode());
 
         node->getTransform()->setLocalTranslation(Vec3(0, 0, -70));
     }
@@ -38,7 +38,7 @@ void Refraction::Init()
     SetMeshData(node, geometry, texture, "refraction");
     node->getComponent<RenderElement>()->getMaterial()->setTexture("sTexture", texture);
 
-    rootNode->addChild(node);
+    rootNode->addChild(node->getNode());
 }
 
 static float rotateValue = 0;

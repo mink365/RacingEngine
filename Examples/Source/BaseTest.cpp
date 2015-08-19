@@ -185,7 +185,7 @@ void InitMeshInHardward(RenderElementPtr element, const string &shaderName) {
     element->getMaterial()->setShder(shader);
 }
 
-void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture, const std::string& shaderName)
+void SetMeshData(EntityPtr node, GeometryPtr &geometry, Texture::ptr texture, const std::string& shaderName)
 {
     RenderElementPtr element = node->getComponent<RenderElement>();
     MeshPtr mesh = element->getMesh();

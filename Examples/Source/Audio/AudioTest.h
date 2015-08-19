@@ -22,8 +22,8 @@ public:
     virtual void Update() override;
 
 private:
-    NodePtr sourceNode;
-    NodePtr listenerNode;
+    EntityPtr sourceNode;
+    EntityPtr listenerNode;
 };
 
 #endif // AUDIOTEST_H

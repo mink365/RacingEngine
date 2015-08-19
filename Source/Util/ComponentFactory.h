@@ -1,35 +1,37 @@
 #ifndef RE_COMPONENTFACTORY_H
 #define RE_COMPONENTFACTORY_H
 
+#include <vector>
+#include <string>
 #include "PreDeclare.h"
 #include "Base/Singleton.h"
-#include "Scene/Node.h"
+#include "Scene/Entity.h"
 
 namespace re {
 
 class ComponentFactory : public Singleton<ComponentFactory>
 {
 public:
-    std::vector<NodePtr> nodes;
+    std::vector<EntityPtr> nodes;
 };
 
-NodePtr CreateNode();
-NodePtr CreateNode(const string& name);
-NodePtr CreateMeshNode();
-NodePtr CreateSkinningMesh();
-NodePtr CreateBoneNode();
+EntityPtr CreateNode();
+EntityPtr CreateNode(const std::string& name);
+EntityPtr CreateMeshNode();
+EntityPtr CreateSkinningMesh();
+EntityPtr CreateBoneNode();
 
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateComponent(Args... args)
 {
-    auto node = Create<Node>();
+    auto entity = std::make_shared<Entity>();
 
     auto component = std::make_shared<T>(args...);
 
-    node->addComponent(component);
+    entity->addComponent(component);
 
     // make an reference to the node, make sure it not be delected
-    ComponentFactory::getInstance().nodes.push_back(node);
+    ComponentFactory::getInstance().nodes.push_back(entity);
 
     return component;
 }
@@ -38,7 +40,7 @@ inline std::shared_ptr<T> CreateComponent(Args... args)
 template<std::size_t INDEX, typename T, typename... TL>
 struct AddComponent
 {
-    static void Do(NodePtr& node)
+    static void Do(EntityPtr& node)
     {
         auto component = std::make_shared<T>();
         node->addComponent(component);
@@ -50,7 +52,7 @@ struct AddComponent
 template<typename T, typename... TL>
 struct AddComponent<1, T, TL...>
 {
-    static void Do(NodePtr& node)
+    static void Do(EntityPtr& node)
     {
         // the last one
         auto component = std::make_shared<T>();
@@ -61,7 +63,7 @@ struct AddComponent<1, T, TL...>
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 {
-    auto node = std::make_shared<Node>();
+    auto node = std::make_shared<Entity>();
 
     AddComponent<4, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>::Do(node);
 

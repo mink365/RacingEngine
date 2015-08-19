@@ -53,25 +53,25 @@ void ShadowTest::Init()
     geometry = ShapeGenerater::getInstance().CreatePlane(200, 200, 30, 30);
 //     geometry = ShapeGenerater::getInstance().CreateRing(50, 200);
 
-    ground = CreateMeshNode();
-    SetMeshData(ground, geometry, texture, "shadow_map");
+    ground = CreateMeshNode()->getNode();
+    SetMeshData(ground->getEntity(), geometry, texture, "shadow_map");
 
     // TODO: if the plane z > 100, shadow will be cull ?
     ground->getTransform()->setLocalTranslation(Vec3(0, 0, 0));
 
     rootNode->addChild(ground);
-    ground->refreshTransformInHierarchy();
+    ground->getEntity()->refreshTransformInHierarchy();
 
     geometry = ShapeGenerater::getInstance().CreateBox(50, 50, 50);
 
-    box = CreateMeshNode();
-    SetMeshData(box, geometry, texture);
+    box = CreateMeshNode()->getNode();
+    SetMeshData(box->getEntity(), geometry, texture);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 22));
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
     rootNode->addChild(box);
-    box->refreshTransformInHierarchy();
+    box->getEntity()->refreshTransformInHierarchy();
 
     // TODO: Dir Light/Camera can't see the model?.....
 
@@ -82,8 +82,8 @@ void ShadowTest::Init()
     SceneManager::getInstance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
-    light->getNode()->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
-    light->getNode()->refreshTransformInHierarchy();
+    light->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
+    light->getEntity()->refreshTransformInHierarchy();
     auto dirLight = std::dynamic_pointer_cast<SpotLight>(light);
     dirLight->shadow.shadowCameraNear = 10;
     dirLight->shadow.shadowCameraFar = 500;

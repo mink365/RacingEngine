@@ -81,7 +81,7 @@ private:
     Int currentFrameIndex;
 
     shared_ptr<KeyFrame> interpolationBeginKeyFrame, interpolationEndKeyFrame;
-    std::weak_ptr<Node> node;
+    std::weak_ptr<Entity> entity;
 
     Long currentTime, beginTime;
 };

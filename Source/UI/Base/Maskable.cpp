@@ -8,6 +8,21 @@ Maskable::Maskable()
 
 }
 
+void Maskable::UpdateInternalState()
+{
+
+}
+
+void Maskable::OnParentMaskStateChanged()
+{
+
+}
+
+int Maskable::GetStencilValue()
+{
+
+}
+
 } // namespace ui
 } // namespace re
 

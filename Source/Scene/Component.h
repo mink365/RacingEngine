@@ -3,10 +3,8 @@
 
 #include "platform.h"
 
-#include "Base/Named.h"
-#include "Base/Uncopyable.h"
 #include "Base/Clonable.h"
-#include "Scene/Node.h"
+#include "Scene/Entity.h"
 #include "Message/Signal.h"
 #include "Util/ComponentFactory.h"
 
@@ -18,15 +16,9 @@ enum class ComponentType {
     Light,
 };
 
-class Component;
-typedef std::shared_ptr<Component> ComponentPtr;
-
-class Node;
-typedef std::shared_ptr<Node> NodePtr;
-
 class Component : public Named, public Clonable<Component>
 {
-    friend class Node;
+    friend class Entity;
     friend class FbxParser;
 
 public:
@@ -35,7 +27,10 @@ public:
 
     ComponentType getType();
 
+    EntityPtr getEntity() const;
     NodePtr getNode() const;
+
+    TransformPtr getTransform();
 
     template<typename T>
     std::shared_ptr<T> getComponent() const;
@@ -43,6 +38,9 @@ public:
     template<typename T>
     std::shared_ptr<T> getComponentInParent();
 
+    const std::vector<ComponentPtr>& getComponents() const;
+
+public:
     /* fuction of event */
     virtual void onEnter() {};
     virtual void onExit() {};
@@ -57,7 +55,7 @@ protected:
 protected:
     ComponentType type;
 
-    std::weak_ptr<Node> attachNode;
+    std::weak_ptr<Entity> attachEntity;
 };
 
 inline ComponentType Component::getType()
@@ -65,16 +63,21 @@ inline ComponentType Component::getType()
     return this->type;
 }
 
+inline EntityPtr Component::getEntity() const
+{
+    return this->attachEntity.lock();
+}
+
 template<typename T>
 inline std::shared_ptr<T> Component::getComponent() const
 {
-    return getNode()->getComponent<T>();
+    return getEntity()->getComponent<T>();
 }
 
 template<typename T>
 inline std::shared_ptr<T> Component::getComponentInParent()
 {
-    return getNode()->getComponentInParent<T>();
+    return getEntity()->getComponentInParent<T>();
 }
 
 } //namespace re

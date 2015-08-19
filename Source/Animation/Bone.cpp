@@ -29,7 +29,7 @@ Int Bone::getNumLinkedControlPoints()
 void Bone::setAnimationTrack(AnimationTrackPtr track)
 {
     this->animationTrack = track;
-    track->node = this->getNode();
+    track->entity = this->getEntity();
 }
 
 Mat4 Bone::getVertexTransformMatrix(const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix)

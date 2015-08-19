@@ -11,6 +11,19 @@ class Maskable : public Component
 {
 public:
     Maskable();
+
+protected:
+    void UpdateInternalState();
+    void OnParentMaskStateChanged();
+
+private:
+    int GetStencilValue();
+
+private:
+    MaterialPtr maskMaterial;
+    int stencilValue = 0;
+
+    bool shouldRefresh = false;
 };
 
 } // namespace ui

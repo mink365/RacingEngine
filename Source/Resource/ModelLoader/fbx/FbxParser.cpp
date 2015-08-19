@@ -1,6 +1,7 @@
 #include "FbxParser.h"
 #include "ModelLoader/ReadCommon.h"
 #include "Math/Vector.h"
+#include "Scene/Entity.h"
 #include "Scene/Node.h"
 #include "Scene/RenderElement.h"
 #include "Animation/Animation.h"
@@ -83,7 +84,7 @@ void FbxParser::readNodeTransform(std::istream *st, NodePtr node) {
 
     rotation *= DEG_TO_RAD;
 
-    TransformPtr& transform = node->getTransform();
+    TransformPtr& transform = node->getEntity()->getTransform();
 
     transform->setLocalTranslation(position);
     transform->setLocalRotation(Quat().fromAngles(rotation));
@@ -97,13 +98,14 @@ NodePtr FbxParser::readNode(std::istream *st) {
     case FbxNodeAttributeType::MESH:
     case FbxNodeAttributeType::GROUP:
     {
-        NodePtr node = Create<Node>();
+        auto entity = std::make_shared<Entity>();
+        auto node = entity->getNode();
 
         Long id = reader->ReadLong(st);
         std::string name = reader->ReadString(st);
 
-        node->id = id;
-        node->name = name;
+        entity->id = id;
+        entity->name = name;
 
         LOG_D("node: %s, id: %d, attType: %d", name.c_str(), id, (int)attType);
 
@@ -142,7 +144,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MaterialPtr material = std::make_shared<Material>();
 
     RenderElementPtr renderElement = CreateComponent<RenderElement>(material, mesh);
-    node->addComponent(renderElement);
+    node->getEntity()->addComponent(renderElement);
 
     mesh->setName(node->name);
 
@@ -523,9 +525,10 @@ NodePtr FbxParser::getSkinningNode(const string &name) const
 
     auto controller = std::make_shared<SkeletonController>();
 
-    node->addComponent(skeleton);
-    node->addComponent(animation);
-    node->addComponent(controller);
+    auto entity = node->getEntity();
+    entity->addComponent(skeleton);
+    entity->addComponent(animation);
+    entity->addComponent(controller);
 
     controller->init();
 

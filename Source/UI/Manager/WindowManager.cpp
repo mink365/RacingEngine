@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "Message/MessageConstant.h"
 #include "Message/MessageManager.h"
+#include "Scene/Node.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "GameHub.h"
 

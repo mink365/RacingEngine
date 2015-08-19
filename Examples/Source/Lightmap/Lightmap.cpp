@@ -8,7 +8,7 @@ Lightmap::Lightmap()
     this->name = "Lightmap";
 }
 
-static NodePtr node;
+static EntityPtr node;
 void Lightmap::Init()
 {
     this->camera->setDepthField(10, 1320);
@@ -37,7 +37,7 @@ void Lightmap::Init()
     SetMeshData(node, geometry, base, "lightmap");
     auto material = node->getComponent<RenderElement>()->getMaterial();
 
-    rootNode->addChild(node);
+    rootNode->addChild(node->getNode());
 
     material->setQueueID(51);
     material->setTexture("sBasetex", base);

@@ -20,7 +20,7 @@ void Scene::init() {
     transform->setSize(Screen::getInstance().getSize());
 
     auto windowManager = std::make_shared<WindowManager>();
-    getNode()->addComponent(windowManager);
+    getEntity()->addComponent(windowManager);
     windowManager->start();
     
     return;

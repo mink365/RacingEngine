@@ -24,7 +24,7 @@ private:
     MeshDataPtr meshData;
     GeometryPtr geometry;
 
-    NodePtr node;
+    EntityPtr node;
 };
 
 } // namespace re

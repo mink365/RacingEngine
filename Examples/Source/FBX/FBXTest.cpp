@@ -74,23 +74,23 @@ void FBXTest::Init()
     }
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
-        NodePtr block = CreateNode();
+        auto block = CreateNode();
 
         auto wall_copy = wall->clone();
 
         auto floor_copy = floor->clone();
 
-        block->addChild(wall_copy);
-        block->addChild(floor_copy);
+        block->getNode()->addChild(wall_copy->getNode());
+        block->getNode()->addChild(floor_copy->getNode());
 
         block->getTransform()->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
-        rootNode->addChild(block);
+        rootNode->addChild(block->getNode());
 
-        blocks.push_back(block);
+        blocks.push_back(block->getNode());
     }
 
-    motoRoot = CreateNode();
+    motoRoot = CreateNode()->getNode();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));

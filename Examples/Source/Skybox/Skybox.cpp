@@ -9,8 +9,8 @@ Skybox::Skybox()
     this->name = "SkyboxTest";
 }
 
-static NodePtr box;
-static NodePtr skybox;
+static EntityPtr box;
+static EntityPtr skybox;
 
 void Skybox::Init()
 {
@@ -41,8 +41,8 @@ void Skybox::Init()
         skybox->getComponent<RenderElement>()->getMaterial()->getRenderState().faceCullMode = FaceCullMode::Off;
     }
 
-    rootNode->addChild(skybox);
-    rootNode->addChild(box);
+    rootNode->addChild(skybox->getNode());
+    rootNode->addChild(box->getNode());
 
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(0, 100, 0), Vec3(0, 3, 1), Vec3(0, 1, 0));

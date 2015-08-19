@@ -65,7 +65,7 @@ void DebugRenderer::InitNode()
     material->getRenderState().depthWrite = false;
     material->getRenderState().polygonMode = PolygonMode::Line;
 
-    SceneManager::getInstance().addRootNode(node);
+    SceneManager::getInstance().addRootNode(node->getNode());
 }
 
 void DebugRenderer::Step(NodePtr &node)

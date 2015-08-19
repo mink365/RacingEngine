@@ -113,7 +113,7 @@ void re::SkeletonController::computeLinearDeformation()
 
     Mat4 identity;
     this->skeleton->compute(this->boneDeformations, this->boneWeights, identity,
-                            this->sceneNode->getTransform()->getLocalMatrix());
+                            this->getEntity()->getTransform()->getLocalMatrix());
 
     for (size_t i = 0; i < this->controlPointsCount; ++i) {
         Vec3& xyz = meshData->controlPointsData.controlPoints[i];

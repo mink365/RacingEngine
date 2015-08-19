@@ -30,8 +30,8 @@ void LayoutTest::Init()
 
         auto group = std::make_shared<HorizontalLayoutGroup>();
         group->SetAlign(LinearAlign::Left);
-        container->getNode()->addComponent(group);
-        container->getNode()->setName("Container");
+        container->getEntity()->addComponent(group);
+        container->getEntity()->setName("Container");
 
         for (size_t i = 0; i < 5; ++i) {
             SpritePtr sprite = CreateNode2DComponent<Sprite>("store_icon_coin.png");
@@ -63,8 +63,8 @@ void LayoutTest::Init()
         auto group = std::make_shared<VerticalLayoutGroup>();
         group->SetSpacing(-20);
         group->SetAlign(LinearAlign::Center);
-        container->getNode()->addComponent(group);
-        container->getNode()->setName("Container");
+        container->getEntity()->addComponent(group);
+        container->getEntity()->setName("Container");
 
         for (size_t i = 0; i < 5; ++i) {
             SpritePtr sprite = CreateNode2DComponent<Sprite>("store_icon_coin.png");

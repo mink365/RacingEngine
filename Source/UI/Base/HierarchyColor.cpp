@@ -1,4 +1,5 @@
 #include "HierarchyColor.h"
+#include "Scene/Node.h"
 
 namespace re {
 namespace ui {

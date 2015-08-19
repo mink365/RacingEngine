@@ -1,10 +1,3 @@
-/*
- * Node.cpp
- *
- *  Created on: Mar 12, 2013
- *      Author: jk
- */
-
 #include "Node.h"
 #include <algorithm>
 #include "Transform.h"
@@ -15,44 +8,6 @@ namespace re {
 Node::Node() {
     this->id = 0;
     this->level = 0;
-}
-
-Node::~Node() {
-
-}
-
-void Node::init()
-{
-    this->transform = std::make_shared<Transform>();
-
-    this->addComponent(transform);
-}
-
-TransformPtr& Node::getTransform()
-{
-    return transform;
-}
-
-const TransformPtr &Node::getTransform() const
-{
-    return transform;
-}
-
-void Node::resetTransform(TransformPtr& trans)
-{
-    RE_ASSERT(trans->getNode() == this->shared_from_this());
-
-    this->transform = trans;
-}
-
-void Node::refreshTransformInHierarchy()
-{
-    auto func = [](NodePtr& node) {
-        node->getTransform()->refresh();
-    };
-
-    auto node = this->shared_from_this();
-    DistpatchFunctionInHierarchy(node, func);
 }
 
 NodePtr Node::getParent() const
@@ -70,7 +25,6 @@ void Node::removeFromParent()
     assert(isHasParent());
 
     auto ins = this->shared_from_this();
-
     this->parent.lock()->removeChild(ins);
 }
 
@@ -167,107 +121,15 @@ void Node::removeAllChildren()
     this->children.clear();
 }
 
-void Node::addComponent(ComponentPtr component)
+ComponentPtr Node::createCloneInstance() const
 {
-    NodePtr ptr = this->shared_from_this();
-
-    component->attachNode = ptr;
-    this->components.push_back(component);
-
-    std::type_index id = std::type_index(typeid(*component.get()));
-    if (this->componentMap.count(id) == 0) {
-        auto& list = this->componentMap[id];
-        list.push_back(component);
-    } else {
-        this->componentMap[id].push_back(component);
-    }
-
-    if (ptr->_inScene) {
-        component->onEnter();
-    }
+    return std::make_shared<Transform>();
 }
 
-void Node::clearComponents()
+void Node::copyProperties(const Component *component)
 {
-    if (this->_inScene) {
-        for (auto& comp : components) {
-            comp->onExit();
-        }
-    }
-
-    this->components.clear();
-    this->componentMap.clear();
-}
-
-size_t Node::getComponentCount() const
-{
-    return this->components.size();
-}
-
-ComponentPtr Node::getComponent(size_t index)
-{
-    return this->components.at(index);
-}
-
-const std::vector<ComponentPtr> &Node::getComponents() const
-{
-    return this->components;
-}
-
-NodePtr Node::createCloneInstance() const
-{
-    return std::make_shared<Node>();
-}
-
-void Node::copyChildren(const Node *node)
-{
-    this->children.clear();
-    for (auto& child : node->children) {
-        NodePtr copyChild = child->clone();
-        this->children.push_back(copyChild);
-        copyChild->parent = this->shared_from_this();
-    }
-}
-
-void Node::copyProperties(const Node *node)
-{
-    this->name = node->name;
+//    this->name = component->name;
     this->parent.reset();
-
-    for (auto& component : this->components) {
-        std::type_index id = std::type_index(typeid(*component.get()));
-        if (this->componentMap.count(id) == 0) {
-            auto& list = this->componentMap[id];
-            list.push_back(component);
-        } else {
-            this->componentMap[id].push_back(component);
-        }
-    }
-
-    this->transform = this->getComponent<Transform>();
-    if (this->transform == nullptr) {
-        this->transform = std::dynamic_pointer_cast<Transform>(getComponent<ui::Transform2D>());
-    }
-}
-
-void Node::copyComponents(const Node *node)
-{
-    this->components.clear();
-    for (auto& component : node->components) {
-        ComponentPtr copyComponent = component->clone();
-        this->components.push_back(copyComponent);
-        copyComponent->attachNode = this->shared_from_this();
-    }
-}
-
-NodePtr Node::clone() const
-{
-    NodePtr cloned = this->createCloneInstance();
-    cloned->copyChildren(this);
-    cloned->copyComponents(this);
-    cloned->copyProperties(this);
-
-    return cloned;
 }
 
 void Node::OnEnter()
@@ -275,7 +137,7 @@ void Node::OnEnter()
     auto func = [](NodePtr& node) {
         node->_inScene = true;
 
-        for (auto& component : node->components) {
+        for (auto& component : node->getEntity()->getComponents()) {
             component->onEnter();
         }
     };
@@ -289,20 +151,13 @@ void Node::OnExit()
     auto func = [](NodePtr& node) {
         node->_inScene = false;
 
-        for (auto& component : node->components) {
+        for (auto& component : node->getEntity()->getComponents()) {
             component->onExit();
         }
     };
 
     auto node = this->shared_from_this();
     DistpatchFunctionInHierarchy(node, func);
-}
-
-void Node::Start()
-{
-    for (auto& component : components) {
-        component->start();
-    }
 }
 
 void DistpatchFunctionInHierarchy(NodePtr &root, std::function<void (NodePtr &)> func)

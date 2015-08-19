@@ -243,7 +243,7 @@ void BulletTest::initView()
     SetMeshData(groundNode, geometry, texture);
 
     groundNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
-    rootNode->addChild(groundNode);
+    rootNode->addChild(groundNode->getNode());
 
     texture = TextureManager::getInstance().getTexture("cube3");
     auto box = ShapeGenerater::getInstance().CreateBox(6, 6, 6);
@@ -254,8 +254,8 @@ void BulletTest::initView()
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {
         auto node = boxNode->clone();
-        rootNode->addChild(node);
-        boxList.push_back(node);
+        rootNode->addChild(node->getNode());
+        boxList.push_back(node->getNode());
     }
 }
 
@@ -276,7 +276,7 @@ void BulletTest::syncView()
 //        std::cout << "Index: " << i << " Position: " << v.x() << " " << v.y() << " " << v.z() << std::endl;
 
         auto boxNode = boxList.at(i - 1);
-        TransformPtr& transform = boxNode->getTransform();
+        auto transform = boxNode->getTransform();
         transform->setLocalTranslation(Vec3(v.x(),v.y(),v.z()));
         transform->setLocalRotation(Quat(r.x(),r.y(),r.z(),r.w()));
     }

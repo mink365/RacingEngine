@@ -56,6 +56,6 @@ protected:
 };
 
 void InitMeshInHardward(RenderElementPtr element, const std::string& shaderName="Shader_PTC");
-void SetMeshData(NodePtr node, GeometryPtr &geometry, Texture::ptr texture=nullptr, const std::string& shaderName="Shader_PTC");
+void SetMeshData(EntityPtr node, GeometryPtr &geometry, Texture::ptr texture=nullptr, const std::string& shaderName="Shader_PTC");
 
 #endif // BASETEST_H

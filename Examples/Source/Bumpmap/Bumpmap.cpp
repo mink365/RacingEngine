@@ -119,7 +119,7 @@ void Bumpmap::Init()
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(50, 20, 0)));
 
-    rootNode->addChild(box);
+    rootNode->addChild(box->getNode());
 }
 
 static Vec3 lightPos;

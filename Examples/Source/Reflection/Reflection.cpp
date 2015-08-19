@@ -8,7 +8,7 @@ Reflection::Reflection()
     this->name = "Reflection";
 }
 
-static NodePtr node;
+static EntityPtr node;
 void Reflection::Init()
 {
     std::string shaderDir = "Shaders/";
@@ -29,7 +29,7 @@ void Reflection::Init()
     node = CreateMeshNode();
     SetMeshData(node, geometry, texture, "reflection");
 
-    rootNode->addChild(node);
+    rootNode->addChild(node->getNode());
 
     auto material = node->getComponent<RenderElement>()->getMaterial();
     material->setQueueID(51);
@@ -54,7 +54,7 @@ void Reflection::setupShader()
 {
     Shader::ptr shader = ShaderManager::getInstance().GetResource("reflection");
 
-    Vec3 cameraPosition = camera->getNode()->getTransform()->getWorldMatrix().getTranslation();
+    Vec3 cameraPosition = camera->getEntity()->getTransform()->getWorldMatrix().getTranslation();
     Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();
     Vec3 eyePosModel = cameraPosition - modelPosition;
     shader->getUniform("eyePosModel")->setData(eyePosModel);

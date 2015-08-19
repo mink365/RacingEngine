@@ -14,7 +14,17 @@ Component::~Component()
 
 NodePtr Component::getNode() const
 {
-    return this->attachNode.lock();
+    return this->getComponent<Node>();
+}
+
+TransformPtr Component::getTransform()
+{
+    return this->getEntity()->getTransform();
+}
+
+const std::vector<ComponentPtr> &Component::getComponents() const
+{
+    return this->getEntity()->getComponents();
 }
 
 ComponentPtr Component::clone() const
@@ -36,7 +46,7 @@ void Component::copyProperties(const Component *att)
     this->name = att->name;
     this->type = att->type;
 
-    this->attachNode.reset();
+    this->attachEntity.reset();
 }
 
 }

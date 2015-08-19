@@ -1,5 +1,6 @@
 #include "LayoutGroup.h"
 #include "LayoutElement.h"
+#include "Scene/Node.h"
 
 namespace re {
 namespace ui {
@@ -20,7 +21,7 @@ std::vector<Transform2DPtr> LayoutGroup::GetChildrenTransform() const
     auto list =  std::vector<Transform2DPtr>();
 
     for (auto& child : getNode()->getChildren()) {
-        list.push_back(child->getComponent<Transform2D>());
+        list.push_back(child->getEntity()->getComponent<Transform2D>());
     }
 
     return list;

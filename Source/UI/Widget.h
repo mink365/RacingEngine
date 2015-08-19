@@ -2,6 +2,7 @@
 #define WIDGETCONTAINER_H
 
 #include "Component.h"
+#include "Scene/Node.h"
 #include "UI/Base/HierarchyColor.h"
 #include "UI/Base/Transform2D.h"
 #include "UI/Layout/LayoutElement.h"

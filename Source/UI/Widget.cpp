@@ -9,7 +9,7 @@ namespace ui {
 
 WidgetPtr GetWidgetComponent(Node& node)
 {
-    if (node.getComponentCount() < 4) {
+    if (node.getComponents().size() < 4) {
         return nullptr;
     }
 

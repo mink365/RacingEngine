@@ -13,7 +13,7 @@ using namespace ui;
 void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& shaderName)
 {
     RenderElementPtr element = CreateComponent<RenderElement>();
-    node->addComponent(element);
+    node->getEntity()->addComponent(element);
 
     MeshPtr mesh = std::make_shared<Mesh>();
     MaterialPtr material = CreateDefaultMaterial(texture, shaderName);
