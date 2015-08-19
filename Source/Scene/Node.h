@@ -60,6 +60,18 @@ inline bool Node::isInScene() const
     return this->_inScene;
 }
 
+template<typename T>
+inline std::shared_ptr<T> Entity::getComponentInParent()
+{
+    auto parent = this->node->getParent();
+
+    if (parent != nullptr) {
+        return parent->getEntity()->getComponent<T>();
+    }
+
+    return nullptr;
+}
+
 } // namespace re
 
 #endif /* NODE_H_ */

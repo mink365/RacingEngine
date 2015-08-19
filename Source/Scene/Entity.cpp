@@ -10,16 +10,6 @@ Entity::Entity()
 {
 }
 
-TransformPtr& Entity::getTransform()
-{
-    return transform;
-}
-
-const TransformPtr &Entity::getTransform() const
-{
-    return transform;
-}
-
 void Entity::resetTransform(TransformPtr& trans)
 {
     RE_ASSERT(trans->getEntity() == this->shared_from_this());
@@ -52,9 +42,11 @@ void Entity::addComponent(ComponentPtr component)
         this->componentMap[id].push_back(component);
     }
 
-    if (ptr->getNode()->isHasParent()) {
+    if (this->node != nullptr && this->node->isHasParent()) {
         component->onEnter();
     }
+
+    CacheComponents();
 }
 
 void Entity::clearComponents()
@@ -89,7 +81,7 @@ EntityPtr Entity::createCloneInstance() const
     return CreateEntity();
 }
 
-void Entity::copyProperties(const Entity *entity)
+void Entity::copyProperties(const Entity*)
 {
     for (auto& component : this->components) {
         std::type_index id = std::type_index(typeid(*component.get()));
@@ -101,10 +93,7 @@ void Entity::copyProperties(const Entity *entity)
         }
     }
 
-    this->transform = this->getComponent<Transform>();
-    if (this->transform == nullptr) {
-        this->transform = std::dynamic_pointer_cast<Transform>(getComponent<ui::Transform2D>());
-    }
+    this->CacheComponents();
 }
 
 void Entity::copyChildren(const Entity *entity)
@@ -137,12 +126,26 @@ EntityPtr Entity::clone() const
     return cloned;
 }
 
-//void Entity::Start()
-//{
-//    for (auto& component : components) {
-//        component->start();
-//    }
-//}
+void Entity::CacheComponents()
+{
+    if (this->node == nullptr) {
+        this->node = getComponent<Node>();
+    }
+
+    if (this->transform == nullptr) {
+        this->transform = this->getComponent<Transform>();
+        if (this->transform == nullptr) {
+            this->transform = std::dynamic_pointer_cast<Transform>(getComponent<ui::Transform2D>());
+        }
+    }
+}
+
+void Entity::Start()
+{
+    for (auto& component : components) {
+        component->start();
+    }
+}
 
 } // namespace re
 

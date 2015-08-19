@@ -10,7 +10,6 @@
 #include "PreDeclare.h"
 #include "Base/Clonable.h"
 #include "Base/Named.h"
-//#include "Node.h"
 
 namespace re {
 
@@ -47,6 +46,12 @@ public:
 
     EntityPtr clone() const;
 
+public:
+    void Start();
+
+private:
+    void CacheComponents();
+
 private:
     virtual void copyProperties(const Entity *entity);
     virtual void copyChildren(const Entity* entity);
@@ -68,6 +73,16 @@ inline NodePtr Entity::getNode()
     return this->node;
 }
 
+inline TransformPtr& Entity::getTransform()
+{
+    return transform;
+}
+
+inline const TransformPtr &Entity::getTransform() const
+{
+    return transform;
+}
+
 template<typename T>
 inline std::shared_ptr<T> Entity::getComponent()
 {
@@ -76,19 +91,6 @@ inline std::shared_ptr<T> Entity::getComponent()
     if (iter != componentMap.end() && iter->second.size() > 0) {
         return std::static_pointer_cast<T>(iter->second.front());
     }
-
-    return nullptr;
-}
-
-template<typename T>
-inline std::shared_ptr<T> Entity::getComponentInParent()
-{
-    // TODO:
-//    auto parent = this->getNode()->getParent();
-
-//    if (parent != nullptr) {
-//        return parent->getEntity()->getComponent<T>();
-//    }
 
     return nullptr;
 }

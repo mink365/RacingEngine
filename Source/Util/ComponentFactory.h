@@ -25,14 +25,11 @@ EntityPtr CreateBoneNode();
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateComponent(Args... args)
 {
-    auto entity = CreateEntity();
+    auto entity = CreateNode();
 
     auto component = std::make_shared<T>(args...);
 
     entity->addComponent(component);
-
-    // make an reference to the node, make sure it not be delected
-    ComponentFactory::getInstance().nodes.push_back(entity);
 
     return component;
 }
@@ -75,8 +72,6 @@ inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 
     auto component = node->getComponent<T>();
     component->init(args...);
-
-    ComponentFactory::getInstance().nodes.push_back(node);
 
     return component;
 }

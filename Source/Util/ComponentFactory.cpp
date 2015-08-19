@@ -20,7 +20,10 @@ EntityPtr CreateEntity()
 {
     auto node = std::make_shared<Entity>();
 
+    // make an reference to the node, make sure it not be delected
     ComponentFactory::getInstance().nodes.push_back(node);
+
+    AddComponent<1, Node>::Do(node);
 
     return node;
 }
