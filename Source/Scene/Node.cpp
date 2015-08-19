@@ -6,7 +6,6 @@
 namespace re {
 
 Node::Node() {
-    this->id = 0;
     this->level = 0;
 }
 

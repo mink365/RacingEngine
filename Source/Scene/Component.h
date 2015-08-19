@@ -16,7 +16,7 @@ enum class ComponentType {
     Light,
 };
 
-class Component : public Named, public Clonable<Component>
+class Component : public Clonable<Component>
 {
     friend class Entity;
     friend class FbxParser;
@@ -26,6 +26,10 @@ public:
     virtual ~Component();
 
     ComponentType getType();
+    Long getId() const;
+
+    const std::string& getName() const;
+    void setName(const std::string& name);
 
     EntityPtr getEntity() const;
     NodePtr getNode() const;
@@ -61,6 +65,21 @@ protected:
 inline ComponentType Component::getType()
 {
     return this->type;
+}
+
+inline Long Component::getId() const
+{
+    return this->getEntity()->getId();
+}
+
+inline const string &Component::getName() const
+{
+    return this->getEntity()->getName();
+}
+
+inline void Component::setName(const string &name)
+{
+    this->getEntity()->setName(name);
 }
 
 inline EntityPtr Component::getEntity() const

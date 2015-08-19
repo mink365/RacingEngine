@@ -146,7 +146,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     RenderElementPtr renderElement = CreateComponent<RenderElement>(material, mesh);
     node->getEntity()->addComponent(renderElement);
 
-    mesh->setName(node->name);
+    mesh->setName(node->getName());
 
     SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();
     mesh->setMeshData(meshData);
@@ -298,12 +298,12 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
 //        mesh->getGeometry()->staticGeometry = false;
 
         ClusterCollectionPtr clusterColl = std::make_shared<ClusterCollection>();
-        clusterColl->meshId = node->id;
+        clusterColl->meshId = node->getId();
 
         for (int i = 0; i < len; ++i) {
             FBXClusterPtr cluster = this->readCluster(st);
 
-            cluster->linkedMeshId = node->id;
+            cluster->linkedMeshId = node->getId();
 
             clusterColl->clusters.push_back(cluster);
         }
@@ -350,8 +350,8 @@ BonePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
     string name = reader->ReadString(st);
     Int type = reader->ReadInt(st);
 
-    bone->id = id;
-    bone->name = name;
+    bone->getEntity()->id = id;
+    bone->getEntity()->name = name;
     bone->type = type;
 
     Vec3 vectorT = reader->ReadVec3(st);
