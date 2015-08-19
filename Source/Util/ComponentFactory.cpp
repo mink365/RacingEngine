@@ -16,11 +16,19 @@
 
 namespace re {
 
-EntityPtr CreateNode()
+EntityPtr CreateEntity()
 {
     auto node = std::make_shared<Entity>();
 
     ComponentFactory::getInstance().nodes.push_back(node);
+
+    return node;
+}
+
+EntityPtr CreateNode()
+{
+    auto node = CreateEntity();
+    AddComponent<1, Transform>::Do(node);
 
     return node;
 }

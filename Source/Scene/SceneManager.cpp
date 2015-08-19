@@ -12,7 +12,7 @@ namespace ui {
 
 SceneManager::SceneManager()
 {
-    root = std::make_shared<Entity>()->getNode();
+    root = CreateEntity()->getNode();
     root->_inScene = true;
 }
 

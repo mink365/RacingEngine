@@ -8,9 +8,6 @@ namespace re {
 
 Entity::Entity()
 {
-    this->transform = std::make_shared<Transform>();
-
-    this->addComponent(transform);
 }
 
 TransformPtr& Entity::getTransform()
@@ -89,7 +86,7 @@ const std::vector<ComponentPtr> &Entity::getComponents() const
 
 EntityPtr Entity::createCloneInstance() const
 {
-    return std::make_shared<Entity>();
+    return CreateEntity();
 }
 
 void Entity::copyProperties(const Entity *entity)

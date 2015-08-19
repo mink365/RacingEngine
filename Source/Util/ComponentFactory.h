@@ -15,6 +15,7 @@ public:
     std::vector<EntityPtr> nodes;
 };
 
+EntityPtr CreateEntity();
 EntityPtr CreateNode();
 EntityPtr CreateNode(const std::string& name);
 EntityPtr CreateMeshNode();
@@ -24,7 +25,7 @@ EntityPtr CreateBoneNode();
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateComponent(Args... args)
 {
-    auto entity = std::make_shared<Entity>();
+    auto entity = CreateEntity();
 
     auto component = std::make_shared<T>(args...);
 
@@ -63,7 +64,7 @@ struct AddComponent<1, T, TL...>
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 {
-    auto node = std::make_shared<Entity>();
+    auto node = CreateEntity();
 
     AddComponent<4, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>::Do(node);
 

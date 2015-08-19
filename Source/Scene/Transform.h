@@ -22,7 +22,6 @@ typedef std::shared_ptr<Transform> TransformPtr;
 class Transform : public Component
 {
     friend class SceneManager;
-    friend class Node2d;
 
 public:
     Transform();

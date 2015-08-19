@@ -23,9 +23,10 @@ class Entity : public Named, public Clonable<Entity>, public enable_shared_from_
 public:
     Entity();
 
-    void init();
-
     void addComponent(ComponentPtr component);
+//    template<typename T>
+//    std::shared_ptr<T> addComponent<T>();
+
     void clearComponents();
     size_t getComponentCount() const;
     ComponentPtr getComponent(size_t index);

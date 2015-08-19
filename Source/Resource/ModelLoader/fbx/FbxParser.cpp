@@ -98,7 +98,7 @@ NodePtr FbxParser::readNode(std::istream *st) {
     case FbxNodeAttributeType::MESH:
     case FbxNodeAttributeType::GROUP:
     {
-        auto entity = std::make_shared<Entity>();
+        auto entity = CreateEntity();
         auto node = entity->getNode();
 
         Long id = reader->ReadLong(st);
