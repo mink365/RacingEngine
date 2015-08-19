@@ -63,7 +63,9 @@ MeshDataPtr CreateDefaultMeshData()
 void UploadMeshToHardware(MeshPtr &mesh)
 {
     auto meshData = mesh->getMeshData();
-    mesh->getGeometry()->appendToMeshData(meshData);
+    if (mesh->getGeometry()) {
+        mesh->getGeometry()->appendToMeshData(meshData);
+    }
     BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
 }
 

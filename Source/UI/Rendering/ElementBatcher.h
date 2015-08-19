@@ -32,7 +32,7 @@ private:
     ElementBatch::ptr FindBatchForElement(const CanvasRenderElement& element);
 
 private:
-    std::set<ElementBatch::ptr> elementBatchs;
+    std::vector<ElementBatch::ptr> elementBatchs;
 };
 
 } // namespace ui

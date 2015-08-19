@@ -58,7 +58,7 @@ ElementBatch::ptr ElementBatcher::FindBatchForElement(const CanvasRenderElement 
     //TODO: auto batch
 
     auto batch = ElementBatch::create();
-    elementBatchs.insert(batch);
+    elementBatchs.push_back(batch);
 
     return batch;
 }
