@@ -10,12 +10,6 @@
 
 namespace re {
 
-enum class ComponentType {
-    Transform,
-    Camera,
-    Light,
-};
-
 class Component : public Clonable<Component>
 {
     friend class Entity;
@@ -25,7 +19,6 @@ public:
     Component();
     virtual ~Component();
 
-    ComponentType getType();
     Long getId() const;
 
     const std::string& getName() const;
@@ -57,15 +50,8 @@ protected:
     virtual void copyProperties(const Component *att);
 
 protected:
-    ComponentType type;
-
     std::weak_ptr<Entity> attachEntity;
 };
-
-inline ComponentType Component::getType()
-{
-    return this->type;
-}
 
 inline Long Component::getId() const
 {

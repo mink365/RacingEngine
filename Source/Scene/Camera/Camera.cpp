@@ -5,8 +5,6 @@ namespace re {
 
 Camera::Camera()
 {
-    this->type = ComponentType::Camera;
-
     this->queueCullFunc = [](int){return false;};
     this->clearFlag = ClearBufferBit::COLOR_BUFFER_BIT
                      | ClearBufferBit::DEPTH_BUFFER_BIT

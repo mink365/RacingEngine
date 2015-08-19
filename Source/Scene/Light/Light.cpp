@@ -4,7 +4,7 @@ namespace re {
 
 Light::Light()
 {
-    this->Component::type = ComponentType::Light;
+
 }
 
 Light::~Light()

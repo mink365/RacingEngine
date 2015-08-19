@@ -15,8 +15,6 @@ namespace re {
 
 Transform::Transform()
 {
-    this->type = ComponentType::Transform;
-
     this->refreshFlags = 0;
     this->markLocalTransformRefreshFlag();
 

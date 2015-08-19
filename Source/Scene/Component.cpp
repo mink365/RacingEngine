@@ -43,8 +43,6 @@ ComponentPtr Component::createCloneInstance() const
 
 void Component::copyProperties(const Component *att)
 {
-    this->type = att->type;
-
     this->attachEntity.reset();
 }
 
