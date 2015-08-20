@@ -9,12 +9,12 @@ namespace ui {
 
 WidgetPtr GetWidgetComponent(Node& node)
 {
-    if (node.getComponents().size() < 4) {
+    if (node.getComponents().size() < 5) {
         return nullptr;
     }
 
     // TODO: can't use getComponent<Widget>, Widget is just a base class
-    auto component = node.getComponents().at(3);
+    auto component = node.getComponents().at(4);
 
     // TODO: use UNIFY event/message distpach system
     return std::dynamic_pointer_cast<Widget>(component);
