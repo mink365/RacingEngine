@@ -21,7 +21,7 @@ public:
 
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 protected:
-    virtual ComponentPtr createCloneInstance() const;
+    virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;
 
 protected:
@@ -37,10 +37,10 @@ public:
     virtual void init(const string& texDefault, const string& texPress);
     virtual void init(const string& texDefault, const string& texPress, const string& texDis);
 
-    virtual void switchState(WidgetState newState);
+    virtual void switchState(WidgetState newState) override;
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
+    virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;
 
 protected:
@@ -51,7 +51,7 @@ class LabelButton : public ImageButton
 {
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
+    virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;
 
 protected:

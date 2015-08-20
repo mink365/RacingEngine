@@ -5,8 +5,8 @@ namespace re {
 namespace ui {
 
 LayoutElement::LayoutElement()
-    : fillWidth(false), fillHeight(false)
-    , maxSize(FLT_MAX, FLT_MAX)
+    : maxSize(FLT_MAX, FLT_MAX)
+      ,fillWidth(false), fillHeight(false)
 {
 
 }

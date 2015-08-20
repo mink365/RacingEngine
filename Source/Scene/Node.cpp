@@ -78,7 +78,7 @@ void Node::addChild(NodePtr node, Int index)
 
     vector<NodePtr>::iterator iter;
     if (index >= 0) {
-        Int _index = index > children.size() ? children.size() : index;
+        size_t _index = (size_t)index > children.size() ? children.size() : index;
         iter = children.begin() + _index;
     } else {
         Int _index = index + children.size() + 1;
@@ -127,7 +127,6 @@ ComponentPtr Node::createCloneInstance() const
 
 void Node::copyProperties(const Component *component)
 {
-//    this->name = component->name;
     this->parent.reset();
 }
 

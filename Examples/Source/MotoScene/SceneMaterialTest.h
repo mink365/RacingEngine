@@ -13,11 +13,11 @@ public:
 
 private:
     void createUI();
-    void changeTile(int index);
+    void changeTile(size_t index);
 
 private:
     std::vector<NodePtr> tiles;
-    int tileIndex;
+    std::size_t tileIndex;
 };
 
 #endif // SCENEMATERIALTEST_H

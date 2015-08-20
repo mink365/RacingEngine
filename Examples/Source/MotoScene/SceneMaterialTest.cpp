@@ -124,7 +124,7 @@ void SceneMaterialTest::createUI()
     LayoutUtil::LayoutToParent(buttonNext->getComponent<Transform2D>(), AlignType::CENTER_BOTTOM, AlignType::CENTER_BOTTOM, 30, 50);
 }
 
-void SceneMaterialTest::changeTile(int index)
+void SceneMaterialTest::changeTile(size_t index)
 {
     this->tileIndex = index;
 
