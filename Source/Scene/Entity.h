@@ -28,6 +28,7 @@ public:
 //    std::shared_ptr<T> addComponent<T>();
 
     void clearComponents();
+
     size_t getComponentCount() const;
     ComponentPtr getComponent(size_t index);
     const std::vector<ComponentPtr>& getComponents() const;
@@ -62,7 +63,14 @@ private:
 
 private:
     std::vector<ComponentPtr> components;
-    std::unordered_map<std::type_index, std::list<ComponentPtr>> componentMap;
+    // same type component should never be add to one entity
+    std::unordered_map<std::type_index, ComponentPtr> componentMap;
+
+    struct CachedData {
+        bool dirty = true;
+        std::list<ComponentPtr> list;
+    };
+    std::unordered_map<std::type_index, CachedData> componentCacheMap;
 
     TransformPtr transform;
     NodePtr node;
@@ -86,10 +94,27 @@ inline const TransformPtr &Entity::getTransform() const
 template<typename T>
 inline std::shared_ptr<T> Entity::getComponent()
 {
-    auto iter = this->componentMap.find(std::type_index(typeid(T)));
+    auto id = std::type_index(typeid(T));
 
-    if (iter != componentMap.end() && iter->second.size() > 0) {
-        return std::static_pointer_cast<T>(iter->second.front());
+    if (componentMap.count(id) == 0) {
+        auto& data = componentCacheMap[id];
+
+        if (data.dirty) {
+            for (auto& comp : components) {
+                if (dynamic_cast<T*>(comp.get()))
+                {
+                    data.list.push_back(comp);
+                }
+            }
+
+            data.dirty = false;
+        }
+
+        if (data.list.size() > 0) {
+            return std::static_pointer_cast<T>(data.list.front());
+        }
+    } else {
+        return std::static_pointer_cast<T>(componentMap[id]);
     }
 
     return nullptr;

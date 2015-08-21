@@ -23,18 +23,15 @@ void Entity::refreshTransformInHierarchy()
 
 void Entity::addComponent(ComponentPtr component)
 {
+    std::type_index id = std::type_index(typeid(*component.get()));
+    assert(componentMap.count(id) == 0);
+
     EntityPtr ptr = this->shared_from_this();
 
     component->attachEntity = ptr;
     this->components.push_back(component);
 
-    std::type_index id = std::type_index(typeid(*component.get()));
-    if (this->componentMap.count(id) == 0) {
-        auto& list = this->componentMap[id];
-        list.push_back(component);
-    } else {
-        this->componentMap[id].push_back(component);
-    }
+    this->componentMap[id] = component;
 
     if (this->node != nullptr && this->node->isHasParent()) {
         component->onEnter();
@@ -53,6 +50,7 @@ void Entity::clearComponents()
 
     this->components.clear();
     this->componentMap.clear();
+    this->componentCacheMap.clear();
 }
 
 size_t Entity::getComponentCount() const
@@ -79,12 +77,7 @@ void Entity::copyProperties(const Entity*)
 {
     for (auto& component : this->components) {
         std::type_index id = std::type_index(typeid(*component.get()));
-        if (this->componentMap.count(id) == 0) {
-            auto& list = this->componentMap[id];
-            list.push_back(component);
-        } else {
-            this->componentMap[id].push_back(component);
-        }
+        this->componentMap[id] = component;
     }
 
     this->CacheComponents();
@@ -122,15 +115,18 @@ EntityPtr Entity::clone() const
 
 void Entity::CacheComponents()
 {
+    for (auto& pair : componentCacheMap) {
+        auto& data = pair.second;
+
+        data.dirty = true;
+    }
+
     if (this->node == nullptr) {
         this->node = getComponent<Node>();
     }
 
     if (this->transform == nullptr) {
         this->transform = this->getComponent<Transform>();
-        if (this->transform == nullptr) {
-            this->transform = std::dynamic_pointer_cast<Transform>(getComponent<ui::Transform2D>());
-        }
     }
 }
 
