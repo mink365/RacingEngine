@@ -73,41 +73,28 @@ void FeatureTestsApp::onExitForeground()
 
 }
 
+template<class T>
+void CreateTest(std::vector<std::shared_ptr<BaseTest>>& tests)
+{
+    auto test = std::make_shared<T>();
+    tests.push_back(test);
+}
+
+template<class T, class T2, class... TL>
+void CreateTest(std::vector<std::shared_ptr<BaseTest>>& tests)
+{
+    auto test = std::make_shared<T>();
+    tests.push_back(test);
+
+    CreateTest<T2, TL...>(tests);
+}
+
 void FeatureTestsApp::createTests()
 {
-    std::shared_ptr<BaseTest> test;
-    test = std::make_shared<FBXTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<AudioTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<FontTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<TweenTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<UITest>();
-    this->tests.push_back(test);
-    test = std::make_shared<LayoutTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<SceneMaterialTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<LightTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<ShadowTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<BulletTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<RenderToTextureTest>();
-    this->tests.push_back(test);
-    test = std::make_shared<Skybox>();
-    this->tests.push_back(test);
-    test = std::make_shared<Reflection>();
-    this->tests.push_back(test);
-    test = std::make_shared<Refraction>();
-    this->tests.push_back(test);
-    test = std::make_shared<Lightmap>();
-    this->tests.push_back(test);
-    test = std::make_shared<Bumpmap>();
-    this->tests.push_back(test);
+    CreateTest<FBXTest, AudioTest, FontTest, TweenTest
+            , UITest, LayoutTest, SceneMaterialTest, LightTest
+            , ShadowTest, BulletTest, RenderToTextureTest, Skybox
+            , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);
 
     currIndex = 5;
 
