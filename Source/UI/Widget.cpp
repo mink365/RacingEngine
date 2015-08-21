@@ -7,19 +7,6 @@
 namespace re {
 namespace ui {
 
-WidgetPtr GetWidgetComponent(Node& node)
-{
-    if (node.getComponents().size() < 5) {
-        return nullptr;
-    }
-
-    // TODO: can't use getComponent<Widget>, Widget is just a base class
-    auto component = node.getComponents().at(4);
-
-    // TODO: use UNIFY event/message distpach system
-    return std::dynamic_pointer_cast<Widget>(component);
-}
-
 Widget::Widget()
     : _touchEnable(true)
     , _blockTouch(true)
@@ -43,7 +30,7 @@ void Widget::addWidgets() {
 
 void Widget::layout() {
     auto func = [](NodePtr& node) {
-        auto widget = GetWidgetComponent(*node);
+        auto widget = node->getComponent<Widget>();
 
         if (widget) {
             widget->layoutSelf();
@@ -138,7 +125,7 @@ bool Widget::emitWidgetTouchEvent(WidgetTouchState oldTouchState, WidgetTouchSta
     bool r = false;
     bool lr = false;
     for (auto listener : this->_onTouchListeners) {
-        auto ptr = GetWidgetComponent(*this->getNode());
+        auto ptr = this->getComponent<Widget>();
 
         if (oldTouchState != newTouchState) {
             listener->onTouchStateChange(oldTouchState, newTouchState, event, ptr);
@@ -195,7 +182,7 @@ bool Widget::dispatchTouchEvent(TouchEvent &event)
     for (int i = size - 1; i >= 0; --i) {
         auto child = getNode()->getChildren()[i];
 
-        WidgetPtr childWidget = GetWidgetComponent(*child);
+        WidgetPtr childWidget = child->getComponent<Widget>();
 
         if (!childWidget) {
             continue;
