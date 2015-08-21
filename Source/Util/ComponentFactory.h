@@ -3,11 +3,24 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "PreDeclare.h"
 #include "Base/Singleton.h"
 #include "Scene/Entity.h"
 
 namespace re {
+
+template <class... TL>
+typename std::enable_if<sizeof...(TL) == 0>::type AddComponent(EntityPtr&)
+{
+}
+
+template <class T, class... TL> void AddComponent(EntityPtr& node)
+{
+   auto component = std::make_shared<T>();
+   node->addComponent(component);
+   AddComponent<TL... >(node);
+}
 
 class ComponentFactory : public Singleton<ComponentFactory>
 {
@@ -34,36 +47,12 @@ inline std::shared_ptr<T> CreateComponent(Args... args)
     return component;
 }
 
-// function can not partial specialization now, so we need this
-template<std::size_t INDEX, typename T, typename... TL>
-struct AddComponent
-{
-    static void Do(EntityPtr& node)
-    {
-        auto component = std::make_shared<T>();
-        node->addComponent(component);
-
-        AddComponent<INDEX-1, TL...>::Do(node);
-    }
-};
-
-template<typename T, typename... TL>
-struct AddComponent<1, T, TL...>
-{
-    static void Do(EntityPtr& node)
-    {
-        // the last one
-        auto component = std::make_shared<T>();
-        node->addComponent(component);
-    }
-};
-
 template<typename T, typename... Args>
 inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 {
     auto node = CreateEntity();
 
-    AddComponent<4, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>::Do(node);
+    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(node);
 
     auto component = node->getComponent<T>();
     component->init(args...);

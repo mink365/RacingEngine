@@ -23,15 +23,13 @@ EntityPtr CreateEntity()
     // make an reference to the node, make sure it not be delected
     ComponentFactory::getInstance().nodes.push_back(node);
 
-    AddComponent<1, Node>::Do(node);
-
     return node;
 }
 
 EntityPtr CreateNode()
 {
     auto node = CreateEntity();
-    AddComponent<1, Transform>::Do(node);
+    AddComponent<Node, Transform>(node);
 
     return node;
 }
@@ -48,7 +46,7 @@ EntityPtr CreateMeshNode()
 {
     auto node = CreateNode();
 
-    AddComponent<1, RenderElement>::Do(node);
+    AddComponent<RenderElement>(node);
 
     node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
@@ -59,7 +57,7 @@ EntityPtr CreateSkinningMesh()
 {
     auto node = CreateNode();
 
-    AddComponent<4, Skeleton, SkeletonController, Animation, RenderElement>::Do(node);
+    AddComponent<Skeleton, SkeletonController, Animation, RenderElement>(node);
 
     node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
@@ -70,7 +68,7 @@ EntityPtr CreateBoneNode()
 {
     auto node = CreateNode();
 
-    AddComponent<1, Bone>::Do(node);
+    AddComponent<Bone>(node);
 
     return node;
 }
