@@ -65,11 +65,6 @@ inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
 
     AddComponent<4, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>::Do(node);
 
-    auto transform = node->getComponent<ui::Transform2D>();
-    // TODO: can't auto convert?
-    std::shared_ptr<Transform> trans = std::dynamic_pointer_cast<Transform>(transform);
-    node->resetTransform(trans);
-
     auto component = node->getComponent<T>();
     component->init(args...);
 

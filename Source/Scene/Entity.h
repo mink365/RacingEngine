@@ -40,7 +40,6 @@ public:
 
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
-    void resetTransform(TransformPtr &trans);
     void refreshTransformInHierarchy();
 
     NodePtr getNode();

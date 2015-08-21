@@ -3,18 +3,12 @@
 #include "Transform.h"
 #include "UI/Base/Transform2D.h"
 #include "Node.h"
+#include "Util/TypeUtil.h"
 
 namespace re {
 
 Entity::Entity()
 {
-}
-
-void Entity::resetTransform(TransformPtr& trans)
-{
-    RE_ASSERT(trans->getEntity() == this->shared_from_this());
-
-    this->transform = trans;
 }
 
 void Entity::refreshTransformInHierarchy()
