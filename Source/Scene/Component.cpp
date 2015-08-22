@@ -38,7 +38,7 @@ ComponentPtr Component::clone() const
 
 ComponentPtr Component::createCloneInstance() const
 {
-    return std::make_shared<Component>();
+    return CreateCloneInstance<Component>();
 }
 
 void Component::copyProperties(const Component *att)

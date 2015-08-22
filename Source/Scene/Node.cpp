@@ -122,7 +122,7 @@ void Node::removeAllChildren()
 
 ComponentPtr Node::createCloneInstance() const
 {
-    return std::make_shared<Node>();
+    return CreateCloneInstance<Node>();
 }
 
 void Node::copyProperties(const Component *component)

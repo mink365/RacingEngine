@@ -28,10 +28,9 @@ void LayoutTest::Init()
         alignment->offset = Vec2(0, 0 + 0);
         container->getComponent<LayoutElement>()->setAlignment(alignment);
 
-        auto group = std::make_shared<HorizontalLayoutGroup>();
-        group->SetAlign(LinearAlign::Left);
-        container->getEntity()->addComponent(group);
         container->getEntity()->setName("Container");
+        auto group = container->getEntity()->addComponent<HorizontalLayoutGroup>();
+        group->SetAlign(LinearAlign::Left);
 
         for (size_t i = 0; i < 5; ++i) {
             SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
@@ -60,11 +59,10 @@ void LayoutTest::Init()
         alignment->offset = Vec2(0, 0 + 0);
         container->getComponent<LayoutElement>()->setAlignment(alignment);
 
-        auto group = std::make_shared<VerticalLayoutGroup>();
+        container->getEntity()->setName("Container");
+        auto group = container->getEntity()->addComponent<VerticalLayoutGroup>();
         group->SetSpacing(-20);
         group->SetAlign(LinearAlign::Center);
-        container->getEntity()->addComponent(group);
-        container->getEntity()->setName("Container");
 
         for (size_t i = 0; i < 5; ++i) {
             SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");

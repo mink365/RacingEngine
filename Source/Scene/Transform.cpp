@@ -142,7 +142,7 @@ void Transform::markWorldTransformRefreshFlag()
 
 ComponentPtr Transform::createCloneInstance() const
 {
-    return std::make_shared<Transform>();
+    return CreateCloneInstance<Transform>();
 }
 
 void Transform::copyProperties(const Component *component)
