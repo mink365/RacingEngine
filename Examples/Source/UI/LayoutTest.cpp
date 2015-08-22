@@ -33,7 +33,7 @@ void LayoutTest::Init()
         group->SetAlign(LinearAlign::Left);
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
+            SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 
@@ -65,7 +65,7 @@ void LayoutTest::Init()
         group->SetAlign(LinearAlign::Center);
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
+            SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 

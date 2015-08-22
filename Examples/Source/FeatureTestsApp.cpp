@@ -154,15 +154,15 @@ void FeatureTestsApp::createBaseUI()
         font = FontManager::getInstance().GetResource("default");
     }
 
-    labelTitle = CreateNode2D<Label>(font);
+    labelTitle = CreateUIGraphicNode<Label>(font);
     labelTitle->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
-    labelFps = CreateNode2D<Label>(font);
+    labelFps = CreateUIGraphicNode<Label>(font);
     labelFps->setText("HelleH");
 
-    auto buttonNext = CreateNode2D<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateNode2D<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateUIGraphicNode<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateUIGraphicNode<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {

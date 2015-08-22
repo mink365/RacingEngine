@@ -39,9 +39,7 @@ inline SharedPtr<T> CreateNode(Args... args)
 {
     auto entity = CreateNode();
 
-    auto component = std::make_shared<T>(args...);
-
-    entity->addComponent(component);
+    auto component = entity->addComponent<T>();
 
     return component;
 }
@@ -54,6 +52,18 @@ inline SharedPtr<T> CreateNode2D(Args... args)
     AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
 
 //    entity->awakeEvent.emit();
+
+    auto component = entity->getComponent<T>();
+
+    return component;
+}
+
+template<typename T, typename... Args>
+inline SharedPtr<T> CreateUIGraphicNode(Args... args)
+{
+    auto entity = CreateEntity();
+
+    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
 
     auto component = entity->getComponent<T>();
     component->init(args...);

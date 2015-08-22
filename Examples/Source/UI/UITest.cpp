@@ -17,11 +17,11 @@ extern TextureAtlasPtr CreateDefaultFont();
 
 void UITest::Init()
 {
-    SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
+    SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
-    NinePatchPtr patch = CreateNode2D<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateUIGraphicNode<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
@@ -35,13 +35,13 @@ void UITest::Init()
         font = FontManager::getInstance().GetResource("default");
     }
 
-    LabelPtr label = CreateNode2D<Label>(font);
+    LabelPtr label = CreateUIGraphicNode<Label>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
 
-    LabelPtr label2 = CreateNode2D<Label>(font);
+    LabelPtr label2 = CreateUIGraphicNode<Label>(font);
     label2->setText("xHtbo xx");
 
-    auto button = CreateNode2D<ImageButton>("rate.png", "rate_press.png", "rate.png");
+    auto button = CreateUIGraphicNode<ImageButton>("rate.png", "rate_press.png", "rate.png");
 
     auto scene = stage->getLastLayer();
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
@@ -83,13 +83,13 @@ WindowPtr UITest::createWin()
     win->getNode()->setName("Window1");
     win->getComponent<Transform2D>()->setSize(Size(400, 500));
 
-    NinePatchPtr patch = CreateNode2D<NinePatch>("tab_press.png");
+    NinePatchPtr patch = CreateUIGraphicNode<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(400, 500));
     patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
     patch->rebind();
 
-    auto button = CreateNode2D<ImageButton>("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
+    auto button = CreateUIGraphicNode<ImageButton>("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
 
     win->getNode()->addChild(patch->getNode());
     win->getNode()->addChild(button->getNode());

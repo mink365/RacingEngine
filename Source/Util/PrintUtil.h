@@ -9,10 +9,6 @@
 
 namespace re {
 
-inline void PrintVector(Vec3 *v) {
-    LOG_D("%s", v->toString().c_str());
-}
-
 template <typename T>
 void PrintArray(std::string head, T *value, int count, int split) {
     std::ostringstream oss;

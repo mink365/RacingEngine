@@ -112,9 +112,9 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
 {
     BaseButton::onAwake();
 
-    this->defaultSprite = CreateNode2D<Sprite>(texDefault);
-    this->pressedSprite = CreateNode2D<Sprite>(texPress);
-    this->disabledSprite = CreateNode2D<Sprite>(texDis);
+    this->defaultSprite = CreateUIGraphicNode<Sprite>(texDefault);
+    this->pressedSprite = CreateUIGraphicNode<Sprite>(texPress);
+    this->disabledSprite = CreateUIGraphicNode<Sprite>(texDis);
 
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();
