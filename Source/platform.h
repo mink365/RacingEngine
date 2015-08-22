@@ -12,7 +12,7 @@
 #include "Util/StringUtil.h"
 #include "PreDeclare.h"
 
-using namespace std;
+using std::string;
 
 typedef uint8_t ubyte;
 typedef uint16_t ushort;

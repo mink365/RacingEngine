@@ -223,10 +223,10 @@ Rect RectApplyMatrix(const Rect& rect, const Mat4& transform)
     bottomLeft = transform * bottomLeft;
     bottomRight = transform * bottomRight;
 
-    float minX = min(min(topLeft.x, topRight.x), min(bottomLeft.x, bottomRight.x));
-    float maxX = max(max(topLeft.x, topRight.x), max(bottomLeft.x, bottomRight.x));
-    float minY = min(min(topLeft.y, topRight.y), min(bottomLeft.y, bottomRight.y));
-    float maxY = max(max(topLeft.y, topRight.y), max(bottomLeft.y, bottomRight.y));
+    float minX = std::min(std::min(topLeft.x, topRight.x), std::min(bottomLeft.x, bottomRight.x));
+    float maxX = std::max(std::max(topLeft.x, topRight.x), std::max(bottomLeft.x, bottomRight.x));
+    float minY = std::min(std::min(topLeft.y, topRight.y), std::min(bottomLeft.y, bottomRight.y));
+    float maxY = std::max(std::max(topLeft.y, topRight.y), std::max(bottomLeft.y, bottomRight.y));
 
     return Rect(minX, minY, (maxX - minX), (maxY - minY));
 }

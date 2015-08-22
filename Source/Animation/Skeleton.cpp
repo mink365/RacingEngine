@@ -6,6 +6,7 @@
 #include "Scene/Node.h"
 #include "Scene/Transform.h"
 
+using std::vector;
 
 namespace re {
 

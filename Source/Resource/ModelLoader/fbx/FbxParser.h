@@ -8,6 +8,9 @@
 #include "Animation/Skeleton.h"
 #include "FileSystem/File.h"
 
+using std::vector;
+using std::istream;
+
 namespace re {
 
 class Node;

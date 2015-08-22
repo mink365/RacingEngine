@@ -13,6 +13,8 @@
 
 #include <stack>
 
+using std::wstring;
+
 namespace re {
 
 typedef Vec2 Pen;

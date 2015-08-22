@@ -96,7 +96,7 @@ WindowPtr WindowManager::pushWindow(WindowPtr &window) {
     
     MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::PUSH_WINDOW,
-                                               make_shared<string>(window->getName()));
+                                               std::make_shared<string>(window->getName()));
     
     this->changeFocusedWindowToStackTop();
     
@@ -123,7 +123,7 @@ WindowPtr WindowManager::popWindow(WindowPtr &win) {
     
     MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::POP_WINDOW,
-                                               make_shared<string>(win->getName()));
+                                               std::make_shared<string>(win->getName()));
     
     return win;
 }

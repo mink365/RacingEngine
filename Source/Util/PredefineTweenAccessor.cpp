@@ -234,7 +234,7 @@ void PredefineTweenAccessor::registerAccessor()
         return 1;
     };
 
-    vector<int> types {
+    std::vector<int> types {
                 FlatNodeAccessor::POSITION_X,
                 FlatNodeAccessor::POSITION_Y,
                 FlatNodeAccessor::POSITION_XY,

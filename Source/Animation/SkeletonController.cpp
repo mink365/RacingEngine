@@ -137,7 +137,7 @@ void re::SkeletonController::computeLinearDeformation()
         }
 
         if (meshData->controlPointsData.controlToVertex.size() != 0) {
-            vector<uint>& vertexList = meshData->controlPointsData.controlToVertex.at(i);
+            std::vector<uint>& vertexList = meshData->controlPointsData.controlToVertex.at(i);
 
             for (auto& index : vertexList) {
                 meshData->setVertex(index, destVertex);

@@ -17,7 +17,7 @@ namespace re {
 void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
 //void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)>& func);
 
-class Entity : public Named, public Clonable<Entity>, public enable_shared_from_this<Entity>
+class Entity : public Named, public Clonable<Entity>, public std::enable_shared_from_this<Entity>
 {
     friend class FbxParser;
 

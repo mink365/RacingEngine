@@ -12,10 +12,10 @@ namespace re {
 class AnimationStack;
 class Animation;
 
-typedef shared_ptr<Animation> AnimationPtr;
-typedef shared_ptr<AnimationStack> AnimationStackPtr;
+typedef std::shared_ptr<Animation> AnimationPtr;
+typedef std::shared_ptr<AnimationStack> AnimationStackPtr;
 
-class Animation : public Component, public enable_shared_from_this<Animation>
+class Animation : public Component, public std::enable_shared_from_this<Animation>
 {
 public:
     Animation();
@@ -44,8 +44,8 @@ public:
 
 private:
 
-    vector<AnimationTrackPtr> animTracks;
-    vector<AnimationStackPtr> animStacks;
+    std::vector<AnimationTrackPtr> animTracks;
+    std::vector<AnimationStackPtr> animStacks;
 
     bool looping;
     float power;
@@ -74,7 +74,7 @@ public:
     Long getStackEndTime() const;
 
 private:
-    weak_ptr<Animation> animation;
+    std::weak_ptr<Animation> animation;
 
     Long stackBeginTime;
     Long stackEndTime;

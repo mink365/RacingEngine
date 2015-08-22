@@ -11,7 +11,7 @@ class Mat4;
 class Vec3;
 class Skeleton;
 
-typedef shared_ptr<Skeleton> SkeletonPtr;
+typedef std::shared_ptr<Skeleton> SkeletonPtr;
 
 /**
  * @brief The SkinningType enum
@@ -52,14 +52,14 @@ public:
 
     BonePtr getBone(Long id);
 
-    void compute(vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
+    void compute(std::vector<Mat4>& boneDeformations, std::vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
 private:
     void cacheBones();
 
-    void computeBone(BonePtr bone, vector<Mat4>& boneDeformations, vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
+    void computeBone(BonePtr bone, std::vector<Mat4>& boneDeformations, std::vector<float>& boneWeights, const Mat4& meshGeometryMatrix, const Mat4& globalPositionMatrix);
 
-    void updateBoneVertex(vector<Vec3>& boneVertex);
+    void updateBoneVertex(std::vector<Vec3>& boneVertex);
 
 private:
     LinkMode linkMode;

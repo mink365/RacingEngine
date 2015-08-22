@@ -80,7 +80,7 @@ Vec3 ReadCommon::ReadVec3(std::istream *stream) {
     return re::Vec3(v[0], v[1], v[2]);
 }
 
-Mat4 ReadCommon::ReadMat4(istream *st)
+Mat4 ReadCommon::ReadMat4(std::istream *st)
 {
     Vec3 vectorT = this->ReadVec3(st);
     Vec3 vectorR = this->ReadVec3(st);

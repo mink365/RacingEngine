@@ -17,7 +17,7 @@ class AnimationTrack;
 class Mat4;
 class Bone;
 
-typedef shared_ptr<Bone> BonePtr;
+typedef std::shared_ptr<Bone> BonePtr;
 
 class Bone : public Component
 {
@@ -47,8 +47,8 @@ private:
     Mat4 transformMatrix;
     Mat4 transformLinkMatrix;
 
-    vector<Int> linkIndices;
-    vector<float> weightValues;
+    std::vector<Int> linkIndices;
+    std::vector<float> weightValues;
 };
 
 } // namespace re

@@ -55,7 +55,7 @@ protected:
     void onWindowHidden(WindowPtr& win);
     
 protected:
-    list<WindowPtr> windowStack;
+    std::list<WindowPtr> windowStack;
 
     WindowFactory* factory;
 

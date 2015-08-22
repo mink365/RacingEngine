@@ -8,7 +8,7 @@
 
 namespace re {
 
-void eraseNode(vector<AtlasNode*>& nodes, int index) {
+void eraseNode(std::vector<AtlasNode*>& nodes, int index) {
     auto node = nodes[index];
 
     auto iter = std::find(nodes.begin(), nodes.end(), node);
@@ -20,7 +20,7 @@ void eraseNode(vector<AtlasNode*>& nodes, int index) {
     delete node;
 }
 
-void clearNodes(vector<AtlasNode*>& nodes) {
+void clearNodes(std::vector<AtlasNode*>& nodes) {
     for (size_t i = 0; i < nodes.size(); ++i) {
         auto node = nodes[i];
 

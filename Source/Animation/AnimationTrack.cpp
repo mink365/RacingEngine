@@ -13,7 +13,7 @@ KeyFrame::KeyFrame(const long time, const Vec3 &tran, const Quat &rotation, cons
     this->scaling = scale;
 }
 
-string KeyFrame::getName() const
+std::string KeyFrame::getName() const
 {
     return this->name;
 }
@@ -43,7 +43,7 @@ const Mat4 &KeyFrame::getMatrix() const
     return this->matrix;
 }
 
-void KeyFrame::setName(const string &value)
+void KeyFrame::setName(const std::string &value)
 {
     this->name = value;
 }

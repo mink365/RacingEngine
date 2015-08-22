@@ -34,7 +34,7 @@ inline const std::string& Named::getName() const
     return name;
 }
 
-inline void Named::setName(const string &name)
+inline void Named::setName(const std::string &name)
 {
     this->name = name;
 }

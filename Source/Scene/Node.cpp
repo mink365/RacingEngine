@@ -76,7 +76,7 @@ void Node::addChild(NodePtr node, Int index)
     };
     DistpatchFunctionInHierarchy(node, func);
 
-    vector<NodePtr>::iterator iter;
+    std::vector<NodePtr>::iterator iter;
     if (index >= 0) {
         size_t _index = (size_t)index > children.size() ? children.size() : index;
         iter = children.begin() + _index;

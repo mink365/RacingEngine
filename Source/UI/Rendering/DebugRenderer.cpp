@@ -92,7 +92,7 @@ void DebugRenderer::Step(NodePtr &node)
 
 void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
 {
-    int v = level / 12.0f * stoi("FFFFFF", 0, 16);
+    int v = level / 12.0f * std::stoi("FFFFFF", 0, 16);
 
     char buf[7];
     std::sprintf(buf, "%06X", v);
