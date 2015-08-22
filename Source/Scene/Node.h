@@ -19,7 +19,7 @@ public:
     void setParent(NodePtr value);
     void removeFromParent();
     void resetParent();
-    bool isHasParent();
+    bool hasParent();
 
     int getLevel() const;
 

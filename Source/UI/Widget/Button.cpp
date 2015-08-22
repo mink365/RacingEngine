@@ -174,12 +174,6 @@ ComponentPtr ImageButton::createCloneInstance() const
 void ImageButton::copyProperties(const Component *component)
 {
     BaseButton::copyProperties(component);
-
-    const ImageButton* inst = dynamic_cast<const ImageButton*>(component);
-    if (inst) {
-        // TODO: get the sprite from cloned child or just not clone children?
-//        this->defaultSprite = inst->defaultSprite->clone();
-    }
 }
 
 ComponentPtr LabelButton::createCloneInstance() const
@@ -190,12 +184,6 @@ ComponentPtr LabelButton::createCloneInstance() const
 void LabelButton::copyProperties(const Component *component)
 {
     ImageButton::copyProperties(component);
-
-    const LabelButton* inst = dynamic_cast<const LabelButton*>(component);
-    if (inst) {
-        // TODO: get the sprite from cloned child or just not clone children?
-//        this->defaultSprite = inst->defaultSprite->clone();
-    }
 }
 
 } // namespace ui

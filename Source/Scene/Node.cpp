@@ -21,7 +21,7 @@ void Node::setParent(NodePtr value)
 
 void Node::removeFromParent()
 {
-    assert(isHasParent());
+    assert(hasParent());
 
     auto ins = this->shared_from_this();
     this->parent.lock()->removeChild(ins);
@@ -31,7 +31,7 @@ void Node::resetParent() {
     parent.reset();
 }
 
-bool Node::isHasParent() {
+bool Node::hasParent() {
     return parent.lock() != nullptr;
 }
 
@@ -122,7 +122,7 @@ void Node::removeAllChildren()
 
 ComponentPtr Node::createCloneInstance() const
 {
-    return std::make_shared<Transform>();
+    return std::make_shared<Node>();
 }
 
 void Node::copyProperties(const Component *component)

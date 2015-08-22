@@ -305,7 +305,6 @@ inline void LayerManager<T>::cleanAllLayer() {
 template <class T>
 inline std::shared_ptr<T> LayerManager<T>::getLastLayer() {
     if (this->stack.size() >= 1) {
-        // TODO:
         return this->stack.back();
     } else {
         return NULL;
