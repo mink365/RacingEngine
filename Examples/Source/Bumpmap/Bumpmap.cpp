@@ -71,7 +71,7 @@ void Bumpmap::Init()
     auto mesh = renderElement->getMesh();
     mesh->getGeometry()->calculateTangents();
     {
-        auto meshData = std::make_shared<MeshData>();
+        auto meshData = Create<MeshData>();
         mesh->setMeshData(meshData);
 
         StreamUnit unit;

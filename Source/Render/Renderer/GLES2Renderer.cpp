@@ -125,7 +125,7 @@ void GLES2Renderer::activateTextureUnit(int unit)
 
 void GLES2Renderer::setupRenderTarget(RenderTarget &target)
 {
-    auto texture = std::make_shared<Texture>(target.getSize().width, target.getSize().height, 0);
+    auto texture = Create<Texture>(target.getSize().width, target.getSize().height, 0);
     target.setTexture(texture);
     // TODO: param base on POT
     texture->setFormat(TextureFormat::RGBA8);

@@ -12,7 +12,7 @@ namespace re {
 TextureParser::TextureParser()
 {
     factory.registerCreateFunc("json", [](){
-        return std::make_shared<JSONAtlasParser>();
+        return Create<JSONAtlasParser>();
     });
 }
 

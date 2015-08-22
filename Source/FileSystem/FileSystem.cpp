@@ -187,7 +187,7 @@ int FileSystem::GetFileListTree(const std::string &relativePath, const StrList &
 
 FilePtr FileSystem::CreateFile(const std::string &path, uint32_t mode)
 {
-    auto localFile = std::make_shared<FilePermanent>();
+    auto localFile = Create<FilePermanent>();
 
     int pos = path.find_last_of("/") + 1;
     localFile->name = path.substr(pos, path.length() - pos);

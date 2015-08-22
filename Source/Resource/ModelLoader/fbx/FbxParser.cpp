@@ -140,14 +140,14 @@ NodePtr FbxParser::readNode(std::istream *st) {
 }
 
 void FbxParser::readMesh(std::istream *st, NodePtr node) {
-    MeshPtr mesh = std::make_shared<Mesh>();
-    MaterialPtr material = std::make_shared<Material>();
+    MeshPtr mesh = Create<Mesh>();
+    MaterialPtr material = Create<Material>();
 
     node->getEntity()->addComponent<RenderElement>(material, mesh);
 
     mesh->setName(node->getName());
 
-    SkinnedMeshDataPtr meshData = std::make_shared<SkinnedMeshData>();
+    SkinnedMeshDataPtr meshData = Create<SkinnedMeshData>();
     mesh->setMeshData(meshData);
 
     StreamUnit unit;
@@ -296,7 +296,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
         // TODO: Dynamic
 //        mesh->getGeometry()->staticGeometry = false;
 
-        ClusterCollectionPtr clusterColl = std::make_shared<ClusterCollection>();
+        ClusterCollectionPtr clusterColl = Create<ClusterCollection>();
         clusterColl->meshId = node->getId();
 
         for (int i = 0; i < len; ++i) {
@@ -330,8 +330,8 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
 
 void FbxParser::readSkeleton(istream *st)
 {
-    SkeletonPtr skeleton = std::make_shared<Skeleton>();
-    AnimationPtr animation = std::make_shared<Animation>();
+    SkeletonPtr skeleton = Create<Skeleton>();
+    AnimationPtr animation = Create<Animation>();
 
     BonePtr bone = this->readBoneNode(st, animation);
 
@@ -366,7 +366,7 @@ BonePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 
     Int keyCount = reader->ReadInt(st);
     if (keyCount > 0) {
-        AnimationTrackPtr track = std::make_shared<AnimationTrack>();
+        AnimationTrackPtr track = Create<AnimationTrack>();
 
         for (Int i = 0; i < keyCount; ++i) {
             KeyFrame frame = this->readKeyFrame(st);
@@ -407,7 +407,7 @@ KeyFrame FbxParser::readKeyFrame(istream *st)
 
 FBXClusterPtr FbxParser::readCluster(istream *st)
 {
-    FBXClusterPtr cluster = std::make_shared<FBXCluster>();
+    FBXClusterPtr cluster = Create<FBXCluster>();
 
     cluster->linkedBoneId = reader->ReadLong(st);
     cluster->linkMode = (LinkMode)reader->ReadInt(st);

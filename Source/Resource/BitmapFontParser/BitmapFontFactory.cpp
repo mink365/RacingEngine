@@ -19,7 +19,7 @@ namespace BitmapFontType {
 BitmapFontFactory::BitmapFontFactory()
 {
     factory.registerCreateFunc(BitmapFontType::Angle, [](){
-        return std::make_shared<AngleFontParser>();
+        return Create<AngleFontParser>();
     });
 }
 

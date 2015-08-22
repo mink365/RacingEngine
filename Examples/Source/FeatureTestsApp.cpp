@@ -192,7 +192,7 @@ void FeatureTestsApp::initResources()
 {
 //    InitGLStates();
     auto& sceneManager = SceneManager::getInstance();
-    RendererPtr renderer = std::make_shared<GLES2Renderer>();
+    RendererPtr renderer = Create<GLES2Renderer>();
 
     sceneManager.getRenderManager().setRenderer(renderer);
     sceneManager.getRenderManager().initDefaultRenderState();

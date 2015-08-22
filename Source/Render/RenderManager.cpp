@@ -116,7 +116,7 @@ void RenderManager::createRenderViews()
             renderView->forceShader = ShaderManager::getInstance().GetResource("depth_rgba");
 
             if (renderView->renderTarget == nullptr) {
-                auto renderTarget = std::make_shared<RenderTarget>();
+                auto renderTarget = Create<RenderTarget>();
                 renderTarget->setHasDepthBuffer(true);
                 renderTarget->setHasStencilBuffer(false);
 

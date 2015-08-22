@@ -6,8 +6,8 @@ namespace re {
 
 RenderElement::RenderElement()
 {
-    material = std::make_shared<Material>();
-    mesh = std::make_shared<Mesh>();
+    material = Create<Material>();
+    mesh = Create<Mesh>();
 }
 
 RenderElement::RenderElement(MaterialPtr material, MeshPtr mesh)

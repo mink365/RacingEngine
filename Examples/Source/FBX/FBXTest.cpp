@@ -106,7 +106,7 @@ void FBXTest::Init()
     AnimationTrackPtr track = animation->getCurrAnimationTrack();
     Long beginTime = track->getKeyFrame(2)->getTime();
     Long endTime = track->getKeyFrame(12)->getTime();
-    animation->addAnimationStack(std::make_shared<AnimationStack>(beginTime, endTime));
+    animation->addAnimationStack(Create<AnimationStack>(beginTime, endTime));
     animation->setAnimationStackIndex(0);
     animation->setAnimationLoop(true);
     animation->setAnimationPower(1.0);

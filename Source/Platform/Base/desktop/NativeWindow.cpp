@@ -101,7 +101,7 @@ private:
     }
 
     static void dispatchTouchEvent(TouchEventType type, float x, float y) {
-        auto event = std::make_shared<TouchEvent>();
+        auto event = Create<TouchEvent>();
 
         const Rect rect = getWindowRect();
 

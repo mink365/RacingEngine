@@ -47,7 +47,7 @@ ByteBufferPtr File::read()
 {
     this->open();
 
-    ByteBufferPtr buf = std::make_shared<ByteBuffer>(this->length());
+    ByteBufferPtr buf = Create<ByteBuffer>(this->length());
 
     this->read(buf->getData(), 1, this->length());
 

@@ -11,7 +11,7 @@ ElementBatch::ElementBatch()
 {
     this->geometry = Geometry::create();
 
-    meshData = std::make_shared<MeshData>();
+    meshData = Create<MeshData>();
 
     StreamUnit unit;
     unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));

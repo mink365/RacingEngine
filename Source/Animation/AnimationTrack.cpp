@@ -65,7 +65,7 @@ void KeyFrame::setRotation(const Quat &value)
 
 void AnimationTrack::addKeyFrame(const KeyFrame &frame)
 {
-    auto framePtr = std::make_shared<KeyFrame>(frame);
+    auto framePtr = Create<KeyFrame>(frame);
     this->keyFrames.push_back(framePtr);
 }
 

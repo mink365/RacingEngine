@@ -47,7 +47,7 @@ void RenderToTextureTest::Init()
     rootNode->addChild(cylinderNode->getNode());
 
     // create a render target
-    renderTarget = std::make_shared<RenderTarget>();
+    renderTarget = Create<RenderTarget>();
     renderTarget->setHasDepthBuffer(true);
     renderTarget->setHasStencilBuffer(false);
 

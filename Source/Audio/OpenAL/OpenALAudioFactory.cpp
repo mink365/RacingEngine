@@ -26,7 +26,7 @@ OpenALBuffer::ptr OpenALAudioFactory::CreateBuffer(const std::string &path)
     file->open();
     OpenALBuffer::loadOgg(file.get(), alBuffer);
 
-    OpenALBuffer::ptr buffer = std::make_shared<OpenALBuffer>(path, alBuffer);
+    OpenALBuffer::ptr buffer = Create<OpenALBuffer>(path, alBuffer);
 
     return buffer;
 }

@@ -14,7 +14,7 @@ void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& s
 {
     RenderElementPtr element = node->getEntity()->addComponent<RenderElement>();
 
-    MeshPtr mesh = std::make_shared<Mesh>();
+    MeshPtr mesh = Create<Mesh>();
     MaterialPtr material = CreateDefaultMaterial(texture, shaderName);
     element->setMaterial(material);
     element->setMesh(mesh);
@@ -27,7 +27,7 @@ void InitNodeForRender(NodePtr &node, Texture::ptr texture, const std::string& s
 
 MaterialPtr CreateDefaultMaterial(Texture::ptr texture, const string &shaderName)
 {
-    MaterialPtr material = std::make_shared<Material>();
+    MaterialPtr material = Create<Material>();
 
     Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
     material->setShder(shader);
@@ -47,7 +47,7 @@ MaterialPtr CreateDefaultMaterial(Texture::ptr texture, const string &shaderName
 
 MeshDataPtr CreateDefaultMeshData()
 {
-    auto meshData = std::make_shared<MeshData>();
+    auto meshData = Create<MeshData>();
 
     StreamUnit unit;
     unit.format.push_back(VertexElement(VertexElementType::Position, AttributeFormat::FLOAT, 3));

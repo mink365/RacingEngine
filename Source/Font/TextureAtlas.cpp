@@ -46,7 +46,7 @@ void TextureAtlas::init(Int width, Int height, Int depth)
     this->height = height;
     this->depth = depth;
 
-    this->texture = std::make_shared<Texture>(width, height, 0);
+    this->texture = Create<Texture>(width, height, 0);
     this->texture->setWrapU(Texture::WrapValue::CLAMP_TO_EDGE);
     this->texture->setWrapV(Texture::WrapValue::CLAMP_TO_EDGE);
     this->texture->setMinFilter(Texture::FilterValue::LINEAR);

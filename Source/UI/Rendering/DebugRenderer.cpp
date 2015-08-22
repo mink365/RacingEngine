@@ -10,7 +10,7 @@ using namespace ui;
 
 DebugRenderer::DebugRenderer()
 {
-    meshData = std::make_shared<MeshData>();
+    meshData = Create<MeshData>();
     geometry = Geometry::create();
 
     StreamUnit unit;

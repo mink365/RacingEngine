@@ -42,7 +42,7 @@ Statement::ptr BlockParser::parse(FilePtr &file)
     membuf mb((char*)(data->getData()), data->getSize());
     std::istream stream(&mb);
 
-    Statement::ptr root = std::make_shared<Statement>("root", "root");
+    Statement::ptr root = Create<Statement>("root", "root");
 
     std::string line;
     std::vector<std::string> parts;
@@ -62,9 +62,9 @@ Statement::ptr BlockParser::parse(FilePtr &file)
             Statement::ptr state = nullptr;
 
             if (num > 2) {
-                state = std::make_shared<Statement>(parts[0], parts[1]);
+                state = Create<Statement>(parts[0], parts[1]);
             } else {
-                state = std::make_shared<Statement>(parts[0], "");
+                state = Create<Statement>(parts[0], "");
             }
 
             this->parseBlock(stream, state);
@@ -102,9 +102,9 @@ void BlockParser::parseBlock(std::istream &stream, Statement::ptr &state)
                 Statement::ptr state = nullptr;
 
                 if (num > 2) {
-                    state = std::make_shared<Statement>(parts[0], parts[1]);
+                    state = Create<Statement>(parts[0], parts[1]);
                 } else {
-                    state = std::make_shared<Statement>(parts[0], "");
+                    state = Create<Statement>(parts[0], "");
                 }
 
                 this->parseBlock(stream, state);
@@ -112,7 +112,7 @@ void BlockParser::parseBlock(std::istream &stream, Statement::ptr &state)
                 state->addStatement(state);
             } else if (num > 1) {
                 // read the key value pairs
-                KeyValue::ptr kv = std::make_shared<KeyValue>(parts[0], parts[1]);
+                KeyValue::ptr kv = Create<KeyValue>(parts[0], parts[1]);
 
                 state->addKeyValue(kv);
             } else {
