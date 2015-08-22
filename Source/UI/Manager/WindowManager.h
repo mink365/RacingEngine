@@ -20,8 +20,6 @@ class WindowManager : public Component {
 public:
     WindowManager();
 
-    virtual void start();
-    
     WindowPtr pushWindow(string name);
     WindowPtr pushWindow(WindowPtr& window);
     
@@ -37,14 +35,18 @@ public:
 
     void setWindowFactory(WindowFactory* factory);
 
-protected:
-    virtual void onEnter();
-    virtual void onExit();
+public:
+    void RegisterEvents();
 
-    virtual void addWindowToScene(WindowPtr& win);
-    virtual void removeWindowFromScene(WindowPtr& win);
-    virtual NodePtr getAlphaBackground();
-    virtual void changeAlphaBackgroundIndex(WindowPtr& win);
+protected:
+    void start();
+    void onEnter();
+    void onExit();
+
+    void addWindowToScene(WindowPtr& win);
+    void removeWindowFromScene(WindowPtr& win);
+    NodePtr getAlphaBackground();
+    void changeAlphaBackgroundIndex(WindowPtr& win);
     
     void changeFocusedWindow(WindowPtr& win);
     void changeFocusedWindowToStackTop();

@@ -7,6 +7,7 @@
 #include "Scene/Entity.h"
 #include "Message/Signal.h"
 #include "Util/ComponentFactory.h"
+#include "Util/EventUtil.h"
 
 namespace re {
 

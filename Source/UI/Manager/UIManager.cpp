@@ -30,6 +30,7 @@ WindowFactory &UIManager::getWindowFactory()
 void UIManager::RegisterEvents()
 {
     RegisterEvent(Events::Enter, this, &UIManager::onEnter);
+    RegisterEvent(Events::Exit, this, &UIManager::onExit);
 }
 
 void UIManager::handleMessage(Message *message) {

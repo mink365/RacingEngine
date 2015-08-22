@@ -167,6 +167,11 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
     return this->queueCullFunc;
 }
 
+void Camera::RegisterEvents()
+{
+    RegisterEvent(Events::Enter, this, &Camera::onEnter);
+}
+
 void Camera::onEnter()
 {
     transform = this->getComponent<Transform>();

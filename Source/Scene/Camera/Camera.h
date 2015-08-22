@@ -67,8 +67,13 @@ public:
     void setQueueCullFunc(std::function<bool(int queueID)> func);
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
+public:
+    void RegisterEvents();
+
 protected:
     void onEnter();
+
+protected:
     void recalcViewMatrix();
     void recalcProjectionMatrix();
     void onChange();

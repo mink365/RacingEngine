@@ -33,12 +33,14 @@ void Entity::addComponent(ComponentPtr component)
 
     this->componentMap[id] = component;
 
+    CacheComponents();
+
+    component->RegisterEvents();
+
     if (this->node != nullptr && this->node->isHasParent()) {
         // TODO:
 //        component->onEnter();
     }
-
-    CacheComponents();
 }
 
 void Entity::clearComponents()

@@ -57,7 +57,7 @@ protected:
     virtual void initView() {};
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
+    virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;
     
 public:

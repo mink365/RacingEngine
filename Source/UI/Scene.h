@@ -21,10 +21,13 @@ public:
     virtual void handleMessage(Message *message);
 
     virtual bool onBackKeyEvent();
+
+public:
+    void RegisterEvents();
     
 protected:
-    virtual void onEnter();
-    virtual void onExit();
+    void onEnter();
+    void onExit();
 };
 
 } // namespace ui

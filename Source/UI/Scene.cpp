@@ -21,7 +21,7 @@ void Scene::init() {
 
     auto windowManager = std::make_shared<WindowManager>();
     getEntity()->addComponent(windowManager);
-    windowManager->start();
+//    windowManager->start();
     
     return;
 }
@@ -43,6 +43,12 @@ bool Scene::onBackKeyEvent() {
     } else {
         return false;
     }
+}
+
+void Scene::RegisterEvents()
+{
+    RegisterEvent(Events::Enter, this, &Scene::onEnter);
+    RegisterEvent(Events::Exit, this, &Scene::onExit);
 }
 
 void Scene::onEnter() {

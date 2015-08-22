@@ -44,11 +44,20 @@ WindowPtr WindowManager::getWindowByName(string name) {
     }
 }
 
+void WindowManager::RegisterEvents()
+{
+    RegisterEvent(Events::Start, this, &WindowManager::start);
+    RegisterEvent(Events::Update, this, &WindowManager::tick);
+    RegisterEvent(Events::Enter, this, &WindowManager::onEnter);
+    RegisterEvent(Events::Exit, this, &WindowManager::onExit);
+}
+
 void WindowManager::onEnter()
 {
+    /*
     // TODO: easy to get the type
     auto connection = GameHub::getInstance().updateEvent.connect(slot(this, &WindowManager::tick));
-    connections_.push_back(std::make_shared<ScopedConnection<void(), CollectorDefault<void>>>(connection));
+    connections_.push_back(std::make_shared<ScopedConnection<void(), CollectorDefault<void>>>(connection));*/
 }
 
 void WindowManager::onExit()

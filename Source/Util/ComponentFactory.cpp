@@ -14,6 +14,7 @@
 #include "Animation/Bone.h"
 #include "Animation/AnimationTrack.h"
 #include "EventUtil.h"
+#include "GameHub.h"
 #include <map>
 
 std::map<Events, EventFactory::GetSignalFunc> EventFactory::eventSignals;
@@ -44,6 +45,12 @@ void EventFactory::RegisterEvents()
         return comp.getEntity()->startEvent;
     };
     eventSignals[Events::Start] = func;
+
+    func = [](re::Component& comp) -> re::Signal<void()>&
+    {
+        return GameHub::getInstance().updateEvent;
+    };
+    eventSignals[Events::Update] = func;
 }
 
 namespace re {
