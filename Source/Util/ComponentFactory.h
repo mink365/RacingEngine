@@ -34,8 +34,8 @@ EntityPtr CreateMeshNode();
 EntityPtr CreateSkinningMesh();
 EntityPtr CreateBoneNode();
 
-template<typename T, typename... Args>
-inline SharedPtr<T> CreateNode(Args... args)
+template<typename T>
+SharedPtr<T> CreateNode()
 {
     auto entity = CreateNode();
 
@@ -44,8 +44,8 @@ inline SharedPtr<T> CreateNode(Args... args)
     return component;
 }
 
-template<typename T, typename... Args>
-inline SharedPtr<T> CreateNode2D(Args... args)
+template<typename T>
+SharedPtr<T> CreateNode2D()
 {
     auto entity = CreateEntity();
 
@@ -59,7 +59,7 @@ inline SharedPtr<T> CreateNode2D(Args... args)
 }
 
 template<typename T, typename... Args>
-inline SharedPtr<T> CreateUIGraphicNode(Args... args)
+SharedPtr<T> CreateUIGraphicNode(Args... args)
 {
     auto entity = CreateEntity();
 
