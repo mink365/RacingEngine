@@ -12,7 +12,7 @@ namespace ui {
 
 typedef NamedFactory<Window> WindowFactory;
 typedef NamedFactory<Scene> SceneFactory;
-typedef std::shared_ptr<Scene> ScenePtr;
+typedef SharedPtr<Scene> ScenePtr;
 
 class UIManager : public Widget, public LayerManager<Scene>, public IMessageHandler {
 public:

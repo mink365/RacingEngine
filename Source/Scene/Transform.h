@@ -17,7 +17,7 @@
 namespace re {
 
 class Transform;
-typedef std::shared_ptr<Transform> TransformPtr;
+typedef SharedPtr<Transform> TransformPtr;
 
 class Transform : public Component
 {

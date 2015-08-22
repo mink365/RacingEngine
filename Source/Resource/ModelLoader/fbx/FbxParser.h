@@ -34,8 +34,8 @@ public:
 
 struct FBXCluster;
 struct ClusterCollection;
-typedef std::shared_ptr<FBXCluster> FBXClusterPtr;
-typedef std::shared_ptr<ClusterCollection> ClusterCollectionPtr;
+typedef SharedPtr<FBXCluster> FBXClusterPtr;
+typedef SharedPtr<ClusterCollection> ClusterCollectionPtr;
 struct FBXCluster {
     Long linkedMeshId;
     Long linkedBoneId;

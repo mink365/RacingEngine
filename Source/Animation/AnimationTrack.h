@@ -14,8 +14,8 @@ namespace re {
 class AnimationTrack;
 class KeyFrame;
 
-typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
-typedef std::shared_ptr<KeyFrame> KeyFramePtr;
+typedef SharedPtr<AnimationTrack> AnimationTrackPtr;
+typedef SharedPtr<KeyFrame> KeyFramePtr;
 
 class KeyFrame
 {

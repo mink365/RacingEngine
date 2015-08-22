@@ -7,6 +7,9 @@
 
 namespace re {
 
+template<typename T>
+using SharedPtr = std::shared_ptr<T>;
+
 class AnimationTrack;
 class AnimationStack;
 class Animation;
@@ -55,53 +58,53 @@ class LayoutElement;
 
 }
 
-typedef std::shared_ptr<Animation> AnimationPtr;
-typedef std::shared_ptr<AnimationTrack> AnimationTrackPtr;
-typedef std::shared_ptr<AnimationStack> AnimationStackPtr;
-typedef std::shared_ptr<KeyFrame> KeyFramePtr;
-typedef std::shared_ptr<Skeleton> SkeletonPtr;
-typedef std::shared_ptr<SkeletonController> SkeletonControllerPtr;
+typedef SharedPtr<Animation> AnimationPtr;
+typedef SharedPtr<AnimationTrack> AnimationTrackPtr;
+typedef SharedPtr<AnimationStack> AnimationStackPtr;
+typedef SharedPtr<KeyFrame> KeyFramePtr;
+typedef SharedPtr<Skeleton> SkeletonPtr;
+typedef SharedPtr<SkeletonController> SkeletonControllerPtr;
 
-typedef std::shared_ptr<Entity> EntityPtr;
-typedef std::shared_ptr<Component> ComponentPtr;
-typedef std::shared_ptr<Node> NodePtr;
-typedef std::shared_ptr<Bone> BonePtr;
-typedef std::shared_ptr<RenderElement> RenderElementPtr;
-typedef std::shared_ptr<Mesh> MeshPtr;
-typedef std::shared_ptr<MeshData> MeshDataPtr;
-typedef std::shared_ptr<SkinnedMeshData> SkinnedMeshDataPtr;
-typedef std::shared_ptr<Geometry> GeometryPtr;
+typedef SharedPtr<Entity> EntityPtr;
+typedef SharedPtr<Component> ComponentPtr;
+typedef SharedPtr<Node> NodePtr;
+typedef SharedPtr<Bone> BonePtr;
+typedef SharedPtr<RenderElement> RenderElementPtr;
+typedef SharedPtr<Mesh> MeshPtr;
+typedef SharedPtr<MeshData> MeshDataPtr;
+typedef SharedPtr<SkinnedMeshData> SkinnedMeshDataPtr;
+typedef SharedPtr<Geometry> GeometryPtr;
 
-typedef std::shared_ptr<Renderer> RendererPtr;
-typedef std::shared_ptr<RenderTarget> RenderTargetPtr;
-typedef std::shared_ptr<Material> MaterialPtr;
-typedef std::shared_ptr<Shader> ShaderPtr;
-typedef std::shared_ptr<Pass> PassPtr;
-typedef std::shared_ptr<Texture> TexturePtr;
-typedef std::shared_ptr<TextureFrame> TextureFramePtr;
-typedef std::shared_ptr<TextureAtlas> TextureAtlasPtr;
+typedef SharedPtr<Renderer> RendererPtr;
+typedef SharedPtr<RenderTarget> RenderTargetPtr;
+typedef SharedPtr<Material> MaterialPtr;
+typedef SharedPtr<Shader> ShaderPtr;
+typedef SharedPtr<Pass> PassPtr;
+typedef SharedPtr<Texture> TexturePtr;
+typedef SharedPtr<TextureFrame> TextureFramePtr;
+typedef SharedPtr<TextureAtlas> TextureAtlasPtr;
 
-typedef std::shared_ptr<Transform> TransformPtr;
-typedef std::shared_ptr<Camera> CameraPtr;
-typedef std::shared_ptr<Light> LightPtr;
+typedef SharedPtr<Transform> TransformPtr;
+typedef SharedPtr<Camera> CameraPtr;
+typedef SharedPtr<Light> LightPtr;
 
-typedef std::shared_ptr<File> FilePtr;
-typedef std::shared_ptr<const File> ConstFilePtr;
+typedef SharedPtr<File> FilePtr;
+typedef SharedPtr<const File> ConstFilePtr;
 
-typedef std::shared_ptr<Font> FontPtr;
+typedef SharedPtr<Font> FontPtr;
 
-typedef std::shared_ptr<ByteBuffer> ByteBufferPtr;
+typedef SharedPtr<ByteBuffer> ByteBufferPtr;
 
 namespace ui {
 
-typedef std::shared_ptr<Transform2D> Transform2DPtr;
-typedef std::shared_ptr<HierarchyColor> HierarchyColorPtr;
-typedef std::shared_ptr<Sprite> SpritePtr;
-typedef std::shared_ptr<NinePatch> NinePatchPtr;
-typedef std::shared_ptr<Label> LabelPtr;
+typedef SharedPtr<Transform2D> Transform2DPtr;
+typedef SharedPtr<HierarchyColor> HierarchyColorPtr;
+typedef SharedPtr<Sprite> SpritePtr;
+typedef SharedPtr<NinePatch> NinePatchPtr;
+typedef SharedPtr<Label> LabelPtr;
 
-typedef std::shared_ptr<Widget> WidgetPtr;
-typedef std::shared_ptr<BaseButton> ButtonPtr;
+typedef SharedPtr<Widget> WidgetPtr;
+typedef SharedPtr<BaseButton> ButtonPtr;
 
 }
 

@@ -27,7 +27,7 @@ public:
     void addComponent(ComponentPtr component);
 
     template<typename T, typename... Args>
-    std::shared_ptr<T> addComponent(Args... args);
+    SharedPtr<T> addComponent(Args... args);
 
     void clearComponents();
 
@@ -36,10 +36,10 @@ public:
     const std::vector<ComponentPtr>& getComponents() const;
 
     template<typename T>
-    std::shared_ptr<T> getComponent();
+    SharedPtr<T> getComponent();
 
     template<typename T>
-    std::shared_ptr<T> getComponentInParent();
+    SharedPtr<T> getComponentInParent();
 
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
@@ -82,7 +82,7 @@ private:
 };
 
 template<typename T, typename... Args>
-std::shared_ptr<T> Entity::addComponent(Args... args)
+SharedPtr<T> Entity::addComponent(Args... args)
 {
     auto comp = std::make_shared<T>(args...);
 
@@ -107,7 +107,7 @@ inline const TransformPtr &Entity::getTransform() const
 }
 
 template<typename T>
-inline std::shared_ptr<T> Entity::getComponent()
+inline SharedPtr<T> Entity::getComponent()
 {
     auto id = std::type_index(typeid(T));
 

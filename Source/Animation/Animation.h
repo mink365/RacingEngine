@@ -12,8 +12,8 @@ namespace re {
 class AnimationStack;
 class Animation;
 
-typedef std::shared_ptr<Animation> AnimationPtr;
-typedef std::shared_ptr<AnimationStack> AnimationStackPtr;
+typedef SharedPtr<Animation> AnimationPtr;
+typedef SharedPtr<AnimationStack> AnimationStackPtr;
 
 class Animation : public Component, public std::enable_shared_from_this<Animation>
 {

@@ -17,7 +17,7 @@ class AnimationTrack;
 class Mat4;
 class Bone;
 
-typedef std::shared_ptr<Bone> BonePtr;
+typedef SharedPtr<Bone> BonePtr;
 
 class Bone : public Component
 {

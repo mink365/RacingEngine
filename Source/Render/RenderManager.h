@@ -18,7 +18,7 @@
 namespace re {
 
 class Renderer;
-using RendererPtr = std::shared_ptr<Renderer>;
+using RendererPtr = SharedPtr<Renderer>;
 
 class RenderManager {
 public:

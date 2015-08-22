@@ -5,8 +5,11 @@
 
 namespace re {
 
+template<class T>
+using SharedPtr = std::shared_ptr<T>;
+
 template<class T, typename... Args>
-std::shared_ptr<T> Create(Args... args) {
+SharedPtr<T> Create(Args... args) {
     auto obj = std::make_shared<T>(args...);
 
     return obj;
@@ -16,11 +19,11 @@ template<typename T, typename... Args>
 class Shared
 {
 public:
-    typedef std::shared_ptr<T> ptr;
-    typedef std::shared_ptr<const T> constPtr;
+    typedef SharedPtr<T> ptr;
+    typedef SharedPtr<const T> constPtr;
 
 public:
-    static std::shared_ptr<T> create(Args... args)
+    static SharedPtr<T> create(Args... args)
     {
         return std::make_shared<T>(args...);
     }

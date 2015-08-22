@@ -16,7 +16,7 @@ namespace ui {
 }
 }
 
-using BaseTestPtr = std::shared_ptr<BaseTest>;
+using BaseTestPtr = SharedPtr<BaseTest>;
 
 class FeatureTestsApp : public Application
 {

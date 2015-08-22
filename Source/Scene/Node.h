@@ -61,7 +61,7 @@ inline bool Node::isInScene() const
 }
 
 template<typename T>
-inline std::shared_ptr<T> Entity::getComponentInParent()
+inline SharedPtr<T> Entity::getComponentInParent()
 {
     auto parent = this->node->getParent();
 

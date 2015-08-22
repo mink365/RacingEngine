@@ -11,7 +11,7 @@ class Mat4;
 class Vec3;
 class Skeleton;
 
-typedef std::shared_ptr<Skeleton> SkeletonPtr;
+typedef SharedPtr<Skeleton> SkeletonPtr;
 
 /**
  * @brief The SkinningType enum

@@ -8,7 +8,7 @@ namespace re {
 namespace ui {
 
 class HierarchyColor;
-typedef std::shared_ptr<HierarchyColor> HierarchyColorPtr;
+typedef SharedPtr<HierarchyColor> HierarchyColorPtr;
 
 class HierarchyColor : public Component
 {

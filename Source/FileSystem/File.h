@@ -10,8 +10,8 @@ namespace re {
 class File;
 class FilePermanent;
 
-typedef std::shared_ptr<File> FilePtr;
-typedef std::shared_ptr<const File> ConstFilePtr;
+typedef SharedPtr<File> FilePtr;
+typedef SharedPtr<const File> ConstFilePtr;
 
 enum class fsMode : std::uint32_t
 {

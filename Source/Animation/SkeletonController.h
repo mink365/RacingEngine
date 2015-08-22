@@ -9,7 +9,7 @@
 namespace re {
 
 class SkeletonController;
-typedef std::shared_ptr<SkeletonController> SkeletonControllerPtr;
+typedef SharedPtr<SkeletonController> SkeletonControllerPtr;
 
 class SkeletonController : public Component
 {

@@ -17,13 +17,15 @@
 template<typename T>
 class NamedFactory
 {
-public:
-    std::shared_ptr<T> createInstance(const std::string& name);
+    using InstPtr = std::shared_ptr<T>;
 
-    void registerCreateFunc(const std::string& name, std::function<std::shared_ptr<T>()> func);
+public:
+    InstPtr createInstance(const std::string& name);
+
+    void registerCreateFunc(const std::string& name, std::function<InstPtr()> func);
 
 private:
-    std::unordered_map<std::string, std::function<std::shared_ptr<T>()>> func_map;
+    std::unordered_map<std::string, std::function<InstPtr()>> func_map;
 };
 
 template<typename T>
@@ -36,7 +38,7 @@ inline std::shared_ptr<T> NamedFactory<T>::createInstance(const std::string& nam
 }
 
 template<typename T>
-inline void NamedFactory<T>::registerCreateFunc(const std::string& name, std::function<std::shared_ptr<T>()> func) {
+inline void NamedFactory<T>::registerCreateFunc(const std::string& name, std::function<InstPtr()> func) {
     if (func_map.count(name) == 0) {
         func_map[name] = func;
     } else {

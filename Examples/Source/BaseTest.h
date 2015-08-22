@@ -29,7 +29,7 @@ using namespace re;
 using namespace re::ui;
 
 class FeatureTestsApp;
-using UIManagerPtr = std::shared_ptr<ui::UIManager>;
+using UIManagerPtr = SharedPtr<ui::UIManager>;
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
 

@@ -17,7 +17,7 @@ namespace re {
 namespace ui {
 
 class Transform2D;
-typedef std::shared_ptr<Transform2D> Transform2DPtr;
+typedef SharedPtr<Transform2D> Transform2DPtr;
 
 class Transform2D : public Transform
 {

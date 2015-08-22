@@ -31,10 +31,10 @@ public:
     TransformPtr getTransform();
 
     template<typename T>
-    std::shared_ptr<T> getComponent() const;
+    SharedPtr<T> getComponent() const;
 
     template<typename T>
-    std::shared_ptr<T> getComponentInParent();
+    SharedPtr<T> getComponentInParent();
 
     const std::vector<ComponentPtr>& getComponents() const;
 
@@ -72,13 +72,13 @@ inline EntityPtr Component::getEntity() const
 }
 
 template<typename T>
-inline std::shared_ptr<T> Component::getComponent() const
+inline SharedPtr<T> Component::getComponent() const
 {
     return getEntity()->getComponent<T>();
 }
 
 template<typename T>
-inline std::shared_ptr<T> Component::getComponentInParent()
+inline SharedPtr<T> Component::getComponentInParent()
 {
     return getEntity()->getComponentInParent<T>();
 }

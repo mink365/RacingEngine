@@ -14,7 +14,7 @@ namespace re {
 namespace ui {
 
 typedef NamedFactory<Window> WindowFactory;
-typedef std::shared_ptr<Window> WindowPtr;
+typedef SharedPtr<Window> WindowPtr;
 
 class WindowManager : public Component {
 public:
