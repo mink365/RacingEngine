@@ -39,9 +39,10 @@ public:
     void RegisterEvents();
 
 protected:
-    void start();
+    void onStart();
     void onEnter();
     void onExit();
+    void onUpdate();
 
     void addWindowToScene(WindowPtr& win);
     void removeWindowFromScene(WindowPtr& win);
@@ -50,8 +51,6 @@ protected:
     
     void changeFocusedWindow(WindowPtr& win);
     void changeFocusedWindowToStackTop();
-    
-    void tick();
     
     void onWindowHidden(WindowPtr& win);
     

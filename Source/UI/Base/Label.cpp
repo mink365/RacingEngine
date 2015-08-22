@@ -24,7 +24,7 @@ void Label::init(Font::ptr &font)
 
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
 
-    this->getEntity()->addComponent(CreateComponent<CanvasRenderElement>());
+    this->getEntity()->addComponent<CanvasRenderElement>();
     auto element = this->getComponent<CanvasRenderElement>();
     auto material = CreateDefaultMaterial(font->getTexture(), shaderName);
     element->setMaterial(material);

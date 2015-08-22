@@ -199,8 +199,7 @@ void FeatureTestsApp::initResources()
 
     const Screen& screen = Screen::getInstance();
 
-    auto presCameraNode = CreateComponent<Camera>();
-    presCamera = presCameraNode->getComponent<Camera>();
+    presCamera = CreateComponent<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
@@ -211,8 +210,7 @@ void FeatureTestsApp::initResources()
         return true;
     });
 
-    auto uiCameraNode = CreateComponent<Camera>();
-    CameraPtr uiCamera = uiCameraNode->getComponent<Camera>();
+    CameraPtr uiCamera = CreateComponent<Camera>();
     uiCamera->setProjectionMode(CameraProjectionMode::Orthographic);
     uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     uiCamera->setOrthoWidth(screen.getWidth());
@@ -269,7 +267,7 @@ void FeatureTestsApp::initResources()
     SceneManager::getInstance().addRootNode(rootNode);
 
     this->stage = CreateNode2DComponent<ui::UIManager>();
-    this->stage->getEntity()->addComponent(CreateComponent<ElementBatcher>());
+    this->stage->getEntity()->addComponent<ElementBatcher>();
     SceneManager::getInstance().addRootNode(this->stage->getNode());
     MessageManager::getInstance().addHandler(this->stage.get());
 

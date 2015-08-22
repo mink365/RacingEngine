@@ -28,15 +28,12 @@ void AudioTest::Init()
 
     auto buffer = OpenALAudioFactory::getInstance().CreateBuffer("Sound/Bomb.ogg");
 
-    auto source = std::make_shared<OpenALSource>();
+    sourceNode = CreateNode();
+    auto source = sourceNode->addComponent<OpenALSource>();
     source->bindBuffer(buffer);
 
-    sourceNode = CreateNode();
-    sourceNode->addComponent(source);
-
     listenerNode = CreateNode();
-    auto listener = std::make_shared<OpenALListener>();
-    listenerNode->addComponent(listener);
+    listenerNode->addComponent<OpenALListener>();
 }
 
 float t = 0;

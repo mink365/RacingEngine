@@ -25,8 +25,9 @@ public:
     Entity();
 
     void addComponent(ComponentPtr component);
-//    template<typename T>
-//    std::shared_ptr<T> addComponent<T>();
+
+    template<typename T, typename... Args>
+    std::shared_ptr<T> addComponent(Args... args);
 
     void clearComponents();
 
@@ -79,6 +80,16 @@ private:
     TransformPtr transform;
     NodePtr node;
 };
+
+template<typename T, typename... Args>
+std::shared_ptr<T> Entity::addComponent(Args... args)
+{
+    auto comp = std::make_shared<T>(args...);
+
+    this->addComponent(comp);
+
+    return comp;
+}
 
 inline NodePtr Entity::getNode()
 {

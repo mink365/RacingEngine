@@ -143,8 +143,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     MeshPtr mesh = std::make_shared<Mesh>();
     MaterialPtr material = std::make_shared<Material>();
 
-    RenderElementPtr renderElement = CreateComponent<RenderElement>(material, mesh);
-    node->getEntity()->addComponent(renderElement);
+    node->getEntity()->addComponent<RenderElement>(material, mesh);
 
     mesh->setName(node->getName());
 
@@ -523,13 +522,10 @@ NodePtr FbxParser::getSkinningNode(const string &name) const
 
     auto animation = this->animations.at(0);
 
-    auto controller = std::make_shared<SkeletonController>();
-
     auto entity = node->getEntity();
     entity->addComponent(skeleton);
     entity->addComponent(animation);
-    entity->addComponent(controller);
-
+    auto controller = entity->addComponent<SkeletonController>();
     controller->init();
 
     return node;

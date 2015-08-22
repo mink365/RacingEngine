@@ -38,6 +38,7 @@ void RegisterEvent(Events event, Class *object, R (Class::*method) (Args...))
 
     Signal<void()>& signal = EventFactory::eventSignals[event](*object);
 
+    // TODO: can't write like this
 //    signal.connect(slot(object, &Class::method));
     auto func = [object, method] (Args... args) { return (object ->* method) (args...); };
     auto _slot = Slot<R (Args...)>(func);

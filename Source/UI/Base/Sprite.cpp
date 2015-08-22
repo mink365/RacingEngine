@@ -38,8 +38,7 @@ void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
 
     this->getComponent<Transform2D>()->setSize(rect.size);
 
-    this->getEntity()->addComponent(CreateComponent<CanvasRenderElement>());
-    auto element = this->getComponent<CanvasRenderElement>();
+    auto element = this->getEntity()->addComponent<CanvasRenderElement>();
 
     auto material = CreateDefaultMaterial(tex->getTexture(), "Shader_PTC");
     element->setMaterial(material);

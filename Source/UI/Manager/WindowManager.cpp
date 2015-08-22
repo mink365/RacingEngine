@@ -16,7 +16,7 @@ WindowManager::WindowManager()
 
 }
 
-void WindowManager::start()
+void WindowManager::onStart()
 {
     alphaBg = CreateNode2DComponent<Widget>()->getNode();
     alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
@@ -46,8 +46,8 @@ WindowPtr WindowManager::getWindowByName(string name) {
 
 void WindowManager::RegisterEvents()
 {
-    RegisterEvent(Events::Start, this, &WindowManager::start);
-    RegisterEvent(Events::Update, this, &WindowManager::tick);
+    RegisterEvent(Events::Start, this, &WindowManager::onStart);
+    RegisterEvent(Events::Update, this, &WindowManager::onUpdate);
     RegisterEvent(Events::Enter, this, &WindowManager::onEnter);
     RegisterEvent(Events::Exit, this, &WindowManager::onExit);
 }
@@ -187,7 +187,7 @@ void WindowManager::changeFocusedWindowToStackTop() {
     }
 }
 
-void WindowManager::tick() {
+void WindowManager::onUpdate() {
     auto iter = find_if(windowStack.begin(), windowStack.end(), [](WindowPtr win){
         return win->isHidden();
     });

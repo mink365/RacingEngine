@@ -17,9 +17,9 @@ typename std::enable_if<sizeof...(TL) == 0>::type AddComponent(EntityPtr&)
 
 template <class T, class... TL> void AddComponent(EntityPtr& node)
 {
-   auto component = std::make_shared<T>();
-   node->addComponent(component);
-   AddComponent<TL... >(node);
+    auto component = std::make_shared<T>();
+    node->addComponent(component);
+    AddComponent<TL... >(node);
 }
 
 class ComponentFactory : public Singleton<ComponentFactory>

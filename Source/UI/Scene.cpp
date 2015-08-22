@@ -19,8 +19,8 @@ void Scene::init() {
 
     transform->setSize(Screen::getInstance().getSize());
 
-    auto windowManager = std::make_shared<WindowManager>();
-    getEntity()->addComponent(windowManager);
+    getEntity()->addComponent<WindowManager>();
+    // TODO:
 //    windowManager->start();
     
     return;
@@ -37,7 +37,7 @@ bool Scene::onBackKeyEvent() {
     auto windowManager = this->getComponent<WindowManager>();
 
     if (windowManager->getStackSize() > 0) {
-        std::shared_ptr<Window> win = windowManager->getFocusedWindow();
+        auto win = windowManager->getFocusedWindow();
         
         return win->onBackKeyEvent();
     } else {
