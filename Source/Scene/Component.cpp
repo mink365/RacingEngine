@@ -14,7 +14,7 @@ Component::~Component()
 
 NodePtr Component::getNode() const
 {
-    return this->getComponent<Node>();
+    return this->getEntity()->getNode();
 }
 
 TransformPtr Component::getTransform()

@@ -76,18 +76,19 @@ void FBXTest::Init()
     for (int i = 0; i < BLOCK_COUNT; ++i) {
         auto block = CreateNode();
 
-        auto wall_copy = wall->clone();
+        auto wall_copy = wall->getEntity()->clone();
 
-        auto floor_copy = floor->clone();
+        auto floor_copy = floor->getEntity()->clone();
 
-        block->getNode()->addChild(wall_copy->getNode());
-        block->getNode()->addChild(floor_copy->getNode());
+        auto blockNode = block->getNode();
+        blockNode->addChild(wall_copy->getNode());
+        blockNode->addChild(floor_copy->getNode());
 
         block->getTransform()->setLocalTranslation(Vec3(0, 0 + BLOCK_LENGTH * (i - 3), 0));
 
-        rootNode->addChild(block->getNode());
+        rootNode->addChild(blockNode);
 
-        blocks.push_back(block->getNode());
+        blocks.push_back(blockNode);
     }
 
     motoRoot = CreateNode()->getNode();

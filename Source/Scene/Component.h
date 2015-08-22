@@ -41,6 +41,7 @@ public:
 public:
     virtual void RegisterEvents() {};
 
+private:
     ComponentPtr clone() const;
 
 protected:
