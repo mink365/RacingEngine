@@ -37,9 +37,9 @@ void Entity::addComponent(ComponentPtr component)
 
     component->RegisterEvents();
 
+    CallEvent(component.get(), Events::Awake);
     if (this->node != nullptr && this->node->hasParent()) {
-        // TODO:
-//        component->onEnter();
+        CallEvent(component.get(), Events::Enter);
     }
 }
 

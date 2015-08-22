@@ -15,8 +15,6 @@ class Scene :  public Widget, public AnimationView, public IMessageHandler, publ
 public:
     Scene();
     virtual ~Scene();
-    
-    virtual void init();
 
     virtual void handleMessage(Message *message);
 
@@ -26,6 +24,7 @@ public:
     void RegisterEvents();
     
 protected:
+    void onAwake();
     void onEnter();
     void onExit();
 };

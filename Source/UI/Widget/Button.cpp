@@ -10,10 +10,8 @@ BaseButton::BaseButton()
 {
 }
 
-void BaseButton::init()
+void BaseButton::onAwake()
 {
-    Widget::init();
-
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
@@ -82,6 +80,13 @@ void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
     this->onButtonClickFunc = func;
 }
 
+void BaseButton::RegisterEvents()
+{
+    Widget::RegisterEvents();
+
+    RegisterEvent(Events::Awake, this, &BaseButton::onAwake);
+}
+
 ComponentPtr BaseButton::createCloneInstance() const
 {
     return CreateCloneInstance<BaseButton>();
@@ -105,7 +110,7 @@ void ImageButton::init(const string &texDefault, const string &texPress)
 
 void ImageButton::init(const string &texDefault, const string &texPress, const string &texDis)
 {
-    BaseButton::init();
+    BaseButton::onAwake();
 
     this->defaultSprite = CreateNode2D<Sprite>(texDefault);
     this->pressedSprite = CreateNode2D<Sprite>(texPress);

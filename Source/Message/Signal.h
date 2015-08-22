@@ -324,6 +324,11 @@ public:
         return false;
     }
 
+    std::shared_ptr<SlotType> getSlot()
+    {
+        return _slot.lock();
+    }
+
     bool connected()
     {
         auto slot = _slot.lock();

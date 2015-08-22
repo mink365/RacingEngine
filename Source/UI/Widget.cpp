@@ -18,7 +18,7 @@ Widget::~Widget() {
 
 }
 
-void Widget::init()
+void Widget::onAwake()
 {
     color = this->getComponent<HierarchyColor>();
     transform = this->getComponent<Transform2D>();
@@ -39,6 +39,13 @@ void Widget::layout() {
 
     auto node = getNode();
     DistpatchFunctionInHierarchy(node, func);
+}
+
+void Widget::RegisterEvents()
+{
+    Component::RegisterEvents();
+
+    RegisterEvent(Events::Awake, this, &Widget::onAwake);
 }
 
 void Widget::layoutSelf() {
@@ -251,8 +258,6 @@ void Widget::copyProperties(const Component *component)
 
         this->state = inst->state;
         this->touchState = WidgetTouchState::TOUCH_CANCLE;
-
-        this->init();
     }
 }
 

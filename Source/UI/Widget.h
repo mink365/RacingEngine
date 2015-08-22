@@ -28,12 +28,15 @@ public:
     Widget();
     virtual ~Widget();
 
-    void init();
-    
+    void init() {};
+
     void layout();
 
     bool isVisible() {return true;};
     bool isRunning() {return true;};
+
+public:
+    void RegisterEvents();
 
 public:
     bool isTouchEnabled();
@@ -50,6 +53,8 @@ protected:
     bool dispatchTouchEvent(TouchEvent& event);
 
 protected:
+    void onAwake();
+
     virtual void addWidgets();
     
     virtual void layoutSelf();

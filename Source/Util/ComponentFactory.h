@@ -17,8 +17,7 @@ typename std::enable_if<sizeof...(TL) == 0>::type AddComponent(EntityPtr&)
 
 template <class T, class... TL> void AddComponent(EntityPtr& node)
 {
-    auto component = std::make_shared<T>();
-    node->addComponent(component);
+    node->addComponent<T>();
     AddComponent<TL... >(node);
 }
 
@@ -50,11 +49,13 @@ inline SharedPtr<T> CreateNode(Args... args)
 template<typename T, typename... Args>
 inline SharedPtr<T> CreateNode2D(Args... args)
 {
-    auto node = CreateEntity();
+    auto entity = CreateEntity();
 
-    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(node);
+    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
 
-    auto component = node->getComponent<T>();
+//    entity->awakeEvent.emit();
+
+    auto component = entity->getComponent<T>();
     component->init(args...);
 
     return component;

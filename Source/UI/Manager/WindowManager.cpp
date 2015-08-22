@@ -16,7 +16,7 @@ WindowManager::WindowManager()
 
 }
 
-void WindowManager::onStart()
+void WindowManager::onAwake()
 {
     alphaBg = CreateNode2D<Widget>()->getNode();
     alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
@@ -46,7 +46,7 @@ WindowPtr WindowManager::getWindowByName(string name) {
 
 void WindowManager::RegisterEvents()
 {
-    RegisterEvent(Events::Start, this, &WindowManager::onStart);
+    RegisterEvent(Events::Awake, this, &WindowManager::onAwake);
     RegisterEvent(Events::Update, this, &WindowManager::onUpdate);
     RegisterEvent(Events::Enter, this, &WindowManager::onEnter);
     RegisterEvent(Events::Exit, this, &WindowManager::onExit);

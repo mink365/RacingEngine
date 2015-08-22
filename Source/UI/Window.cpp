@@ -22,13 +22,19 @@ Window::Window()
     this->hideAnimFunc = nullptr;
 }
 
-void Window::init() {
-    Widget::init();
+void Window::RegisterEvents()
+{
+    Widget::RegisterEvents();
 
+    RegisterEvent(Events::Awake, this, &Window::onAwake);
+}
+
+void Window::onAwake()
+{
     // window default is full screen
     transform->setSize(Screen::getInstance().getSize());
     
-    transform->setAnchorPoint(Vec2(0.5, 0.5));
+    transform->setAnchorPoint(Vec2(0.5f, 0.5f));
 
     this->initAnimFunc();
 }
@@ -44,7 +50,6 @@ bool Window::getTransparentState() {
 float Window::getBackgroundAlpha() {
     return backgroundAlpha;
 }
-
 
 void Window::playShowAnim() {    
     this->showAnimFunc();

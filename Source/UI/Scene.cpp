@@ -14,14 +14,10 @@ Scene::~Scene() {
 
 }
 
-void Scene::init() {
-    Widget::init();
-
+void Scene::onAwake() {
     transform->setSize(Screen::getInstance().getSize());
 
-    getEntity()->addComponent<WindowManager>();
-    // TODO:
-//    windowManager->start();
+    this->getEntity()->addComponent<WindowManager>();
     
     return;
 }
@@ -47,6 +43,9 @@ bool Scene::onBackKeyEvent() {
 
 void Scene::RegisterEvents()
 {
+    Widget::RegisterEvents();
+
+    RegisterEvent(Events::Awake, this, &Scene::onAwake);
     RegisterEvent(Events::Enter, this, &Scene::onEnter);
     RegisterEvent(Events::Exit, this, &Scene::onExit);
 }

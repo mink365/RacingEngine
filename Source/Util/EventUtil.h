@@ -25,8 +25,11 @@ public:
     static void RegisterEvents();
 
     using GetSignalFunc = std::function<Signal<void()>&(Component&)>;
+    using EventConnection = Connection<void(), CollectorDefault<void>>;
 
     static std::map<Events, GetSignalFunc> eventSignals;
+    // because of the inherit of component, may more than on connection
+    static std::unordered_map<Component*, std::map<Events, std::vector<EventConnection>>> connections;
 };
 
 template<class Class, class R, class... Args>
@@ -42,7 +45,12 @@ void RegisterEvent(Events event, Class *object, R (Class::*method) (Args...))
 //    signal.connect(slot(object, &Class::method));
     auto func = [object, method] (Args... args) { return (object ->* method) (args...); };
     auto _slot = Slot<R (Args...)>(func);
-    signal.connect(_slot);
+    auto connection = signal.connect(_slot);
+
+    // save the connection
+    EventFactory::connections[object][event].push_back(connection);
 }
+
+void CallEvent(Component* object, Events event);
 
 #endif // EVENTUTIL

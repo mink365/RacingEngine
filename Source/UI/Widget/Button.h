@@ -13,13 +13,18 @@ class BaseButton : public Widget
 public:
     BaseButton();
 
-    virtual void init();
-
     virtual void switchState(WidgetState newState);
 
     virtual void initTouchListener();
 
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
+
+public:
+    void RegisterEvents();
+
+protected:
+    void onAwake();
+
 protected:
     virtual ComponentPtr createCloneInstance() const override;
     virtual void copyProperties(const Component* component) override;

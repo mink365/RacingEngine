@@ -13,45 +13,6 @@
 #include "Animation/SkeletonController.h"
 #include "Animation/Bone.h"
 #include "Animation/AnimationTrack.h"
-#include "EventUtil.h"
-#include "GameHub.h"
-#include <map>
-
-std::map<Events, EventFactory::GetSignalFunc> EventFactory::eventSignals;
-
-void EventFactory::RegisterEvents()
-{
-    EventFactory::GetSignalFunc func;
-    func = [](re::Component& comp) -> re::Signal<void()>&
-    {
-        return comp.getEntity()->enterEvent;
-    };
-    eventSignals[Events::Enter] = func;
-
-    func = [](re::Component& comp) -> re::Signal<void()>&
-    {
-        return comp.getEntity()->exitEvent;
-    };
-    eventSignals[Events::Exit] = func;
-
-    func = [](re::Component& comp) -> re::Signal<void()>&
-    {
-        return comp.getEntity()->awakeEvent;
-    };
-    eventSignals[Events::Awake] = func;
-
-    func = [](re::Component& comp) -> re::Signal<void()>&
-    {
-        return comp.getEntity()->startEvent;
-    };
-    eventSignals[Events::Start] = func;
-
-    func = [](re::Component& comp) -> re::Signal<void()>&
-    {
-        return GameHub::getInstance().updateEvent;
-    };
-    eventSignals[Events::Update] = func;
-}
 
 namespace re {
 

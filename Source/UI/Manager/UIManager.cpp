@@ -11,7 +11,7 @@ UIManager::UIManager()
 {
 }
 
-void UIManager::init() {
+void UIManager::onAwake() {
     this->getComponent<Transform2D>()->setSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
@@ -29,6 +29,9 @@ WindowFactory &UIManager::getWindowFactory()
 
 void UIManager::RegisterEvents()
 {
+    Widget::RegisterEvents();
+
+    RegisterEvent(Events::Awake, this, &UIManager::onAwake);
     RegisterEvent(Events::Enter, this, &UIManager::onEnter);
     RegisterEvent(Events::Exit, this, &UIManager::onExit);
 }

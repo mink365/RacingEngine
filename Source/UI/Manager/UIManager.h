@@ -17,7 +17,6 @@ typedef SharedPtr<Scene> ScenePtr;
 class UIManager : public Widget, public LayerManager<Scene>, public IMessageHandler {
 public:
     UIManager();
-    void init();
  
 public:
     SceneFactory& getSceneFactory();
@@ -30,6 +29,7 @@ public:
     void handleMessage(Message *message);
     void update();
     
+    void onAwake();
     void onEnter();
     void onExit();
     

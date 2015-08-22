@@ -39,7 +39,7 @@ public:
     void RegisterEvents();
 
 protected:
-    void onStart();
+    void onAwake();
     void onEnter();
     void onExit();
     void onUpdate();
