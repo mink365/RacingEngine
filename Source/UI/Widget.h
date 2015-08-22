@@ -28,8 +28,6 @@ public:
     Widget();
     virtual ~Widget();
 
-    void init() {};
-
     void layout();
 
     bool isVisible() {return true;};

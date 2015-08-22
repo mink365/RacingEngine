@@ -14,7 +14,6 @@ class Material : public Shared<Material>, public Named, public std::enable_share
 {
 public:
     Material();
-    void init() {};
 
     void initDefaultPass();
 
