@@ -46,16 +46,12 @@ bool Scene::onBackKeyEvent() {
 }
 
 void Scene::onEnter() {
-    Widget::onEnter();
-
     MessageManager::getInstance().addHandler(this);
 }
 
 void Scene::onExit()
 {
     MessageManager::getInstance().removeHandler(this);
-
-    Widget::onExit();
 }
 
 } // namespace ui

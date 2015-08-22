@@ -58,8 +58,6 @@ void TweenTest::Init()
     window->getNode()->addChild(label->getNode());
     window->getNode()->addChild(label2->getNode());
 
-    PredefineTweenAccessor::registerAccessor();
-
     Tween::to(label->getNode(), FlatNodeAccessor::POSITION_X, 1).target(180).delay(1.0f).repeat(5, 0.5).start(*tweenManager);
 
     Timeline::createSequence()

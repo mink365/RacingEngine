@@ -135,9 +135,7 @@ void Node::OnEnter()
     auto func = [](NodePtr& node) {
         node->_inScene = true;
 
-        for (auto& component : node->getEntity()->getComponents()) {
-            component->onEnter();
-        }
+        node->getEntity()->enterEvent.emit();
     };
 
     auto node = this->shared_from_this();
@@ -149,9 +147,7 @@ void Node::OnExit()
     auto func = [](NodePtr& node) {
         node->_inScene = false;
 
-        for (auto& component : node->getEntity()->getComponents()) {
-            component->onExit();
-        }
+        node->getEntity()->exitEvent.emit();
     };
 
     auto node = this->shared_from_this();

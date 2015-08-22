@@ -42,6 +42,8 @@
 #include "Resource/ResourceManager.h"
 
 #include "Util/LogUtil.h"
+#include "Util/PredefineTweenAccessor.h"
+#include "Util/EventUtil.h"
 
 extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
 
@@ -51,6 +53,9 @@ FeatureTestsApp::FeatureTestsApp()
 
 bool FeatureTestsApp::initEnvironment()
 {
+    PredefineTweenAccessor::registerAccessor();
+    EventFactory::RegisterEvents();
+
     Screen::getInstance().setDesignSize(614, 1024);
 
     Screen::getInstance().setRealFrameSize(this->view->getFrameSize());

@@ -38,10 +38,7 @@ public:
     const std::vector<ComponentPtr>& getComponents() const;
 
 public:
-    /* fuction of event */
-    virtual void onEnter() {};
-    virtual void onExit() {};
-    virtual void start() {};
+    virtual void RegisterEvents() {};
 
     ComponentPtr clone() const;
 

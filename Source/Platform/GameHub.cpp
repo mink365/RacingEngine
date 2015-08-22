@@ -31,7 +31,6 @@ void GameHub::init(ApplicationProtocol *app)
     TextureManager::getInstance().setImageLoader(new ImageLoader());
 
     this->tweenManager = new TweenEngine::TweenManager();
-    PredefineTweenAccessor::registerAccessor();
 }
 
 void GameHub::mainLoop(int64_t dt)

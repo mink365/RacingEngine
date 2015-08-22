@@ -34,7 +34,8 @@ void Entity::addComponent(ComponentPtr component)
     this->componentMap[id] = component;
 
     if (this->node != nullptr && this->node->isHasParent()) {
-        component->onEnter();
+        // TODO:
+//        component->onEnter();
     }
 
     CacheComponents();
@@ -43,9 +44,7 @@ void Entity::addComponent(ComponentPtr component)
 void Entity::clearComponents()
 {
     if (this->getNode()->isInScene()) {
-        for (auto& comp : components) {
-            comp->onExit();
-        }
+        exitEvent.emit();
     }
 
     this->components.clear();
@@ -127,13 +126,6 @@ void Entity::CacheComponents()
 
     if (this->transform == nullptr) {
         this->transform = this->getComponent<Transform>();
-    }
-}
-
-void Entity::Start()
-{
-    for (auto& component : components) {
-        component->start();
     }
 }
 

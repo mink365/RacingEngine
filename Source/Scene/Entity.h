@@ -10,6 +10,7 @@
 #include "PreDeclare.h"
 #include "Base/Clonable.h"
 #include "Base/Named.h"
+#include "Message/Signal.h"
 
 namespace re {
 
@@ -48,7 +49,10 @@ public:
     EntityPtr clone() const;
 
 public:
-    void Start();
+    Signal<void()> awakeEvent;
+    Signal<void()> startEvent;
+    Signal<void()> enterEvent;
+    Signal<void()> exitEvent;
 
 private:
     void CacheComponents();

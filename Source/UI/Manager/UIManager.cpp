@@ -1,6 +1,7 @@
 #include "UIManager.h"
 #include "Scene/Node.h"
 #include "UI/Layout/LayoutUtil.h"
+#include "Util/EventUtil.h"
 
 namespace re {
 namespace ui {
@@ -14,8 +15,6 @@ void UIManager::init() {
     this->getComponent<Transform2D>()->setSize(Screen::getInstance().getSize());
 
     isKeyBackActive = true;
-    
-    addWidgets();
 }
 
 SceneFactory &UIManager::getSceneFactory()
@@ -28,6 +27,11 @@ WindowFactory &UIManager::getWindowFactory()
     return this->windowFactory;
 }
 
+void UIManager::RegisterEvents()
+{
+    RegisterEvent(Events::Enter, this, &UIManager::onEnter);
+}
+
 void UIManager::handleMessage(Message *message) {
     if (message->getType() == MessageConstant::MessageType::TOUCHSCREEN_MESSAGE) {
         TouchEvent* event = static_cast<TouchEvent*>(message->getData());
@@ -35,10 +39,6 @@ void UIManager::handleMessage(Message *message) {
         event->setCurrPoint(event->getPoint() / Screen::getInstance().getFinalScale());
         this->dispatchTouchEvent(*event);
     }
-}
-
-void UIManager::addWidgets() {
-
 }
 
 void UIManager::update() {
@@ -69,15 +69,11 @@ ScenePtr UIManager::getDefaultLayer() {
 }
 
 void UIManager::onEnter() {
-    Widget::onEnter();
-
     MessageManager::getInstance().addHandler(this);
 }
 
 void UIManager::onExit() {
     MessageManager::getInstance().removeHandler(this);
-
-    Widget::onExit();
 }
 
 void UIManager::keyBackClicked() {

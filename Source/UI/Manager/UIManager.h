@@ -24,13 +24,14 @@ public:
     WindowFactory& getWindowFactory();
     
 public:
+    void RegisterEvents();
+
+public:
     void handleMessage(Message *message);
     void update();
     
-    void addWidgets();
-    
-    virtual void onEnter();
-    virtual void onExit();
+    void onEnter();
+    void onExit();
     
     void keyBackClicked();
     void setKeyBackActive(bool active);

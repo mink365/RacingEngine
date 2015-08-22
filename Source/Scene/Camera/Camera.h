@@ -68,7 +68,7 @@ public:
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
 protected:
-    void onEnter() override;
+    void onEnter();
     void recalcViewMatrix();
     void recalcProjectionMatrix();
     void onChange();
