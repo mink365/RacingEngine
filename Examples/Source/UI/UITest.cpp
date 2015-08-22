@@ -13,7 +13,7 @@ UITest::UITest()
     this->name = "UITest";
 }
 
-extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
+extern TextureAtlasPtr CreateDefaultFont();
 
 void UITest::Init()
 {
@@ -77,7 +77,7 @@ void UITest::Update()
 
 }
 
-std::shared_ptr<Window> UITest::createWin()
+WindowPtr UITest::createWin()
 {
     auto win = CreateNode2D<Window>();
     win->getNode()->setName("Window1");

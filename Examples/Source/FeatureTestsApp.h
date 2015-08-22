@@ -16,6 +16,8 @@ namespace ui {
 }
 }
 
+using BaseTestPtr = std::shared_ptr<BaseTest>;
+
 class FeatureTestsApp : public Application
 {
     friend class BaseTest;
@@ -45,13 +47,13 @@ private:
     void update();
 
 private:
-    std::vector<std::shared_ptr<BaseTest>> tests;
-    std::shared_ptr<BaseTest> current;
+    std::vector<BaseTestPtr> tests;
+    BaseTestPtr current;
     int currIndex;
 
     CameraPtr presCamera;
     NodePtr rootNode;
-    std::shared_ptr<ui::UIManager> stage;
+    UIManagerPtr stage;
 
     ui::LabelPtr labelTitle;
     ui::LabelPtr labelFps;

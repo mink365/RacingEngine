@@ -45,7 +45,7 @@ RenderQueue &RenderManager::getRenderQueue()
     return renderQueue;
 }
 
-void RenderManager::setRenderer(std::shared_ptr<Renderer>& renderer)
+void RenderManager::setRenderer(RendererPtr &renderer)
 {
     this->renderer = renderer;
 }

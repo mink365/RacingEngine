@@ -12,7 +12,7 @@ public:
     virtual void Update();
 
 private:
-    std::shared_ptr<Window> createWin();
+    WindowPtr createWin();
 };
 
 #endif // UITEST_H

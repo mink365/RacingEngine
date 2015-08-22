@@ -11,7 +11,7 @@ FontTest::FontTest()
     this->name = "FontTest";
 }
 
-std::shared_ptr<TextureAtlas> CreateDefaultFont()
+TextureAtlasPtr CreateDefaultFont()
 {
     auto fontFile = "Fonts/Arial Rounded MT Bold.ttf";
     FilePtr file = FileSystem::getInstance().getFile(fontFile);

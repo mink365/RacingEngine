@@ -46,8 +46,8 @@ public:
 
     std::function<bool(int queueID)> queueCullFunc;
 
-    std::shared_ptr<Shader> forceShader;
-    std::shared_ptr<RenderTarget> renderTarget;
+    ShaderPtr forceShader;
+    RenderTargetPtr renderTarget;
 };
 
 } // namespace re

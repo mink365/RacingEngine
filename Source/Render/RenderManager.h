@@ -18,6 +18,7 @@
 namespace re {
 
 class Renderer;
+using RendererPtr = std::shared_ptr<Renderer>;
 
 class RenderManager {
 public:
@@ -33,7 +34,7 @@ public:
 
     RenderQueue &getRenderQueue();
 
-    void setRenderer(std::shared_ptr<Renderer> &renderer);
+    void setRenderer(RendererPtr &renderer);
     Renderer &getRenderer();
 
     /**
@@ -66,7 +67,7 @@ public:
 
     RenderQueue renderQueue;
 
-    std::shared_ptr<Renderer> renderer;
+    RendererPtr renderer;
 
     static const RenderState defaultRenderState;
 };

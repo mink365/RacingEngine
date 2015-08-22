@@ -40,7 +40,7 @@ public:
     GPU_ID framebuffer;
     GPU_ID renderbuffer;
 
-    std::shared_ptr<RenderTarget> shareDepthFrom;
+    RenderTargetPtr shareDepthFrom;
 
 protected:
     Size size;

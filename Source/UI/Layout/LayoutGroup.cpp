@@ -52,24 +52,10 @@ void LayoutNode(NodePtr& node)
     }
 }
 
-std::shared_ptr<LayoutGroup> GetLayoutGroup(NodePtr& node)
-{
-    auto& components = node->getComponents();
-
-    for (auto& component : components) {
-        auto group = std::dynamic_pointer_cast<LayoutGroup>(component);
-        if (group != nullptr) {
-            return group;
-        }
-    }
-
-    return nullptr;
-}
-
 void LayoutRoot(NodePtr &root)
 {
     auto func = [](NodePtr node){
-        auto group = GetLayoutGroup(node);
+        auto group = node->getComponent<LayoutGroup>();
         if (group) {
             group->CalculateLayout();
         } else {

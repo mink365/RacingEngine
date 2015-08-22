@@ -31,6 +31,7 @@ class Shader;
 class Pass;
 class Texture;
 class TextureFrame;
+class TextureAtlas;
 
 class Transform;
 class Camera;
@@ -74,9 +75,11 @@ typedef std::shared_ptr<Geometry> GeometryPtr;
 typedef std::shared_ptr<Renderer> RendererPtr;
 typedef std::shared_ptr<RenderTarget> RenderTargetPtr;
 typedef std::shared_ptr<Material> MaterialPtr;
+typedef std::shared_ptr<Shader> ShaderPtr;
 typedef std::shared_ptr<Pass> PassPtr;
 typedef std::shared_ptr<Texture> TexturePtr;
 typedef std::shared_ptr<TextureFrame> TextureFramePtr;
+typedef std::shared_ptr<TextureAtlas> TextureAtlasPtr;
 
 typedef std::shared_ptr<Transform> TransformPtr;
 typedef std::shared_ptr<Camera> CameraPtr;

@@ -8,12 +8,12 @@ TextureFrame::TextureFrame()
 {
 }
 
-std::shared_ptr<Texture> TextureFrame::getTexture()
+TexturePtr TextureFrame::getTexture()
 {
     return this->texture;
 }
 
-void TextureFrame::setTexture(std::shared_ptr<Texture> texture)
+void TextureFrame::setTexture(TexturePtr texture)
 {
     this->texture = texture;
 }

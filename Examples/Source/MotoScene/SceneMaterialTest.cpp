@@ -10,7 +10,7 @@
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
 
-extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
+extern TextureAtlasPtr CreateDefaultFont();
 
 SceneMaterialTest::SceneMaterialTest()
 {
@@ -84,7 +84,7 @@ static LabelPtr labelName;
 
 void SceneMaterialTest::createUI()
 {
-    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
+    FontPtr font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 

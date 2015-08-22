@@ -29,6 +29,7 @@ using namespace re;
 using namespace re::ui;
 
 class FeatureTestsApp;
+using UIManagerPtr = std::shared_ptr<ui::UIManager>;
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
 
@@ -52,7 +53,7 @@ protected:
 
     NodePtr rootNode;
     CameraPtr camera;
-    std::shared_ptr<ui::UIManager> stage;
+    UIManagerPtr stage;
 };
 
 void InitMeshInHardward(RenderElementPtr element, const std::string& shaderName="Shader_PTC");

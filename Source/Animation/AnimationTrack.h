@@ -74,13 +74,13 @@ private:
 private:
     weak_ptr<Animation> animation;
 
-    vector<shared_ptr<KeyFrame>> keyFrames;
+    vector<KeyFramePtr> keyFrames;
     Long minKeyTime, maxKeyTime, animLength;
 
     float frameProportion;
     Int currentFrameIndex;
 
-    shared_ptr<KeyFrame> interpolationBeginKeyFrame, interpolationEndKeyFrame;
+    KeyFramePtr interpolationBeginKeyFrame, interpolationEndKeyFrame;
     std::weak_ptr<Entity> entity;
 
     Long currentTime, beginTime;

@@ -18,7 +18,7 @@ TweenTest::TweenTest()
     this->name = "TweenTest";
 }
 
-extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
+extern TextureAtlasPtr CreateDefaultFont();
 
 void TweenTest::Init()
 {
@@ -36,7 +36,7 @@ void TweenTest::Init()
     patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
     patch->rebind();
 
-    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
+    FontPtr font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 

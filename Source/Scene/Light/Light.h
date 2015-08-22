@@ -21,7 +21,7 @@ public:
     float shadowBias;
     float shadowDarkness;
 
-    std::shared_ptr<RenderTarget> renderTarget;
+    RenderTargetPtr renderTarget;
 };
 
 class Light : public Component

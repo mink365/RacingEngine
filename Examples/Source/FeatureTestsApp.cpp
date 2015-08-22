@@ -45,7 +45,7 @@
 #include "Util/PredefineTweenAccessor.h"
 #include "Util/EventUtil.h"
 
-extern std::shared_ptr<TextureAtlas> CreateDefaultFont();
+extern TextureAtlasPtr CreateDefaultFont();
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -79,14 +79,14 @@ void FeatureTestsApp::onExitForeground()
 }
 
 template<class T>
-void CreateTest(std::vector<std::shared_ptr<BaseTest>>& tests)
+void CreateTest(std::vector<BaseTestPtr>& tests)
 {
     auto test = std::make_shared<T>();
     tests.push_back(test);
 }
 
 template<class T, class T2, class... TL>
-void CreateTest(std::vector<std::shared_ptr<BaseTest>>& tests)
+void CreateTest(std::vector<BaseTestPtr>& tests)
 {
     auto test = std::make_shared<T>();
     tests.push_back(test);
@@ -147,7 +147,7 @@ void FeatureTestsApp::createBaseUI()
 
     TextureManager::getInstance().loadTextures();
 
-    std::shared_ptr<Font> font = FontManager::getInstance().GetResource("default");
+    auto font = FontManager::getInstance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
