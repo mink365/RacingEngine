@@ -78,8 +78,6 @@ public:
 class MeshData
 {
 public:
-    virtual ~MeshData() {}
-
     std::vector<StreamUnit> vertexStreams;
 
     Buffer<uint> indices;
