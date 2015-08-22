@@ -19,7 +19,7 @@ void LayoutTest::Init()
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
 
     {
-        auto container = CreateNode2DComponent<Widget>();
+        auto container = CreateNode2D<Widget>();
         container->getComponent<Transform2D>()->setSize(Size(500, 100));
 
         auto alignment = Alignment::create();
@@ -34,7 +34,7 @@ void LayoutTest::Init()
         container->getEntity()->setName("Container");
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateNode2DComponent<Sprite>("store_icon_coin.png");
+            SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 
@@ -51,7 +51,7 @@ void LayoutTest::Init()
     }
 
     {
-        auto container = CreateNode2DComponent<Widget>();
+        auto container = CreateNode2D<Widget>();
         container->getComponent<Transform2D>()->setSize(Size(100, 200));
 
         auto alignment = Alignment::create();
@@ -67,7 +67,7 @@ void LayoutTest::Init()
         container->getEntity()->setName("Container");
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateNode2DComponent<Sprite>("store_icon_coin.png");
+            SpritePtr sprite = CreateNode2D<Sprite>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 

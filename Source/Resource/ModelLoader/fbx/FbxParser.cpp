@@ -343,7 +343,7 @@ void FbxParser::readSkeleton(istream *st)
 
 BonePtr FbxParser::readBoneNode(istream *st, AnimationPtr animation)
 {
-    BonePtr bone = CreateComponent<Bone>();
+    BonePtr bone = CreateNode<Bone>();
 
     Long id = reader->ReadLong(st);
     string name = reader->ReadString(st);

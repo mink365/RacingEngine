@@ -36,7 +36,7 @@ EntityPtr CreateSkinningMesh();
 EntityPtr CreateBoneNode();
 
 template<typename T, typename... Args>
-inline std::shared_ptr<T> CreateComponent(Args... args)
+inline std::shared_ptr<T> CreateNode(Args... args)
 {
     auto entity = CreateNode();
 
@@ -48,7 +48,7 @@ inline std::shared_ptr<T> CreateComponent(Args... args)
 }
 
 template<typename T, typename... Args>
-inline std::shared_ptr<T> CreateNode2DComponent(Args... args)
+inline std::shared_ptr<T> CreateNode2D(Args... args)
 {
     auto node = CreateEntity();
 

@@ -76,7 +76,7 @@ void ShadowTest::Init()
     // TODO: Dir Light/Camera can't see the model?.....
 
     // light
-    re::LightPtr light = CreateComponent<SpotLight>();
+    re::LightPtr light = CreateNode<SpotLight>();
     rootNode->addChild(light->getNode());
     SceneManager::getInstance().getRenderManager().addLight(light);
 
@@ -89,7 +89,7 @@ void ShadowTest::Init()
     dirLight->spotAngle = 50;
     dirLight->shadowCameraFov = 50;
 
-    sprite = CreateNode2DComponent<Sprite>("diffuse.png");
+    sprite = CreateNode2D<Sprite>("diffuse.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setScale(Vec2(1, 1));
     sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));

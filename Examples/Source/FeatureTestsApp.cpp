@@ -154,15 +154,15 @@ void FeatureTestsApp::createBaseUI()
         font = FontManager::getInstance().GetResource("default");
     }
 
-    labelTitle = CreateNode2DComponent<Label>(font);
+    labelTitle = CreateNode2D<Label>(font);
     labelTitle->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
-    labelFps = CreateNode2DComponent<Label>(font);
+    labelFps = CreateNode2D<Label>(font);
     labelFps->setText("HelleH");
 
-    auto buttonNext = CreateNode2DComponent<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateNode2DComponent<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateNode2D<ImageButton>("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateNode2D<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {
@@ -199,7 +199,7 @@ void FeatureTestsApp::initResources()
 
     const Screen& screen = Screen::getInstance();
 
-    presCamera = CreateComponent<Camera>();
+    presCamera = CreateNode<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     presCamera->setDepthField(10, 1320);
     presCamera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
@@ -210,7 +210,7 @@ void FeatureTestsApp::initResources()
         return true;
     });
 
-    CameraPtr uiCamera = CreateComponent<Camera>();
+    CameraPtr uiCamera = CreateNode<Camera>();
     uiCamera->setProjectionMode(CameraProjectionMode::Orthographic);
     uiCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
     uiCamera->setOrthoWidth(screen.getWidth());
@@ -266,7 +266,7 @@ void FeatureTestsApp::initResources()
     rootNode = CreateNode()->getNode();
     SceneManager::getInstance().addRootNode(rootNode);
 
-    this->stage = CreateNode2DComponent<ui::UIManager>();
+    this->stage = CreateNode2D<ui::UIManager>();
     this->stage->getEntity()->addComponent<ElementBatcher>();
     SceneManager::getInstance().addRootNode(this->stage->getNode());
     MessageManager::getInstance().addHandler(this->stage.get());
@@ -280,7 +280,7 @@ void FeatureTestsApp::initResources()
 void FeatureTestsApp::registerWindows()
 {
     stage->getWindowFactory().registerCreateFunc("HelloWindow", [](){
-        auto window = CreateNode2DComponent<Window>();
+        auto window = CreateNode2D<Window>();
         window->setName("HelloWindow");
         return window;
     });
@@ -289,7 +289,7 @@ void FeatureTestsApp::registerWindows()
 void FeatureTestsApp::registerScenes()
 {
     stage->getSceneFactory().registerCreateFunc("Scene1", [](){
-        auto scene = CreateNode2DComponent<Scene>();
+        auto scene = CreateNode2D<Scene>();
         scene->setName("Scene1");
         return scene;
     });

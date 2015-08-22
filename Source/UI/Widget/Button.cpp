@@ -107,9 +107,9 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
 {
     BaseButton::init();
 
-    this->defaultSprite = CreateNode2DComponent<Sprite>(texDefault);
-    this->pressedSprite = CreateNode2DComponent<Sprite>(texPress);
-    this->disabledSprite = CreateNode2DComponent<Sprite>(texDis);
+    this->defaultSprite = CreateNode2D<Sprite>(texDefault);
+    this->pressedSprite = CreateNode2D<Sprite>(texPress);
+    this->disabledSprite = CreateNode2D<Sprite>(texDis);
 
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();

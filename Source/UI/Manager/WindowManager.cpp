@@ -18,7 +18,7 @@ WindowManager::WindowManager()
 
 void WindowManager::onStart()
 {
-    alphaBg = CreateNode2DComponent<Widget>()->getNode();
+    alphaBg = CreateNode2D<Widget>()->getNode();
     alphaBg->getComponent<HierarchyColor>()->setColor(Color::Black);
 
     alphaBg->getComponent<Transform2D>()->setSize(this->getComponent<Transform2D>()->getSize());
