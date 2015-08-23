@@ -20,7 +20,7 @@ public:
 
     Pass::ptr clone() const override;
 private:
-    std::weak_ptr<Material> material;
+    WeakPtr<Material> material;
 
     std::string name;
     int index;

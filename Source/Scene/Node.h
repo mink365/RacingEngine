@@ -47,7 +47,7 @@ protected:
 protected:
     int level;
 
-    std::weak_ptr<Node> parent;
+    WeakPtr<Node> parent;
     std::vector<NodePtr> children;
 
 protected:

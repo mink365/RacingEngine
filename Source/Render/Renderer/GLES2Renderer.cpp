@@ -329,14 +329,6 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 
 
     if (force || context.renderState.alphaState != state.alphaState) {
-//        if (state.alphaState.alphaTestEnable) {
-//            glEnable(GL_ALPHA_TEST);
-
-//            glAlphaFunc(GetTestFunc(state.alphaState.function), state.alphaState.alphaFallOff);
-//        } else {
-//            glDisable(GL_ALPHA_TEST);
-//        }
-
         context.renderState.alphaState = state.alphaState;
     }
 

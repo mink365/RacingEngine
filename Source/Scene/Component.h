@@ -48,7 +48,7 @@ protected:
     virtual void copyProperties(const Component *att);
 
 protected:
-    std::weak_ptr<Entity> attachEntity;
+    WeakPtr<Entity> attachEntity;
 };
 
 inline Long Component::getId() const

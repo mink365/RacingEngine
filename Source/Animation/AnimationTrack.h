@@ -72,7 +72,8 @@ private:
     void linearDeformation();
 
 private:
-    std::weak_ptr<Animation> animation;
+    WeakPtr<Animation> animation;
+    WeakPtr<Entity> entity;
 
     std::vector<KeyFramePtr> keyFrames;
     Long minKeyTime, maxKeyTime, animLength;
@@ -81,7 +82,6 @@ private:
     Int currentFrameIndex;
 
     KeyFramePtr interpolationBeginKeyFrame, interpolationEndKeyFrame;
-    std::weak_ptr<Entity> entity;
 
     Long currentTime, beginTime;
 };

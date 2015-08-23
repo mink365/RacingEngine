@@ -60,7 +60,7 @@ private:
 /**
  * @brief The AnimationStack class
  *
- * Part of timeline, some action of one people, run, for example
+ * Part of timeline, some action of one people, idle, walk, run, an so on, for example
  */
 class AnimationStack
 {
@@ -74,7 +74,7 @@ public:
     Long getStackEndTime() const;
 
 private:
-    std::weak_ptr<Animation> animation;
+    WeakPtr<Animation> animation;
 
     Long stackBeginTime;
     Long stackEndTime;
