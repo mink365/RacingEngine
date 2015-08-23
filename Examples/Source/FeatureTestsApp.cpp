@@ -104,7 +104,7 @@ void FeatureTestsApp::createTests()
             , ShadowTest, BulletTest, RenderToTextureTest, Skybox
             , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);
 
-    currIndex = 6;
+    currIndex = 7;
 
     this->onCurrentTestChanged();
 }

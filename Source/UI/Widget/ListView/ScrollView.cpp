@@ -114,6 +114,7 @@ void ScrollView::registerEvents()
 {
     Widget::registerEvents();
 
+    RegisterEvent(Events::Awake, this, &ScrollView::onAwake);
     RegisterEvent(Events::Update, this, &ScrollView::onUpdate);
 }
 
