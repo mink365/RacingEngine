@@ -13,7 +13,7 @@ namespace ui {
 
 void Sprite::init(const std::string& tex)
 {
-    TextureFrame::ptr texture = TextureFrameManager::getInstance().GetResource(tex);
+    TextureFrame::ptr texture = TextureFrameManager::instance().GetResource(tex);
     assert(texture != nullptr);
 
     Rect rect;
@@ -24,7 +24,7 @@ void Sprite::init(const std::string& tex)
 
 void Sprite::init(const string &tex, const Rect &rect)
 {
-    TextureFrame::ptr texture = TextureFrameManager::getInstance().GetResource(tex);
+    TextureFrame::ptr texture = TextureFrameManager::instance().GetResource(tex);
     assert(texture != nullptr);
 
     this->init(texture, rect);

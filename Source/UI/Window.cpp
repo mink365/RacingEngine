@@ -32,7 +32,7 @@ void Window::registerEvents()
 void Window::onAwake()
 {
     // window default is full screen
-    transform->setSize(Screen::getInstance().getSize());
+    transform->setSize(Screen::instance().getSize());
     
     transform->setAnchor(Vec2(0.5f, 0.5f));
 
@@ -113,7 +113,7 @@ void Window::initAnimFunc()
 
             .setCallback(animCallback)
             .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::getInstance().GetTweenManager());
+            .start(GameHub::instance().GetTweenManager());
     };
 
     this->hideAnimFunc = [=]() {
@@ -130,7 +130,7 @@ void Window::initAnimFunc()
 
             .setCallback(animCallback)
             .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::getInstance().GetTweenManager());
+            .start(GameHub::instance().GetTweenManager());
     };
 }
 

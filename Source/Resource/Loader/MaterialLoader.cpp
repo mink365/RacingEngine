@@ -10,12 +10,12 @@ MaterialLoader::MaterialLoader()
 
 MaterialPtr MaterialLoader::Load(FilePtr &file)
 {
-    auto root = BlockParser::getInstance().parse(file);
+    auto root = BlockParser::instance().parse(file);
 
     for (auto child : root->children) {
         auto material = this->loadMaterial(child);
 
-        MaterialManager::getInstance().Register(material);
+        MaterialManager::instance().Register(material);
     }
 
     return nullptr;
@@ -85,7 +85,7 @@ void MaterialLoader::loadTextureUnit(Statement::ptr &statement, SamplerParameter
         if (child->type == "texture_frames") {
             for (auto kv : child->keyValues) {
                 if (kv->key == "texture") {
-                    Texture::ptr frame = TextureManager::getInstance().getTexture(kv->value);
+                    Texture::ptr frame = TextureManager::instance().getTexture(kv->value);
 
                     unit->setTexture(frame);
                 }

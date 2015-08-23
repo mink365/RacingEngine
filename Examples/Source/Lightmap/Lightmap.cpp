@@ -26,12 +26,12 @@ void Lightmap::Init()
     LoadShader("lightmap", shaderDir + "lightmap.vsh",
                              shaderDir + "lightmap.fsh");
 
-    TextureParser::getInstance().addTextures("Textures/Lightmap", "png|jpg");
-    auto base = TextureManager::getInstance().getTexture("tex_base");
-    auto reflection = TextureManager::getInstance().getTexture("reflection");
-    auto shadow = TextureManager::getInstance().getTexture("shadow");
+    TextureParser::instance().addTextures("Textures/Lightmap", "png|jpg");
+    auto base = TextureManager::instance().getTexture("tex_base");
+    auto reflection = TextureManager::instance().getTexture("reflection");
+    auto shadow = TextureManager::instance().getTexture("shadow");
 
-    auto geometry = ShapeGenerater::getInstance().CreateTorus(30, 10, 30, 30);
+    auto geometry = ShapeGenerater::instance().CreateTorus(30, 10, 30, 30);
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, base, "lightmap");
@@ -60,7 +60,7 @@ void Lightmap::Update()
 
 void Lightmap::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("lightmap");
+    Shader::ptr shader = ShaderManager::instance().GetResource("lightmap");
 
     re::Mat4 modelM = node->getTransform()->getWorldMatrix();
     re::Mat4 modelViewM = camera->getViewMatrix() * modelM;

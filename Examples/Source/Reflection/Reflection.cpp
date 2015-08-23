@@ -21,10 +21,10 @@ void Reflection::Init()
     cubeTexture->setFile(file);
     bool state = PVRTextureUtil::LoadFromPVR(*cubeTexture.get(), NULL, 0);
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
-    auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
+    auto geometry = ShapeGenerater::instance().CreateTorus(70, 20, 30, 30);
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, texture, "reflection");
@@ -52,7 +52,7 @@ void Reflection::Update()
 
 void Reflection::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("reflection");
+    Shader::ptr shader = ShaderManager::instance().GetResource("reflection");
 
     Vec3 cameraPosition = camera->getEntity()->getTransform()->getWorldMatrix().getTranslation();
     Vec3 modelPosition = node->getTransform()->getWorldMatrix().getTranslation();

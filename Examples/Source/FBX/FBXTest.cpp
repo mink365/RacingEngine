@@ -23,7 +23,7 @@ NodePtr man;
 
 void FBXTest::Init()
 {
-    TextureParser::getInstance().addTextures("Model/PAD/", "png|jpg");
+    TextureParser::instance().addTextures("Model/PAD/", "png|jpg");
 
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(0, -340, 57), Vec3(0, 30, 20), Vec3(0, 0, 1));
@@ -50,10 +50,10 @@ void FBXTest::Init()
 
     assertDir = "Model/Moto/";
 
-    TextureParser::getInstance().addTextures("Model/Moto/", "png|jpg");
-    TextureParser::getInstance().addTextures("Model/Man/", "png|jpg");
+    TextureParser::instance().addTextures("Model/Moto/", "png|jpg");
+    TextureParser::instance().addTextures("Model/Man/", "png|jpg");
 
-    TextureManager::getInstance().loadTextures();
+    TextureManager::instance().loadTextures();
 
     file = FileSystem::getInstance().getFile((assertDir + "new_group_moto03.data"));
     parser->parse(file);
@@ -143,7 +143,7 @@ void FBXTest::Update()
 
     MeshPtr mesh = man->getComponent<RenderElement>()->getMesh();
 
-    BufferObjectUtil::getInstance().updateGeometryToHardware(*(mesh->getMeshData().get()));
+    BufferObjectUtil::instance().updateGeometryToHardware(*(mesh->getMeshData().get()));
 
     man->getTransform()->setLocalRotation(quat);
 }

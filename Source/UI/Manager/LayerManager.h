@@ -123,7 +123,7 @@ inline std::shared_ptr<T> LayerManager<T>::pop() {
     
     ViewPtr scene = this->stack.back();
     
-    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
+    MessageManager::instance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                MessageConstant::LayerMessage::POP_LAYER,
                                                std::make_shared<std::string>(scene->getName()));
     
@@ -225,7 +225,7 @@ inline std::shared_ptr<T> LayerManager<T>::pushTo(ViewPtr &scene) {
     } else {
         this->stack.push_back(scene);
         
-        MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
+        MessageManager::instance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                    MessageConstant::LayerMessage::PUSH_LAYER,
                                                    std::make_shared<std::string>(scene->getName()));
         
@@ -270,7 +270,7 @@ inline std::shared_ptr<T> LayerManager<T>::cleanTo(ViewPtr &target) {
     
     this->stack.push_back(scene);
     
-    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
+    MessageManager::instance().sendMessage(MessageConstant::MessageType::LAYER_MESSAGE,
                                                MessageConstant::LayerMessage::CLEAN_TO_LAYER,
                                                std::make_shared<std::string>(scene->getName()));
     this->replaceCurLayer(old, scene);

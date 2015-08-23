@@ -52,7 +52,7 @@ void re::SkeletonController::play()
 {
     this->isPlaying = true;
 
-    this->setInitTime(GameHub::getInstance().GetGameTime().GetMilliSecond());
+    this->setInitTime(GameHub::instance().GetGameTime().GetMilliSecond());
 }
 
 void re::SkeletonController::stop()
@@ -71,7 +71,7 @@ void re::SkeletonController::update()
         return;
     }
 
-    auto time = GameHub::getInstance().GetGameTime();
+    auto time = GameHub::instance().GetGameTime();
     this->setCurrTime(time.GetMilliSecond());
 
     this->computeLinearDeformation();

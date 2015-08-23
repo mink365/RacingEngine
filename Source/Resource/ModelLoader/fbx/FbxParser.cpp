@@ -311,7 +311,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     }
 
     if (pass != nullptr) {
-        MaterialPtr preMaterial = MaterialManager::getInstance().GetResource(materialTextureKey);
+        MaterialPtr preMaterial = MaterialManager::instance().GetResource(materialTextureKey);
         if (preMaterial != nullptr) {
             // copy renderstate from defined material
             *material = *preMaterial;
@@ -450,7 +450,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st, MaterialPtr &material) {
             SamplerParameter::ptr unit = SamplerParameter::create("textureSampler");
             unit->setUVstate(Vec2(offsetU, offsetV), Vec2(scaleU, scaleV), 0);
 
-            Texture::ptr tex = TextureManager::getInstance().getTexture(name);
+            Texture::ptr tex = TextureManager::instance().getTexture(name);
             if (tex == nullptr) {
                 RE_ASSERT(false);
             }

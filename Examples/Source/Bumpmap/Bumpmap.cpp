@@ -22,7 +22,7 @@ void Bumpmap::Init()
     LoadShader("normal_map", shaderDir + "bumpmap.vsh",
                              shaderDir + "bumpmap.fsh");
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
 
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(0, 0, 260), Vec3(0, 0, 0), Vec3(0, 1, 0));
@@ -33,7 +33,7 @@ void Bumpmap::Init()
         return true;
     });
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("normal_map");
+    Shader::ptr shader = ShaderManager::instance().GetResource("normal_map");
     {
         // set vertex attribute
         Attribute *vertAttr = shader->getAttribute("inVertex");
@@ -61,9 +61,9 @@ void Bumpmap::Init()
         colorAttr->setOffset((8) * 4);
     }
 
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
-    auto geometry = ShapeGenerater::getInstance().CreateSphere(50, 30, 30);
+    auto geometry = ShapeGenerater::instance().CreateSphere(50, 30, 30);
 
     auto box = CreateMeshNode();
     SetMeshData(box, geometry, texture, "normal_map");
@@ -108,8 +108,8 @@ void Bumpmap::Init()
     InitMeshInHardward(renderElement, "normal_map");
 
     {
-        auto diffuseTexture = TextureManager::getInstance().getTexture("diffuse");
-        auto normalTexture = TextureManager::getInstance().getTexture("diffusenormalmap");
+        auto diffuseTexture = TextureManager::instance().getTexture("diffuse");
+        auto normalTexture = TextureManager::instance().getTexture("diffusenormalmap");
 
         auto material = renderElement->getMaterial();
         material->setTexture("sBaseTex", diffuseTexture);
@@ -126,12 +126,12 @@ static Vec3 lightPos;
 static float angle;
 void Bumpmap::Update()
 {
-    float dt = GameHub::getInstance().GetGameTime().GetSecond();
+    float dt = GameHub::instance().GetGameTime().GetSecond();
     angle += dt * 60 * PI / 1000;
     lightPos.x = sin(angle) * 200;
     lightPos.y = cos(angle) * 200;
     lightPos.z = 0;
 
-    auto shader = ShaderManager::getInstance().GetResource("normal_map");
+    auto shader = ShaderManager::instance().GetResource("normal_map");
     shader->getUniform("LightPosModel")->setData(lightPos);
 }

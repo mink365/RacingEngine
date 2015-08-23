@@ -94,7 +94,7 @@ WindowPtr WindowManager::pushWindow(WindowPtr &window) {
     window->manager = this;
     window->show();
     
-    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
+    MessageManager::instance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::PUSH_WINDOW,
                                                std::make_shared<string>(window->getName()));
     
@@ -121,7 +121,7 @@ WindowPtr WindowManager::popWindow(WindowPtr &win) {
     
     win->hide();
     
-    MessageManager::getInstance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
+    MessageManager::instance().sendMessage(MessageConstant::MessageType::WINDOW_MESSAGE,
                                                MessageConstant::WindowMessage::POP_WINDOW,
                                                std::make_shared<string>(win->getName()));
     

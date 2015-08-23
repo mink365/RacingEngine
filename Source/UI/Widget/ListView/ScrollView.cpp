@@ -176,7 +176,7 @@ void ScrollView::handleTouchMoveEvent(TouchEvent &event)
     prevTouch = currTouch;
     currTouch = event.getCurrPoint();
 
-    tracker.addPoint(currTouch, GameHub::getInstance().GetGameTime().GetMilliSecond());
+    tracker.addPoint(currTouch, GameHub::instance().GetGameTime().GetMilliSecond());
 
     diffTouch = currTouch - pressTouch;
 

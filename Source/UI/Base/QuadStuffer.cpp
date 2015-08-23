@@ -29,7 +29,7 @@ MaterialPtr CreateDefaultMaterial(Texture::ptr texture, const string &shaderName
 {
     MaterialPtr material = Create<Material>();
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
+    Shader::ptr shader = ShaderManager::instance().GetResource(shaderName);
     material->setShder(shader);
 
     material->initDefaultPass();
@@ -65,7 +65,7 @@ void UploadMeshToHardware(MeshPtr &mesh)
     if (mesh->getGeometry()) {
         mesh->getGeometry()->appendToMeshData(meshData);
     }
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
+    BufferObjectUtil::instance().loadGeometryToHardware(*(meshData.get()));
 }
 
 QuadStuffer::QuadStuffer()

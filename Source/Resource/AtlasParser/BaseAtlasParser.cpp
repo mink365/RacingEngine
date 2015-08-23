@@ -48,13 +48,13 @@ void BaseAtlasParser::getTextureByImageFile()
     int pos2 = path.find_last_of(".");
     auto name = path.substr(0, pos2);
 
-    if (TextureManager::getInstance().containTexture(name)) {
-        texture = TextureManager::getInstance().getTexture(name);
+    if (TextureManager::instance().containTexture(name)) {
+        texture = TextureManager::instance().getTexture(name);
     } else {
         texture = Texture::create();
         texture->setFile(this->imageFile);
 
-        TextureManager::getInstance().registerTexture(texture);
+        TextureManager::instance().registerTexture(texture);
     }
 }
 
@@ -71,7 +71,7 @@ TextureFramePtr BaseAtlasParser::getTextureFrameFromData(const TextureFrameData 
     frame->offset = data.offset;
     frame->originalSize = data.originalSize;
 
-    TextureFrameManager::getInstance().Register(frame);
+    TextureFrameManager::instance().Register(frame);
 
     return frame;
 }

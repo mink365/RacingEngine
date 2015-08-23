@@ -41,9 +41,9 @@ void Label::setText(const string &text)
     auto transform = this->getComponent<Transform2D>();
 
     geometry->clear();
-    TextStuffer::getInstance().AddText(std::wstring(text.begin(), text.end()), geometry, this->font);
+    TextStuffer::instance().AddText(std::wstring(text.begin(), text.end()), geometry, this->font);
 
-    const Rect& textRect = TextStuffer::getInstance().getTextRect();
+    const Rect& textRect = TextStuffer::instance().getTextRect();
 
     transform->setSize(textRect.size);
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place

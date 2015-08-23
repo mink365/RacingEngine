@@ -28,7 +28,7 @@ void GameHub::init(ApplicationProtocol *app)
 {
     this->app = app;
 
-    TextureManager::getInstance().setImageLoader(new ImageLoader());
+    TextureManager::instance().setImageLoader(new ImageLoader());
 
     this->tweenManager = new TweenEngine::TweenManager();
 }
@@ -46,13 +46,13 @@ void GameHub::mainLoop(int64_t dt)
         tweenManager->update(dt/1000.0);
     }
 
-    SceneManager::getInstance().renderScene();
+    SceneManager::instance().renderScene();
 
 }
 
 Renderer &GameHub::GetRenderer()
 {
-    return SceneManager::getInstance().getRenderManager().getRenderer();
+    return SceneManager::instance().getRenderManager().getRenderer();
 }
 
 TweenEngine::TweenManager& GameHub::GetTweenManager()

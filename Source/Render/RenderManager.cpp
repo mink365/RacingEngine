@@ -76,7 +76,7 @@ void RenderManager::applyMaterial(Material &material)
     shader->getUniform("viewMatrix")->setData((float*)renderer->getViewMatrix());
     shader->getUniform("projectionMatrix")->setData((float*)renderer->getProjectionMatrix());
 
-    ShaderUtil::getInstance().bindShader(shader);
+    ShaderUtil::instance().bindShader(shader);
 
     for (auto& param : material.getSamplers()) {
         auto& name = param->getName();
@@ -113,7 +113,7 @@ void RenderManager::createRenderViews()
             renderView->init(light);
 
             // set shader to shadowMap shader
-            renderView->forceShader = ShaderManager::getInstance().GetResource("depth_rgba");
+            renderView->forceShader = ShaderManager::instance().GetResource("depth_rgba");
 
             if (renderView->renderTarget == nullptr) {
                 auto renderTarget = Create<RenderTarget>();

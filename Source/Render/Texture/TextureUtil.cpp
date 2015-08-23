@@ -350,7 +350,7 @@ GLenum TextureTargetTypeToGL(Texture::TargetType type) {
 }
 
 Renderer& GetRenderer() {
-    return GameHub::getInstance().GetRenderer();
+    return GameHub::instance().GetRenderer();
 }
 
 TextureUtil::TextureUtil()

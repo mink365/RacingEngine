@@ -14,7 +14,7 @@ void NinePatch::init(const std::string& tex)
     color = this->getComponent<HierarchyColor>();
     transform = this->getComponent<Transform2D>();
 
-    this->frame = TextureFrameManager::getInstance().GetResource(tex);
+    this->frame = TextureFrameManager::instance().GetResource(tex);
 
     this->getEntity()->addComponent<CanvasRenderElement>();
     auto element = this->getComponent<CanvasRenderElement>();

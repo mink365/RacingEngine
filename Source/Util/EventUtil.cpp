@@ -35,7 +35,7 @@ void EventFactory::RegisterEvents()
 
     func = [](re::Component& comp) -> re::Signal<void()>&
     {
-        return GameHub::getInstance().updateEvent;
+        return GameHub::instance().updateEvent;
     };
     eventSignals[Events::Update] = func;
 

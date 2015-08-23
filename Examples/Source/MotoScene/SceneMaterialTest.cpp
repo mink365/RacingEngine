@@ -42,11 +42,11 @@ void SceneMaterialTest::Init()
         return true;
     });
 
-    TextureParser::getInstance().addTextures("Textures/Scenes/", "png|jpg");
-    TextureManager::getInstance().loadTextures();
+    TextureParser::instance().addTextures("Textures/Scenes/", "png|jpg");
+    TextureManager::instance().loadTextures();
 
     FilePtr file = FileSystem::getInstance().getFile("Material/Scene/scene.material");
-    MaterialLoader::getInstance().Load(file);
+    MaterialLoader::instance().Load(file);
 
     FbxParser *parser = new FbxParser();
     file = FileSystem::getInstance().getFile("Model/scene.data");
@@ -84,11 +84,11 @@ static LabelPtr labelName;
 
 void SceneMaterialTest::createUI()
 {
-    FontPtr font = FontManager::getInstance().GetResource("default");
+    FontPtr font = FontManager::instance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().GetResource("default");
+        font = FontManager::instance().GetResource("default");
     }
 
     labelName = CreateUIGraphicNode<Label>(font);

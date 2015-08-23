@@ -39,16 +39,16 @@ void TextureParser::parseSingle(FilePtr &file)
     Texture::ptr texture = Texture::create();
     texture->setFile(file);
 
-    TextureManager::getInstance().registerTexture(texture);
+    TextureManager::instance().registerTexture(texture);
 
     // TODO: get the size of tex
-    TextureManager::getInstance().loadTextures();
+    TextureManager::instance().loadTextures();
 
     TextureFrame::ptr frame = TextureFrame::create();
     frame->setTexture(texture);
     frame->init(file->getName(), false, 0, 0, texture->getWidth(), texture->getHeight());
 
-    TextureFrameManager::getInstance().Register(frame);
+    TextureFrameManager::instance().Register(frame);
 }
 
 } // namespace re

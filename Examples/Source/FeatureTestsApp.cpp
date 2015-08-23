@@ -58,11 +58,11 @@ bool FeatureTestsApp::initEnvironment()
     PredefineTweenAccessor::registerAccessor();
     EventFactory::RegisterEvents();
 
-    Screen::getInstance().setDesignSize(614, 1024);
+    Screen::instance().setDesignSize(614, 1024);
 
-    Screen::getInstance().setRealFrameSize(this->view->getFrameSize());
+    Screen::instance().setRealFrameSize(this->view->getFrameSize());
 
-    GameHub::getInstance().updateEvent += std::bind(&FeatureTestsApp::update, this);
+    GameHub::instance().updateEvent += std::bind(&FeatureTestsApp::update, this);
 
     this->initResources();
     this->createTests();
@@ -129,8 +129,8 @@ void FeatureTestsApp::lastTest()
 
 void FeatureTestsApp::onCurrentTestChanged()
 {
-    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
-    SceneManager::getInstance().getRenderManager().lightList.clear();
+    SceneManager::instance().getRenderManager().initDefaultRenderState();
+    SceneManager::instance().getRenderManager().lightList.clear();
 
     this->current = tests[currIndex];
 
@@ -140,21 +140,21 @@ void FeatureTestsApp::onCurrentTestChanged()
     this->current->init(*this);
     this->labelTitle->setText(this->current->getName());
 
-    SceneManager::getInstance().getRenderManager().markRenderViewDirty();
-    SceneManager::getInstance().getRenderManager().initDefaultRenderState();
+    SceneManager::instance().getRenderManager().markRenderViewDirty();
+    SceneManager::instance().getRenderManager().initDefaultRenderState();
 }
 
 void FeatureTestsApp::createBaseUI()
 {
-    TextureParser::getInstance().addTextures("UI/", "png");
+    TextureParser::instance().addTextures("UI/", "png");
 
-    TextureManager::getInstance().loadTextures();
+    TextureManager::instance().loadTextures();
 
-    auto font = FontManager::getInstance().GetResource("default");
+    auto font = FontManager::instance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().GetResource("default");
+        font = FontManager::instance().GetResource("default");
     }
 
     labelTitle = CreateUIGraphicNode<Label>(font);
@@ -194,13 +194,13 @@ void FeatureTestsApp::createBaseUI()
 void FeatureTestsApp::initResources()
 {
 //    InitGLStates();
-    auto& sceneManager = SceneManager::getInstance();
+    auto& sceneManager = SceneManager::instance();
     RendererPtr renderer = Create<GLES2Renderer>();
 
     sceneManager.getRenderManager().setRenderer(renderer);
     sceneManager.getRenderManager().initDefaultRenderState();
 
-    const Screen& screen = Screen::getInstance();
+    const Screen& screen = Screen::instance();
 
     presCamera = CreateNode<Camera>();
     presCamera->setViewport(screen.getRealSize().width, screen.getRealSize().height);
@@ -229,11 +229,11 @@ void FeatureTestsApp::initResources()
         }
         return false;
     });
-    SceneManager::getInstance().getRenderManager().addCamera(presCamera);
-    SceneManager::getInstance().getRenderManager().addCamera(uiCamera);
+    SceneManager::instance().getRenderManager().addCamera(presCamera);
+    SceneManager::instance().getRenderManager().addCamera(uiCamera);
 
-    SceneManager::getInstance().addRootNode(presCamera->getNode());
-    SceneManager::getInstance().addRootNode(uiCamera->getNode());
+    SceneManager::instance().addRootNode(presCamera->getNode());
+    SceneManager::instance().addRootNode(uiCamera->getNode());
 
     SearchPath searchPath;
 #ifdef RE_PLATFORM_LINUX
@@ -262,17 +262,17 @@ void FeatureTestsApp::initResources()
     LoadShader("Shader_Font", shaderDir + "v3f-t2f-c4f.vert",
                               shaderDir + "v3f-t2f-c4f.frag");
 
-    TextureManager::getInstance().setImageLoader(new ImageLoader());
+    TextureManager::instance().setImageLoader(new ImageLoader());
 
-    DebugRenderer::getInstance().InitNode();
+    DebugRenderer::instance().InitNode();
 
     rootNode = CreateNode()->getNode();
-    SceneManager::getInstance().addRootNode(rootNode);
+    SceneManager::instance().addRootNode(rootNode);
 
     this->stage = CreateNode2D<ui::UIManager>();
     this->stage->getEntity()->addComponent<ElementBatcher>();
-    SceneManager::getInstance().addRootNode(this->stage->getNode());
-    MessageManager::getInstance().addHandler(this->stage.get());
+    SceneManager::instance().addRootNode(this->stage->getNode());
+    MessageManager::instance().addHandler(this->stage.get());
 
     this->registerScenes();
     this->registerWindows();
@@ -300,15 +300,15 @@ void FeatureTestsApp::registerScenes()
 
 void FeatureTestsApp::update()
 {
-    MessageManager::getInstance().handleMessages();
+    MessageManager::instance().handleMessages();
 
     if (this->current) {
         this->current->Update();
     }
     this->stage->update();
 
-    this->labelFps->setText(std::to_string(GameHub::getInstance().GetFps()));
+    this->labelFps->setText(std::to_string(GameHub::instance().GetFps()));
 
     auto node = stage->getNode();
-    DebugRenderer::getInstance().Step(node);
+    DebugRenderer::instance().Step(node);
 }

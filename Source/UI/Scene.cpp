@@ -15,7 +15,7 @@ Scene::~Scene() {
 }
 
 void Scene::onAwake() {
-    transform->setSize(Screen::getInstance().getSize());
+    transform->setSize(Screen::instance().getSize());
 
     this->getEntity()->addComponent<WindowManager>();
     
@@ -51,12 +51,12 @@ void Scene::registerEvents()
 }
 
 void Scene::onEnter() {
-    MessageManager::getInstance().addHandler(this);
+    MessageManager::instance().addHandler(this);
 }
 
 void Scene::onExit()
 {
-    MessageManager::getInstance().removeHandler(this);
+    MessageManager::instance().removeHandler(this);
 }
 
 } // namespace ui

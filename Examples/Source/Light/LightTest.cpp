@@ -26,7 +26,7 @@ void LightTest::Init()
     LoadShader("lights_phong", shaderDir + "lights_phong.vert",
                              shaderDir + "lights_phong.frag");
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
 
     if (PHONG_LIGHT) {
         CURRENT_SHADER_NAME = "lights_phong";
@@ -43,9 +43,9 @@ void LightTest::Init()
         return true;
     });
 
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
-    auto boxGeometry = ShapeGenerater::getInstance().CreateBox(50, 50, 50);
+    auto boxGeometry = ShapeGenerater::instance().CreateBox(50, 50, 50);
 
     box = CreateMeshNode();
     SetMeshData(box, boxGeometry, texture, CURRENT_SHADER_NAME);
@@ -182,7 +182,7 @@ void LightTest::Update()
 
     box->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(0, 20, rotateValue)));
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource(CURRENT_SHADER_NAME);
+    Shader::ptr shader = ShaderManager::instance().GetResource(CURRENT_SHADER_NAME);
     if (!PHONG_LIGHT) {
     } else {
         shader->getUniform("shininess")->setData(&shininess);

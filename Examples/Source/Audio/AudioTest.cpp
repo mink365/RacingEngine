@@ -24,9 +24,9 @@ AudioTest::AudioTest()
 
 void AudioTest::Init()
 {
-    OpenALAudioEngine::getInstance();
+    OpenALAudioEngine::instance();
 
-    auto buffer = OpenALAudioFactory::getInstance().CreateBuffer("Sound/Bomb.ogg");
+    auto buffer = OpenALAudioFactory::instance().CreateBuffer("Sound/Bomb.ogg");
 
     sourceNode = CreateNode();
     auto source = sourceNode->addComponent<OpenALSource>();
@@ -41,7 +41,7 @@ Vec3 pos;
 
 void AudioTest::Update()
 {
-    float dt = GameHub::getInstance().GetDeltaTime().GetSecond();
+    float dt = GameHub::instance().GetDeltaTime().GetSecond();
     t += dt;
 
     if (t > 3) {

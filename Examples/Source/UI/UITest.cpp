@@ -28,11 +28,11 @@ void UITest::Init()
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
-    FontPtr font = FontManager::getInstance().GetResource("default");
+    FontPtr font = FontManager::instance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().GetResource("default");
+        font = FontManager::instance().GetResource("default");
     }
 
     LabelPtr label = CreateUIGraphicNode<Label>(font);

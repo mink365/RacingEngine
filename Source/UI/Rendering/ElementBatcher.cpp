@@ -43,7 +43,7 @@ void ElementBatcher::Render()
 
     this->ReBuild();
 
-    auto& renderQueue = SceneManager::getInstance().getRenderManager().getRenderQueue();
+    auto& renderQueue = SceneManager::instance().getRenderManager().getRenderQueue();
 
     Mat4 identity = Mat4::Identity;
     for (auto& batch : this->elementBatchs) {

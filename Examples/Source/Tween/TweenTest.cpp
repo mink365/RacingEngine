@@ -22,8 +22,8 @@ extern TextureAtlasPtr CreateDefaultFont();
 
 void TweenTest::Init()
 {
-    TextureParser::getInstance().addTextures("UI/", "png");
-    TextureManager::getInstance().loadTextures();
+    TextureParser::instance().addTextures("UI/", "png");
+    TextureManager::instance().loadTextures();
 
     SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
     sprite->rebind();
@@ -36,11 +36,11 @@ void TweenTest::Init()
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
-    FontPtr font = FontManager::getInstance().GetResource("default");
+    FontPtr font = FontManager::instance().GetResource("default");
     if (font == nullptr) {
         CreateDefaultFont();
 
-        font = FontManager::getInstance().GetResource("default");
+        font = FontManager::instance().GetResource("default");
     }
 
     LabelPtr label = CreateUIGraphicNode<Label>(font);

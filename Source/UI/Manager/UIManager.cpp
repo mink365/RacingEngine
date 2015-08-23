@@ -12,7 +12,7 @@ UIManager::UIManager()
 }
 
 void UIManager::onAwake() {
-    this->getComponent<Transform2D>()->setSize(Screen::getInstance().getSize());
+    this->getComponent<Transform2D>()->setSize(Screen::instance().getSize());
 
     isKeyBackActive = true;
 }
@@ -40,7 +40,7 @@ void UIManager::handleMessage(Message *message) {
     if (message->getType() == MessageConstant::MessageType::TOUCHSCREEN_MESSAGE) {
         TouchEvent* event = static_cast<TouchEvent*>(message->getData());
 
-        event->setCurrPoint(event->getPoint() / Screen::getInstance().getFinalScale());
+        event->setCurrPoint(event->getPoint() / Screen::instance().getFinalScale());
         this->dispatchTouchEvent(*event);
     }
 }
@@ -73,11 +73,11 @@ ScenePtr UIManager::getDefaultLayer() {
 }
 
 void UIManager::onEnter() {
-    MessageManager::getInstance().addHandler(this);
+    MessageManager::instance().addHandler(this);
 }
 
 void UIManager::onExit() {
-    MessageManager::getInstance().removeHandler(this);
+    MessageManager::instance().removeHandler(this);
 }
 
 void UIManager::keyBackClicked() {

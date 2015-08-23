@@ -9,9 +9,9 @@ template <class T>
 class Singleton : public Uncopyable
 {
 public:
-    static T& getInstance() {
-        static T instance;
-        return instance;
+    static T& instance() {
+        static T _instance;
+        return _instance;
     }
 protected:
     Singleton() {};

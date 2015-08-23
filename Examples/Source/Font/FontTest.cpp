@@ -18,7 +18,7 @@ TextureAtlasPtr CreateDefaultFont()
 
     auto font = Create<Font>(FontType::TTF, 32, file);
     font->setName("default");
-    FontManager::getInstance().Register(font);
+    FontManager::instance().Register(font);
 
     auto atlas = TextureAtlas::create();
     atlas->init(1024, 1024, 1);
@@ -34,7 +34,7 @@ void FontTest::Init()
 {
     auto atlas = CreateDefaultFont();
 
-    auto box = ShapeGenerater::getInstance().CreateBox(150, 150, 150);
+    auto box = ShapeGenerater::instance().CreateBox(150, 150, 150);
 
     boxNode = CreateMeshNode();
     SetMeshData(boxNode, box, atlas->getTexture());

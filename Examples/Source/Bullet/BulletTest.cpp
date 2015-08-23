@@ -226,8 +226,8 @@ void BulletTest::exitPhysics()
 
 void BulletTest::initView()
 {
-    TextureParser::getInstance().addTextures("Textures/Box", "png|jpg");
-    auto texture = TextureManager::getInstance().getTexture("cube2");
+    TextureParser::instance().addTextures("Textures/Box", "png|jpg");
+    auto texture = TextureManager::instance().getTexture("cube2");
 
     this->camera->setView(Vec3(0, 100, 170), Vec3(0, 0, 0), Vec3(0, 1, 0));
     this->camera->setDepthField(10, 1320);
@@ -238,15 +238,15 @@ void BulletTest::initView()
         return true;
     });
 
-    auto geometry = ShapeGenerater::getInstance().CreatePlane(100, 100, 30, 30);
+    auto geometry = ShapeGenerater::instance().CreatePlane(100, 100, 30, 30);
     auto groundNode = CreateMeshNode();
     SetMeshData(groundNode, geometry, texture);
 
     groundNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
     rootNode->addChild(groundNode->getNode());
 
-    texture = TextureManager::getInstance().getTexture("cube3");
-    auto box = ShapeGenerater::getInstance().CreateBox(6, 6, 6);
+    texture = TextureManager::instance().getTexture("cube3");
+    auto box = ShapeGenerater::instance().CreateBox(6, 6, 6);
 
     auto boxNode = CreateMeshNode();
     SetMeshData(boxNode, box, texture);

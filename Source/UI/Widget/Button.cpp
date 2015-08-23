@@ -32,7 +32,7 @@ void BaseButton::initTouchListener()
 
     listener->onTouchDown = [&](TouchEvent&, WidgetPtr&) {
         this->isTouchDown = true;
-        this->touchDownTime = LocalTime::getInstance().getCurrentTime();
+        this->touchDownTime = LocalTime::instance().getCurrentTime();
 
         this->switchState(WidgetState::PRESSED);
 

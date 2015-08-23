@@ -57,7 +57,7 @@ void DebugRenderer::InitNode()
 
     auto material = node->getComponent<RenderElement>()->getMaterial();
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("Shader_Debug");
+    Shader::ptr shader = ShaderManager::instance().GetResource("Shader_Debug");
     material->setShder(shader);
 
     material->setQueueID(RenderQueues::UI);
@@ -65,7 +65,7 @@ void DebugRenderer::InitNode()
     material->getRenderState().depthWrite = false;
     material->getRenderState().polygonMode = PolygonMode::Line;
 
-    SceneManager::getInstance().addRootNode(node->getNode());
+    SceneManager::instance().addRootNode(node->getNode());
 }
 
 void DebugRenderer::Step(NodePtr &node)
@@ -87,7 +87,7 @@ void DebugRenderer::Step(NodePtr &node)
 
     geometry->appendToMeshData(meshData);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
+    BufferObjectUtil::instance().loadGeometryToHardware(*(meshData.get()));
 }
 
 void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)

@@ -92,13 +92,13 @@ TexturePtr GetTextureByImageFile(FilePtr& imageFile)
     auto name = path.substr(0, pos2);
 
     TexturePtr texture;
-    if (TextureManager::getInstance().containTexture(name)) {
-        texture = TextureManager::getInstance().getTexture(name);
+    if (TextureManager::instance().containTexture(name)) {
+        texture = TextureManager::instance().getTexture(name);
     } else {
         texture = Texture::create();
         texture->setFile(imageFile);
 
-        TextureManager::getInstance().registerTexture(texture);
+        TextureManager::instance().registerTexture(texture);
     }
 
     return texture;
@@ -110,7 +110,7 @@ void AngleFontParser::createFont(FilePtr& file)
 {
     this->font = Create<Font>(FontType::Bitmap, this->size, file);
     this->font->setName(this->family);
-    FontManager::getInstance().Register(this->font);
+    FontManager::instance().Register(this->font);
 
     FilePtr imageFile = GetImageFile(file, this->imageName);
     this->texture = GetTextureByImageFile(imageFile);

@@ -18,7 +18,7 @@ void Message::set(int type, int id)
 void Message::set(int type, int id, std::shared_ptr<void> data)
 {
     this->isHandled = false;
-    this->eventTime = LocalTime::getInstance().getCurrentTime();
+    this->eventTime = LocalTime::instance().getCurrentTime();
 
     this->type = type;
     this->id = id;

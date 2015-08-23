@@ -109,7 +109,7 @@ private:
         float y_ = (rect.size.height - (y - rect.origin.y)) / rect.size.height * nativeView->framebufferSize.height;
         event->setInfo(type, x_, y_);
 
-        MessageManager::getInstance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
+        MessageManager::instance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
     }
 };
 

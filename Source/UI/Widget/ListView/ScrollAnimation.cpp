@@ -12,7 +12,7 @@ void BaseAnimation::update()
         return;
     }
 
-    _runTime += GameHub::getInstance().GetDeltaTime().GetSecond();
+    _runTime += GameHub::instance().GetDeltaTime().GetSecond();
 
     if (_runTime >= _duration) {
         this->switchState(State::Stopped);

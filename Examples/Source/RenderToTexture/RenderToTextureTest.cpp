@@ -28,17 +28,17 @@ void RenderToTextureTest::Init()
         return false;
     });
 
-    renderManager = &(SceneManager::getInstance().getRenderManager());
+    renderManager = &(SceneManager::instance().getRenderManager());
     renderer = &(renderManager->getRenderer());
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
 
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
     GeometryPtr geometry = nullptr;
     MeshPtr mesh = nullptr;
 
-    geometry = ShapeGenerater::getInstance().CreateCylinder(50, 50, 100, 10, 10);
+    geometry = ShapeGenerater::instance().CreateCylinder(50, 50, 100, 10, 10);
 
     cylinderNode = CreateMeshNode();
     SetMeshData(cylinderNode, geometry, texture);
@@ -68,11 +68,11 @@ void RenderToTextureTest::Init()
     presCamera->setRenderTarget(renderTarget);
     presCamera->setClearColor(Color(169.0/255, 74.0/255, 174.0/255, 1));
 
-    SceneManager::getInstance().getRenderManager().addCamera(presCamera);
-    SceneManager::getInstance().addRootNode(presCamera->getNode());
+    SceneManager::instance().getRenderManager().addCamera(presCamera);
+    SceneManager::instance().addRootNode(presCamera->getNode());
 
     // create the normal geometry
-    geometry = ShapeGenerater::getInstance().CreateBox(100, 10, 100, 20, 20, 20);
+    geometry = ShapeGenerater::instance().CreateBox(100, 10, 100, 20, 20, 20);
 
     boxNode = CreateMeshNode();
     SetMeshData(boxNode, geometry, renderTarget->getTexture());

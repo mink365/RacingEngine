@@ -35,7 +35,7 @@ void ShadowTest::Init()
     LoadShader("simple_shadow_map", shaderDir + "simple_shadow_map.vert",
                              shaderDir + "simple_shadow_map.frag");
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
 
     this->camera->setDepthField(10, 1320);
     this->camera->setView(Vec3(100, 0, 300), Vec3(0, 0, 0), Vec3(0, 1, 0));
@@ -46,11 +46,11 @@ void ShadowTest::Init()
         return true;
     });
 
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
 //    MeshPtr groundMesh = ShapeGenerater::getInstance().CreateBox(300, texture);
     GeometryPtr geometry = nullptr;
-    geometry = ShapeGenerater::getInstance().CreatePlane(200, 200, 30, 30);
+    geometry = ShapeGenerater::instance().CreatePlane(200, 200, 30, 30);
 //     geometry = ShapeGenerater::getInstance().CreateRing(50, 200);
 
     ground = CreateMeshNode()->getNode();
@@ -62,7 +62,7 @@ void ShadowTest::Init()
     rootNode->addChild(ground);
     ground->getEntity()->refreshTransformInHierarchy();
 
-    geometry = ShapeGenerater::getInstance().CreateBox(50, 50, 50);
+    geometry = ShapeGenerater::instance().CreateBox(50, 50, 50);
 
     box = CreateMeshNode()->getNode();
     SetMeshData(box->getEntity(), geometry, texture);
@@ -78,7 +78,7 @@ void ShadowTest::Init()
     // light
     re::LightPtr light = CreateNode<SpotLight>();
     rootNode->addChild(light->getNode());
-    SceneManager::getInstance().getRenderManager().addLight(light);
+    SceneManager::instance().getRenderManager().addLight(light);
 
     light->setCastShadow(true);
     light->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
@@ -148,14 +148,14 @@ void SetupShadowMapShader() {
         0.000032, 0.000032
     };
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("shadow_map");
+    Shader::ptr shader = ShaderManager::instance().GetResource("shadow_map");
 
     shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
 //    shader->getUniform("shadowMapSize")->setData(shadowMapSize[0]);
     shader->getUniform("shadowDarkness")->setData(shadowDarkness.data());
     shader->getUniform("shadowBias")->setData(shadowBias.data());
 
-    shader = ShaderManager::getInstance().GetResource("depth_rgba");
+    shader = ShaderManager::instance().GetResource("depth_rgba");
 //    shader->getUniform("shadowMatrix")->setData(shadowMatrixs[0]);
 }
 
@@ -171,7 +171,7 @@ void ShadowTest::Update()
 
     auto groundMaterial = ground->getComponent<RenderElement>()->getMaterial();
 
-    auto& renderManager = SceneManager::getInstance().getRenderManager();
+    auto& renderManager = SceneManager::instance().getRenderManager();
 
     if (renderManager.renderViewList.size() > 2) {
         auto view = renderManager.renderViewList[0];

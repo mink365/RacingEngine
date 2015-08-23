@@ -16,11 +16,11 @@ void Refraction::Init()
     LoadShader("refraction", shaderDir + "refraction.vsh",
                              shaderDir + "refraction.fsh");
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
     {
-        GeometryPtr geometry = ShapeGenerater::getInstance().CreatePlane(300, 300, 30, 30);
+        GeometryPtr geometry = ShapeGenerater::instance().CreatePlane(300, 300, 30, 30);
 
         auto node = CreateMeshNode();
         SetMeshData(node, geometry, texture);
@@ -32,7 +32,7 @@ void Refraction::Init()
         node->getTransform()->setLocalTranslation(Vec3(0, 0, -70));
     }
 
-    auto geometry = ShapeGenerater::getInstance().CreateTorus(70, 20, 30, 30);
+    auto geometry = ShapeGenerater::instance().CreateTorus(70, 20, 30, 30);
 
     node = CreateMeshNode();
     SetMeshData(node, geometry, texture, "refraction");
@@ -56,7 +56,7 @@ void Refraction::Update()
 
 void Refraction::setupShader()
 {
-    Shader::ptr shader = ShaderManager::getInstance().GetResource("refraction");
+    Shader::ptr shader = ShaderManager::instance().GetResource("refraction");
 
     Vec3 lightPosition = Vec3(100, 100, 0);
 

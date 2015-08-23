@@ -22,18 +22,18 @@ void Skybox::Init()
 
     LoadShader("cubemap", "Shaders/cubemap.vert", "Shaders/cubemap.frag");
 
-    TextureParser::getInstance().addTextures("Textures/NormalMap", "png|jpg");
-    auto texture = TextureManager::getInstance().getTexture("diffuse");
+    TextureParser::instance().addTextures("Textures/NormalMap", "png|jpg");
+    auto texture = TextureManager::instance().getTexture("diffuse");
 
     {
-        GeometryPtr geometry = ShapeGenerater::getInstance().CreateBox(30, 30, 30, 30, 30, 30);
+        GeometryPtr geometry = ShapeGenerater::instance().CreateBox(30, 30, 30, 30, 30, 30);
 
         box = CreateMeshNode();
         SetMeshData(box, geometry, tex, "cubemap");
     }
 
     {
-        GeometryPtr geometry = ShapeGenerater::getInstance().CreateBox(900, 900, 900, 30, 30, 30);
+        GeometryPtr geometry = ShapeGenerater::instance().CreateBox(900, 900, 900, 30, 30, 30);
 
         skybox = CreateMeshNode();
         SetMeshData(skybox, geometry, tex, "cubemap");

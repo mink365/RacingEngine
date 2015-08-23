@@ -21,7 +21,7 @@ EntityPtr CreateEntity()
     auto node = Create<Entity>();
 
     // make an reference to the node, make sure it not be delected
-    ComponentFactory::getInstance().nodes.push_back(node);
+    ComponentFactory::instance().nodes.push_back(node);
 
     return node;
 }

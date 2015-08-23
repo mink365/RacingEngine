@@ -53,7 +53,7 @@ void ElementBatch::FillMeshData()
 {
     this->geometry->appendToMeshData(this->meshData);
 
-    BufferObjectUtil::getInstance().loadGeometryToHardware(*(meshData.get()));
+    BufferObjectUtil::instance().loadGeometryToHardware(*(meshData.get()));
 }
 
 MaterialPtr ElementBatch::getMaterial() const

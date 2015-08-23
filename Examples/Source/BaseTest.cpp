@@ -134,7 +134,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
     shader->setVertexSource(vs);
     shader->setFragmentSource(fs);
 
-    ShaderUtil::getInstance().compileShader(shader.get());
+    ShaderUtil::instance().compileShader(shader.get());
 
     CheckShaderLinkError(shader->getProgram());
 
@@ -147,7 +147,7 @@ int LoadShaderData(const std::string& name, const std::string& vs, const std::st
         setPTCShaderAttribute(shader);
     }
 
-    ShaderManager::getInstance().Register(shader);
+    ShaderManager::instance().Register(shader);
 
     return 1;
 }
@@ -181,7 +181,7 @@ void InitMeshInHardward(RenderElementPtr element, const string &shaderName) {
 
     UploadMeshToHardware(mesh);
 
-    Shader::ptr shader = ShaderManager::getInstance().GetResource(shaderName);
+    Shader::ptr shader = ShaderManager::instance().GetResource(shaderName);
     element->getMaterial()->setShder(shader);
 }
 
