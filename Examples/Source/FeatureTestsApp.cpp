@@ -158,7 +158,7 @@ void FeatureTestsApp::createBaseUI()
     }
 
     labelTitle = CreateUIGraphicNode<Label>(font);
-    labelTitle->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5,0.5));
+    labelTitle->getComponent<Transform2D>()->setAnchor(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
     labelFps = CreateUIGraphicNode<Label>(font);

@@ -33,7 +33,7 @@ void TweenTest::Init()
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
-    patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
+    patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
     FontPtr font = FontManager::getInstance().GetResource("default");

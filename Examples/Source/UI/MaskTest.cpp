@@ -38,7 +38,7 @@ NinePatchPtr MaskTest::CreateNinePatch(int width, int height)
     NinePatchPtr patch = CreateUIGraphicNode<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(width, height));
-    patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
+    patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
     return patch;

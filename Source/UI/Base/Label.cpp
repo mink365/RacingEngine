@@ -47,7 +47,7 @@ void Label::setText(const string &text)
 
     transform->setSize(textRect.size);
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
-//    transform->setAnchorPointInPixels(textRect.origin); // TODO: just an offset of vertext
+//    transform->setAnchorInPixels(textRect.origin); // TODO: just an offset of vertext
 
 }
 

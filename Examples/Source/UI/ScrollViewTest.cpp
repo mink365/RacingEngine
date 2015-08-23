@@ -20,6 +20,7 @@ void ScrollViewTest::Init()
     scrollView->getComponent<Transform2D>()->setPosition(Vec2(600, 600));
 
     NinePatchPtr patch = MaskTest::CreateNinePatch(300, 300);
+    patch->getComponent<Transform2D>()->setAnchor(Vec2(0, 0));
 
     scrollView->getNode()->addChild(patch->getNode());
     scrollView->setContainer(patch->getComponent<Transform2D>());

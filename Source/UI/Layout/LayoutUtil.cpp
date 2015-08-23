@@ -112,9 +112,9 @@ Vec2 LayoutUtil::CalculateLayout(Transform2DPtr view, AlignType from, Transform2
 
 Vec2 LayoutUtil::CalculateLayout(Transform2DPtr view, const Vec2 &viewAlign, Transform2DPtr target, const Vec2 &targetAlign, bool targetIsParent, const Vec2 &offset)
 {
-    const Vec2& srcAnchorPoint = view->getAnchorPoint();
+    const Vec2& srcAnchorPoint = view->getAnchor();
     const Vec2 anchorPointDiff = viewAlign - srcAnchorPoint;
-    const Vec2& targetAnchorPoint = target->getAnchorPoint();
+    const Vec2& targetAnchorPoint = target->getAnchor();
     float targetAlignXPosition,targetAlignYPosition;
     if (targetIsParent) {
         targetAlignXPosition = target->getSize().width * targetAlign.x;

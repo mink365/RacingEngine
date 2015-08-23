@@ -34,7 +34,7 @@ void Window::onAwake()
     // window default is full screen
     transform->setSize(Screen::getInstance().getSize());
     
-    transform->setAnchorPoint(Vec2(0.5f, 0.5f));
+    transform->setAnchor(Vec2(0.5f, 0.5f));
 
     this->initAnimFunc();
 }

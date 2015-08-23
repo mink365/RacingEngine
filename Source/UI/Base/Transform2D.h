@@ -35,10 +35,10 @@ public:
     void setRotation(float v);
     float getRotation() const;
 
-    void setAnchorPoint(const Vec2& v);
-    const Vec2& getAnchorPoint() const;
-    void setAnchorPointInPixels(const Vec2& v);
-    Vec2 getAnchorPointInPixels() const;
+    void setAnchor(const Vec2& v);
+    const Vec2& getAnchor() const;
+    void setAnchorInPixel(const Vec2& v);
+    Vec2 getAnchorInPixel() const;
 
     void setSize(const Size& size);
     const Size &getSize() const;
@@ -69,8 +69,8 @@ protected:
 private:
     Size size;
 
-    Vec2 anchorPoint;
-    Vec2 anchorPointInPoints;
+    Vec2 anchor;
+    Vec2 anchorInPixel;
 
     Vec2 skew;
 

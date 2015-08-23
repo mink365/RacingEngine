@@ -25,7 +25,7 @@ void UITest::Init()
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
-    patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
+    patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
     FontPtr font = FontManager::getInstance().GetResource("default");
@@ -58,7 +58,7 @@ void UITest::Init()
     Size windowSize = window->getComponent<Transform2D>()->getSize();
 
     label->getComponent<Transform2D>()->setSize(Size(200, 50));
-    label->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
+    label->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     label->getComponent<Transform2D>()->setPosition(Vec2(windowSize.width/2.0, windowSize.height / 2.0));
 
     label2->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 40));
@@ -86,7 +86,7 @@ WindowPtr UITest::createWin()
     NinePatchPtr patch = CreateUIGraphicNode<NinePatch>("tab_press.png");
     patch->setStrethPadding(20, 20, 20, 20);
     patch->getComponent<Transform2D>()->setSize(Size(400, 500));
-    patch->getComponent<Transform2D>()->setAnchorPoint(Vec2(0.5, 0.5));
+    patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
     auto button = CreateUIGraphicNode<ImageButton>("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");

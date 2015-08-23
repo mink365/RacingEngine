@@ -69,23 +69,23 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_X:
             {
-                const Vec2& anchor = transform->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchor();
 
-                transform->setAnchorPoint(Vec2(values[0], anchor.y));
+                transform->setAnchor(Vec2(values[0], anchor.y));
 
                 break;
             }
             case FlatNodeAccessor::ANCHOR_Y:
             {
-                const Vec2& anchor = transform->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchor();
 
-                transform->setAnchorPoint(Vec2(anchor.x, values[0]));
+                transform->setAnchor(Vec2(anchor.x, values[0]));
 
                 break;
             }
             case FlatNodeAccessor::ANCHOR_XY:
             {
-                transform->setAnchorPoint(Vec2(values[0], values[1]));
+                transform->setAnchor(Vec2(values[0], values[1]));
 
                 break;
             }
@@ -176,7 +176,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_X:
             {
-                const Vec2& anchor = transform->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchor();
 
                 values[0] = anchor.x;
 
@@ -184,7 +184,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_Y:
             {
-                const Vec2& anchor = transform->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchor();
 
                 values[0] = anchor.y;
 
@@ -192,7 +192,7 @@ void PredefineTweenAccessor::registerAccessor()
             }
             case FlatNodeAccessor::ANCHOR_XY:
             {
-                const Vec2& anchor = transform->getAnchorPoint();
+                const Vec2& anchor = transform->getAnchor();
 
                 values[0] = anchor.x;
                 values[1] = anchor.y;

@@ -66,40 +66,40 @@ float Transform2D::getRotation() const
     return localRotation.toVec3().z * RAD_TO_DEG;
 }
 
-void Transform2D::setAnchorPoint(const Vec2 &v)
+void Transform2D::setAnchor(const Vec2 &v)
 {
-    if (v == this->anchorPoint) {
+    if (v == this->anchor) {
         return;
     }
 
-    this->anchorPoint = v;
+    this->anchor = v;
 
-    this->anchorPointInPoints = Vec2(size.width * anchorPoint.x, size.height * anchorPoint.y);
+    this->anchorInPixel = Vec2(size.width * anchor.x, size.height * anchor.y);
 
     markLocalTransformRefreshFlag();
 }
 
-const Vec2& Transform2D::getAnchorPoint() const
+const Vec2& Transform2D::getAnchor() const
 {
-    return this->anchorPoint;
+    return this->anchor;
 }
 
-void Transform2D::setAnchorPointInPixels(const Vec2 &v)
+void Transform2D::setAnchorInPixel(const Vec2 &v)
 {
-    if (v == this->anchorPointInPoints) {
+    if (v == this->anchorInPixel) {
         return;
     }
 
-    this->anchorPointInPoints = v;
-    this->anchorPoint = Vec2(anchorPointInPoints.x / size.width, anchorPointInPoints.y / size.height);
+    this->anchorInPixel = v;
+    this->anchor = Vec2(anchorInPixel.x / size.width, anchorInPixel.y / size.height);
 
     markLocalTransformRefreshFlag();
 }
 
-Vec2 Transform2D::getAnchorPointInPixels() const
+Vec2 Transform2D::getAnchorInPixel() const
 {
-    float x = this->anchorPoint.x * size.width;
-    float y = this->anchorPoint.y * size.height;
+    float x = this->anchor.x * size.width;
+    float y = this->anchor.y * size.height;
 
     return Vec2(x, y);
 }
@@ -108,7 +108,7 @@ void Transform2D::setSize(const Size &size)
 {
     this->size = size;
 
-    this->anchorPointInPoints = Vec2(size.width * anchorPoint.x, size.height * anchorPoint.y);
+    this->anchorInPixel = Vec2(size.width * anchor.x, size.height * anchor.y);
 
     markLocalTransformRefreshFlag();
 }
@@ -178,9 +178,9 @@ void Transform2D::updateLocalMatrix()
     bool needsSkewMatrix = (skew != Vec2::Zero);
 
     Vec2 anchorPoint;
-    const Vec2& anchorPointInPoints = this->anchorPointInPoints;
-    anchorPoint.x = anchorPointInPoints.x * localScaling.x;
-    anchorPoint.y = anchorPointInPoints.y * localScaling.y;
+    const Vec2& anchorInPixel = this->anchorInPixel;
+    anchorPoint.x = anchorInPixel.x * localScaling.x;
+    anchorPoint.y = anchorInPixel.y * localScaling.y;
 
     Vec3 rotate = localRotation.toVec3();
 
@@ -226,12 +226,12 @@ void Transform2D::updateLocalMatrix()
         localMatrix = localMatrix * skewMatrix;
 
         // adjust anchor point
-        if (!(anchorPointInPoints == Vec2::Zero))
+        if (!(anchorInPixel == Vec2::Zero))
         {
             // XXX: Argh, Mat4 needs a "translate" method.
             // XXX: Although this is faster than multiplying a vec4 * mat4
-            localMatrix[3][0] += localMatrix[0][0] * -anchorPointInPoints.x + localMatrix[1][0] * -anchorPointInPoints.y;
-            localMatrix[3][1] += localMatrix[0][1] * -anchorPointInPoints.x + localMatrix[1][1] * -anchorPointInPoints.y;
+            localMatrix[3][0] += localMatrix[0][0] * -anchorInPixel.x + localMatrix[1][0] * -anchorInPixel.y;
+            localMatrix[3][1] += localMatrix[0][1] * -anchorInPixel.x + localMatrix[1][1] * -anchorInPixel.y;
         }
     }
 
@@ -251,8 +251,8 @@ void Transform2D::copyProperties(const Component *component)
     const Transform2D* inst = dynamic_cast<const Transform2D*>(component);
     if (inst) {
         this->size = inst->size;
-        this->anchorPoint = inst->anchorPoint;
-        this->anchorPointInPoints = inst->anchorPointInPoints;
+        this->anchor = inst->anchor;
+        this->anchorInPixel = inst->anchorInPixel;
         this->skew = inst->skew;
     }
 }
