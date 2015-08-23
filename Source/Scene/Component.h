@@ -27,8 +27,7 @@ public:
 
     EntityPtr getEntity() const;
     NodePtr getNode() const;
-
-    TransformPtr getTransform();
+    TransformPtr getTransform() const;
 
     template<typename T>
     SharedPtr<T> getComponent() const;
@@ -39,7 +38,7 @@ public:
     const std::vector<ComponentPtr>& getComponents() const;
 
 public:
-    virtual void RegisterEvents() {};
+    virtual void registerEvents() {};
 
 private:
     ComponentPtr clone() const;

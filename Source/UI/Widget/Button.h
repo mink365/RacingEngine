@@ -20,7 +20,7 @@ public:
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 
 public:
-    void RegisterEvents();
+    void registerEvents();
 
 protected:
     void onAwake();

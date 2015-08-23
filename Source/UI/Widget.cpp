@@ -41,9 +41,9 @@ void Widget::layout() {
     DistpatchFunctionInHierarchy(node, func);
 }
 
-void Widget::RegisterEvents()
+void Widget::registerEvents()
 {
-    Component::RegisterEvents();
+    Component::registerEvents();
 
     RegisterEvent(Events::Awake, this, &Widget::onAwake);
 }

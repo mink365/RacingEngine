@@ -44,7 +44,7 @@ WindowPtr WindowManager::getWindowByName(string name) {
     }
 }
 
-void WindowManager::RegisterEvents()
+void WindowManager::registerEvents()
 {
     RegisterEvent(Events::Awake, this, &WindowManager::onAwake);
     RegisterEvent(Events::Update, this, &WindowManager::onUpdate);

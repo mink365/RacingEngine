@@ -17,7 +17,7 @@ NodePtr Component::getNode() const
     return this->getEntity()->getNode();
 }
 
-TransformPtr Component::getTransform()
+TransformPtr Component::getTransform() const
 {
     return this->getEntity()->getTransform();
 }

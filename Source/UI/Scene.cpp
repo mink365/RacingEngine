@@ -41,9 +41,9 @@ bool Scene::onBackKeyEvent() {
     }
 }
 
-void Scene::RegisterEvents()
+void Scene::registerEvents()
 {
-    Widget::RegisterEvents();
+    Widget::registerEvents();
 
     RegisterEvent(Events::Awake, this, &Scene::onAwake);
     RegisterEvent(Events::Enter, this, &Scene::onEnter);

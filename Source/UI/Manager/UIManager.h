@@ -23,7 +23,7 @@ public:
     WindowFactory& getWindowFactory();
     
 public:
-    void RegisterEvents();
+    void registerEvents();
 
 public:
     void handleMessage(Message *message);

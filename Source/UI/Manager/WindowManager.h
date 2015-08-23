@@ -36,7 +36,7 @@ public:
     void setWindowFactory(WindowFactory* factory);
 
 public:
-    void RegisterEvents();
+    void registerEvents();
 
 protected:
     void onAwake();

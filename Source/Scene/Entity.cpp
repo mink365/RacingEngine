@@ -35,7 +35,7 @@ void Entity::addComponent(ComponentPtr component)
 
     CacheComponents();
 
-    component->RegisterEvents();
+    component->registerEvents();
 
     if (this->state >= EntityState::Awaked) {
         CallEvent(component.get(), Events::Awake);

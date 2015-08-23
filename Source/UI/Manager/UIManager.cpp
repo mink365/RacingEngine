@@ -27,9 +27,9 @@ WindowFactory &UIManager::getWindowFactory()
     return this->windowFactory;
 }
 
-void UIManager::RegisterEvents()
+void UIManager::registerEvents()
 {
-    Widget::RegisterEvents();
+    Widget::registerEvents();
 
     RegisterEvent(Events::Awake, this, &UIManager::onAwake);
     RegisterEvent(Events::Enter, this, &UIManager::onEnter);

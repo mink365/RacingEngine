@@ -34,7 +34,7 @@ public:
     bool isRunning() {return true;};
 
 public:
-    void RegisterEvents();
+    void registerEvents();
 
 public:
     bool isTouchEnabled();

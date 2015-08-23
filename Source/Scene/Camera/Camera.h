@@ -68,7 +68,7 @@ public:
     std::function<bool(int queueID)> getQueueCullFunc() const;
 
 public:
-    void RegisterEvents();
+    void registerEvents();
 
 protected:
     void onEnter();

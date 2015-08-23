@@ -22,9 +22,9 @@ Window::Window()
     this->hideAnimFunc = nullptr;
 }
 
-void Window::RegisterEvents()
+void Window::registerEvents()
 {
-    Widget::RegisterEvents();
+    Widget::registerEvents();
 
     RegisterEvent(Events::Awake, this, &Window::onAwake);
 }

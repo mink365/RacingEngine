@@ -21,7 +21,7 @@ public:
     virtual bool onBackKeyEvent();
 
 public:
-    void RegisterEvents();
+    void registerEvents();
     
 protected:
     void onAwake();

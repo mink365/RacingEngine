@@ -80,9 +80,9 @@ void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
     this->onButtonClickFunc = func;
 }
 
-void BaseButton::RegisterEvents()
+void BaseButton::registerEvents()
 {
-    Widget::RegisterEvents();
+    Widget::registerEvents();
 
     RegisterEvent(Events::Awake, this, &BaseButton::onAwake);
 }
