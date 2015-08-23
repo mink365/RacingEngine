@@ -16,10 +16,11 @@ void ScrollViewTest::Init()
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
 
     auto scrollView = CreateNode2D<ScrollView>();
-    scrollView->getComponent<Transform2D>()->setSize(Size(200, 200));
-    scrollView->getComponent<Transform2D>()->setPosition(Vec2(600, 600));
+    scrollView->getComponent<Transform2D>()->setSize(Size(500, 300));
+    scrollView->getComponent<Transform2D>()->setAnchor(Vec2(0.5f, 0.5f));
+    scrollView->getComponent<Transform2D>()->setPosition(Vec2(700, 600));
 
-    NinePatchPtr patch = MaskTest::CreateNinePatch(300, 300);
+    NinePatchPtr patch = MaskTest::CreateNinePatch(800, 300);
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0, 0));
 
     scrollView->getNode()->addChild(patch->getNode());

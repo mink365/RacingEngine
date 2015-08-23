@@ -67,7 +67,7 @@ private:
     BackAnimation backAnim;
     FlipAnimation flipAnim;
 
-    MoveState state;
+    MoveState state = MoveState::Stopped;
 };
 
 } // namespace ui

@@ -13,6 +13,11 @@ void TouchEvent::setInfo(TouchEventType type, float x, float y)
     this->point.set(x, y);
 }
 
+/**
+ * @brief TouchEvent::getCurrPoint
+ * point in the local space of widget
+ * @return
+ */
 const Vec2 &TouchEvent::getCurrPoint() const
 {
     return this->curr;
@@ -23,6 +28,11 @@ void TouchEvent::setCurrPoint(const Vec2 &v)
     this->curr = v;
 }
 
+/**
+ * @brief TouchEvent::getPoint
+ * point in the screen space
+ * @return
+ */
 const Vec2 &TouchEvent::getPoint() const
 {
     return this->point;

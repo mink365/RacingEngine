@@ -22,7 +22,8 @@ enum class ViewAnimEvent {
     SHOW_END,
 };
 
-class AnimationView {
+class AnimationView
+{
 public:
     typedef std::function<void(AnimationView *view, ViewAnimEvent event)> AnimationEventListener;
 

@@ -2,6 +2,7 @@
 #include "UI/Layout/LayoutUtil.h"
 #include "Math/Rect.h"
 #include "Util/LocalTime.h"
+#include "GameHub.h"
 
 namespace re {
 namespace ui {
@@ -154,8 +155,8 @@ void ScrollView::resetAxis()
     vAxis.axisLength = container->getBoundingBox().getHeight();
     vAxis.visibleLength = transform->getSize().height;
 
-    hAxis.currentPos = transform->getLocalTranslation().x;
-    vAxis.currentPos = transform->getLocalTranslation().y;
+    hAxis.currentPos = container->getPosition().x;
+    vAxis.currentPos = container->getPosition().y;
 }
 
 void ScrollView::handleTouchDownEvent(TouchEvent &event)
@@ -175,7 +176,7 @@ void ScrollView::handleTouchMoveEvent(TouchEvent &event)
     prevTouch = currTouch;
     currTouch = event.getCurrPoint();
 
-    tracker.addPoint(currTouch, LocalTime::getInstance().getCurrentTime());
+    tracker.addPoint(currTouch, GameHub::getInstance().GetGameTime().GetMilliSecond());
 
     diffTouch = currTouch - pressTouch;
 
@@ -207,7 +208,8 @@ void ScrollView::handleTouchUpEvent(TouchEvent &event)
 
     if (this->isHFlickable()) {
         if (MathLib::abs(velocity.x) >= param.miniFlickVeclocity
-                && MathLib::abs(diffTouch.x) >= param.flickThreshhold) {
+            && MathLib::abs(diffTouch.x) >= param.flickThreshhold)
+        {
             hAxis.flick(velocity.x);
         } else {
             hAxis.fixup();
@@ -216,7 +218,8 @@ void ScrollView::handleTouchUpEvent(TouchEvent &event)
 
     if (this->isVFlickable()) {
         if (MathLib::abs(velocity.y) >= param.miniFlickVeclocity
-                && MathLib::abs(diffTouch.y) >= param.flickThreshhold) {
+            && MathLib::abs(diffTouch.y) >= param.flickThreshhold)
+        {
             vAxis.flick(velocity.y);
         } else {
             vAxis.fixup();
