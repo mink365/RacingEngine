@@ -51,10 +51,10 @@ private:
     void switchState(State state);
 
 protected:
-    float _runTime;
-    float _duration;
+    float _runTime = 0;
+    float _duration = 0;
 
-    State _state;
+    State _state = State::Stopped;
 
 public:
     Signal<void(State)> stateEvent;
@@ -68,8 +68,8 @@ public:
     float getDistance();
 
 private:
-    float _distance;
-    float _endPos;
+    float _distance = 0;
+    float _endPos = 0;
 };
 
 class FlipAnimation : public BaseAnimation
@@ -81,10 +81,10 @@ public:
     float calculateStartVelocity(float currPos, float endPos);
 
 private:
-    float _endPos;
-    float _realDcc;
+    float _endPos = 0;
+    float _realDcc = 0;
 public:
-    float _dcc;
+    float _dcc = 0;
 };
 
 class AxisData

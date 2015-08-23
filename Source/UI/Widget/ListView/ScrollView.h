@@ -11,6 +11,7 @@ namespace ui {
 class ScrollParam
 {
 public:
+    ScrollParam() = default;
     ScrollParam(FlickableDirection dir, float flickDcc, int gridCount);
 
 public:
@@ -21,7 +22,7 @@ public:
     float flickThreshhold = 15;
     float flickDecc = 600;
 
-    int gridCount;
+    int gridCount = 0;
 };
 
 class ScrollView : public Widget
@@ -37,8 +38,15 @@ public:
 
     void initTouchListener();
 
+public:
+    void setContainer(Transform2DPtr node);
+
+public:
+    void registerEvents();
+
 protected:
-    void update();
+    void onAwake();
+    void onUpdate();
 
     void resetAxis();
 
@@ -58,11 +66,10 @@ private:
     AxisData hAxis;
     AxisData vAxis;
 
-    Transform2DPtr transform;
     Transform2DPtr container;
 
     VelocityTracker tracker;
-    bool isMoved;
+    bool isMoved = false;
 };
 
 } // namespace ui

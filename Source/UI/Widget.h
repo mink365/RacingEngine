@@ -53,6 +53,7 @@ protected:
 protected:
     void onAwake();
 
+protected:
     virtual void addWidgets();
     
     virtual void layoutSelf();

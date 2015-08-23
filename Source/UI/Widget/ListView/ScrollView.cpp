@@ -6,6 +6,24 @@
 namespace re {
 namespace ui {
 
+ScrollParam::ScrollParam(FlickableDirection dir, float flickDcc, int gridCount)
+{
+    this->scrollType = dir;
+    this->flickDecc = flickDcc;
+    this->gridCount = gridCount;
+}
+
+ScrollView::ScrollView()
+    : hAxis(param), vAxis(param)
+{
+
+}
+
+void ScrollView::onAwake()
+{
+    this->initTouchListener();
+}
+
 bool ScrollView::isHFlickable()
 {
     switch(this->param.scrollType)
@@ -87,7 +105,19 @@ void ScrollView::initTouchListener()
     this->_onTouchListeners.push_back(listener);
 }
 
-void ScrollView::update()
+void ScrollView::setContainer(Transform2DPtr node)
+{
+    this->container = node;
+}
+
+void ScrollView::registerEvents()
+{
+    Widget::registerEvents();
+
+    RegisterEvent(Events::Update, this, &ScrollView::onUpdate);
+}
+
+void ScrollView::onUpdate()
 {
     switch (param.scrollType) {
     case FlickableDirection::All:

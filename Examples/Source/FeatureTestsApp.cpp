@@ -29,6 +29,7 @@
 #include "UI/UITest.h"
 #include "UI/LayoutTest.h"
 #include "UI/MaskTest.h"
+#include "UI/ScrollViewTest.h"
 #include "MotoScene/SceneMaterialTest.h"
 #include "Light/LightTest.h"
 #include "Shadow/ShadowTest.h"
@@ -98,7 +99,8 @@ void CreateTest(std::vector<BaseTestPtr>& tests)
 void FeatureTestsApp::createTests()
 {
     CreateTest<FBXTest, AudioTest, FontTest, TweenTest
-            , UITest, LayoutTest, MaskTest, SceneMaterialTest, LightTest
+            , UITest, LayoutTest, MaskTest, ScrollViewTest
+            , SceneMaterialTest, LightTest
             , ShadowTest, BulletTest, RenderToTextureTest, Skybox
             , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);
 

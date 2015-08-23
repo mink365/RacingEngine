@@ -25,7 +25,7 @@ private:
 
     Vec2 _velocity;
 
-    int _begine, _index;
+    int _begine = 0, _index = 0;
 };
 
 }

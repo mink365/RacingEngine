@@ -11,8 +11,8 @@ public:
     virtual void Init();
     virtual void Update();
 
-private:
-    NinePatchPtr CreateNinePatch(int width, int height);
+public:
+    static NinePatchPtr CreateNinePatch(int width, int height);
 };
 
 #endif // MASKTEST_H
