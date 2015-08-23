@@ -175,6 +175,7 @@ enum class StencilOperation {
 struct StencilState {
     bool testEnable = false;
     int refValue = 1;
+    uint maskValue = true;
     StencilOperation failOperation = StencilOperation::Keep;
     StencilOperation depthFailOperation = StencilOperation::Keep;
     StencilOperation depthPassOperation = StencilOperation::Keep;

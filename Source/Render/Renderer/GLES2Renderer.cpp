@@ -405,7 +405,7 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
                         GetStencilOperation(stencilState.depthFailOperation),
                         GetStencilOperation(stencilState.depthPassOperation));
 
-            glStencilMask(0xFF);
+            glStencilMask(stencilState.maskValue);
         } else {
             glDisable(GL_STENCIL_TEST);
         }

@@ -12,7 +12,7 @@ class Maskable : public Component
 public:
     Maskable();
 
-protected:
+public:
     void UpdateInternalState();
     void OnParentMaskStateChanged();
 
@@ -23,7 +23,7 @@ private:
     MaterialPtr maskMaterial;
     int stencilValue = 0;
 
-    bool shouldRefresh = false;
+    bool shouldRefresh = true;
 };
 
 } // namespace ui

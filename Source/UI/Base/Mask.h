@@ -11,6 +11,14 @@ class Mask : public Component
 {
 public:
     Mask();
+
+public:
+    void UpdateInternalState();
+
+private:
+    MaterialPtr maskMaterial;
+
+    bool shouldRefresh = true;
 };
 
 } // namespace ui

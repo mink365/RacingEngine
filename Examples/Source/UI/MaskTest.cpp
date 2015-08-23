@@ -23,6 +23,9 @@ void MaskTest::Init()
 
     mask->getNode()->addChild(maskable->getNode());
     window->getNode()->addChild(mask->getNode());
+
+    mask->getComponent<Mask>()->UpdateInternalState();
+    maskable->getComponent<Maskable>()->UpdateInternalState();
 }
 
 void MaskTest::Update()

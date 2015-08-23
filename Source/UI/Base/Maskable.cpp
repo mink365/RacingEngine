@@ -1,6 +1,7 @@
 #include "Maskable.h"
 #include "Scene/Node.h"
 #include "Mask.h"
+#include "Graphic.h"
 
 #include "Render/Material/Material.h"
 
@@ -17,14 +18,20 @@ void Maskable::UpdateInternalState()
     if (!shouldRefresh) {
         return;
     }
+    this->shouldRefresh = false;
 
-    int stencilValue = this->GetStencilValue();
+//    int stencilValue = this->GetStencilValue();
 
-    auto func = [](NodePtr& node) -> bool
+    SharedPtr<Mask> mask = nullptr;
+    auto func = [&](NodePtr& node) -> bool
     {
-        auto mask = node->getComponent<Mask>();
+        auto _mask = node->getComponent<Mask>();
 
-        return mask == nullptr;
+        if (_mask != nullptr) {
+            mask = _mask;
+        }
+
+        return _mask == nullptr;
     };
 
     auto node = this->getNode();
@@ -34,7 +41,15 @@ void Maskable::UpdateInternalState()
         return;
     }
 
-    this->maskMaterial->getRenderState().stencilState.testEnable = true;
+    int stencilValue = mask->getNode()->getLevel();
+
+    auto element = this->getComponent<CanvasRenderElement>();
+    this->maskMaterial = element->getMaterial();
+    StencilState& stencilState = this->maskMaterial->getRenderState().stencilState;
+    stencilState.testEnable = true;
+    stencilState.function = TestFunction::Equal;
+    stencilState.refValue = stencilValue;
+    stencilState.maskValue = 0x00;
 }
 
 void Maskable::OnParentMaskStateChanged()
