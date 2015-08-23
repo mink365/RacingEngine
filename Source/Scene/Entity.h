@@ -15,6 +15,7 @@
 namespace re {
 
 void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
+bool DistpatchFunctionToTop(NodePtr& node, std::function<bool(NodePtr&)> func);
 
 enum class EntityState
 {

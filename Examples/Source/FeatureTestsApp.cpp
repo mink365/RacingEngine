@@ -28,6 +28,7 @@
 #include "Tween/TweenTest.h"
 #include "UI/UITest.h"
 #include "UI/LayoutTest.h"
+#include "UI/MaskTest.h"
 #include "MotoScene/SceneMaterialTest.h"
 #include "Light/LightTest.h"
 #include "Shadow/ShadowTest.h"
@@ -97,11 +98,11 @@ void CreateTest(std::vector<BaseTestPtr>& tests)
 void FeatureTestsApp::createTests()
 {
     CreateTest<FBXTest, AudioTest, FontTest, TweenTest
-            , UITest, LayoutTest, SceneMaterialTest, LightTest
+            , UITest, LayoutTest, MaskTest, SceneMaterialTest, LightTest
             , ShadowTest, BulletTest, RenderToTextureTest, Skybox
             , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);
 
-    currIndex = 5;
+    currIndex = 6;
 
     this->onCurrentTestChanged();
 }

@@ -163,4 +163,21 @@ void DistpatchFunctionInHierarchy(NodePtr &root, std::function<void (NodePtr &)>
     }
 }
 
+bool DistpatchFunctionToTop(NodePtr& node, std::function<bool(NodePtr&)> func)
+{
+    auto t = node->getParent();
+    while(t != nullptr)
+    {
+        bool value = func(t);
+
+        if (value) {
+            return true;
+        }
+
+        t = t->getParent();
+    }
+
+    return false;
+}
+
 }
