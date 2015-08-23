@@ -100,7 +100,7 @@ void ScrollView::initTouchListener()
     };
 
     listener->onTouchUpOutside = [&](TouchEvent& event, WidgetPtr&) {
-        this->handleTouchMoveEvent(event);
+        this->handleTouchUpEvent(event);
     };
 
     this->_onTouchListeners.push_back(listener);
