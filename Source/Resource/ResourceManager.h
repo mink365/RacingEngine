@@ -2,13 +2,11 @@
 #define RESOURCEMANAGER_H
 
 #include "Base/Singleton.h"
+#include "Base/Shared.h"
 #include <memory>
 #include <unordered_map>
 
 namespace re {
-
-template<class T>
-using SharedPtr = std::shared_ptr<T>;
 
 template<class T>
 class ResourceManager : public Singleton<ResourceManager<T>>

@@ -3,12 +3,10 @@
 
 #include <memory>
 #include "Base/Buffer.h"
+#include "Base/Shared.h"
 #include "Resource/ResourceManager.h"
 
 namespace re {
-
-template<typename T>
-using SharedPtr = std::shared_ptr<T>;
 
 class AnimationTrack;
 class AnimationStack;
