@@ -37,9 +37,13 @@ EntityPtr CreateBoneNode();
 template<typename T>
 SharedPtr<T> CreateNode()
 {
-    auto entity = CreateNode();
+    auto entity = CreateEntity();
 
-    auto component = entity->addComponent<T>();
+    AddComponent<Node, Transform, T>(entity);
+
+    entity->switchState(EntityState::Awaked);
+
+    auto component = entity->getComponent<T>();
 
     return component;
 }
@@ -51,7 +55,7 @@ SharedPtr<T> CreateNode2D()
 
     AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
 
-//    entity->awakeEvent.emit();
+    entity->switchState(EntityState::Awaked);
 
     auto component = entity->getComponent<T>();
 
@@ -64,6 +68,8 @@ SharedPtr<T> CreateUIGraphicNode(Args... args)
     auto entity = CreateEntity();
 
     AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
+
+    entity->switchState(EntityState::Awaked);
 
     auto component = entity->getComponent<T>();
     component->init(args...);

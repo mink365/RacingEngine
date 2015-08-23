@@ -38,6 +38,24 @@ void EventFactory::RegisterEvents()
         return GameHub::getInstance().updateEvent;
     };
     eventSignals[Events::Update] = func;
+
+    func = [](re::Component& comp) -> re::Signal<void()>&
+    {
+        return comp.getEntity()->enableEvent;
+    };
+    eventSignals[Events::Enable] = func;
+
+    func = [](re::Component& comp) -> re::Signal<void()>&
+    {
+        return comp.getEntity()->disableEvent;
+    };
+    eventSignals[Events::Disable] = func;
+
+    func = [](re::Component& comp) -> re::Signal<void()>&
+    {
+        return comp.getEntity()->destroyEvent;
+    };
+    eventSignals[Events::Destroy] = func;
 }
 
 void CallEvent(Component* object, Events event)

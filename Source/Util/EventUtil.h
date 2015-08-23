@@ -17,6 +17,7 @@ enum class Events
     Disable,
     Enter,
     Exit,
+    Destroy,
 };
 
 class EventFactory

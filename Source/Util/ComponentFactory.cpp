@@ -18,7 +18,7 @@ namespace re {
 
 EntityPtr CreateEntity()
 {
-    auto node = std::make_shared<Entity>();
+    auto node = Create<Entity>();
 
     // make an reference to the node, make sure it not be delected
     ComponentFactory::getInstance().nodes.push_back(node);
@@ -28,10 +28,12 @@ EntityPtr CreateEntity()
 
 EntityPtr CreateNode()
 {
-    auto node = CreateEntity();
-    AddComponent<Node, Transform>(node);
+    auto entity = CreateEntity();
+    AddComponent<Node, Transform>(entity);
 
-    return node;
+    entity->switchState(EntityState::Awaked);
+
+    return entity;
 }
 
 EntityPtr CreateNode(const string &name)
@@ -44,33 +46,36 @@ EntityPtr CreateNode(const string &name)
 
 EntityPtr CreateMeshNode()
 {
-    auto node = CreateNode();
+    auto entity = CreateEntity();
 
-    AddComponent<RenderElement>(node);
+    AddComponent<Node, Transform, RenderElement>(entity);
+    entity->switchState(EntityState::Awaked);
 
-    node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
+    entity->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
-    return node;
+    return entity;
 }
 
 EntityPtr CreateSkinningMesh()
 {
-    auto node = CreateNode();
+    auto entity = CreateEntity();
 
-    AddComponent<Skeleton, SkeletonController, Animation, RenderElement>(node);
+    AddComponent<Node, Transform, Skeleton, SkeletonController, Animation, RenderElement>(entity);
+    entity->switchState(EntityState::Awaked);
 
-    node->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
+    entity->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
 
-    return node;
+    return entity;
 }
 
 EntityPtr CreateBoneNode()
 {
-    auto node = CreateNode();
+    auto entity = CreateEntity();
 
-    AddComponent<Bone>(node);
+    AddComponent<Node, Transform, Bone>(entity);
+    entity->switchState(EntityState::Awaked);
 
-    return node;
+    return entity;
 }
 
 } // namespace re

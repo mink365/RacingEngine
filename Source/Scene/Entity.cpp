@@ -37,9 +37,11 @@ void Entity::addComponent(ComponentPtr component)
 
     component->RegisterEvents();
 
-    CallEvent(component.get(), Events::Awake);
-    if (this->node != nullptr && this->node->hasParent()) {
-        CallEvent(component.get(), Events::Enter);
+    if (this->state >= EntityState::Awaked) {
+        CallEvent(component.get(), Events::Awake);
+        if (this->node != nullptr && this->node->hasParent()) {
+            CallEvent(component.get(), Events::Enter);
+        }
     }
 }
 

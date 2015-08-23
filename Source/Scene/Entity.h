@@ -15,7 +15,14 @@
 namespace re {
 
 void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
-//void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)>& func);
+
+enum class EntityState
+{
+    Init,
+    Awaked,
+    Started,
+    Destroyed,
+};
 
 class Entity : public Named, public Clonable<Entity>, public std::enable_shared_from_this<Entity>
 {
@@ -41,19 +48,31 @@ public:
     template<typename T>
     SharedPtr<T> getComponentInParent();
 
+    EntityPtr clone() const;
+
+    EntityState getState() const;
+    void switchState(EntityState state);
+
+    bool isEnable() const;
+    void setEnable(bool value);
+
+public:
     TransformPtr& getTransform();
     const TransformPtr& getTransform() const;
-    void refreshTransformInHierarchy();
 
     NodePtr getNode();
 
-    EntityPtr clone() const;
+public:
+    void refreshTransformInHierarchy();
 
 public:
     Signal<void()> awakeEvent;
     Signal<void()> startEvent;
     Signal<void()> enterEvent;
     Signal<void()> exitEvent;
+    Signal<void()> enableEvent;
+    Signal<void()> disableEvent;
+    Signal<void()> destroyEvent;
 
 private:
     void CacheComponents();
@@ -77,6 +96,9 @@ private:
     };
     std::unordered_map<std::type_index, CachedData> componentCacheMap;
 
+    EntityState state = EntityState::Init;
+    bool enabled = false;
+
     TransformPtr transform;
     NodePtr node;
 };
@@ -84,26 +106,11 @@ private:
 template<typename T, typename... Args>
 SharedPtr<T> Entity::addComponent(Args... args)
 {
-    auto comp = std::make_shared<T>(args...);
+    auto comp = Create<T>(args...);
 
     this->addComponent(comp);
 
     return comp;
-}
-
-inline NodePtr Entity::getNode()
-{
-    return this->node;
-}
-
-inline TransformPtr& Entity::getTransform()
-{
-    return transform;
-}
-
-inline const TransformPtr &Entity::getTransform() const
-{
-    return transform;
 }
 
 template<typename T>
@@ -133,6 +140,69 @@ inline SharedPtr<T> Entity::getComponent()
     }
 
     return nullptr;
+}
+
+inline NodePtr Entity::getNode()
+{
+    return this->node;
+}
+
+inline TransformPtr& Entity::getTransform()
+{
+    return transform;
+}
+
+inline const TransformPtr &Entity::getTransform() const
+{
+    return transform;
+}
+
+inline EntityState Entity::getState() const
+{
+    return state;
+}
+
+inline void Entity::switchState(EntityState state)
+{
+    if (this->state == state) {
+        return;
+    }
+
+    this->state = state;
+
+    switch(this->state) {
+    case EntityState::Init:
+        break;
+    case EntityState::Awaked:
+        this->awakeEvent.emit();
+        break;
+    case EntityState::Started:
+        this->startEvent.emit();
+        break;
+    case EntityState::Destroyed:
+        this->destroyEvent.emit();
+        break;
+    }
+}
+
+inline bool Entity::isEnable() const
+{
+    return enabled;
+}
+
+inline void Entity::setEnable(bool value)
+{
+    if (this->enabled == value) {
+        return;
+    }
+
+    this->enabled = value;
+
+    if (enabled) {
+        this->enableEvent.emit();
+    } else {
+        this->disableEvent.emit();
+    }
 }
 
 } // namespace re
