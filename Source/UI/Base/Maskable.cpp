@@ -34,7 +34,7 @@ void Maskable::UpdateInternalState()
         return;
     }
 
-    this->maskMaterial->getRenderState().stencilState.stencilTestEnable = true;
+    this->maskMaterial->getRenderState().stencilState.testEnable = true;
 }
 
 void Maskable::OnParentMaskStateChanged()

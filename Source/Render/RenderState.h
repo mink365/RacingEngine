@@ -173,15 +173,12 @@ enum class StencilOperation {
 };
 
 struct StencilState {
-    bool stencilTestEnable = false;
-    StencilOperation frontStencilStencilFailOperation = StencilOperation::Keep;
-    StencilOperation frontStencilDepthFailOperation = StencilOperation::Keep;
-    StencilOperation frontStencilDepthPassOperation = StencilOperation::Keep;
-    StencilOperation backStencilStencilFailOperation = StencilOperation::Keep;
-    StencilOperation backStencilDepthFailOperation = StencilOperation::Keep;
-    StencilOperation backStencilDepthPassOperation = StencilOperation::Keep;
-    TestFunction frontStencilFunction = TestFunction::Always;
-    TestFunction backStencilFunction = TestFunction::Always;
+    bool testEnable = false;
+    int refValue = 1;
+    StencilOperation failOperation = StencilOperation::Keep;
+    StencilOperation depthFailOperation = StencilOperation::Keep;
+    StencilOperation depthPassOperation = StencilOperation::Keep;
+    TestFunction function = TestFunction::Always;
 
     bool operator==(const StencilState& right) const;
     bool operator!=(const StencilState& right) const;
@@ -240,6 +237,7 @@ public:
     DepthTestState depthState;
     AlphaState alphaState;
     StencilState stencilState;
+    StencilState frontStencilState;
 
     bool depthWrite;
     FaceCullMode faceCullMode;

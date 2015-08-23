@@ -19,15 +19,7 @@ RenderState::RenderState()
     this->faceCullMode = FaceCullMode::Back;
     this->polygonMode = PolygonMode::Fill;
 
-    this->stencilState.stencilTestEnable = false;
-    this->stencilState.frontStencilStencilFailOperation = StencilOperation::Keep;
-    this->stencilState.frontStencilDepthFailOperation = StencilOperation::Keep;
-    this->stencilState.frontStencilDepthPassOperation = StencilOperation::Keep;
-    this->stencilState.backStencilStencilFailOperation = StencilOperation::Keep;
-    this->stencilState.backStencilDepthFailOperation = StencilOperation::Keep;
-    this->stencilState.backStencilDepthPassOperation = StencilOperation::Keep;
-    this->stencilState.frontStencilFunction = TestFunction::Always;
-    this->stencilState.backStencilFunction = TestFunction::Always;
+    this->stencilState.testEnable = false;
 }
 
 bool DepthTestState::operator==(const DepthTestState &right) const
@@ -44,21 +36,18 @@ bool DepthTestState::operator!=(const DepthTestState &right) const
 
 bool StencilState::operator==(const StencilState &right) const
 {
-    return (this->stencilTestEnable == right.stencilTestEnable
-            && this->backStencilDepthFailOperation == right.backStencilDepthFailOperation
-            && this->backStencilDepthPassOperation == right.backStencilDepthPassOperation
-            && this->backStencilFunction == right.backStencilFunction
-            && this->backStencilStencilFailOperation == right.backStencilStencilFailOperation
-            && this->frontStencilDepthFailOperation == right.frontStencilDepthFailOperation
-            && this->frontStencilDepthPassOperation == right.frontStencilDepthPassOperation
-            && this->frontStencilFunction == right.frontStencilFunction
-            && this->frontStencilStencilFailOperation == right.frontStencilStencilFailOperation
+    return (this->testEnable == right.testEnable
+            && this->refValue == right.refValue
+            && this->function == right.function
+            && this->failOperation == right.failOperation
+            && this->depthFailOperation == right.depthFailOperation
+            && this->depthPassOperation == right.depthPassOperation
             );
 }
 
 bool StencilState::operator!=(const StencilState &right) const
 {
-    return  !(this->stencilTestEnable == false && right.stencilTestEnable == false)
+    return  !(this->testEnable == false && right.testEnable == false)
             && !(*this == right);
 }
 

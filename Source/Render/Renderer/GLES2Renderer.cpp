@@ -308,6 +308,29 @@ GLenum GetPolygonMode(PolygonMode mode) {
     }
 }
 
+GLenum GetStencilOperation(StencilOperation op)
+{
+    switch(op)
+    {
+    case StencilOperation::Keep:
+        return GL_KEEP;
+    case StencilOperation::Zero:
+        return GL_ZERO;
+    case StencilOperation::Replace:
+        return GL_REPLACE;
+    case StencilOperation::Increment:
+        return GL_INCR;
+    case StencilOperation::IncrementWrap:
+        return GL_INCR_WRAP;
+    case StencilOperation::Decrement:
+        return GL_DECR;
+    case StencilOperation::DecrementWrap:
+        return GL_DECR_WRAP;
+    case StencilOperation::Invert:
+        return GL_INVERT;
+    }
+}
+
 void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 {
     if (force || this->context.renderState.depthWrite != state.depthWrite) {
@@ -372,11 +395,19 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
     }
 
     if (force || context.renderState.stencilState != state.stencilState) {
-        // TODO:
-        if (state.stencilState.stencilTestEnable) {
+        const StencilState& stencilState = state.stencilState;
 
+        if (stencilState.testEnable) {
+            glEnable(GL_STENCIL_TEST);
+
+            glStencilFunc(GetTestFunc(stencilState.function), stencilState.refValue, 0xFF);
+            glStencilOp(GetStencilOperation(stencilState.failOperation),
+                        GetStencilOperation(stencilState.depthFailOperation),
+                        GetStencilOperation(stencilState.depthPassOperation));
+
+            glStencilMask(0xFF);
         } else {
-
+            glDisable(GL_STENCIL_TEST);
         }
 
         context.renderState.stencilState = state.stencilState;
