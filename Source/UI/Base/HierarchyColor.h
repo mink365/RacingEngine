@@ -29,7 +29,7 @@ protected:
     void updateColor();
 
     ComponentPtr createCloneInstance() const;
-    void copyProperties(const Component* component);
+    void copyProperties(const Component* rhs);
 
 protected:
     Color color;

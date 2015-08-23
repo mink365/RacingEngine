@@ -68,11 +68,11 @@ ComponentPtr HierarchyColor::createCloneInstance() const
     return CreateCloneInstance<HierarchyColor>();
 }
 
-void HierarchyColor::copyProperties(const Component* node)
+void HierarchyColor::copyProperties(const Component* rhs)
 {
-    Component::copyProperties(node);
+    Component::copyProperties(rhs);
 
-    const HierarchyColor* inst = dynamic_cast<const HierarchyColor*>(node);
+    const HierarchyColor* inst = dynamic_cast<const HierarchyColor*>(rhs);
     if (inst) {
         this->color = inst->color;
         this->worldColor = inst->worldColor;
