@@ -188,7 +188,7 @@ void Application::run(android_app* state) {
     FileSystemAndroid* fileSystem = static_cast<FileSystemAndroid*>(&FileSystem::getInstance());
     fileSystem->BindAssetManager(__assetManager);
 
-    GameHub& game = GameHub::getInstance();
+    GameHub& game = GameHub::instance();
     game.init(this);
 
     long lastTime = getCurrentMillSecond();

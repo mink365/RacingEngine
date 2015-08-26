@@ -129,10 +129,14 @@ void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
 
     int faceIndex = geometry->getFaces().size() * 3 / 6;
     int offset = faceIndex * 4;
-    Face face(offset + 0, offset + 1, offset + 2);
-    Face face2(offset + 2, offset + 3, offset + 0);
-    geometry->addFace(face);
+    Face face1(offset + 0, offset + 1, offset + 1);
+    Face face2(offset + 2, offset + 2, offset + 0);
+    Face face3(offset + 0, offset + 2, offset + 2);
+    Face face4(offset + 3, offset + 3, offset + 0);
+    geometry->addFace(face1);
     geometry->addFace(face2);
+    geometry->addFace(face3);
+    geometry->addFace(face4);
 }
 
 } // namespace re

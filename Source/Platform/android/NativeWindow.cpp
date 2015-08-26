@@ -12,6 +12,8 @@
 #include "Message/MessageManager.h"
 #include "Message/MessageConstant.h"
 
+using namespace re::ui;
+
 namespace re {
 
 extern int getRotation();
@@ -41,7 +43,7 @@ void NativeWindow::dispatchTouchEvent(TouchEventType type, float x, float y)
     event->setInfo(type, x - rect.origin.x,
                    rect.size.height - (y - rect.origin.y));
 
-    MessageManager::getInstance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
+    MessageManager::instance().sendNoKeyMessage(MessageConstant::MessageType::TOUCHSCREEN_MESSAGE, event);
 }
 
 int32_t NativeWindow::handleInput(AInputEvent *event)

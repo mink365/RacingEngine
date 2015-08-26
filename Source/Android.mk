@@ -41,7 +41,7 @@ LOCAL_SRC_FILES := \
 	$(call all-cpp-files-under, ./Scene/) \
 	$(call all-cpp-files-under, ./UI/) \
 	$(call all-cpp-files-under, ./Util/) \
-	$(LOCAL_PATH)/Platform/GameHub.cpp \
+	./Platform/GameHub.cpp \
 	$(call all-cpp-files-under, ./Platform/android/) \
 
 LOCAL_EXPORT_C_INCLUDES := \
@@ -61,17 +61,17 @@ LOCAL_CPPFLAGS 	:= -Wno-extern-c-compat
 LOCAL_EXPORT_CPPFLAGS := -Wno-extern-c-compat
 
 LOCAL_EXPORT_LDLIBS := -llog \
-					   -lz \
 					   -landroid \
 					   -lGLESv2 \
 					   -lEGL \
 					   -lOpenSLES
 
-EXTERANL_PATH = $(LOCAL_PATH)/../external/
+EXTERANL_PATH = $(LOCAL_PATH)/External/
 INCLUDE_EXT = include/android/
 LIB_EXT = prebuilt/android/$(TARGET_ARCH_ABI)/
 
 LOCAL_C_INCLUDES += \
+	$(EXTERANL_PATH)/zlib/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/jpeg/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/png/$(INCLUDE_EXT) \
 	$(EXTERANL_PATH)/freetype2/$(INCLUDE_EXT) \
@@ -81,19 +81,21 @@ LOCAL_C_INCLUDES += \
 
 LOCAL_STATIC_LIBRARIES := \
 	android_native_app_glue \
-	cocos_jpeg_static \
-	cocos_png_static \
-	cocos_freetype2_static \
-	bullet \
+	jpeg_static \
+	png_static \
+	zlib_static \
+	freetype2_static \
+	bullet_static \
 	OpenAL_static \
 	vorbis_static \
 
 include $(BUILD_STATIC_LIBRARY)
 
 $(call import-module,android/native_app_glue)
+$(call import-module,zlib/prebuilt/android)
 $(call import-module,jpeg/prebuilt/android)
 $(call import-module,png/prebuilt/android)
 $(call import-module,freetype2/prebuilt/android)
 $(call import-module,oggvorbis/lib/android)
 $(call import-module,openal/lib/android)
-$(call import-module,bullet)
+$(call import-module,bullet/lib/android)

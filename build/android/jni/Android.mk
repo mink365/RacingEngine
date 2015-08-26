@@ -20,4 +20,6 @@ LOCAL_STATIC_LIBRARIES += racing_static
 
 include $(BUILD_SHARED_LIBRARY)
 
+$(call import-add-path, ../../../Source/)
+$(call import-add-path, ../../../Source/External/)
 $(call import-module,.)

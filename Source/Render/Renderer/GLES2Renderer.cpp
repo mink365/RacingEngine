@@ -193,7 +193,21 @@ void GLES2Renderer::bindBuffer(const MeshData &meshData)
 
 void GLES2Renderer::renderMesh(const MeshData &meshData)
 {
-    glDrawElements(GL_TRIANGLES, meshData.indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
+    GLenum mode = GL_TRIANGLES;
+    switch(context.renderState.polygonMode)
+    {
+    case PolygonMode::Fill:
+        mode = GL_TRIANGLES;
+        break;
+    case PolygonMode::Line:
+        mode = GL_LINES;
+        break;
+    case PolygonMode::Point:
+        mode = GL_POINTS;
+        break;
+    }
+
+    glDrawElements(mode, meshData.indexStream.nIndices, GL_UNSIGNED_SHORT, NULL);
 
     this->addDrawCall();
     this->addDrawTrangles(meshData.indexStream.nIndices / 3);
@@ -297,6 +311,7 @@ GLenum GetFaceCullMode(FaceCullMode mode) {
     return GL_FRONT;
 }
 
+#if !GLES
 GLenum GetPolygonMode(PolygonMode mode) {
     switch(mode) {
         case PolygonMode::Fill:
@@ -307,6 +322,7 @@ GLenum GetPolygonMode(PolygonMode mode) {
             return GL_POINT;
     }
 }
+#endif
 
 GLenum GetStencilOperation(StencilOperation op)
 {
@@ -386,9 +402,8 @@ void GLES2Renderer::applyRenderState(const RenderState &state, bool force)
 
     if (force || context.renderState.polygonMode != state.polygonMode) {
 
-        GLenum mode = GetPolygonMode(state.polygonMode);
-
-        glPolygonMode(GL_FRONT_AND_BACK, mode);
+//        GLenum mode = GetPolygonMode(state.polygonMode);
+//        glPolygonMode(GL_FRONT_AND_BACK, mode);
         glLineWidth(3.0f);
 
         context.renderState.polygonMode = state.polygonMode;

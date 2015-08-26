@@ -38,7 +38,7 @@ public:
     int getOrientationAngle();
 
 private:
-    void dispatchTouchEvent(TouchEventType type, float x, float y);
+    void dispatchTouchEvent(ui::TouchEventType type, float x, float y);
 
 private:
     android_app* __app;

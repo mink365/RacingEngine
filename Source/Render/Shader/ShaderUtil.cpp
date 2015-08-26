@@ -58,8 +58,10 @@ UniformType getUniformType(GLenum type) {
         case GL_SAMPLER_2D: return UniformType::SAMPLER_2D;
         case GL_SAMPLER_3D: return UniformType::SAMPLER_3D;
         case GL_SAMPLER_CUBE:     return UniformType::SAMPLER_CUBE;
+#if !GLES
         case GL_SAMPLER_1D_ARRAY: return UniformType::SAMPLER_1D_ARRAY;
         case GL_SAMPLER_2D_ARRAY: return UniformType::SAMPLER_2D_ARRAY;
+#endif
 
     }
 
