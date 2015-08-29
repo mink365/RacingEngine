@@ -114,12 +114,12 @@ void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
     std::vector<Vec2> posList = {p1, p2, p3, p4};
 
     currTransform = transform;
-    AddLines(posList, color);
+    AddLines(posList, color, false);
 }
 
-void DebugRenderer::AddLines(const std::vector<Vec2> &points, const Color &color)
+void DebugRenderer::AddLines(const std::vector<Vec2> &points, const Color &color, bool loop)
 {
-    const float radius = 0.5f;
+    const float radius = 1.0f;
     // TODO: from screen space to world
     float requestedThickess = MathLib::max(1.0f, 0.5f);
     float lineThickess = MathLib::ceil( (2.0f * radius + requestedThickess) * MathLib::sqrt(2.0f) );
@@ -138,16 +138,12 @@ void DebugRenderer::AddLines(const std::vector<Vec2> &points, const Color &color
     for (size_t i = 1; i < points.size(); ++i) {
         endPoint = points[i];
 
-        if (i > 1) {
-
-        }
-
-        AddLine(startPoint, endPoint, color, halfThickess, false);
+        AddLine(startPoint, endPoint, color, halfThickess, loop);
 
         startPoint = endPoint;
     }
 
-    AddLine(startPoint, points[0], color, halfThickess, false);
+    AddLine(startPoint, points[0], color, halfThickess, loop);
 }
 
 void DebugRenderer::AddLine(const Vec2 &startPoint, const Vec2 &endPoint, const Color &color, float halfThickess, bool loop)
