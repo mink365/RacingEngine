@@ -1,10 +1,14 @@
 #ifndef RE_RENDERABLE_H
 #define RE_RENDERABLE_H
 
-#include "PreDeclare.h"
 #include "Math/Matrix.h"
 
 namespace re {
+
+class Material;
+using MaterialPtr = SharedPtr<Material>;
+class MeshData;
+using MeshDataPtr = SharedPtr<MeshData>;
 
 class Renderable
 {

@@ -13,6 +13,7 @@
 #include "Light/SpotLight.h"
 #include "Renderer/Renderer.h"
 #include "RenderTarget.h"
+#include "PreDeclare.h"
 
 namespace re {
 

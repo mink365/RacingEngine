@@ -1,10 +1,8 @@
 #include "NinePatch.h"
 
 #include "HierarchyColor.h"
-#include "Scene/RenderElement.h"
-#include "Render/Mesh.h"
+#include "Base/ECS/Component.h"
 #include "QuadStuffer.h"
-#include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {
 namespace ui {

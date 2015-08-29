@@ -12,9 +12,10 @@
 #include "Base/Shared.h"
 #include "Base/Clonable.h"
 
-#include "PreDeclare.h"
-
 namespace re {
+
+class MeshData;
+using MeshDataPtr = SharedPtr<MeshData>;
 
 class Vertex {
 public:

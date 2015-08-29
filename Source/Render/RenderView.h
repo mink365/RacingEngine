@@ -3,7 +3,6 @@
 
 #include <functional>
 #include "Base/Shared.h"
-#include "PreDeclare.h"
 #include "Math/Matrix.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"
@@ -14,6 +13,10 @@ namespace re {
 class Shader;
 class RenderTarget;
 class ShadowInfo;
+class Light;
+
+using LightPtr = SharedPtr<Light>;
+using ShaderPtr = SharedPtr<Shader>;
 
 class RenderView : public Shared<RenderView>
 {

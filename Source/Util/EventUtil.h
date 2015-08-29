@@ -4,9 +4,12 @@
 #include <map>
 #include <unordered_map>
 #include "Message/Signal.h"
-#include "PreDeclare.h"
 
 using namespace re;
+
+namespace re {
+    class Component;
+}
 
 enum class Events
 {

@@ -11,6 +11,16 @@ namespace re {
 class SkeletonController;
 typedef SharedPtr<SkeletonController> SkeletonControllerPtr;
 
+class Skeleton;
+class Animation;
+class Mesh;
+class SkinnedMeshData;
+
+using SkeletonPtr = SharedPtr<Skeleton>;
+using AnimationPtr = SharedPtr<Animation>;
+using MeshPtr = SharedPtr<Mesh>;
+using SkinnedMeshDataPtr = SharedPtr<SkinnedMeshData>;
+
 class SkeletonController : public Component
 {
 public:

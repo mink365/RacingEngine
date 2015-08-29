@@ -1,12 +1,13 @@
 #ifndef RE_RENDERTARGET_H
 #define RE_RENDERTARGET_H
 
-#include "PreDeclare.h"
-
 #include "Texture/Texture.h"
 #include "Math/Rect.h"
 
 namespace re {
+
+class RenderTarget;
+using RenderTargetPtr = SharedPtr<RenderTarget>;
 
 enum class RenderTargetType {
     FLAT,

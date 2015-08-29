@@ -10,6 +10,9 @@
 namespace re {
 
 class Pass;
+class Texture;
+
+using TexturePtr = SharedPtr<Texture>;
 
 class SamplerParameter : public Shared<SamplerParameter, string>, public Clonable<SamplerParameter>
 {

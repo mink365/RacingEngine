@@ -4,10 +4,14 @@
 #include <functional>
 #include "Base/ECS/Component.h"
 #include "Scene/Transform.h"
+#include "Render/RenderTarget.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"
 
 namespace re {
+
+class Camera;
+using CameraPtr = SharedPtr<Camera>;
 
 enum class CameraProjectionMode {
     Perspective,

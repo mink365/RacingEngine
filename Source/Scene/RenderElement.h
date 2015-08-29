@@ -1,10 +1,15 @@
 #ifndef RE_RENDERELEMENT_H
 #define RE_RENDERELEMENT_H
 
-#include "PreDeclare.h"
 #include "Base/ECS/Component.h"
 
 namespace re {
+
+class Mesh;
+class Material;
+
+using MeshPtr = SharedPtr<Mesh>;
+using MaterialPtr = SharedPtr<Material>;
 
 class RenderElement : public Component
 {

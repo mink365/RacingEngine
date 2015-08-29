@@ -5,6 +5,7 @@
 #include "Math/Rect.h"
 #include "Texture/Frame/TextureFrame.h"
 #include "UI/Layout/LayoutUtil.h"
+#include "PreDeclare.h"
 
 namespace re {
 namespace ui {

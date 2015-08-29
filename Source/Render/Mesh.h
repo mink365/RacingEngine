@@ -3,6 +3,7 @@
 
 #include "Base/Named.h"
 #include "Base/Clonable.h"
+#include "Base/Memory/Buffer.h"
 #include "Geometry/Geometry.h"
 #include "Material/Material.h"
 #include "Render/BufferObject/VertexBuffer.h"
@@ -11,6 +12,10 @@
 namespace re {
 
 class Mesh;
+class Geometry;
+
+using MeshPtr = SharedPtr<Mesh>;
+using GeometryPtr = SharedPtr<Geometry>;
 
 enum class VertexElementType {
     Position,

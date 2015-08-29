@@ -1,6 +1,7 @@
 #include "File.h"
 
 #include "FileSystem.h"
+#include "Base/Memory/Buffer.h"
 
 namespace re {
 

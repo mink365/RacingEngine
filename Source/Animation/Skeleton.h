@@ -9,8 +9,10 @@ namespace re {
 
 class Mat4;
 class Vec3;
+class Bone;
 class Skeleton;
 
+typedef SharedPtr<Bone> BonePtr;
 typedef SharedPtr<Skeleton> SkeletonPtr;
 
 /**

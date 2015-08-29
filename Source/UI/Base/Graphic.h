@@ -1,10 +1,8 @@
 #ifndef RE_UI_GRAPHIC_H
 #define RE_UI_GRAPHIC_H
 
-#include "PreDeclare.h"
 #include "Base/ECS/Component.h"
 #include "UI/Rendering/CanvasRenderElement.h"
-
 
 namespace re {
 namespace ui {

@@ -11,6 +11,7 @@
 
 namespace re {
 
+class Animation;
 class AnimationTrack;
 class KeyFrame;
 

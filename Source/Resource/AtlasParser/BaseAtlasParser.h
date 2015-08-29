@@ -11,6 +11,7 @@
 
 #include "Math/Rect.h"
 #include "FileSystem/FileSystem.h"
+#include "PreDeclare.h"
 
 namespace re {
 

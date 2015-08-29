@@ -7,6 +7,7 @@
 #include "Scene/Transform.h"
 #include "Animation/Skeleton.h"
 #include "FileSystem/File.h"
+#include "PreDeclare.h"
 
 using std::vector;
 using std::istream;

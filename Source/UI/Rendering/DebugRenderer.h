@@ -3,6 +3,7 @@
 
 #include "Base/Singleton.h"
 #include "Render/Mesh.h"
+#include "PreDeclare.h"
 
 namespace re {
 

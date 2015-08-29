@@ -10,6 +10,9 @@
 
 namespace re {
 
+class Texture;
+using TexturePtr = SharedPtr<Texture>;
+
 class TextureFrame : public Named, public Shared<TextureFrame>
 {
     friend class BaseAtlasParser;

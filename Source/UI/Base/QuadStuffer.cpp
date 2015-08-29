@@ -3,9 +3,9 @@
 #include "Scene/RenderElement.h"
 #include "Scene/Node.h"
 #include "Render/Mesh.h"
-
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Render/RenderQueue.h"
+#include "PreDeclare.h"
 
 namespace re {
 

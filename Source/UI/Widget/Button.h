@@ -4,6 +4,7 @@
 #include "UI/Widget.h"
 #include "UI/Base/Sprite.h"
 #include "UI/Base/Label.h"
+#include "PreDeclare.h"
 
 namespace re {
 namespace ui {

@@ -1,10 +1,13 @@
 #ifndef RE_UI_ELEMENTBATCH_H
 #define RE_UI_ELEMENTBATCH_H
 
-#include "PreDeclare.h"
 #include "CanvasRenderElement.h"
 
 namespace re {
+
+class MeshData;
+using MeshDataPtr = SharedPtr<MeshData>;
+
 namespace ui {
 
 class ElementBatch : public Shared<ElementBatch>

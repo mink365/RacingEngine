@@ -1,7 +1,6 @@
 #ifndef RE_UI_CANVAS_H
 #define RE_UI_CANVAS_H
 
-#include "PreDeclare.h"
 #include "Base/ECS/Component.h"
 
 namespace re {

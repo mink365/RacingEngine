@@ -5,6 +5,8 @@
 #include "Math/UV.h"
 #include "Math/Color.h"
 #include "Math/Rect.h"
+#include "Render/Mesh.h"
+#include "Render/Material/Material.h"
 #include "Geometry/Geometry.h"
 #include "Texture/Frame/TextureFrame.h"
 

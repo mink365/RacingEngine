@@ -4,11 +4,18 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "PreDeclare.h"
 #include "Base/Singleton.h"
 #include "Base/ECS/Entity.h"
 
 namespace re {
+
+class Node;
+namespace ui
+{
+    class Transform2D;
+    class HierarchyColor;
+    class LayoutElement;
+}
 
 template <class... TL>
 typename std::enable_if<sizeof...(TL) == 0>::type AddComponent(EntityPtr&)

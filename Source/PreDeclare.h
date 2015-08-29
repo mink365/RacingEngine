@@ -2,7 +2,6 @@
 #define PREDECLARE_H
 
 #include <memory>
-#include "Base/Memory/Buffer.h"
 #include "Base/Shared.h"
 #include "Resource/ResourceManager.h"
 
@@ -90,8 +89,6 @@ typedef SharedPtr<File> FilePtr;
 typedef SharedPtr<const File> ConstFilePtr;
 
 typedef SharedPtr<Font> FontPtr;
-
-typedef SharedPtr<ByteBuffer> ByteBufferPtr;
 
 namespace ui {
 

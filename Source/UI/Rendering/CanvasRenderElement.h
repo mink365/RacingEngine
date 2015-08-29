@@ -1,10 +1,18 @@
 #ifndef RE_UI_RENDERELEMENT_H
 #define RE_UI_RENDERELEMENT_H
 
-#include "PreDeclare.h"
 #include "Base/ECS/Component.h"
 
 namespace re {
+
+class Material;
+class Texture;
+class Geometry;
+
+using MaterialPtr = SharedPtr<Material>;
+using TexturePtr = SharedPtr<Texture>;
+using GeometryPtr = SharedPtr<Geometry>;
+
 namespace ui {
 
 class CanvasRenderElement : public Component

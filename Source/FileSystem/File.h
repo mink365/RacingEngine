@@ -3,7 +3,8 @@
 
 #include <string>
 #include <memory>
-#include "PreDeclare.h"
+#include "Base/Shared.h"
+#include "Base/Memory/Buffer.h"
 
 namespace re {
 
@@ -12,6 +13,8 @@ class FilePermanent;
 
 typedef SharedPtr<File> FilePtr;
 typedef SharedPtr<const File> ConstFilePtr;
+
+typedef SharedPtr<ByteBuffer> ByteBufferPtr;
 
 enum class fsMode : std::uint32_t
 {

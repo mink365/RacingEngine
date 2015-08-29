@@ -67,7 +67,7 @@ private:
     T* _data;
 };
 
-typedef Buffer<unsigned char> ByteBuffer;
+using ByteBuffer = Buffer<unsigned char>;
 
 } // namespace re
 

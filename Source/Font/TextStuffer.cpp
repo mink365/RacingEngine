@@ -1,6 +1,7 @@
 #include "TextStuffer.h"
 
 #include "UI/Base/QuadStuffer.h"
+#include "PreDeclare.h"
 
 #include <stack>
 #include <sstream>

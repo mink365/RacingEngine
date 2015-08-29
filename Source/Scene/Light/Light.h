@@ -6,6 +6,9 @@
 
 namespace re {
 
+class RenderTarget;
+using RenderTargetPtr = SharedPtr<RenderTarget>;
+
 enum class LightType {
     Directional,
     Point,

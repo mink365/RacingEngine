@@ -10,6 +10,9 @@
 
 namespace re {
 
+class Material;
+using MaterialPtr = SharedPtr<Material>;
+
 class Material : public Shared<Material>, public Named, public std::enable_shared_from_this<Material>
 {
 public:

@@ -1,10 +1,13 @@
 #ifndef RE_UI_MASK_H
 #define RE_UI_MASK_H
 
-#include "PreDeclare.h"
 #include "Base/ECS/Component.h"
 
 namespace re {
+
+class Material;
+using MaterialPtr = SharedPtr<Material>;
+
 namespace ui {
 
 class Mask : public Component

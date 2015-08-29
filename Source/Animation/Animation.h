@@ -11,9 +11,11 @@ namespace re {
 
 class AnimationStack;
 class Animation;
+class AnimationTrack;
 
-typedef SharedPtr<Animation> AnimationPtr;
-typedef SharedPtr<AnimationStack> AnimationStackPtr;
+using AnimationPtr = SharedPtr<Animation>;
+using AnimationStackPtr = SharedPtr<AnimationStack>;
+using AnimationTrackPtr = SharedPtr<AnimationTrack>;
 
 class Animation : public Component, public std::enable_shared_from_this<Animation>
 {

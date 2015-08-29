@@ -1,12 +1,10 @@
 #include "Sprite.h"
-
 #include "HierarchyColor.h"
 #include "Transform2D.h"
 
 #include "UI/Rendering/CanvasRenderElement.h"
-#include "Render/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
-#include "Render/BufferObject/BufferObjectUtil.h"
+#include "PreDeclare.h"
 
 namespace re {
 namespace ui {

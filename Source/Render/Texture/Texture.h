@@ -5,9 +5,14 @@
 #include <string>
 #include "Math/UV.h"
 #include "Math/Vector.h"
-#include "PreDeclare.h"
 
 namespace re {
+
+class File;
+using FilePtr = SharedPtr<File>;
+
+class Texture;
+using TexturePtr = SharedPtr<Texture>;
 
 enum class TextureFormat {
     NONE,
