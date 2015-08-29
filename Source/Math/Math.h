@@ -101,7 +101,7 @@ inline bool InBound(float p, float min, float max)
             return Vec3(MathLib::abs(v.x), MathLib::abs(v.y), MathLib::abs(v.z));
         }
 
-        inline float dot(const Vec3& lhs, const Vec3& rhs){
+        inline float dot(const Vec3& lhs, const Vec3& rhs) {
             return lhs | rhs;
         }
 
@@ -109,12 +109,30 @@ inline bool InBound(float p, float min, float max)
             return lhs.lengthSqr();
         }
 
-        inline float Rand() {
-            return rand() / (float)RAND_MAX;
+        inline float round(float v) {
+            return std::round(v);
+        }
+
+        inline float ceil(float v) {
+            return std::ceil(v);
+        }
+
+        inline float floor(float v) {
+            return std::floor(v);
         }
 
         inline float sign(float v) {
             return v >= 0 ? 1 : -1;
+        }
+
+        inline float min(float x, float y)
+        {
+            return  std::fmin(x, y);
+        }
+
+        inline float max(float x, float y)
+        {
+            return std::fmax(x, y);
         }
 
         template<typename T>

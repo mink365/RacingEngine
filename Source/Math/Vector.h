@@ -16,6 +16,8 @@
 namespace re {
 
 class Quat;
+class Vec3;
+class Vec4;
 
 class Vec2 {
 public:
@@ -26,6 +28,7 @@ public:
 
 public:
     Vec2(void);
+    Vec2(const Vec3& v);
     Vec2(const float& x, const float& y);
 
     Vec2& set(const float& x, const float& y);
@@ -50,6 +53,7 @@ public:
     Vec2& operator *=(const Vec2& v);
     Vec2& operator /=(const float a);
     Vec2& operator /=(const Vec2& v);
+    Vec2& operator  =(const Vec3& v);
 
     friend Vec2	operator*( const float a, const Vec2 b );
 
@@ -276,6 +280,7 @@ public:
 
 public:
     Vec3(void);
+    Vec3(const Vec2& v);
     Vec3(const float& x, const float& y, const float& z);
 
     Vec3 &set(const float &x, const float &y, const float &z);

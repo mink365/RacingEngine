@@ -63,7 +63,8 @@ void DebugRenderer::InitNode()
     material->setQueueID(RenderQueues::UI);
     material->getRenderState().depthState.depthTestEnable = false;
     material->getRenderState().depthWrite = false;
-    material->getRenderState().polygonMode = PolygonMode::Line;
+    material->getRenderState().polygonMode = PolygonMode::Fill;
+    material->getRenderState().faceCullMode = FaceCullMode::Off;
 
     SceneManager::instance().addRootNode(node->getNode());
 }
@@ -110,33 +111,86 @@ void DebugRenderer::AppendNode(Transform2DPtr &transform, size_t level)
     Vec2 p3 = Vec2(transform->getSize().width, transform->getSize().height);
     Vec2 p4 = Vec2(0, transform->getSize().height);
 
-    p1 = transform->convertToWorldSpace(p1);
-    p2 = transform->convertToWorldSpace(p2);
-    p3 = transform->convertToWorldSpace(p3);
-    p4 = transform->convertToWorldSpace(p4);
-
     std::vector<Vec2> posList = {p1, p2, p3, p4};
 
-    Vertex vertex;
-    for (size_t i = 0; i < 4; ++i) {
-        Vec2& p = posList[i];
+    currTransform = transform;
+    AddLines(posList, color);
+}
 
-        vertex.xyz = Vec3(p.x, p.y, 0);
-        vertex.color = color;
+void DebugRenderer::AddLines(const std::vector<Vec2> &points, const Color &color)
+{
+    const float radius = 0.5f;
+    // TODO: from screen space to world
+    float requestedThickess = MathLib::max(1.0f, 0.5f);
+    float lineThickess = MathLib::ceil( (2.0f * radius + requestedThickess) * MathLib::sqrt(2.0f) );
+    float halfThickess = lineThickess * 0.5f + radius;
 
-        geometry->addVertex(vertex);
+    Vec2 startPoint, endPoint, normal, up;
+
+    startPoint = points[0];
+    endPoint = points[1];
+    normal = (Vec3(endPoint - startPoint).cross(Vec3(0, 0, 1))).normalize();
+    up = normal * halfThickess;
+
+    AddVertex(startPoint + up, color);
+    AddVertex(startPoint - up, color);
+
+    for (size_t i = 1; i < points.size(); ++i) {
+        endPoint = points[i];
+
+        if (i > 1) {
+
+        }
+
+        AddLine(startPoint, endPoint, color, halfThickess, false);
+
+        startPoint = endPoint;
     }
 
-    int faceIndex = geometry->getFaces().size() * 3 / 6;
-    int offset = faceIndex * 4;
-    Face face1(offset + 0, offset + 1, offset + 1);
-    Face face2(offset + 2, offset + 2, offset + 0);
-    Face face3(offset + 0, offset + 2, offset + 2);
-    Face face4(offset + 3, offset + 3, offset + 0);
-    geometry->addFace(face1);
-    geometry->addFace(face2);
-    geometry->addFace(face3);
-    geometry->addFace(face4);
+    AddLine(startPoint, points[0], color, halfThickess, false);
+}
+
+void DebugRenderer::AddLine(const Vec2 &startPoint, const Vec2 &endPoint, const Color &color, float halfThickess, bool loop)
+{
+    Vec3 normal = (Vec3(endPoint - startPoint).cross(Vec3(0, 0, 1))).normalize();
+    Vec3 __up = normal * halfThickess;
+    Vec2 up = Vec2(__up.x, __up.y);
+
+    Vec2 intersectUpper = endPoint + up;
+    Vec2 intersectLower = endPoint - up;
+//        Vec2 intersectCenter = endPoint;
+
+    auto startIndex = geometry->getVertexCount();
+    if (loop) {
+        Vertex startV1 = geometry->getVertex(startIndex - 1);
+        Vertex startV2 = geometry->getVertex(startIndex - 2);
+
+        // TODO: change the uv
+
+        geometry->addVertex(startV2);
+        geometry->addVertex(startV1);
+    } else {
+        AddVertex(startPoint + up, color);
+        AddVertex(startPoint - up, color);
+    }
+    startIndex += 2;
+
+    AddVertex(intersectUpper, color);
+    AddVertex(intersectLower, color);
+
+    geometry->addFace({startIndex - 1, startIndex - 2, startIndex + 0});
+    geometry->addFace({startIndex + 0, startIndex + 1, startIndex - 1});
+}
+
+void DebugRenderer::AddVertex(const Vec2 &point, const Color &color)
+{
+    Vec2 p1 = currTransform->convertToWorldSpace(point);
+
+    Vertex vertex;
+    vertex.xyz = p1;
+    vertex.color = color;
+
+    geometry->addVertex(vertex);
 }
 
 } // namespace re

@@ -13,6 +13,20 @@ namespace re {
 
 const Vec2 Vec2::Zero(0, 0);
 
+Vec2::Vec2(const Vec3 &v)
+    : x(v.x), y(v.y)
+{
+
+}
+
+Vec2 &Vec2::operator =(const Vec3 &v)
+{
+    x = v.x;
+    y = v.y;
+
+    return *this;
+}
+
 std::string Vec2::toString() const
 {
     return StringUtil::Printf("Vec2(%f, %f)", x, y);
@@ -20,6 +34,12 @@ std::string Vec2::toString() const
 
 Vec3::Vec3()
     : x(0), y(0), z(0)
+{
+
+}
+
+Vec3::Vec3(const Vec2 &v)
+    : x(v.x), y(v.y), z(0)
 {
 
 }
