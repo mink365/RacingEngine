@@ -4,6 +4,7 @@
 #include "UI/Base/Transform2D.h"
 #include "Node.h"
 #include "Util/TypeUtil.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 

@@ -1,7 +1,7 @@
 #include "FbxParser.h"
 #include "ModelLoader/ReadCommon.h"
 #include "Math/Vector.h"
-#include "Scene/Entity.h"
+#include "Base/ECS/Entity.h"
 #include "Scene/Node.h"
 #include "Scene/RenderElement.h"
 #include "Animation/Animation.h"
@@ -15,7 +15,7 @@
 #include "Texture/TextureManager.h"
 #include "Util/ContainerUtil.h"
 #include "Util/ComponentFactory.h"
-#include "Base/Buffer.h"
+#include "Base/Memory/Buffer.h"
 #include "FileSystem/FileSystem.h"
 #include "Util/PrintUtil.h"
 

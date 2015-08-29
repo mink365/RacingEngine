@@ -3,6 +3,7 @@
 #include "Scene/RenderElement.h"
 #include "BufferObject/BufferObjectUtil.h"
 #include "Scene/SceneManager.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 

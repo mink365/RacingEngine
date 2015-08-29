@@ -1,7 +1,6 @@
 #ifndef RE_UI_LAYOUTGROUP_H
 #define RE_UI_LAYOUTGROUP_H
 
-#include "Component.h"
 #include "Math/RectOffset.h"
 #include "LayoutUtil.h"
 

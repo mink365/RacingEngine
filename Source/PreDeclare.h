@@ -2,7 +2,7 @@
 #define PREDECLARE_H
 
 #include <memory>
-#include "Base/Buffer.h"
+#include "Base/Memory/Buffer.h"
 #include "Base/Shared.h"
 #include "Resource/ResourceManager.h"
 

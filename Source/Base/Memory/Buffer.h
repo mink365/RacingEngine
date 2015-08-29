@@ -1,8 +1,6 @@
 #ifndef RE_BUFFER_H
 #define RE_BUFFER_H
 
-#include "Shared.h"
-
 #include <stddef.h>
 #include <stdlib.h>
 

@@ -12,7 +12,7 @@
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
 #include "Math/Matrix.h"
-#include "Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

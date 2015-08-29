@@ -6,7 +6,7 @@
 #include <iostream>
 #include "PreDeclare.h"
 #include "Base/Singleton.h"
-#include "Scene/Entity.h"
+#include "Base/ECS/Entity.h"
 
 namespace re {
 

@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 #include "platform.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

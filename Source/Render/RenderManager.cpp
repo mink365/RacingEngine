@@ -7,7 +7,7 @@
 
 #include "RenderManager.h"
 #include "Shader/ShaderUtil.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 #include "Light/Light.h"
 #include "Light/DirectionalLight.h"
 #include "Light/SpotLight.h"

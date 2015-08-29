@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Image/Image.h"
 #include "FileSystem/File.h"
-#include "Base/Buffer.h"
+#include "Base/Memory/Buffer.h"
 
 namespace re {
 

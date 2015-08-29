@@ -9,7 +9,7 @@
 #define RENDERSYSTEM_H_
 
 #include "Camera/Camera.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "RenderQueue.h"
 #include "Render/Renderer/Renderer.h"
 #include "RenderView.h"

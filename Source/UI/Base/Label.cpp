@@ -8,7 +8,7 @@
 #include "Math/Color.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Scene/RenderElement.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 
 namespace re {
 namespace ui {

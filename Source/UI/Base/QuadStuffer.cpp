@@ -1,7 +1,8 @@
 #include "QuadStuffer.h"
 
 #include "Scene/RenderElement.h"
-#include "Scene/Mesh.h"
+#include "Scene/Node.h"
+#include "Render/Mesh.h"
 
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Render/RenderQueue.h"

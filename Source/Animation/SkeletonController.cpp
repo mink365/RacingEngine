@@ -5,7 +5,7 @@
 #include "AnimationTrack.h"
 #include "Bone.h"
 #include "Scene/Node.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Scene/RenderElement.h"
 #include "Scene/Transform.h"
 #include "Platform/GameHub.h"

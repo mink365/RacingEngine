@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <set>
 #include "PreDeclare.h"
-#include "Component.h"
+#include "Base/ECS/Component.h"
 #include "ElementBatch.h"
 #include "CanvasRenderElement.h"
 

@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Uncopyable.h"
+#include "Shared.h"
 
 namespace re {
 

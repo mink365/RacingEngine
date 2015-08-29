@@ -7,7 +7,7 @@
 #include "Texture/Texture.h"
 #include "RenderState.h"
 #include "Geometry/Geometry.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Texture/TextureUtil.h"
 
 namespace re {

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Scene/Node.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 #include "Animation/Skeleton.h"
 
 #include "Math/Matrix.h"

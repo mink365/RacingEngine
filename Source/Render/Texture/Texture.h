@@ -5,6 +5,7 @@
 #include <string>
 #include "Math/UV.h"
 #include "Math/Vector.h"
+#include "PreDeclare.h"
 
 namespace re {
 

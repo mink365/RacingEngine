@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "platform.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

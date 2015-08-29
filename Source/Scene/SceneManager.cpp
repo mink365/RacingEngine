@@ -3,6 +3,7 @@
 #include "RenderElement.h"
 #include "UI/Rendering/ElementBatcher.h"
 #include "Mesh.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 

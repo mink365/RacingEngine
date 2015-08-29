@@ -5,7 +5,7 @@
 
 #include "Scene/SceneManager.h"
 #include "Scene/Node.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Scene/RenderElement.h"
 #include "Render/Material/Material.h"
 #include "Camera/Camera.h"

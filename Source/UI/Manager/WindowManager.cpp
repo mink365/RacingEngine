@@ -6,6 +6,7 @@
 #include "Scene/Node.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "GameHub.h"
+#include "Util/ComponentFactory.h"
 
 namespace re {
 namespace ui {

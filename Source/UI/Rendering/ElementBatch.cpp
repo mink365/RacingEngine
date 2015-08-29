@@ -1,7 +1,7 @@
 #include "ElementBatch.h"
 #include "Render/Geometry/Geometry.h"
 #include "UI/Base/Transform2D.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 
 namespace re {

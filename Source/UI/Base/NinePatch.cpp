@@ -2,7 +2,7 @@
 
 #include "HierarchyColor.h"
 #include "Scene/RenderElement.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "QuadStuffer.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 

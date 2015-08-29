@@ -10,7 +10,7 @@
 #define RE_AUDIOSOURCE_H
 
 #include "Math/Vector.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

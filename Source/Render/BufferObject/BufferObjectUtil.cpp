@@ -1,5 +1,5 @@
 #include "BufferObjectUtil.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 
 #include "opengl.h"
 

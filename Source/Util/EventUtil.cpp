@@ -1,7 +1,7 @@
 #include "EventUtil.h"
 #include "GameHub.h"
-#include "Scene/Entity.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Entity.h"
+#include "Base/ECS/Component.h"
 
 std::map<Events, EventFactory::GetSignalFunc> EventFactory::eventSignals;
 std::unordered_map<Component*, std::map<Events, std::vector<EventFactory::EventConnection>>> EventFactory::connections;

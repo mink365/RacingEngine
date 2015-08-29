@@ -1,7 +1,7 @@
 #ifndef LISTVIEW_H
 #define LISTVIEW_H
 
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 namespace ui {

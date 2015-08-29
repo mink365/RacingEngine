@@ -2,7 +2,7 @@
 #define RE_DEBUGRENDERER_H
 
 #include "Base/Singleton.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 
 namespace re {
 

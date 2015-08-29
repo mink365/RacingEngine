@@ -11,7 +11,7 @@
 
 #include "Math/Vector.h"
 #include "Math/Quaternion.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

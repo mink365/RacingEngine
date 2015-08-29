@@ -2,7 +2,6 @@
 #define RE_UI_SPRITE_H
 
 #include "Texture/Frame/TextureFrame.h"
-#include "Component.h"
 #include "Graphic.h"
 
 namespace re {

@@ -3,7 +3,7 @@
 
 #include <streambuf>
 #include <vector>
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Scene/Transform.h"
 #include "Animation/Skeleton.h"
 #include "FileSystem/File.h"

@@ -3,9 +3,12 @@
 
 #include <vector>
 
-#include "Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
+
+void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
+bool DistpatchFunctionToTop(NodePtr& node, std::function<bool(NodePtr&)> func);
 
 class Node : public Component, public std::enable_shared_from_this<Node>
 {

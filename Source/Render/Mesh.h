@@ -3,10 +3,8 @@
 
 #include "Base/Named.h"
 #include "Base/Clonable.h"
-#include "Scene/Node.h"
 #include "Geometry/Geometry.h"
 #include "Material/Material.h"
-#include "Component.h"
 #include "Render/BufferObject/VertexBuffer.h"
 #include "Render/BufferObject/IndexBuffer.h"
 

@@ -2,7 +2,7 @@
 #define CAMERA_H
 
 #include <functional>
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 #include "Scene/Transform.h"
 #include "Math/Rect.h"
 #include "Math/Color.h"

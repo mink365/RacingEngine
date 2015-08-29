@@ -7,7 +7,7 @@
 #include "UI/Base/NinePatch.h"
 
 #include "Scene/RenderElement.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Animation/Animation.h"
 #include "Animation/Skeleton.h"
 #include "Animation/SkeletonController.h"

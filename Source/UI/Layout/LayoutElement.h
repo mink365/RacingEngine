@@ -1,7 +1,6 @@
 #ifndef RE_UI_LAYOUTELEMENT_H
 #define RE_UI_LAYOUTELEMENT_H
 
-#include "Component.h"
 #include "Math/Size.h"
 #include "LayoutUtil.h"
 

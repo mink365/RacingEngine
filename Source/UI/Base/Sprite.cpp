@@ -4,7 +4,7 @@
 #include "Transform2D.h"
 
 #include "UI/Rendering/CanvasRenderElement.h"
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "UI/Base/QuadStuffer.h"
 #include "Render/BufferObject/BufferObjectUtil.h"
 

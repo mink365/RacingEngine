@@ -7,15 +7,21 @@
 #include <typeindex>
 #include <unordered_map>
 #include <list>
-#include "PreDeclare.h"
 #include "Base/Clonable.h"
 #include "Base/Named.h"
 #include "Message/Signal.h"
 
 namespace re {
 
-void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
-bool DistpatchFunctionToTop(NodePtr& node, std::function<bool(NodePtr&)> func);
+class Entity;
+class Component;
+class Transform;
+class Node;
+
+typedef SharedPtr<Entity> EntityPtr;
+typedef SharedPtr<Component> ComponentPtr;
+typedef SharedPtr<Transform> TransformPtr;
+typedef SharedPtr<Node> NodePtr;
 
 enum class EntityState
 {

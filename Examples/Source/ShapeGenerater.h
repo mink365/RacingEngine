@@ -1,7 +1,7 @@
 #ifndef SHAPEGENERATER_H
 #define SHAPEGENERATER_H
 
-#include "Scene/Mesh.h"
+#include "Render/Mesh.h"
 #include "Math/Math.h"
 #include "Base/Singleton.h"
 

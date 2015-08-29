@@ -2,7 +2,7 @@
 #define RE_UI_RENDERELEMENT_H
 
 #include "PreDeclare.h"
-#include "Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 namespace ui {

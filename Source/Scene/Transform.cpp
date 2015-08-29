@@ -9,7 +9,7 @@
 #include "Transform.h"
 
 #include "Node.h"
-#include "Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

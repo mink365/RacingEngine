@@ -4,7 +4,7 @@
 #include "platform.h"
 #include <vector>
 #include "Math/Matrix.h"
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 
 namespace re {
 

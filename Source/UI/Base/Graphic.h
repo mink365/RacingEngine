@@ -2,7 +2,7 @@
 #define RE_UI_GRAPHIC_H
 
 #include "PreDeclare.h"
-#include "Component.h"
+#include "Base/ECS/Component.h"
 #include "UI/Rendering/CanvasRenderElement.h"
 
 

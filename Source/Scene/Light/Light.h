@@ -1,7 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "Scene/Component.h"
+#include "Base/ECS/Component.h"
 #include "Math/Color.h"
 
 namespace re {
