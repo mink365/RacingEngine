@@ -49,7 +49,7 @@ private:
 private:
     std::vector<BaseTestPtr> tests;
     BaseTestPtr current;
-    int currIndex;
+    size_t currIndex;
 
     CameraPtr presCamera;
     NodePtr rootNode;

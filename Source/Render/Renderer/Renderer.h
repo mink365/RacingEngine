@@ -16,9 +16,9 @@
 namespace re {
 
 class Shader;
+class Texture;
 class RenderTarget;
 class RenderState;
-class Shader;
 class MeshData;
 
 class Renderer {

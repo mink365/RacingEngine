@@ -11,6 +11,9 @@
 namespace re {
 namespace ui {
 
+class Widget;
+using WidgetPtr = SharedPtr<Widget>;
+
 enum class TouchEventType {
     DOWN,
     MOVE,

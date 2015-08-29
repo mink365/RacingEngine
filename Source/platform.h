@@ -10,7 +10,6 @@
 #include "Base/Singleton.h"
 #include "Util/LogUtil.h"
 #include "Util/StringUtil.h"
-#include "PreDeclare.h"
 
 using std::string;
 
