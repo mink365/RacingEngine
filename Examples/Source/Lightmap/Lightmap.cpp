@@ -33,7 +33,7 @@ void Lightmap::Init()
 
     auto geometry = ShapeGenerater::instance().CreateTorus(30, 10, 30, 30);
 
-    node = CreateMeshNode();
+    node = CreateMeshEntity();
     SetMeshData(node, geometry, base, "lightmap");
     auto material = node->getComponent<RenderElement>()->getMaterial();
 

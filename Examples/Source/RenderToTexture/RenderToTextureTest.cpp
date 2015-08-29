@@ -40,7 +40,7 @@ void RenderToTextureTest::Init()
 
     geometry = ShapeGenerater::instance().CreateCylinder(50, 50, 100, 10, 10);
 
-    cylinderNode = CreateMeshNode();
+    cylinderNode = CreateMeshEntity();
     SetMeshData(cylinderNode, geometry, texture);
     cylinderNode->getComponent<RenderElement>()->getMaterial()->setQueueID(52);
 
@@ -74,7 +74,7 @@ void RenderToTextureTest::Init()
     // create the normal geometry
     geometry = ShapeGenerater::instance().CreateBox(100, 10, 100, 20, 20, 20);
 
-    boxNode = CreateMeshNode();
+    boxNode = CreateMeshEntity();
     SetMeshData(boxNode, geometry, renderTarget->getTexture());
 
     rootNode->addChild(boxNode->getNode());

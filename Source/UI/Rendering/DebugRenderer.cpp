@@ -51,7 +51,7 @@ DebugRenderer::~DebugRenderer()
 
 void DebugRenderer::InitNode()
 {
-    node = CreateMeshNode();
+    node = CreateMeshEntity();
     mesh = node->getComponent<RenderElement>()->getMesh();
     mesh->setMeshData(meshData);
 

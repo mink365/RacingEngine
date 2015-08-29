@@ -47,7 +47,7 @@ void LightTest::Init()
 
     auto boxGeometry = ShapeGenerater::instance().CreateBox(50, 50, 50);
 
-    box = CreateMeshNode();
+    box = CreateMeshEntity();
     SetMeshData(box, boxGeometry, texture, CURRENT_SHADER_NAME);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

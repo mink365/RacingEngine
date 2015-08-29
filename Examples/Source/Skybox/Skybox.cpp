@@ -28,14 +28,14 @@ void Skybox::Init()
     {
         GeometryPtr geometry = ShapeGenerater::instance().CreateBox(30, 30, 30, 30, 30, 30);
 
-        box = CreateMeshNode();
+        box = CreateMeshEntity();
         SetMeshData(box, geometry, tex, "cubemap");
     }
 
     {
         GeometryPtr geometry = ShapeGenerater::instance().CreateBox(900, 900, 900, 30, 30, 30);
 
-        skybox = CreateMeshNode();
+        skybox = CreateMeshEntity();
         SetMeshData(skybox, geometry, tex, "cubemap");
 
         skybox->getComponent<RenderElement>()->getMaterial()->getRenderState().faceCullMode = FaceCullMode::Off;

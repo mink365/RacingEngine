@@ -26,7 +26,7 @@ EntityPtr CreateEntity()
     return node;
 }
 
-EntityPtr CreateNode()
+EntityPtr CreateNodeEntity()
 {
     auto entity = CreateEntity();
     AddComponent<Node, Transform>(entity);
@@ -36,15 +36,15 @@ EntityPtr CreateNode()
     return entity;
 }
 
-EntityPtr CreateNode(const string &name)
+EntityPtr CreateNodeEntity(const string &name)
 {
-    auto node = CreateNode();
+    auto node = CreateNodeEntity();
     node->setName(name);
 
     return node;
 }
 
-EntityPtr CreateMeshNode()
+EntityPtr CreateMeshEntity()
 {
     auto entity = CreateEntity();
 
@@ -56,7 +56,7 @@ EntityPtr CreateMeshNode()
     return entity;
 }
 
-EntityPtr CreateSkinningMesh()
+EntityPtr CreateSkinningMeshEntity()
 {
     auto entity = CreateEntity();
 
@@ -68,7 +68,7 @@ EntityPtr CreateSkinningMesh()
     return entity;
 }
 
-EntityPtr CreateBoneNode()
+EntityPtr CreateBoneEntity()
 {
     auto entity = CreateEntity();
 

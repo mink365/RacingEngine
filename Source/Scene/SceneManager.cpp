@@ -12,7 +12,7 @@ namespace ui {
 
 SceneManager::SceneManager()
 {
-    root = CreateNode()->getNode();
+    root = CreateNodeEntity()->getNode();
     root->_inScene = true;
 }
 

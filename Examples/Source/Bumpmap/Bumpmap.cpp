@@ -65,7 +65,7 @@ void Bumpmap::Init()
 
     auto geometry = ShapeGenerater::instance().CreateSphere(50, 30, 30);
 
-    auto box = CreateMeshNode();
+    auto box = CreateMeshEntity();
     SetMeshData(box, geometry, texture, "normal_map");
     auto renderElement = box->getComponent<RenderElement>();
     auto mesh = renderElement->getMesh();

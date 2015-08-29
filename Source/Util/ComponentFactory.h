@@ -28,11 +28,11 @@ public:
 };
 
 EntityPtr CreateEntity();
-EntityPtr CreateNode();
-EntityPtr CreateNode(const std::string& name);
-EntityPtr CreateMeshNode();
-EntityPtr CreateSkinningMesh();
-EntityPtr CreateBoneNode();
+EntityPtr CreateNodeEntity();
+EntityPtr CreateNodeEntity(const std::string& name);
+EntityPtr CreateMeshEntity();
+EntityPtr CreateSkinningMeshEntity();
+EntityPtr CreateBoneEntity();
 
 template<typename T>
 SharedPtr<T> CreateNode()

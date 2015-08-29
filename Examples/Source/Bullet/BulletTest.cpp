@@ -76,7 +76,9 @@ void BulletTest::Update()
         m_dynamicsWorld->getBroadphase()->aabbTest(aabbMin,aabbMax,aabbOverlap);
 
         if (aabbOverlap.m_numOverlap)
-            printf("#aabb overlap = %d\n", aabbOverlap.m_numOverlap);
+        {
+            LOG_E("#aabb overlap = %d\n", aabbOverlap.m_numOverlap);
+        }
     }
 
     this->syncView();
@@ -239,7 +241,7 @@ void BulletTest::initView()
     });
 
     auto geometry = ShapeGenerater::instance().CreatePlane(100, 100, 30, 30);
-    auto groundNode = CreateMeshNode();
+    auto groundNode = CreateMeshEntity();
     SetMeshData(groundNode, geometry, texture);
 
     groundNode->getTransform()->setLocalRotation(Quat().fromAngles(Vec3(-90*DEG_TO_RAD, 0, 0)));
@@ -248,8 +250,10 @@ void BulletTest::initView()
     texture = TextureManager::instance().getTexture("cube3");
     auto box = ShapeGenerater::instance().CreateBox(6, 6, 6);
 
-    auto boxNode = CreateMeshNode();
+    auto boxNode = CreateMeshEntity();
     SetMeshData(boxNode, box, texture);
+
+    rootNode->addChild(boxNode->getNode());
 
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {

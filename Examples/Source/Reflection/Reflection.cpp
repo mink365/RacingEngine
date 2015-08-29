@@ -26,7 +26,7 @@ void Reflection::Init()
 
     auto geometry = ShapeGenerater::instance().CreateTorus(70, 20, 30, 30);
 
-    node = CreateMeshNode();
+    node = CreateMeshEntity();
     SetMeshData(node, geometry, texture, "reflection");
 
     rootNode->addChild(node->getNode());

@@ -266,7 +266,7 @@ void FeatureTestsApp::initResources()
 
     DebugRenderer::instance().InitNode();
 
-    rootNode = CreateNode()->getNode();
+    rootNode = CreateNodeEntity()->getNode();
     SceneManager::instance().addRootNode(rootNode);
 
     this->stage = CreateNode2D<ui::UIManager>();

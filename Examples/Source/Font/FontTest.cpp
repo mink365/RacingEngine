@@ -36,7 +36,7 @@ void FontTest::Init()
 
     auto box = ShapeGenerater::instance().CreateBox(150, 150, 150);
 
-    boxNode = CreateMeshNode();
+    boxNode = CreateMeshEntity();
     SetMeshData(boxNode, box, atlas->getTexture());
 
     boxNode->getTransform()->setLocalTranslation(Vec3(0, 0, 52));

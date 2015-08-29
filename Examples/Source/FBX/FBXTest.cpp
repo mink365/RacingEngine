@@ -74,7 +74,7 @@ void FBXTest::Init()
     }
 
     for (int i = 0; i < BLOCK_COUNT; ++i) {
-        auto block = CreateNode();
+        auto block = CreateNodeEntity();
 
         auto wall_copy = wall->getEntity()->clone();
 
@@ -91,7 +91,7 @@ void FBXTest::Init()
         blocks.push_back(blockNode);
     }
 
-    motoRoot = CreateNode()->getNode();
+    motoRoot = CreateEntity()->getNode();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));

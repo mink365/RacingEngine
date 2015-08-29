@@ -22,7 +22,7 @@ void Refraction::Init()
     {
         GeometryPtr geometry = ShapeGenerater::instance().CreatePlane(300, 300, 30, 30);
 
-        auto node = CreateMeshNode();
+        auto node = CreateMeshEntity();
         SetMeshData(node, geometry, texture);
 
         node->getComponent<RenderElement>()->getMaterial()->setQueueID(51);
@@ -34,7 +34,7 @@ void Refraction::Init()
 
     auto geometry = ShapeGenerater::instance().CreateTorus(70, 20, 30, 30);
 
-    node = CreateMeshNode();
+    node = CreateMeshEntity();
     SetMeshData(node, geometry, texture, "refraction");
     node->getComponent<RenderElement>()->getMaterial()->setTexture("sTexture", texture);
 

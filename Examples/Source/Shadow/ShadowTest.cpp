@@ -53,7 +53,7 @@ void ShadowTest::Init()
     geometry = ShapeGenerater::instance().CreatePlane(200, 200, 30, 30);
 //     geometry = ShapeGenerater::getInstance().CreateRing(50, 200);
 
-    ground = CreateMeshNode()->getNode();
+    ground = CreateMeshEntity()->getNode();
     SetMeshData(ground->getEntity(), geometry, texture, "shadow_map");
 
     // TODO: if the plane z > 100, shadow will be cull ?
@@ -64,7 +64,7 @@ void ShadowTest::Init()
 
     geometry = ShapeGenerater::instance().CreateBox(50, 50, 50);
 
-    box = CreateMeshNode()->getNode();
+    box = CreateMeshEntity()->getNode();
     SetMeshData(box->getEntity(), geometry, texture);
 
     box->getTransform()->setLocalTranslation(Vec3(0, 0, 22));
