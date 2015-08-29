@@ -18,6 +18,10 @@ public:
     MeshPtr getMesh() const;
     void setMesh(const MeshPtr &value);
 
+protected:
+    virtual ComponentPtr createCloneInstance() const override;
+    virtual void copyProperties(const Component* component) override;
+
 private:
     MaterialPtr material;
     MeshPtr mesh;

@@ -69,7 +69,7 @@ void Sprite::copyProperties(const Component *component)
 {
     Component::copyProperties(component);
 
-    const Sprite* inst = dynamic_cast<const Sprite*>(component);
+    const Sprite* inst = static_cast<const Sprite*>(component);
     if (inst) {
         this->frame = inst->frame;
         this->rect = inst->rect;

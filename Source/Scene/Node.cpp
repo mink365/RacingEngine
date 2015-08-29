@@ -127,6 +127,8 @@ ComponentPtr Node::createCloneInstance() const
 
 void Node::copyProperties(const Component *component)
 {
+    Component::copyProperties(component);
+
     this->parent.reset();
 }
 

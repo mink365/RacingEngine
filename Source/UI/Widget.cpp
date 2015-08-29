@@ -251,7 +251,7 @@ void Widget::copyProperties(const Component *component)
 {
     Component::copyProperties(component);
 
-    const Widget* inst = dynamic_cast<const Widget*>(component);
+    const Widget* inst = static_cast<const Widget*>(component);
     if (inst) {
         this->_touchEnable = inst->_touchEnable;
         this->_blockTouch = inst->_blockTouch;

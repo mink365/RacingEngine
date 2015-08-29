@@ -253,8 +253,6 @@ void BulletTest::initView()
     auto boxNode = CreateMeshEntity();
     SetMeshData(boxNode, box, texture);
 
-    rootNode->addChild(boxNode->getNode());
-
     for (int i=m_dynamicsWorld->getNumCollisionObjects()-1; i>=1 ;i--)
     {
         auto node = boxNode->clone();

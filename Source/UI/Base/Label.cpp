@@ -60,7 +60,7 @@ void Label::copyProperties(const Component *component)
 {
     Component::copyProperties(component);
 
-    const Label* inst = dynamic_cast<const Label*>(component);
+    const Label* inst = static_cast<const Label*>(component);
     if (inst) {
         this->font = inst->font;
         this->text = inst->text;

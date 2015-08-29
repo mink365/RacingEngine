@@ -134,7 +134,7 @@ void NinePatch::copyProperties(const Component *component)
 {
     Component::copyProperties(component);
 
-    const NinePatch* inst = dynamic_cast<const NinePatch*>(component);
+    const NinePatch* inst = static_cast<const NinePatch*>(component);
     if (inst) {
         this->frame = inst->frame;
         this->centerRect = inst->centerRect;

@@ -72,7 +72,7 @@ void HierarchyColor::copyProperties(const Component* rhs)
 {
     Component::copyProperties(rhs);
 
-    const HierarchyColor* inst = dynamic_cast<const HierarchyColor*>(rhs);
+    const HierarchyColor* inst = static_cast<const HierarchyColor*>(rhs);
     if (inst) {
         this->color = inst->color;
         this->worldColor = inst->worldColor;

@@ -248,7 +248,7 @@ void Transform2D::copyProperties(const Component *component)
 {
     Transform::copyProperties(component);
 
-    const Transform2D* inst = dynamic_cast<const Transform2D*>(component);
+    const Transform2D* inst = static_cast<const Transform2D*>(component);
     if (inst) {
         this->size = inst->size;
         this->anchor = inst->anchor;

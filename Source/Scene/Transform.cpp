@@ -149,7 +149,7 @@ void Transform::copyProperties(const Component *component)
 {
     Component::copyProperties(component);
 
-    const Transform* inst = dynamic_cast<const Transform*>(component);
+    const Transform* inst = static_cast<const Transform*>(component);
     if (inst) {
         this->localRotation = inst->localRotation;
         this->localTranslation = inst->localTranslation;
