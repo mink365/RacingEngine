@@ -45,13 +45,13 @@ void AudioTest::Update()
     t += dt;
 
     if (t > 3) {
-        sourceNode->getComponent<OpenALSource>()->play();
+        sourceNode->getComponent<AudioSource>()->play();
 
         t = 0;
     }
 
     pos += Vec3(-1, 0, 0) * dt * 3;
 
-    listenerNode->getComponent<OpenALListener>()->setPosition(pos);
+    listenerNode->getComponent<AudioListener>()->setPosition(pos);
 }
 

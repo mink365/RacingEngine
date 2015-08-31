@@ -28,12 +28,6 @@ template <class T, class... TL> void AddComponent(EntityPtr& node)
     AddComponent<TL... >(node);
 }
 
-class ComponentFactory : public Singleton<ComponentFactory>
-{
-public:
-    std::vector<EntityPtr> nodes;
-};
-
 EntityPtr CreateEntity();
 EntityPtr CreateNodeEntity();
 EntityPtr CreateNodeEntity(const std::string& name);

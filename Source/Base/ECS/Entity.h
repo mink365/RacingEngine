@@ -24,10 +24,26 @@ typedef ComponentHandle<Transform> TransformPtr;
 typedef ComponentHandle<Node> NodePtr;
 typedef ComponentHandle<BaseComponent> ComponentPtr;
 
+class ComponentFactory : public Singleton<ComponentFactory>
+{
+public:
+    void CacheComponent(SharedPtr<BaseComponent> comp)
+    {
+        this->components.push_back(comp);
+    }
+
+public:
+    std::vector<EntityPtr> nodes;
+
+    std::vector<SharedPtr<BaseComponent>> components;
+};
+
 template <class T, typename... Args>
 ComponentHandle<T> CreateComponent(Args... args)
 {
     auto p = Create<T>(args...);
+
+    ComponentFactory::instance().CacheComponent(p);
 
     ComponentHandle<T> handle;
     handle.ptr = p;
@@ -152,11 +168,12 @@ inline ComponentHandle<T> Entity::getComponent()
         }
 
         if (data.list.size() > 0) {
-            // TODO:
-//            return std::static_pointer_cast<T>(data.list.front());
+            SharedPtr<T> ptr = std::static_pointer_cast<T>(data.list.front().getPtr());
+            return ComponentHandle<T>(ptr, this->shared_from_this());
         }
     } else {
-//        return std::static_pointer_cast<T>(componentMap[id]);
+        SharedPtr<T> ptr = std::static_pointer_cast<T>(componentMap[id].getPtr());
+        return ComponentHandle<T>(ptr, this->shared_from_this());
     }
 
     return nullptr;
