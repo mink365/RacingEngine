@@ -15,7 +15,7 @@ public:
     Vec2 offset;
 };
 
-class LayoutElement : public Component
+class LayoutElement : public Component<LayoutElement>
 {
 public:
     LayoutElement();

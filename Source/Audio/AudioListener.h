@@ -15,7 +15,8 @@
 
 namespace re {
 
-class AudioListener : public Component
+class AudioListenerImpl;
+class AudioListener : public Component<AudioListener>
 {
 public:
     AudioListener();
@@ -27,10 +28,10 @@ public:
     const Quat& getRotation() const;
     const Vec3& getVelocity() const;
 
-    virtual void setGain(float gain);
-    virtual void setPosition(const Vec3& pos);
-    virtual void setRotation(const Quat& rot);
-    virtual void setVelocity(const Vec3& vel);
+    void setGain(float gain);
+    void setPosition(const Vec3& pos);
+    void setRotation(const Quat& rot);
+    void setVelocity(const Vec3& vel);
 
 protected:
     float gain;
@@ -38,6 +39,23 @@ protected:
     Vec3 position;
     Quat rotation;
     Vec3 velocity;
+
+    SharedPtr<AudioListenerImpl> impl;
+};
+
+class AudioListenerImpl
+{
+public:
+    AudioListenerImpl() = default;
+    virtual ~AudioListenerImpl() {};
+
+    virtual void setGain(float gain) = 0;
+    virtual void setPosition(const Vec3& pos) = 0;
+    virtual void setRotation(const Quat& rot) = 0;
+    virtual void setVelocity(const Vec3& vel) = 0;
+
+protected:
+    ComponentHandle<AudioListener> component;
 };
 
 } // namespace re

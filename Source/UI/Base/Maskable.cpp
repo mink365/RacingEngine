@@ -22,7 +22,7 @@ void Maskable::UpdateInternalState()
 
 //    int stencilValue = this->GetStencilValue();
 
-    SharedPtr<Mask> mask = nullptr;
+    ComponentHandle<Mask> mask = nullptr;
     auto func = [&](NodePtr& node) -> bool
     {
         auto _mask = node->getComponent<Mask>();

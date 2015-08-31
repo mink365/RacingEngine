@@ -2,8 +2,6 @@
 
 #include "RenderTarget.h"
 #include "Light/Light.h"
-#include "Light/DirectionalLight.h"
-#include "Light/SpotLight.h"
 
 namespace re {
 
@@ -52,13 +50,13 @@ void RenderView::init(LightPtr &light)
     this->_clearColor = Color::White;
 
     if (light->getType() == LightType::Directional) {
-        auto dirLight = std::dynamic_pointer_cast<DirectionalLight>(light);
+        auto& directionalData = light->getDirectionalLightData();
 
         this->mode = CameraProjectionMode::Orthographic;
 
-        this->setupShadowInfo(dirLight->shadow);
+        this->setupShadowInfo(light->shadow);
 
-        this->orthoWidth = dirLight->orthoRect.getWidth();
+        this->orthoWidth = directionalData.orthoRect.getWidth();
 
         // TODO: center shold be calc by light direct and curr pos
         Vec3 center{0, 0, 0};
@@ -68,19 +66,19 @@ void RenderView::init(LightPtr &light)
 
         this->viewMatrix.lookAt(p, center, up);
 
-        Size ortho(dirLight->orthoRect.getWidth(), dirLight->orthoRect.getHeight());
+        Size ortho(directionalData.orthoRect.getWidth(), directionalData.orthoRect.getHeight());
         this->projMatrix.setOrthoFrustum(-ortho.width / 2.0, ortho.width / 2.0,
                                                -ortho.height / 2.0, ortho.height / 2.0,
                                                zNear, zFar);
 
     } else if (light->getType() == LightType::Spot) {
-        auto spotLight = std::dynamic_pointer_cast<SpotLight>(light);
+        auto& spotData = light->getSpotLightData();
 
         this->mode = CameraProjectionMode::Perspective;
 
-        this->setupShadowInfo(spotLight->shadow);
+        this->setupShadowInfo(light->shadow);
 
-        this->fov = spotLight->spotAngle;
+        this->fov = spotData.spotAngle;
 
         // TODO: center shold be calc by light direct and curr pos
         Vec3 center{0, 0, 0};

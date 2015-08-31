@@ -14,6 +14,8 @@
 #include <unordered_map>
 #include <memory>
 
+#include "Base/ECS/ComponentHandle.h"
+
 template<typename T>
 class NamedFactory
 {
@@ -45,5 +47,33 @@ inline void NamedFactory<T>::registerCreateFunc(const std::string& name, std::fu
         // log the error
     }
 }
+
+template<typename T>
+class NamedComponentFactory
+{
+    using InstPtr = re::ComponentHandle<T>;
+
+public:
+    InstPtr createInstance(const std::string& name)
+    {
+        auto func = func_map.at(name);
+
+        auto inst = func();
+
+        return inst;
+    }
+
+    void registerCreateFunc(const std::string& name, std::function<InstPtr()> func)
+    {
+        if (func_map.count(name) == 0) {
+            func_map[name] = func;
+        } else {
+            // log the error
+        }
+    }
+
+private:
+    std::unordered_map<std::string, std::function<InstPtr()>> func_map;
+};
 
 #endif // NAMEDFACTORY_H

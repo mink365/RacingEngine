@@ -17,10 +17,10 @@ class AnimationTrack;
 class Mat4;
 class Bone;
 
-typedef SharedPtr<Bone> BonePtr;
+typedef ComponentHandle<Bone> BonePtr;
 typedef SharedPtr<AnimationTrack> AnimationTrackPtr;
 
-class Bone : public Component
+class Bone : public Component<Bone>
 {
     friend class Skeleton;
     friend class FbxParser;

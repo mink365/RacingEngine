@@ -7,7 +7,7 @@
 namespace re {
 namespace ui {
 
-class Graphic : public Component
+class Graphic : public Component<Graphic>
 {
 public:
     Graphic();

@@ -40,6 +40,7 @@ HEADERS += \
     $$system("find Util/ -name '*.h'") \
     $$files(*.h) \
     $$files(Platform/*.h) \
+    Base/ECS/ComponentHandle.h
 
 RE_PLATFORM_ANDROID {
     SOURCES += \

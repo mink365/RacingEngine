@@ -21,6 +21,31 @@ AudioSource::~AudioSource()
 
 }
 
+void AudioSource::play()
+{
+    impl->play();
+}
+
+void AudioSource::pause()
+{
+    impl->pause();
+}
+
+void AudioSource::resume()
+{
+    impl->resume();
+}
+
+void AudioSource::stop()
+{
+    impl->stop();
+}
+
+void AudioSource::rewind()
+{
+    impl->rewind();
+}
+
 bool AudioSource::isLooped() const
 {
     return looped;
@@ -29,6 +54,13 @@ bool AudioSource::isLooped() const
 void AudioSource::setLooped(bool looped)
 {
     this->looped = looped;
+
+    impl->setLooped(looped);
+}
+
+AudioSourceState AudioSource::getState() const
+{
+    return impl->getState();
 }
 
 float AudioSource::getGain() const
@@ -54,21 +86,29 @@ const Vec3 &AudioSource::getVelocity() const
 void AudioSource::setGain(float gain)
 {
     this->gain = gain;
+
+    impl->setGain(gain);
 }
 
 void AudioSource::setPitch(float pitch)
 {
     this->pitch = pitch;
+
+    impl->setPitch(pitch);
 }
 
 void AudioSource::setPosition(const Vec3 &pos)
 {
     this->position = pos;
+
+    impl->setPosition(pos);
 }
 
 void AudioSource::setVelocity(const Vec3 &vel)
 {
     this->velocity = vel;
+
+    impl->setVelocity(vel);
 }
 
 } // namespace re

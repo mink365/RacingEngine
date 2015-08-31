@@ -1,20 +1,18 @@
 #ifndef RE_DIRECTIONALLIGHT_H
 #define RE_DIRECTIONALLIGHT_H
 
-#include "Light.h"
 #include "Math/Rect.h"
 
 namespace re {
 
-class DirectionalLight : public Light
+class DirectionalLightData
 {
     friend class RenderView;
 
 public:
-    DirectionalLight();
+    DirectionalLightData();
 
 public:
-    ShadowInfo shadow;
     Rect orthoRect;
 };
 

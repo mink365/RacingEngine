@@ -164,8 +164,8 @@ void FeatureTestsApp::createBaseUI()
     labelFps = CreateUIGraphicNode<Label>(font);
     labelFps->setText("HelleH");
 
-    auto buttonNext = CreateUIGraphicNode<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateUIGraphicNode<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateImageButton("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateImageButton("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {

@@ -10,7 +10,7 @@ using MaterialPtr = SharedPtr<Material>;
 
 namespace ui {
 
-class Mask : public Component
+class Mask : public Component<Mask>
 {
 public:
     Mask();

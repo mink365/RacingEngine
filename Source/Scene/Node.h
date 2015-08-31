@@ -10,7 +10,7 @@ namespace re {
 void DistpatchFunctionInHierarchy(NodePtr& root, std::function<void(NodePtr&)> func);
 bool DistpatchFunctionToTop(NodePtr& node, std::function<bool(NodePtr&)> func);
 
-class Node : public Component, public std::enable_shared_from_this<Node>
+class Node : public Component<Node>
 {
     friend class SceneManager;
     friend class Entity;
@@ -40,8 +40,7 @@ public:
     bool isInScene() const;
 
 protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
+    virtual void copyProperties(const Node& component);
 
 protected:
     void OnEnter();
@@ -50,7 +49,7 @@ protected:
 protected:
     int level;
 
-    WeakPtr<Node> parent;
+    ComponentHandle<Node> parent;
     std::vector<NodePtr> children;
 
 protected:
@@ -64,7 +63,7 @@ inline bool Node::isInScene() const
 }
 
 template<typename T>
-inline SharedPtr<T> Entity::getComponentInParent()
+inline ComponentHandle<T> Entity::getComponentInParent()
 {
     auto parent = this->node->getParent();
 

@@ -28,7 +28,7 @@ void WindowManager::onAwake()
 
 WindowPtr WindowManager::getFocusedWindow() {
     if (windowStack.empty()) {
-        return NULL;
+        return nullptr;
     } else {
         return windowStack.back();
     }
@@ -41,7 +41,7 @@ WindowPtr WindowManager::getWindowByName(string name) {
     if (query != windowStack.end()) {
         return *query;
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -85,7 +85,7 @@ WindowPtr WindowManager::pushWindow(WindowPtr &window) {
         onWindowHidden(win);
     }
     
-    if (window->getNode()->getParent() != NULL) {
+    if (window->getNode()->getParent() != nullptr) {
         window->getNode()->removeFromParent();
     }
     
@@ -147,7 +147,7 @@ WindowPtr WindowManager::popToWindow(WindowPtr &win) {
     this->changeFocusedWindowToStackTop();
     
     if (windowStack.empty()) {
-        return NULL;
+        return nullptr;
     } else {
         return windowStack.back();
     }
@@ -205,7 +205,7 @@ void WindowManager::onWindowHidden(WindowPtr &win) {
     if (iter != windowStack.end()) {
         windowStack.erase(iter);
     }
-    win->manager = NULL;
+    win->manager = nullptr;
     
     this->changeFocusedWindowToStackTop();
 }

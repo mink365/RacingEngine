@@ -12,8 +12,8 @@ class Vec3;
 class Bone;
 class Skeleton;
 
-typedef SharedPtr<Bone> BonePtr;
-typedef SharedPtr<Skeleton> SkeletonPtr;
+typedef ComponentHandle<Bone> BonePtr;
+typedef ComponentHandle<Skeleton> SkeletonPtr;
 
 /**
  * @brief The SkinningType enum
@@ -42,7 +42,7 @@ enum class LinkMode {
 /**
  * @brief The Skeleton class
  */
-class Skeleton : public Component
+class Skeleton : public Component<Skeleton>
 {
     friend class SkeletonController;
 

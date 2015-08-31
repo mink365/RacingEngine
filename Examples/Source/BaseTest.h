@@ -10,6 +10,7 @@
 #include "Render/Material/Material.h"
 #include "Camera/Camera.h"
 #include "UI/Scene.h"
+#include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "FileSystem/FileSystem.h"
 #include "Texture/TextureManager.h"
@@ -29,9 +30,18 @@ using namespace re;
 using namespace re::ui;
 
 class FeatureTestsApp;
-using UIManagerPtr = SharedPtr<ui::UIManager>;
+using UIManagerPtr = ComponentHandle<ui::UIManager>;
 
 int LoadShader(const std::string& name, const std::string& pfilePath_vs, const std::string& pfilePath_fs);
+
+inline ComponentHandle<Button> CreateImageButton(const string& texDefault, const string& texPress, const string& texDis)
+{
+    // TODO: init ImageButtonData
+
+    auto button = CreateNode2D<Button>();
+
+    return button;
+}
 
 class BaseTest
 {

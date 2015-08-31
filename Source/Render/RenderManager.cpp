@@ -9,8 +9,6 @@
 #include "Shader/ShaderUtil.h"
 #include "Base/ECS/Component.h"
 #include "Light/Light.h"
-#include "Light/DirectionalLight.h"
-#include "Light/SpotLight.h"
 #include "Renderer/Renderer.h"
 #include "RenderTarget.h"
 #include "PreDeclare.h"
@@ -128,9 +126,9 @@ void RenderManager::createRenderViews()
 
                 renderView->renderTarget = renderTarget;
                 if (light->getType() == LightType::Spot) {
-                    std::static_pointer_cast<SpotLight>(light)->shadow.renderTarget = renderTarget;
+                    light->shadow.renderTarget = renderTarget;
                 } else if (light->getType() == LightType::Directional) {
-                    std::static_pointer_cast<DirectionalLight>(light)->shadow.renderTarget = renderTarget;
+                    light->shadow.renderTarget = renderTarget;
                 }
             }
 

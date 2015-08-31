@@ -15,7 +15,7 @@
 
 namespace re {
 
-class OpenALSource : public AudioSource
+class OpenALSource : public AudioSourceImpl
 {
 public:
     OpenALSource();
@@ -31,8 +31,7 @@ public:
     virtual void rewind() override;
 
     virtual void setLooped(bool looped) override;
-
-    virtual AudioSourceState getState() const;
+    virtual AudioSourceState getState() const override;
 
     virtual void setGain(float gain) override;
     virtual void setPitch(float pitch) override;

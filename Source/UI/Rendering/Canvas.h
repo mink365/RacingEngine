@@ -10,7 +10,7 @@ namespace ui {
  * @brief The Canvas class
  * Canvas is the base class of ui rendering
  */
-class Canvas : public Component
+class Canvas : public Component<Canvas>
 {
 public:
     Canvas();

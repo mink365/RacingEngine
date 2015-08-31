@@ -40,7 +40,7 @@ void Entity::addComponent(ComponentPtr component)
 
     if (this->state >= EntityState::Awaked) {
         CallEvent(component.get(), Events::Awake);
-        if (this->node != nullptr && this->node->hasParent()) {
+        if (this->node.get() != nullptr && this->node->hasParent()) {
             CallEvent(component.get(), Events::Enter);
         }
     }

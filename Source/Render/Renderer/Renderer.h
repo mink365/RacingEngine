@@ -21,7 +21,8 @@ class RenderTarget;
 class RenderState;
 class MeshData;
 
-class Renderer {
+class Renderer
+{
 public:
 	Renderer();
 	virtual ~Renderer();

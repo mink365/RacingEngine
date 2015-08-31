@@ -44,21 +44,29 @@ const Vec3 &AudioListener::getVelocity() const
 void AudioListener::setGain(float gain)
 {
     this->gain = gain;
+
+    impl->setGain(gain);
 }
 
 void AudioListener::setPosition(const Vec3 &pos)
 {
     this->position = pos;
+
+    impl->setPosition(pos);
 }
 
 void AudioListener::setRotation(const Quat &rot)
 {
     this->rotation = rot;
+
+    impl->setRotation(rot);
 }
 
 void AudioListener::setVelocity(const Vec3 &vel)
 {
     this->velocity = vel;
+
+    impl->setVelocity(vel);
 }
 
 } // namespace re

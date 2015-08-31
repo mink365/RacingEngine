@@ -71,7 +71,7 @@ void AnimationTrack::addKeyFrame(const KeyFrame &frame)
 
 void AnimationTrack::updateLocalMatrix()
 {
-    AnimationPtr animation = this->animation.lock();
+    AnimationPtr animation = this->animation;
     AnimationStackPtr currStack = animation->getCurrAnimationStack();
 
     Long stackBeginTime = 0;
@@ -198,7 +198,7 @@ void AnimationTrack::updateTrackInfo()
 
 void AnimationTrack::updateTimeInfo()
 {
-    AnimationPtr animation = this->animation.lock();
+    AnimationPtr animation = this->animation;
 
     this->currentTime = animation->getCurrTime();
     this->beginTime = animation->getBeginTime();

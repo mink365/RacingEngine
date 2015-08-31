@@ -1,16 +1,14 @@
 #ifndef RE_SPOTLIGHT_H
 #define RE_SPOTLIGHT_H
 
-#include "Light.h"
-
 namespace re {
 
-class SpotLight : public Light
+class SpotLightData
 {
     friend class RenderView;
 
 public:
-    SpotLight();
+    SpotLightData();
 
     float getSpotAngle() const;
     void setSpotAngle(float value);
@@ -21,8 +19,6 @@ public:
 public:
     float spotAngle;
     float intensity;
-
-    ShadowInfo shadow;
 
     // TODO: use spotAngle ?
     float shadowCameraFov;

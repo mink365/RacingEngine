@@ -10,9 +10,9 @@
 namespace re {
 namespace ui {
 
-typedef NamedFactory<Window> WindowFactory;
-typedef NamedFactory<Scene> SceneFactory;
-typedef SharedPtr<Scene> ScenePtr;
+typedef NamedComponentFactory<Window> WindowFactory;
+typedef NamedComponentFactory<Scene> SceneFactory;
+typedef ComponentHandle<Scene> ScenePtr;
 
 class UIManager : public Widget, public LayerManager<Scene>, public IMessageHandler {
 public:

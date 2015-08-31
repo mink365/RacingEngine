@@ -22,23 +22,25 @@ enum class AudioSourceState
     STOPPED
 };
 
-class AudioSource : public Component
+class AudioSourceImpl;
+
+class AudioSource : public Component<AudioSource>
 {
 public:
     AudioSource();
     virtual ~AudioSource();
 
 public:
-    virtual void play() = 0;
-    virtual void pause() = 0;
-    virtual void resume() = 0;
-    virtual void stop() = 0;
-    virtual void rewind() = 0;
+    void play();
+    void pause();
+    void resume();
+    void stop();
+    void rewind();
 
     bool isLooped() const;
-    virtual void setLooped(bool looped);
+    void setLooped(bool looped);
 
-    virtual AudioSourceState getState() const = 0;
+    AudioSourceState getState() const;
 
     float getGain() const;
     float getPitch() const;
@@ -46,19 +48,51 @@ public:
     const Vec3& getPosition() const;
     const Vec3& getVelocity() const;
 
-    virtual void setGain(float gain);
-    virtual void setPitch(float pitch);
-    virtual void setPosition(const Vec3& pos);
-    virtual void setVelocity(const Vec3& vel);
+    void setGain(float gain);
+    void setPitch(float pitch);
+    void setPosition(const Vec3& pos);
+    void setVelocity(const Vec3& vel);
+
+public:
+    SharedPtr<AudioSourceImpl> getImpl()
+    {
+        return impl;
+    }
 
 protected:
-    float looped;
+    bool looped;
 
     float gain;
     float pitch;
 
     Vec3 position;
     Vec3 velocity;
+
+    SharedPtr<AudioSourceImpl> impl;
+};
+
+class AudioSourceImpl
+{
+public:
+    virtual ~AudioSourceImpl() {};
+
+    virtual void play() = 0;
+    virtual void pause() = 0;
+    virtual void resume() = 0;
+    virtual void stop() = 0;
+    virtual void rewind() = 0;
+
+    virtual void setLooped(bool looped) = 0;
+
+    virtual AudioSourceState getState() const = 0;
+
+    virtual void setGain(float gain) = 0;
+    virtual void setPitch(float pitch) = 0;
+    virtual void setPosition(const Vec3& pos) = 0;
+    virtual void setVelocity(const Vec3& vel) = 0;
+
+protected:
+    ComponentHandle<AudioSource> component;
 };
 
 } // namespace re

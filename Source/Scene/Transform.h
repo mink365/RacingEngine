@@ -17,9 +17,9 @@
 namespace re {
 
 class Transform;
-typedef SharedPtr<Transform> TransformPtr;
+typedef ComponentHandle<Transform> TransformPtr;
 
-class Transform : public Component
+class Transform : public Component<Transform>
 {
     friend class SceneManager;
 
@@ -47,8 +47,7 @@ public:
     void refresh();
 
 protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const Transform& inst);
 
 protected:
     /**

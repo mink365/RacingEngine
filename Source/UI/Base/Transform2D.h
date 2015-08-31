@@ -17,7 +17,7 @@ namespace re {
 namespace ui {
 
 class Transform2D;
-typedef SharedPtr<Transform2D> Transform2DPtr;
+typedef ComponentHandle<Transform2D> Transform2DPtr;
 
 class Transform2D : public Transform
 {
@@ -63,8 +63,7 @@ public:
 protected:
     virtual void updateLocalMatrix();
 
-    ComponentPtr createCloneInstance() const;
-    void copyProperties(const Component* component);
+    void copyProperties(const Transform2D& rhs);
 
 private:
     Size size;

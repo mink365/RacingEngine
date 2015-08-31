@@ -14,7 +14,7 @@
 
 namespace re {
 
-class OpenALListener : public AudioListener
+class OpenALListener : public AudioListenerImpl
 {
 public:
     OpenALListener();

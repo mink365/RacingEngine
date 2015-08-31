@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Base/Shared.h"
+#include "Base/ECS/ComponentHandle.h"
 #include "Resource/ResourceManager.h"
 
 namespace re {
@@ -15,7 +16,6 @@ class Skeleton;
 class SkeletonController;
 
 class Entity;
-class Component;
 class Node;
 class Bone;
 class RenderElement;
@@ -49,24 +49,23 @@ class Label;
 class NinePatch;
 
 class Widget;
-class BaseButton;
+class Button;
 
 class LayoutElement;
 
 }
 
-typedef SharedPtr<Animation> AnimationPtr;
+typedef ComponentHandle<Animation> AnimationPtr;
 typedef SharedPtr<AnimationTrack> AnimationTrackPtr;
 typedef SharedPtr<AnimationStack> AnimationStackPtr;
 typedef SharedPtr<KeyFrame> KeyFramePtr;
-typedef SharedPtr<Skeleton> SkeletonPtr;
-typedef SharedPtr<SkeletonController> SkeletonControllerPtr;
+typedef ComponentHandle<Skeleton> SkeletonPtr;
+typedef ComponentHandle<SkeletonController> SkeletonControllerPtr;
 
 typedef SharedPtr<Entity> EntityPtr;
-typedef SharedPtr<Component> ComponentPtr;
-typedef SharedPtr<Node> NodePtr;
-typedef SharedPtr<Bone> BonePtr;
-typedef SharedPtr<RenderElement> RenderElementPtr;
+typedef ComponentHandle<Node> NodePtr;
+typedef ComponentHandle<Bone> BonePtr;
+typedef ComponentHandle<RenderElement> RenderElementPtr;
 typedef SharedPtr<Mesh> MeshPtr;
 typedef SharedPtr<MeshData> MeshDataPtr;
 typedef SharedPtr<SkinnedMeshData> SkinnedMeshDataPtr;
@@ -81,9 +80,9 @@ typedef SharedPtr<Texture> TexturePtr;
 typedef SharedPtr<TextureFrame> TextureFramePtr;
 typedef SharedPtr<TextureAtlas> TextureAtlasPtr;
 
-typedef SharedPtr<Transform> TransformPtr;
-typedef SharedPtr<Camera> CameraPtr;
-typedef SharedPtr<Light> LightPtr;
+typedef ComponentHandle<Transform> TransformPtr;
+typedef ComponentHandle<Camera> CameraPtr;
+typedef ComponentHandle<Light> LightPtr;
 
 typedef SharedPtr<File> FilePtr;
 typedef SharedPtr<const File> ConstFilePtr;
@@ -92,14 +91,14 @@ typedef SharedPtr<Font> FontPtr;
 
 namespace ui {
 
-typedef SharedPtr<Transform2D> Transform2DPtr;
-typedef SharedPtr<HierarchyColor> HierarchyColorPtr;
-typedef SharedPtr<Sprite> SpritePtr;
-typedef SharedPtr<NinePatch> NinePatchPtr;
-typedef SharedPtr<Label> LabelPtr;
+typedef ComponentHandle<Transform2D> Transform2DPtr;
+typedef ComponentHandle<HierarchyColor> HierarchyColorPtr;
+typedef ComponentHandle<Sprite> SpritePtr;
+typedef ComponentHandle<NinePatch> NinePatchPtr;
+typedef ComponentHandle<Label> LabelPtr;
 
-typedef SharedPtr<Widget> WidgetPtr;
-typedef SharedPtr<BaseButton> ButtonPtr;
+typedef ComponentHandle<Widget> WidgetPtr;
+typedef ComponentHandle<Button> ButtonPtr;
 
 }
 

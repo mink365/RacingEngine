@@ -41,7 +41,7 @@ void UITest::Init()
     LabelPtr label2 = CreateUIGraphicNode<Label>(font);
     label2->setText("xHtbo xx");
 
-    auto button = CreateUIGraphicNode<ImageButton>("rate.png", "rate_press.png", "rate.png");
+    auto button = CreateImageButton("rate.png", "rate_press.png", "rate.png");
 
     auto scene = stage->getLastLayer();
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
@@ -89,7 +89,7 @@ WindowPtr UITest::createWin()
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
     patch->rebind();
 
-    auto button = CreateUIGraphicNode<ImageButton>("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
+    auto button = CreateImageButton("btn_close_normal.png", "btn_close_press.png", "btn_close_normal.png");
 
     win->getNode()->addChild(patch->getNode());
     win->getNode()->addChild(button->getNode());
@@ -98,7 +98,7 @@ WindowPtr UITest::createWin()
     LayoutUtil::LayoutToParent(button->getComponent<Transform2D>(), AlignType::RIGHT_TOP, AlignType::RIGHT_TOP);
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
-        win->popFromWindowManager();
+        win.getPtr()->popFromWindowManager();
     };
 
     button->setOnClickFunc(buttonClickFunc);

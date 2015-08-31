@@ -239,22 +239,12 @@ void Transform2D::updateLocalMatrix()
     this->markWorldTransformRefreshFlag();
 }
 
-ComponentPtr Transform2D::createCloneInstance() const
+void Transform2D::copyProperties(const Transform2D &rhs)
 {
-    return CreateCloneInstance<Transform2D>();
-}
-
-void Transform2D::copyProperties(const Component *component)
-{
-    Transform::copyProperties(component);
-
-    const Transform2D* inst = static_cast<const Transform2D*>(component);
-    if (inst) {
-        this->size = inst->size;
-        this->anchor = inst->anchor;
-        this->anchorInPixel = inst->anchorInPixel;
-        this->skew = inst->skew;
-    }
+        this->size = rhs.size;
+        this->anchor = rhs.anchor;
+        this->anchorInPixel = rhs.anchorInPixel;
+        this->skew = rhs.skew;
 }
 
 } // namespace ui

@@ -15,7 +15,7 @@ using GeometryPtr = SharedPtr<Geometry>;
 
 namespace ui {
 
-class CanvasRenderElement : public Component
+class CanvasRenderElement : public Component<CanvasRenderElement>
 {
 public:
     CanvasRenderElement();

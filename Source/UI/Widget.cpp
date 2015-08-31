@@ -242,23 +242,13 @@ bool Widget::hitTest(Transform2DPtr node, Vec2 p) {
     return false;
 }
 
-ComponentPtr Widget::createCloneInstance() const
+void Widget::copyProperties(const Widget &rhs)
 {
-    return CreateCloneInstance<Widget>();
-}
+    this->_touchEnable = rhs._touchEnable;
+    this->_blockTouch = rhs._blockTouch;
 
-void Widget::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const Widget* inst = static_cast<const Widget*>(component);
-    if (inst) {
-        this->_touchEnable = inst->_touchEnable;
-        this->_blockTouch = inst->_blockTouch;
-
-        this->state = inst->state;
-        this->touchState = WidgetTouchState::TOUCH_CANCLE;
-    }
+    this->state = rhs.state;
+    this->touchState = WidgetTouchState::TOUCH_CANCLE;
 }
 
 } // namespace ui

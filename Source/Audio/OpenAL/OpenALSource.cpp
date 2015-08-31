@@ -36,6 +36,11 @@ void OpenALSource::bindBuffer(OpenALBuffer::ptr &buffer)
     RE_ASSERT(buffer);
     _buffer = buffer;
 
+    bool looped = component->isLooped();
+    float gain = component->getGain();
+    float pitch = component->getPitch();
+    Vec3 velocity = component->getVelocity();
+
     AL_CHECK( alSourcei(_alSource, AL_BUFFER, _buffer->_alBuffer) );
     AL_CHECK( alSourcei(_alSource, AL_LOOPING, looped) );
     AL_CHECK( alSourcef(_alSource, AL_PITCH, pitch) );
@@ -78,7 +83,6 @@ void OpenALSource::setLooped(bool looped)
     {
         LOG_E("Failed to set audio source's looped attribute with error: %d", AL_LAST_ERROR());
     }
-    AudioSource::setLooped(looped);
 }
 
 AudioSourceState OpenALSource::getState() const
@@ -103,25 +107,21 @@ AudioSourceState OpenALSource::getState() const
 void OpenALSource::setGain(float gain)
 {
     AL_CHECK( alSourcef(_alSource, AL_GAIN, gain) );
-    AudioSource::setGain(gain);
 }
 
 void OpenALSource::setPitch(float pitch)
 {
     AL_CHECK( alSourcef(_alSource, AL_PITCH, pitch) );
-    AudioSource::setPitch(pitch);
 }
 
 void OpenALSource::setPosition(const Vec3 &pos)
 {
-    AudioSource::setPosition(pos);
-    AL_CHECK( alSourcefv(_alSource, AL_POSITION, position.toFloatPtr()) );
+    AL_CHECK( alSourcefv(_alSource, AL_POSITION, pos.toFloatPtr()) );
 }
 
 void OpenALSource::setVelocity(const Vec3 &vel)
 {
-    AudioSource::setVelocity(vel);
-    AL_CHECK( alSourcefv(_alSource, AL_VELOCITY, velocity.toFloatPtr()) );
+    AL_CHECK( alSourcefv(_alSource, AL_VELOCITY, vel.toFloatPtr()) );
 }
 
 } // namespace re

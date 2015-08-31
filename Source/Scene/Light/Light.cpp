@@ -17,6 +17,11 @@ LightType Light::getType() const
     return this->type;
 }
 
+void Light::setType(LightType type)
+{
+    this->type = type;
+}
+
 Color Light::getColor() const
 {
     return color;

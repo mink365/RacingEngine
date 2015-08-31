@@ -42,7 +42,7 @@ EntityPtr CreateSkinningMeshEntity();
 EntityPtr CreateBoneEntity();
 
 template<typename T>
-SharedPtr<T> CreateNode()
+ComponentHandle<T> CreateNode()
 {
     auto entity = CreateEntity();
 
@@ -56,7 +56,7 @@ SharedPtr<T> CreateNode()
 }
 
 template<typename T>
-SharedPtr<T> CreateNode2D()
+ComponentHandle<T> CreateNode2D()
 {
     auto entity = CreateEntity();
 
@@ -70,7 +70,7 @@ SharedPtr<T> CreateNode2D()
 }
 
 template<typename T, typename... Args>
-SharedPtr<T> CreateUIGraphicNode(Args... args)
+ComponentHandle<T> CreateUIGraphicNode(Args... args)
 {
     auto entity = CreateEntity();
 

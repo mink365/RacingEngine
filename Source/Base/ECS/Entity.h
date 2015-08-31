@@ -10,18 +10,30 @@
 #include "Base/Clonable.h"
 #include "Base/Named.h"
 #include "Message/Signal.h"
+#include "ComponentHandle.h"
 
 namespace re {
 
 class Entity;
-class Component;
+class BaseComponent;
 class Transform;
 class Node;
 
 typedef SharedPtr<Entity> EntityPtr;
-typedef SharedPtr<Component> ComponentPtr;
-typedef SharedPtr<Transform> TransformPtr;
-typedef SharedPtr<Node> NodePtr;
+typedef ComponentHandle<Transform> TransformPtr;
+typedef ComponentHandle<Node> NodePtr;
+typedef ComponentHandle<BaseComponent> ComponentPtr;
+
+template <class T, typename... Args>
+ComponentHandle<T> CreateComponent(Args... args)
+{
+    auto p = Create<T>(args...);
+
+    ComponentHandle<T> handle;
+    handle.ptr = p;
+
+    return handle;
+}
 
 enum class EntityState
 {
@@ -41,7 +53,7 @@ public:
     void addComponent(ComponentPtr component);
 
     template<typename T, typename... Args>
-    SharedPtr<T> addComponent(Args... args);
+    ComponentHandle<T> addComponent(Args... args);
 
     void clearComponents();
 
@@ -50,10 +62,10 @@ public:
     const std::vector<ComponentPtr>& getComponents() const;
 
     template<typename T>
-    SharedPtr<T> getComponent();
+    ComponentHandle<T> getComponent();
 
     template<typename T>
-    SharedPtr<T> getComponentInParent();
+    ComponentHandle<T> getComponentInParent();
 
     EntityPtr clone() const;
 
@@ -111,9 +123,9 @@ private:
 };
 
 template<typename T, typename... Args>
-SharedPtr<T> Entity::addComponent(Args... args)
+ComponentHandle<T> Entity::addComponent(Args... args)
 {
-    auto comp = Create<T>(args...);
+    auto comp = CreateComponent<T>(args...);
 
     this->addComponent(comp);
 
@@ -121,7 +133,7 @@ SharedPtr<T> Entity::addComponent(Args... args)
 }
 
 template<typename T>
-inline SharedPtr<T> Entity::getComponent()
+inline ComponentHandle<T> Entity::getComponent()
 {
     auto id = std::type_index(typeid(T));
 
@@ -140,10 +152,11 @@ inline SharedPtr<T> Entity::getComponent()
         }
 
         if (data.list.size() > 0) {
-            return std::static_pointer_cast<T>(data.list.front());
+            // TODO:
+//            return std::static_pointer_cast<T>(data.list.front());
         }
     } else {
-        return std::static_pointer_cast<T>(componentMap[id]);
+//        return std::static_pointer_cast<T>(componentMap[id]);
     }
 
     return nullptr;

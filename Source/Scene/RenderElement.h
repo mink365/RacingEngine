@@ -11,7 +11,7 @@ class Material;
 using MeshPtr = SharedPtr<Mesh>;
 using MaterialPtr = SharedPtr<Material>;
 
-class RenderElement : public Component
+class RenderElement : public Component<RenderElement>
 {
 public:
     RenderElement();
@@ -24,8 +24,7 @@ public:
     void setMesh(const MeshPtr &value);
 
 protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
+    virtual void copyProperties(const RenderElement& inst);
 
 private:
     MaterialPtr material;

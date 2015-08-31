@@ -10,7 +10,7 @@
 namespace re {
 namespace ui {
 
-class ElementBatcher : public Component
+class ElementBatcher : public Component<ElementBatcher>
 {
 public:
     ElementBatcher();

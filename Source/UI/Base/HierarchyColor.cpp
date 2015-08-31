@@ -63,20 +63,10 @@ void HierarchyColor::updateColor()
     DistpatchFunctionInHierarchy(node, func);
 }
 
-ComponentPtr HierarchyColor::createCloneInstance() const
+void HierarchyColor::copyProperties(const HierarchyColor &rhs)
 {
-    return CreateCloneInstance<HierarchyColor>();
-}
-
-void HierarchyColor::copyProperties(const Component* rhs)
-{
-    Component::copyProperties(rhs);
-
-    const HierarchyColor* inst = static_cast<const HierarchyColor*>(rhs);
-    if (inst) {
-        this->color = inst->color;
-        this->worldColor = inst->worldColor;
-    }
+    this->color = rhs.color;
+    this->worldColor = rhs.worldColor;
 }
 
 } // namespace ui

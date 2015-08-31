@@ -9,14 +9,32 @@
 namespace re {
 namespace ui {
 
-class BaseButton : public Widget
+enum ButtonType
+{
+    Image,
+};
+
+class ImageButtonData
 {
 public:
-    BaseButton();
+    ImageButtonData() = default;
+    ImageButtonData(const string& texDefault, const string& texPress);
+    ImageButtonData(const string& texDefault, const string& texPress, const string& texDis);
 
-    virtual void switchState(WidgetState newState);
+public:
 
-    virtual void initTouchListener();
+
+    SpritePtr defaultSprite, pressedSprite, disabledSprite;
+};
+
+class Button : public Widget
+{
+public:
+    Button();
+
+    void switchState(WidgetState newState);
+
+    void initTouchListener();
 
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
 
@@ -27,41 +45,19 @@ protected:
     void onAwake();
 
 protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const Button& rhs);
+
+protected:
+    void initGraphic();
+    void switchStateForImage(WidgetState oldState, WidgetState newState);
 
 protected:
     std::function<void(ButtonPtr& button)> onButtonClickFunc;
 
     bool isTouchDown;
     int touchDownTime;
-};
 
-class ImageButton : public BaseButton
-{
-public:
-    virtual void init(const string& texDefault, const string& texPress);
-    virtual void init(const string& texDefault, const string& texPress, const string& texDis);
-
-    virtual void switchState(WidgetState newState) override;
-
-protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
-
-protected:
-    SpritePtr defaultSprite, pressedSprite, disabledSprite;
-};
-
-class LabelButton : public ImageButton
-{
-
-protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
-
-protected:
-    LabelPtr label;
+    std::tuple<ImageButtonData> datas;
 };
 
 } // namespace ui

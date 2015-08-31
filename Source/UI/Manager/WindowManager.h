@@ -13,10 +13,11 @@
 namespace re {
 namespace ui {
 
-typedef NamedFactory<Window> WindowFactory;
-typedef SharedPtr<Window> WindowPtr;
+typedef NamedComponentFactory<Window> WindowFactory;
+typedef ComponentHandle<Window> WindowPtr;
 
-class WindowManager : public Component {
+class WindowManager : public Component<WindowManager>
+{
 public:
     WindowManager();
 

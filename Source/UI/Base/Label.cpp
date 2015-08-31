@@ -51,21 +51,11 @@ void Label::setText(const string &text)
 
 }
 
-ComponentPtr Label::createCloneInstance() const
+void Label::copyProperties(const Label &rhs)
 {
-    return CreateCloneInstance<Label>();
-}
-
-void Label::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const Label* inst = static_cast<const Label*>(component);
-    if (inst) {
-        this->font = inst->font;
-        this->text = inst->text;
-        this->dirtyFlag = true;
-    }
+    this->font = rhs.font;
+    this->text = rhs.text;
+    this->dirtyFlag = true;
 }
 
 } // namespace ui

@@ -140,27 +140,17 @@ void Transform::markWorldTransformRefreshFlag()
     this->refreshFlags |= RF_WORLD_TRANSFORM;
 }
 
-ComponentPtr Transform::createCloneInstance() const
+void Transform::copyProperties(const Transform &inst)
 {
-    return CreateCloneInstance<Transform>();
-}
+        this->localRotation = inst.localRotation;
+        this->localTranslation = inst.localTranslation;
+        this->localScaling = inst.localScaling;
 
-void Transform::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const Transform* inst = static_cast<const Transform*>(component);
-    if (inst) {
-        this->localRotation = inst->localRotation;
-        this->localTranslation = inst->localTranslation;
-        this->localScaling = inst->localScaling;
-
-        this->localMatrix = inst->localMatrix;
-        this->worldMatrix = inst->worldMatrix;
+        this->localMatrix = inst.localMatrix;
+        this->worldMatrix = inst.worldMatrix;
 
         this->markLocalTransformRefreshFlag();
         this->markWorldTransformRefreshFlag();
-    }
 }
 
 } // namespace re

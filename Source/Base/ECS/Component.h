@@ -10,14 +10,14 @@
 
 namespace re {
 
-class Component : public Clonable<Component>
+class BaseComponent
 {
     friend class Entity;
     friend class FbxParser;
 
 public:
-    Component();
-    virtual ~Component();
+    BaseComponent();
+    virtual ~BaseComponent();
 
     Long getId() const;
 
@@ -29,55 +29,82 @@ public:
     TransformPtr getTransform() const;
 
     template<typename T>
-    SharedPtr<T> getComponent() const;
+    ComponentHandle<T> getComponent() const;
 
     template<typename T>
-    SharedPtr<T> getComponentInParent();
+    ComponentHandle<T> getComponentInParent() const;
 
-    const std::vector<ComponentPtr>& getComponents() const;
+    const std::vector<ComponentHandle<BaseComponent>>& getComponents() const;
 
 public:
     virtual void registerEvents() {};
 
-private:
-    ComponentPtr clone() const;
-
 protected:
-    virtual ComponentPtr createCloneInstance() const;
-    virtual void copyProperties(const Component *att);
+    virtual ComponentHandle<BaseComponent> clone() const = 0;
 
 protected:
     WeakPtr<Entity> attachEntity;
 };
 
-inline Long Component::getId() const
+template <class Derived>
+class Component : public BaseComponent
+{
+    using Handle = ComponentHandle<Derived>;
+
+protected:
+    ComponentHandle<BaseComponent> clone() const override
+    {
+        return __clone();
+    }
+
+private:
+    Handle __clone() const
+    {
+        Handle cloned = this->createCloneInstance();
+
+        cloned->attachEntity.reset();
+        // TODO:
+//        cloned->copyProperties(*(this));
+
+        return cloned;
+    }
+
+protected:
+    Handle createCloneInstance() const
+    {
+        Handle handle = CreateComponent<Derived>();
+        return handle;
+    }
+};
+
+inline Long BaseComponent::getId() const
 {
     return this->getEntity()->getId();
 }
 
-inline const string &Component::getName() const
+inline const string &BaseComponent::getName() const
 {
     return this->getEntity()->getName();
 }
 
-inline void Component::setName(const string &name)
+inline void BaseComponent::setName(const string &name)
 {
     this->getEntity()->setName(name);
 }
 
-inline EntityPtr Component::getEntity() const
+inline EntityPtr BaseComponent::getEntity() const
 {
     return this->attachEntity.lock();
 }
 
 template<typename T>
-inline SharedPtr<T> Component::getComponent() const
+inline ComponentHandle<T> BaseComponent::getComponent() const
 {
     return getEntity()->getComponent<T>();
 }
 
 template<typename T>
-inline SharedPtr<T> Component::getComponentInParent()
+inline ComponentHandle<T> BaseComponent::getComponentInParent() const
 {
     return getEntity()->getComponentInParent<T>();
 }

@@ -2,7 +2,7 @@
 
 #include "ShapeGenerater.h"
 #include "Scene/Light/DirectionalLight.h"
-#include "Scene/Light/SpotLight.h"
+#include "Scene/Light/Light.h"
 #include "UI/Base/Sprite.h"
 #include "Render/RenderTarget.h"
 #include "Scene/Node.h"
@@ -76,18 +76,18 @@ void ShadowTest::Init()
     // TODO: Dir Light/Camera can't see the model?.....
 
     // light
-    re::LightPtr light = CreateNode<SpotLight>();
+    re::LightPtr light = CreateNode<Light>();
     rootNode->addChild(light->getNode());
     SceneManager::instance().getRenderManager().addLight(light);
 
+    light->setType(LightType::Spot);
     light->setCastShadow(true);
     light->getTransform()->setLocalTranslation(Vec3(0, -200, 300));
     light->getEntity()->refreshTransformInHierarchy();
-    auto dirLight = std::dynamic_pointer_cast<SpotLight>(light);
-    dirLight->shadow.shadowCameraNear = 10;
-    dirLight->shadow.shadowCameraFar = 500;
-    dirLight->spotAngle = 50;
-    dirLight->shadowCameraFov = 50;
+    light->getShadowInfo().shadowCameraNear = 10;
+    light->getShadowInfo().shadowCameraFar = 500;
+    light->getSpotLightData().spotAngle = 50;
+    light->getSpotLightData().shadowCameraFov = 50;
 
     sprite = CreateUIGraphicNode<Sprite>("diffuse.png");
     sprite->rebind();

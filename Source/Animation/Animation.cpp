@@ -43,13 +43,13 @@ void Animation::setIsUseAnimationStack(bool use)
 
 void Animation::addAnimationTrack(AnimationTrackPtr track)
 {
-    track->animation = this->shared_from_this();
+    track->animation = this->getComponent<Animation>();
     this->animTracks.push_back(track);
 }
 
 void Animation::addAnimationStack(AnimationStackPtr stack)
 {
-    stack->animation = this->shared_from_this();
+    stack->animation = this->getComponent<Animation>();
     this->animStacks.push_back(stack);
 }
 

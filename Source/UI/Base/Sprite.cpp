@@ -58,20 +58,11 @@ void Sprite::updateViewColor()
     this->rebind();
 }
 
-ComponentPtr Sprite::createCloneInstance() const
+void Sprite::copyProperties(const Sprite& rhs)
 {
-    return CreateCloneInstance<Sprite>();
-}
 
-void Sprite::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const Sprite* inst = static_cast<const Sprite*>(component);
-    if (inst) {
-        this->frame = inst->frame;
-        this->rect = inst->rect;
-    }
+    this->frame = rhs.frame;
+    this->rect = rhs.rect;
 }
 
 } // namespace ui

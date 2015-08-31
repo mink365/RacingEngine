@@ -35,19 +35,10 @@ void RenderElement::setMesh(const MeshPtr &value)
     mesh = value;
 }
 
-ComponentPtr RenderElement::createCloneInstance() const
+void RenderElement::copyProperties(const RenderElement& inst)
 {
-    return CreateCloneInstance<RenderElement>();
-}
-
-void RenderElement::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const RenderElement* inst = static_cast<const RenderElement*>(component);
-
-    this->mesh = inst->mesh;
-    this->material = inst->material;
+    this->mesh = inst.mesh;
+    this->material = inst.material;
 }
 
 

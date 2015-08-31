@@ -8,9 +8,9 @@ namespace re {
 namespace ui {
 
 class HierarchyColor;
-typedef SharedPtr<HierarchyColor> HierarchyColorPtr;
+typedef ComponentHandle<HierarchyColor> HierarchyColorPtr;
 
-class HierarchyColor : public Component
+class HierarchyColor : public Component<HierarchyColor>
 {
 public:
     HierarchyColor();
@@ -28,8 +28,7 @@ public:
 protected:
     void updateColor();
 
-    ComponentPtr createCloneInstance() const;
-    void copyProperties(const Component* rhs);
+    void copyProperties(const HierarchyColor& rhs);
 
 protected:
     Color color;

@@ -9,19 +9,19 @@
 namespace re {
 
 class SkeletonController;
-typedef SharedPtr<SkeletonController> SkeletonControllerPtr;
+typedef ComponentHandle<SkeletonController> SkeletonControllerPtr;
 
 class Skeleton;
 class Animation;
 class Mesh;
 class SkinnedMeshData;
 
-using SkeletonPtr = SharedPtr<Skeleton>;
-using AnimationPtr = SharedPtr<Animation>;
+using SkeletonPtr = ComponentHandle<Skeleton>;
+using AnimationPtr = ComponentHandle<Animation>;
 using MeshPtr = SharedPtr<Mesh>;
 using SkinnedMeshDataPtr = SharedPtr<SkinnedMeshData>;
 
-class SkeletonController : public Component
+class SkeletonController : public Component<SkeletonController>
 {
 public:
     SkeletonController();

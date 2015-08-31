@@ -15,7 +15,7 @@ class RenderTarget;
 class ShadowInfo;
 class Light;
 
-using LightPtr = SharedPtr<Light>;
+using LightPtr = ComponentHandle<Light>;
 using ShaderPtr = SharedPtr<Shader>;
 
 class RenderView : public Shared<RenderView>

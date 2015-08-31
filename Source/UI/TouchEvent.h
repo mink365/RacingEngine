@@ -7,12 +7,13 @@
 #include <functional>
 #include <vector>
 #include <memory>
+#include "Base/ECS/ComponentHandle.h"
 
 namespace re {
 namespace ui {
 
 class Widget;
-using WidgetPtr = SharedPtr<Widget>;
+using WidgetPtr = ComponentHandle<Widget>;
 
 enum class TouchEventType {
     DOWN,

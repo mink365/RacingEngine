@@ -2,9 +2,9 @@
 
 namespace re {
 
-DirectionalLight::DirectionalLight()
+DirectionalLightData::DirectionalLightData()
 {
-    this->type = LightType::Directional;
+
 }
 
 } // namespace re

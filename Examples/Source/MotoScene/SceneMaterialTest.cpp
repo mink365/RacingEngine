@@ -95,8 +95,8 @@ void SceneMaterialTest::createUI()
     labelName->setText("Name");
     labelName->getComponent<Transform2D>()->setAnchor(Vec2(0.5f, 0.5f));
 
-    auto buttonNext = CreateUIGraphicNode<ImageButton>("b_you.png", "b_you.png", "b_you.png");
-    auto buttonPrev = CreateUIGraphicNode<ImageButton>("b_zuo.png", "b_zuo.png", "b_zuo.png");
+    auto buttonNext = CreateImageButton("b_you.png", "b_you.png", "b_you.png");
+    auto buttonPrev = CreateImageButton("b_zuo.png", "b_zuo.png", "b_zuo.png");
 
     auto buttonClickFunc = [=](ButtonPtr& widget) {
         if (widget == buttonNext) {

@@ -15,7 +15,7 @@ void ElementBatcher::ReBuild()
 {
     this->elementBatchs.clear();
 
-    typedef SharedPtr<CanvasRenderElement> CanvasRenderElementPtr;
+    typedef ComponentHandle<CanvasRenderElement> CanvasRenderElementPtr;
     auto list = std::vector<CanvasRenderElementPtr>();
 
     auto root = this->getNode();

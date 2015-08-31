@@ -6,7 +6,7 @@
 namespace re {
 namespace ui {
 
-class ListView : public Component
+class ListView : public Component<ListView>
 {
 public:
     ListView();

@@ -11,14 +11,14 @@
 namespace re {
 
 class Camera;
-using CameraPtr = SharedPtr<Camera>;
+using CameraPtr = ComponentHandle<Camera>;
 
 enum class CameraProjectionMode {
     Perspective,
     Orthographic
 };
 
-class Camera : public Component
+class Camera : public Component<Camera>
 {
     friend class RenderView;
 

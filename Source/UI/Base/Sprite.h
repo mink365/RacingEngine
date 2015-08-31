@@ -24,8 +24,7 @@ public:
     virtual void updateViewColor();
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const Sprite &rhs);
 
 private:
     Rect rect;

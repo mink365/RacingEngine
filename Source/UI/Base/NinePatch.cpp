@@ -123,20 +123,10 @@ void NinePatch::updateViewColor()
     }
 }
 
-ComponentPtr NinePatch::createCloneInstance() const
+void NinePatch::copyProperties(const NinePatch &rhs)
 {
-    return CreateCloneInstance<NinePatch>();
-}
-
-void NinePatch::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    const NinePatch* inst = static_cast<const NinePatch*>(component);
-    if (inst) {
-        this->frame = inst->frame;
-        this->centerRect = inst->centerRect;
-    }
+    this->frame = rhs.frame;
+    this->centerRect = rhs.centerRect;
 }
 
 /**

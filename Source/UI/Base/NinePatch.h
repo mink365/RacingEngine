@@ -44,8 +44,7 @@ protected:
     virtual void updateViewColor();
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const NinePatch& rhs);
 
 protected:
     Rect centerRect;

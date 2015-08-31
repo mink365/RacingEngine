@@ -8,7 +8,7 @@
 using namespace re;
 
 namespace re {
-    class Component;
+    class BaseComponent;
 }
 
 enum class Events
@@ -28,12 +28,12 @@ class EventFactory
 public:
     static void RegisterEvents();
 
-    using GetSignalFunc = std::function<Signal<void()>&(Component&)>;
+    using GetSignalFunc = std::function<Signal<void()>&(BaseComponent&)>;
     using EventConnection = Connection<void(), CollectorDefault<void>>;
 
     static std::map<Events, GetSignalFunc> eventSignals;
     // because of the inherit of component, may more than on connection
-    static std::unordered_map<Component*, std::map<Events, std::vector<EventConnection>>> connections;
+    static std::unordered_map<BaseComponent*, std::map<Events, std::vector<EventConnection>>> connections;
 };
 
 template<class Class, class R, class... Args>
@@ -55,6 +55,6 @@ void RegisterEvent(Events event, Class *object, R (Class::*method) (Args...))
     EventFactory::connections[object][event].push_back(connection);
 }
 
-void CallEvent(Component* object, Events event);
+void CallEvent(BaseComponent* object, Events event);
 
 #endif // EVENTUTIL

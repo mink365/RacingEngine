@@ -330,8 +330,8 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
 
 void FbxParser::readSkeleton(istream *st)
 {
-    SkeletonPtr skeleton = Create<Skeleton>();
-    AnimationPtr animation = Create<Animation>();
+    SkeletonPtr skeleton = CreateComponent<Skeleton>();
+    AnimationPtr animation = CreateComponent<Animation>();
 
     BonePtr bone = this->readBoneNode(st, animation);
 

@@ -2,27 +2,27 @@
 
 namespace re {
 
-SpotLight::SpotLight()
+SpotLightData::SpotLightData()
 {
-    this->type = LightType::Spot;
+
 }
 
-float SpotLight::getSpotAngle() const
+float SpotLightData::getSpotAngle() const
 {
     return spotAngle;
 }
 
-void SpotLight::setSpotAngle(float value)
+void SpotLightData::setSpotAngle(float value)
 {
     spotAngle = value;
 }
 
-float SpotLight::getIntensity() const
+float SpotLightData::getIntensity() const
 {
     return intensity;
 }
 
-void SpotLight::setIntensity(float value)
+void SpotLightData::setIntensity(float value)
 {
     intensity = value;
 }

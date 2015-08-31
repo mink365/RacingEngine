@@ -69,7 +69,7 @@ void UIManager::removeLayerFromScene(ScenePtr &node) {
 }
 
 ScenePtr UIManager::getDefaultLayer() {
-    return NULL;
+    return nullptr;
 }
 
 void UIManager::onEnter() {

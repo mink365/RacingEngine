@@ -21,7 +21,7 @@ enum class WidgetState {
     DISABLED,
 };
 
-class Widget : public Component, public Shared<Widget>
+class Widget : public Component<Widget>
 {
 public:
     Widget();
@@ -60,8 +60,7 @@ protected:
     virtual void initView() {};
 
 protected:
-    virtual ComponentPtr createCloneInstance() const override;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const Widget& rhs);
     
 public:
     bool hitFromWorldPoint(const Vec2& p);

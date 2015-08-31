@@ -11,7 +11,7 @@ Node::Node() {
 
 NodePtr Node::getParent() const
 {
-    return parent.lock();
+    return parent;
 }
 
 void Node::setParent(NodePtr value)
@@ -23,16 +23,16 @@ void Node::removeFromParent()
 {
     assert(hasParent());
 
-    auto ins = this->shared_from_this();
-    this->parent.lock()->removeChild(ins);
+    auto ins = this->getComponent<Node>();
+    this->parent->removeChild(ins);
 }
 
 void Node::resetParent() {
-    parent.reset();
+    parent = nullptr;
 }
 
 bool Node::hasParent() {
-    return parent.lock() != nullptr;
+    return parent != nullptr;
 }
 
 int Node::getLevel() const
@@ -69,7 +69,7 @@ NodePtr Node::getChild(const string &name)
 
 void Node::addChild(NodePtr node, Int index)
 {
-    node->parent = this->shared_from_this();
+    node->parent = this->getComponent<Node>();
 
     auto func = [](NodePtr& node){
         node->level = node->getParent()->level + 1;
@@ -99,7 +99,7 @@ void Node::removeChild(NodePtr node)
 
     if (iter != children.end()) {
         this->children.erase(iter);
-        node->parent.reset();
+        node->parent = nullptr;
     }
 
     if (this->_inScene) {
@@ -110,7 +110,7 @@ void Node::removeChild(NodePtr node)
 void Node::removeAllChildren()
 {
     for (auto& child : children) {
-        child->parent.reset();
+        child->parent = nullptr;
 
         if (this->_inScene) {
             child->OnExit();
@@ -120,16 +120,9 @@ void Node::removeAllChildren()
     this->children.clear();
 }
 
-ComponentPtr Node::createCloneInstance() const
+void Node::copyProperties(const Node& node)
 {
-    return CreateCloneInstance<Node>();
-}
-
-void Node::copyProperties(const Component *component)
-{
-    Component::copyProperties(component);
-
-    this->parent.reset();
+    this->parent = nullptr;
 }
 
 void Node::OnEnter()
@@ -140,7 +133,7 @@ void Node::OnEnter()
         node->getEntity()->enterEvent.emit();
     };
 
-    auto node = this->shared_from_this();
+    auto node = this->getComponent<Node>();
     DistpatchFunctionInHierarchy(node, func);
 }
 
@@ -152,7 +145,7 @@ void Node::OnExit()
         node->getEntity()->exitEvent.emit();
     };
 
-    auto node = this->shared_from_this();
+    auto node = this->getComponent<Node>();
     DistpatchFunctionInHierarchy(node, func);
 }
 

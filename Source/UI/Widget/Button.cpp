@@ -6,27 +6,31 @@
 namespace re {
 namespace ui {
 
-BaseButton::BaseButton()
+Button::Button()
 {
 }
 
-void BaseButton::onAwake()
+void Button::onAwake()
 {
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
 }
 
-void BaseButton::switchState(WidgetState newState)
+void Button::switchState(WidgetState newState)
 {
     if (this->state == newState) {
         return;
     }
 
+    WidgetState oldState = this->state;
+
     this->state = newState;
+
+    this->switchStateForImage(oldState, newState);
 }
 
-void BaseButton::initTouchListener()
+void Button::initTouchListener()
 {
     auto listener = TouchEventListener::create();
 
@@ -50,8 +54,9 @@ void BaseButton::initTouchListener()
     listener->onTouchUpInside = [&](TouchEvent&, WidgetPtr& widget) {
         if (this->isTouchDown) {
             if (this->onButtonClickFunc) {
-                auto button = std::dynamic_pointer_cast<BaseButton>(widget);
-                this->onButtonClickFunc(button);
+                // TODO:
+//                auto button = std::dynamic_pointer_cast<BaseButton>(widget);
+//                this->onButtonClickFunc(button);
             }
 
             this->isTouchDown = false;
@@ -75,43 +80,42 @@ void BaseButton::initTouchListener()
     this->_onTouchListeners.push_back(listener);
 }
 
-void BaseButton::setOnClickFunc(std::function<void (ButtonPtr &)> func)
+void Button::setOnClickFunc(std::function<void (ButtonPtr &)> func)
 {
     this->onButtonClickFunc = func;
 }
 
-void BaseButton::registerEvents()
+void Button::registerEvents()
 {
     Widget::registerEvents();
 
-    RegisterEvent(Events::Awake, this, &BaseButton::onAwake);
+    RegisterEvent(Events::Awake, this, &Button::onAwake);
 }
 
-ComponentPtr BaseButton::createCloneInstance() const
+void Button::copyProperties(const Button& rhs)
 {
-    return CreateCloneInstance<BaseButton>();
+    this->isTouchDown = false;
+    this->touchDownTime = 0;
 }
 
-void BaseButton::copyProperties(const Component *component)
+void Button::initGraphic()
 {
-    Widget::copyProperties(component);
+    ImageButtonData data = std::get<0>(datas);
 
-    const BaseButton* inst = dynamic_cast<const BaseButton*>(component);
-    if (inst) {
-        this->isTouchDown = false;
-        this->touchDownTime = 0;
-    }
+    transform->setSize(data.defaultSprite->getComponent<Transform2D>()->getSize());
+
+    getNode()->addChild(data.defaultSprite->getNode());
+    getNode()->addChild(data.pressedSprite->getNode());
+    getNode()->addChild(data.disabledSprite->getNode());
 }
 
-void ImageButton::init(const string &texDefault, const string &texPress)
+ImageButtonData::ImageButtonData(const string &texDefault, const string &texPress)
 {
-    this->init(texDefault, texPress, texDefault);
+    ImageButtonData(texDefault, texPress, texDefault);
 }
 
-void ImageButton::init(const string &texDefault, const string &texPress, const string &texDis)
+ImageButtonData::ImageButtonData(const string &texDefault, const string &texPress, const string &texDis)
 {
-    BaseButton::onAwake();
-
     this->defaultSprite = CreateUIGraphicNode<Sprite>(texDefault);
     this->pressedSprite = CreateUIGraphicNode<Sprite>(texPress);
     this->disabledSprite = CreateUIGraphicNode<Sprite>(texDis);
@@ -119,76 +123,41 @@ void ImageButton::init(const string &texDefault, const string &texPress, const s
     this->defaultSprite->rebind();
     this->pressedSprite->rebind();
     this->disabledSprite->rebind();
-
-    transform->setSize(this->defaultSprite->getComponent<Transform2D>()->getSize());
-
-    getNode()->addChild(defaultSprite->getNode());
-    getNode()->addChild(pressedSprite->getNode());
-    getNode()->addChild(disabledSprite->getNode());
-
-    defaultSprite->getNode()->setVisible(true);
-    pressedSprite->getNode()->setVisible(false);
-    disabledSprite->getNode()->setVisible(false);
-
-    this->switchState(WidgetState::DEFAULT);
 }
 
-void ImageButton::switchState(WidgetState newState)
+void Button::switchStateForImage(WidgetState oldState, WidgetState newState)
 {
-    if (this->state == newState) {
-        return;
-    }
-    WidgetState oldState = this->state;
+    ImageButtonData data = std::get<0>(datas);
 
     switch (oldState) {
     case WidgetState::PRESSED:
-        pressedSprite->getNode()->setVisible(false);
+        data.pressedSprite->getNode()->setVisible(false);
         break;
     case WidgetState::DEFAULT:
-        defaultSprite->getNode()->setVisible(false);
+        data.defaultSprite->getNode()->setVisible(false);
         break;
     case WidgetState::SELECTED:
-        pressedSprite->getNode()->setVisible(false);
+        data.pressedSprite->getNode()->setVisible(false);
         break;
     case WidgetState::DISABLED:
-        disabledSprite->getNode()->setVisible(false);
+        data.disabledSprite->getNode()->setVisible(false);
         break;
     }
 
     switch (newState) {
     case WidgetState::PRESSED:
-        pressedSprite->getNode()->setVisible(true);
+        data.pressedSprite->getNode()->setVisible(true);
         break;
     case WidgetState::DEFAULT:
-        defaultSprite->getNode()->setVisible(true);
+        data.defaultSprite->getNode()->setVisible(true);
         break;
     case WidgetState::SELECTED:
-        pressedSprite->getNode()->setVisible(true);
+        data.pressedSprite->getNode()->setVisible(true);
         break;
     case WidgetState::DISABLED:
-        disabledSprite->getNode()->setVisible(true);
+        data.disabledSprite->getNode()->setVisible(true);
     }
     this->state = newState;
-}
-
-ComponentPtr ImageButton::createCloneInstance() const
-{
-    return CreateCloneInstance<ImageButton>();
-}
-
-void ImageButton::copyProperties(const Component *component)
-{
-    BaseButton::copyProperties(component);
-}
-
-ComponentPtr LabelButton::createCloneInstance() const
-{
-    return CreateCloneInstance<LabelButton>();
-}
-
-void LabelButton::copyProperties(const Component *component)
-{
-    ImageButton::copyProperties(component);
 }
 
 } // namespace ui

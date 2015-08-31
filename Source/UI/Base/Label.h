@@ -17,8 +17,7 @@ public:
     void setText(const string &text);
 
 protected:
-    virtual ComponentPtr createCloneInstance() const;
-    virtual void copyProperties(const Component* component) override;
+    void copyProperties(const Label& rhs);
 
 protected:
     Font::ptr font;

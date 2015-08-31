@@ -16,7 +16,7 @@ Window::Window()
 : isFullScreen(true)
 , isTransparent(false)
 , backgroundAlpha(0.67)
-, manager(NULL)
+, manager(nullptr)
 {
     this->showAnimFunc = nullptr;
     this->hideAnimFunc = nullptr;
@@ -76,7 +76,7 @@ void Window::actionCallback() {
 }
 
 void Window::popFromWindowManager() {
-    if (manager == NULL) {
+    if (manager == nullptr) {
         return;
     }
     
@@ -99,39 +99,40 @@ void Window::initAnimFunc()
         this->actionCallback();
     };
 
-    this->showAnimFunc = [=]() {
-        Timeline::createSequence()
-            .beginParallel()
-                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(0.4f))
-                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(0.6f))
-            .end()
+    // TODO:
+//    this->showAnimFunc = [=]() {
+//        Timeline::createSequence()
+//            .beginParallel()
+//                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(0.4f))
+//                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(0.6f))
+//            .end()
 
-            .beginParallel()
-                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(1.0f))
-                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(1.0f))
-            .end()
+//            .beginParallel()
+//                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(1.0f))
+//                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(1.0f))
+//            .end()
 
-            .setCallback(animCallback)
-            .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::instance().GetTweenManager());
-    };
+//            .setCallback(animCallback)
+//            .setCallbackTriggers(TweenCallbackType::COMPLETE)
+//            .start(GameHub::instance().GetTweenManager());
+//    };
 
-    this->hideAnimFunc = [=]() {
-        Timeline::createSequence()
-            .beginParallel()
-                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(1.0f))
-                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(1.0f))
-            .end()
+//    this->hideAnimFunc = [=]() {
+//        Timeline::createSequence()
+//            .beginParallel()
+//                .push(Tween::set(ptr, FlatNodeAccessor::SCALE).target(1.0f))
+//                .push(Tween::set(ptr, FlatNodeAccessor::ALPHA).target(1.0f))
+//            .end()
 
-            .beginParallel()
-                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(0.4))
-                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(0.6))
-            .end()
+//            .beginParallel()
+//                .push(Tween::to(ptr, FlatNodeAccessor::SCALE, 0.7).target(0.4))
+//                .push(Tween::to(ptr, FlatNodeAccessor::ALPHA, 0.7).target(0.6))
+//            .end()
 
-            .setCallback(animCallback)
-            .setCallbackTriggers(TweenCallbackType::COMPLETE)
-            .start(GameHub::instance().GetTweenManager());
-    };
+//            .setCallback(animCallback)
+//            .setCallbackTriggers(TweenCallbackType::COMPLETE)
+//            .start(GameHub::instance().GetTweenManager());
+//    };
 }
 
 } // namespace ui

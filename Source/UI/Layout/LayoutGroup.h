@@ -9,7 +9,7 @@ namespace ui {
 
 void LayoutRoot(NodePtr& root);
 
-class LayoutGroup : public Component
+class LayoutGroup : public Component<LayoutGroup>
 {
 public:
     LayoutGroup();
