@@ -25,7 +25,7 @@ public:
     int gridCount = 0;
 };
 
-class ScrollView : public Widget
+class ScrollView : public Component<ScrollView>
 {
 public:
     ScrollView();

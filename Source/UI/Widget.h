@@ -23,6 +23,8 @@ enum class WidgetState {
 
 class Widget : public Component<Widget>
 {
+    friend class UIManager;
+
 public:
     Widget();
     virtual ~Widget();
@@ -43,7 +45,8 @@ public:
     void setBlockTouch(bool value);
 
 public:
-    virtual bool onTouchEvent(TouchEvent& event);
+    void addTouchListener(TouchEventListener::ptr listener);
+    bool onTouchEvent(TouchEvent& event);
     
 protected:
     bool emitWidgetTouchEvent(WidgetTouchState oldState, WidgetTouchState newState, TouchEvent& event);
@@ -76,7 +79,6 @@ protected:
      */
     bool _blockTouch;
 
-    WidgetState state;
     WidgetTouchState touchState;
 
     std::vector<TouchEventListener::ptr> _onTouchListeners;

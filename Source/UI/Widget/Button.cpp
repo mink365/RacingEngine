@@ -24,7 +24,6 @@ void Button::switchState(WidgetState newState)
     }
 
     WidgetState oldState = this->state;
-
     this->state = newState;
 
     this->switchStateForImage(oldState, newState);
@@ -77,7 +76,7 @@ void Button::initTouchListener()
         this->isTouchDown = false;
     };
 
-    this->_onTouchListeners.push_back(listener);
+    this->getComponent<Widget>()->addTouchListener(listener);
 }
 
 void Button::setOnClickFunc(std::function<void (ButtonPtr &)> func)
@@ -87,8 +86,6 @@ void Button::setOnClickFunc(std::function<void (ButtonPtr &)> func)
 
 void Button::registerEvents()
 {
-    Widget::registerEvents();
-
     RegisterEvent(Events::Awake, this, &Button::onAwake);
 }
 
@@ -102,7 +99,7 @@ void Button::initGraphic()
 {
     ImageButtonData data = std::get<0>(datas);
 
-    transform->setSize(data.defaultSprite->getComponent<Transform2D>()->getSize());
+    this->getComponent<Transform2D>()->setSize(data.defaultSprite->getComponent<Transform2D>()->getSize());
 
     getNode()->addChild(data.defaultSprite->getNode());
     getNode()->addChild(data.pressedSprite->getNode());
@@ -157,7 +154,6 @@ void Button::switchStateForImage(WidgetState oldState, WidgetState newState)
     case WidgetState::DISABLED:
         data.disabledSprite->getNode()->setVisible(true);
     }
-    this->state = newState;
 }
 
 } // namespace ui

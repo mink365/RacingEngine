@@ -103,7 +103,7 @@ void ScrollView::initTouchListener()
         this->handleTouchUpEvent(event);
     };
 
-    this->_onTouchListeners.push_back(listener);
+    this->getComponent<Widget>()->addTouchListener(listener);
 }
 
 void ScrollView::setContainer(Transform2DPtr node)
@@ -113,8 +113,6 @@ void ScrollView::setContainer(Transform2DPtr node)
 
 void ScrollView::registerEvents()
 {
-    Widget::registerEvents();
-
     RegisterEvent(Events::Awake, this, &ScrollView::onAwake);
     RegisterEvent(Events::Update, this, &ScrollView::onUpdate);
 }
@@ -140,6 +138,8 @@ void ScrollView::onUpdate()
 
 void ScrollView::resetAxis()
 {
+    auto transform = this->getComponent<Transform2D>();
+
     hAxis.reset();
     vAxis.reset();
 

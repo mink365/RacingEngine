@@ -23,11 +23,10 @@ public:
 
 public:
 
-
     SpritePtr defaultSprite, pressedSprite, disabledSprite;
 };
 
-class Button : public Widget
+class Button : public Component<Widget>
 {
 public:
     Button();
@@ -56,6 +55,8 @@ protected:
 
     bool isTouchDown;
     int touchDownTime;
+
+    WidgetState state;
 
     std::tuple<ImageButtonData> datas;
 };

@@ -215,7 +215,7 @@ void WindowManager::addWindowToScene(WindowPtr &win)
     getNode()->addChild(win->getNode());
 
     LayoutUtil::LayoutToParent(win->getComponent<Transform2D>(), AlignType::CENTER, AlignType::CENTER);
-    win->layout();
+    win->getComponent<Widget>()->layout();
 }
 
 void WindowManager::removeWindowFromScene(WindowPtr &win)

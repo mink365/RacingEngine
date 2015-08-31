@@ -15,7 +15,7 @@ Scene::~Scene() {
 }
 
 void Scene::onAwake() {
-    transform->setSize(Screen::instance().getSize());
+    this->getComponent<Transform2D>()->setSize(Screen::instance().getSize());
 
     this->getEntity()->addComponent<WindowManager>();
     
@@ -43,8 +43,6 @@ bool Scene::onBackKeyEvent() {
 
 void Scene::registerEvents()
 {
-    Widget::registerEvents();
-
     RegisterEvent(Events::Awake, this, &Scene::onAwake);
     RegisterEvent(Events::Enter, this, &Scene::onEnter);
     RegisterEvent(Events::Exit, this, &Scene::onExit);

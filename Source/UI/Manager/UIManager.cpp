@@ -29,8 +29,6 @@ WindowFactory &UIManager::getWindowFactory()
 
 void UIManager::registerEvents()
 {
-    Widget::registerEvents();
-
     RegisterEvent(Events::Awake, this, &UIManager::onAwake);
     RegisterEvent(Events::Enter, this, &UIManager::onEnter);
     RegisterEvent(Events::Exit, this, &UIManager::onExit);
@@ -41,7 +39,7 @@ void UIManager::handleMessage(Message *message) {
         TouchEvent* event = static_cast<TouchEvent*>(message->getData());
 
         event->setCurrPoint(event->getPoint() / Screen::instance().getFinalScale());
-        this->dispatchTouchEvent(*event);
+        this->getComponent<Widget>()->dispatchTouchEvent(*event);
     }
 }
 

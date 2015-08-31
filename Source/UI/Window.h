@@ -10,7 +10,7 @@ namespace ui {
 
 class WindowManager;
 
-class Window : public Widget, public AnimationView, public IBackKeyHandler
+class Window : public Component<Window>, public AnimationView, public IBackKeyHandler
 {
     friend class WindowManager;
     

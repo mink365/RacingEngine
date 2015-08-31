@@ -24,13 +24,13 @@ Window::Window()
 
 void Window::registerEvents()
 {
-    Widget::registerEvents();
-
     RegisterEvent(Events::Awake, this, &Window::onAwake);
 }
 
 void Window::onAwake()
 {
+    auto transform = this->getComponent<Transform2D>();
+
     // window default is full screen
     transform->setSize(Screen::instance().getSize());
     

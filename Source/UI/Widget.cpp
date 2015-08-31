@@ -68,6 +68,11 @@ void Widget::setBlockTouch(bool value) {
     _blockTouch = value;
 }
 
+void Widget::addTouchListener(TouchEventListener::ptr listener)
+{
+    this->_onTouchListeners.push_back(listener);
+}
+
 bool Widget::onTouchEvent(TouchEvent &event)
 {
     if (!this->_touchEnable || !this->isVisible()) {
@@ -247,7 +252,6 @@ void Widget::copyProperties(const Widget &rhs)
     this->_touchEnable = rhs._touchEnable;
     this->_blockTouch = rhs._blockTouch;
 
-    this->state = rhs.state;
     this->touchState = WidgetTouchState::TOUCH_CANCLE;
 }
 
