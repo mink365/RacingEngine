@@ -8,7 +8,7 @@
 #include "Base/Uncopyable.h"
 #include "Base/Shared.h"
 #include "Base/Singleton.h"
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 #include "Util/StringUtil.h"
 
 using std::string;

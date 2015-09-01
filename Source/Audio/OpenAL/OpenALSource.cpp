@@ -16,13 +16,13 @@ OpenALSource::OpenALSource()
     AL_CHECK( alGenSources(1, &_alSource) );
     if (AL_LAST_ERROR())
     {
-        LOG_E("Error generating audio source.");
+        LogError("Error generating audio source.");
     }
 }
 
 OpenALSource::~OpenALSource()
 {
-    LOG_E("remove source");
+    LogError("remove source");
 
     if (_alSource)
     {
@@ -81,7 +81,7 @@ void OpenALSource::setLooped(bool looped)
     AL_CHECK( alSourcei(_alSource, AL_LOOPING, (looped) ? AL_TRUE : AL_FALSE) );
     if (AL_LAST_ERROR())
     {
-        LOG_E("Failed to set audio source's looped attribute with error: %d", AL_LAST_ERROR());
+        LogError("Failed to set audio source's looped attribute with error: %d", AL_LAST_ERROR());
     }
 }
 

@@ -14,7 +14,7 @@ OpenALAudioEngine::OpenALAudioEngine()
     if (!context || alcErr != ALC_NO_ERROR)
     {
         alcCloseDevice(device);
-        LOG_E("Unable to create OpenAL context. Error: %d\n", alcErr);
+        LogError("Unable to create OpenAL context. Error: {}", alcErr);
         return;
     }
 
@@ -22,7 +22,7 @@ OpenALAudioEngine::OpenALAudioEngine()
     alcErr = alcGetError(device);
     if (alcErr != ALC_NO_ERROR)
     {
-        LOG_E("Unable to make OpenAL context current. Error: %d\n", alcErr);
+        LogError("Unable to make OpenAL context current. Error: {}", alcErr);
     }
 
 //    alDistanceModel(AL_INVERSE_DISTANCE);
@@ -33,7 +33,7 @@ OpenALAudioEngine::OpenALAudioEngine()
 
 OpenALAudioEngine::~OpenALAudioEngine()
 {
-    LOG_E("remove engine");
+    LogError("remove engine");
 
     ALCcontext* context(alcGetCurrentContext());
     ALCdevice* device(alcGetContextsDevice(context));

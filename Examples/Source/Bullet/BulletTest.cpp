@@ -77,7 +77,7 @@ void BulletTest::Update()
 
         if (aabbOverlap.m_numOverlap)
         {
-            LOG_E("#aabb overlap = %d\n", aabbOverlap.m_numOverlap);
+            LogError("#aabb overlap = {}\n", aabbOverlap.m_numOverlap);
         }
     }
 
@@ -172,8 +172,8 @@ void BulletTest::initPhysics()
                                         btScalar(2.0*k + start_y),
                                         btScalar(2.0*j + start_z)));
 
-                    LOG_E("DDDD: %f", 2.0*i + start_x);
-                    LOG_E("Posiztion: %f %f %f", startTransform.getOrigin().x(), startTransform.getOrigin().y(), startTransform.getOrigin().z());
+                    LogError("DDDD: {}", 2.0*i + start_x);
+                    LogError("Posiztion: {0} {1} {2}", startTransform.getOrigin().x(), startTransform.getOrigin().y(), startTransform.getOrigin().z());
 
                     //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                     btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);

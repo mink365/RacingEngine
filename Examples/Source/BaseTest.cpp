@@ -9,7 +9,7 @@ int CheckShaderLinkError(GLint program) {
     glGetProgramiv(program, GL_LINK_STATUS, (GLint *)&IsLinked);
     if(IsLinked==GL_FALSE)
     {
-        LOG_E("Failed to link shader.");
+        LogError("Failed to link shader.");
 
         GLint maxLength;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
@@ -17,7 +17,7 @@ int CheckShaderLinkError(GLint program) {
         {
             char *pLinkInfoLog = new char[maxLength];
             glGetProgramInfoLog(program, maxLength, &maxLength, pLinkInfoLog);
-            LOG_E("shader log: %s\n", pLinkInfoLog);
+            LogError("shader log: {}", pLinkInfoLog);
 
             delete [] pLinkInfoLog;
         }

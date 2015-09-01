@@ -10,7 +10,7 @@
 #define OPENALBASE_H
 
 #include <AL/al.h>
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 
 // Array deletion macro
 #define SAFE_DELETE_ARRAY(x) \
@@ -33,7 +33,7 @@
         __al_error_code = alGetError(); \
         if (__al_error_code != AL_NO_ERROR) \
         { \
-            LOG_E(#al_code ": %d", (int)__al_error_code); \
+            LogError(#al_code ": {}", (int)__al_error_code); \
         } \
     } while(0)
 

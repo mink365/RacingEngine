@@ -13,7 +13,7 @@ void TextureManager::registerTexture(Texture::ptr& texture)
     if (this->registeredTextures.find(texture->getName()) == this->registeredTextures.end()) {
         this->registeredTextures[texture->getName()] = texture;
     } else {
-        LOG_D("aready has key!: %s", texture->getName().c_str());
+        LogError("aready has key: {}", texture->getName());
     }
 }
 

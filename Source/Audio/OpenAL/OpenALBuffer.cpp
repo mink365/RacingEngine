@@ -37,7 +37,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     // Verify the wave fmt magic value meaning format.
     if (stream->read(data, 1, 8) != 8 || memcmp(data, "fmt ", 4) != 0 )
     {
-        LOG_E("Failed to verify the magic value for the wave file format.");
+        LogError("Failed to verify the magic value for the wave file format.");
         return false;
     }
 
@@ -50,7 +50,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     // Check for a valid pcm format.
     if (stream->read(data, 1, 2) != 2 || data[1] != 0 || data[0] != 1)
     {
-        LOG_E("Unsupported audio file format (must be a valid PCM format).");
+        LogError("Unsupported audio file format (must be a valid PCM format).");
         return false;
     }
 
@@ -58,7 +58,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     int channels;
     if (stream->read(data, 1, 2) != 2)
     {
-        LOG_E("Failed to read the wave file's channel count.");
+        LogError("Failed to read the wave file's channel count.");
         return false;
     }
     channels  = data[1]<<8;
@@ -68,7 +68,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     ALuint frequency;
     if (stream->read(data, 1, 4) != 4)
     {
-        LOG_E("Failed to read the wave file's sample frequency.");
+        LogError("Failed to read the wave file's sample frequency.");
         return false;
     }
 
@@ -82,7 +82,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     // We could use this later if we need to know the duration.
     if (stream->read(data, 1, 6) != 6)
     {
-        LOG_E("Failed to read past the wave file's block size and bytes-per-second.");
+        LogError("Failed to read past the wave file's block size and bytes-per-second.");
         return false;
     }
 
@@ -90,7 +90,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     int bits;
     if (stream->read(data, 1, 2) != 2)
     {
-        LOG_E("Failed to read the wave file's bit depth.");
+        LogError("Failed to read the wave file's bit depth.");
         return false;
     }
     bits  = data[1]<<8;
@@ -114,7 +114,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
     }
     else
     {
-        LOG_E("Incompatible wave file format: (%d, %d)", channels, bits);
+        LogError("Incompatible wave file format: ({}, {}})", channels, bits);
         return false;
     }
 
@@ -126,7 +126,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
         // Extension size is 2 bytes.
         if (stream->read(data, 1, length) != length)
         {
-            LOG_E("Failed to read extension size from wave file.");
+            LogError("Failed to read extension size from wave file.");
             return false;
         }
     }
@@ -137,14 +137,14 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
         // Check if we are at the end of the file without reading the data.
         if (stream->eof())
         {
-            LOG_E("Failed to load wave file; file appears to have no data.");
+            LogError("Failed to load wave file; file appears to have no data.");
             return false;
         }
 
         // Read in the type of the next section of the file.
         if (stream->read(data, 1, 4) != 4)
         {
-            LOG_E("Failed to read next section type from wave file.");
+            LogError("Failed to read next section type from wave file.");
             return false;
         }
 
@@ -155,14 +155,14 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
             unsigned int dataSize;
             if (stream->read(&dataSize, sizeof(int), 1) != 1)
             {
-                LOG_E("Failed to read size of data section from wave file.");
+                LogError("Failed to read size of data section from wave file.");
                 return false;
             }
 
             char* data = new char[dataSize];
             if (stream->read(data, sizeof(char), dataSize) != dataSize)
             {
-                LOG_E("Failed to load wave file; file is missing data.");
+                LogError("Failed to load wave file; file is missing data.");
                 SAFE_DELETE_ARRAY(data);
                 return false;
             }
@@ -194,7 +194,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
             // Read the chunk size.
             if (stream->read(data, 1, 4) != 4)
             {
-                LOG_E("Failed to read size of '%s' chunk from wave file.", chunk);
+                LogError("Failed to read size of '{}' chunk from wave file.", chunk);
                 return false;
             }
 
@@ -206,7 +206,7 @@ bool OpenALBuffer::loadWav(File* stream, ALuint buffer)
             // Seek past the chunk.
             if (stream->seek(section_size, SEEK_CUR) == false)
             {
-                LOG_E("Failed to seek past '%s' chunk in wave file.", chunk);
+                LogError("Failed to seek past '{}' chunk in wave file.", chunk);
                 return false;
             }
         }
@@ -265,7 +265,7 @@ bool OpenALBuffer::loadOgg(File* stream, ALuint buffer)
 
     if ((result = ov_open_callbacks(stream, &ogg_file, NULL, 0, callbacks)) < 0)
     {
-        LOG_E("Failed to open ogg file.");
+        LogError("Failed to open ogg file.");
         return false;
     }
 
@@ -290,7 +290,7 @@ bool OpenALBuffer::loadOgg(File* stream, ALuint buffer)
         else if (result < 0)
         {
             SAFE_DELETE_ARRAY(data);
-            LOG_E("Failed to read ogg file; file is missing data.");
+            LogError("Failed to read ogg file; file is missing data.");
             return false;
         }
         else
@@ -302,7 +302,7 @@ bool OpenALBuffer::loadOgg(File* stream, ALuint buffer)
     if (size == 0)
     {
         SAFE_DELETE_ARRAY(data);
-        LOG_E("Filed to read ogg file; unable to read any data.");
+        LogError("Filed to read ogg file; unable to read any data.");
         return false;
     }
 

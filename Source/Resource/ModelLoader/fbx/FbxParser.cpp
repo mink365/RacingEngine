@@ -52,7 +52,7 @@ void FbxParser::parseStream(std::istream *st) {
     int index = reader->ReadInt(st);
     int count = reader->ReadInt(st);
 
-    LOG_D("type: %d, len: %d, index: %d, count: %d", type, mode_len, index, count);
+    Log("type: {}, len: {}, index: {}, count: {}", type, mode_len, index, count);
 
     for (int i = 0; i < count; ++i) {
         auto node = readNode(st);
@@ -107,12 +107,12 @@ NodePtr FbxParser::readNode(std::istream *st) {
         entity->id = id;
         entity->name = name;
 
-        LOG_D("node: %s, id: %d, attType: %d", name.c_str(), id, (int)attType);
+        Log("node: {}, id: {}, attType: {}", name.c_str(), id, (int)attType);
 
         this->readNodeTransform(st, node);
 
         if (attType == FbxNodeAttributeType::MESH) {
-            LOG_D("read mesh");
+            Log("read mesh");
 
             this->readMesh(st, node);
         }
@@ -132,7 +132,7 @@ NodePtr FbxParser::readNode(std::istream *st) {
         break;
     default:
         // 摄像机和灯光信息
-        LOG_D(" not supported att type: %d", (int)attType);
+        Log(" not supported att type: {}", (int)attType);
         break;
     }
 
@@ -161,7 +161,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
     int len = reader->ReadInt(st);
     float points[len * 3];
 
-    LOG_D(" count: %d", len);
+    Log(" count: {}", len);
 
     st->read((char*)points, len * 3 * 4);
     for (int i = 0; i < len; ++i) {
@@ -198,7 +198,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
         face.b = index[i*3 + 1];
         face.c = index[i*3 + 2];
     }
-    LOG_D(" num of indices %d", len);
+    Log(" num of indices {}", len);
 
     len = reader->ReadInt(st);
     int num_of_vertex = len;
@@ -247,7 +247,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
 
         PrintArray("normal ", normalArray, normalCount, 3);
     }
-    LOG_D(" normal %d", len);
+    Log(" normal {}", len);
 
     // push data
     int vertexCount = num_of_vertex / 3;
@@ -325,7 +325,7 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
         node->setVisible(false);
     }
 
-    LOG_D("mesh read done.");
+    Log("mesh read done.");
 }
 
 void FbxParser::readSkeleton(istream *st)
@@ -440,7 +440,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st, MaterialPtr &material) {
         if (id != -1) {
             std::string name = reader->ReadString(st);
 
-            LOG_D(" name: %s", name.c_str());
+            Log(" name: {}", name);
 
             float offsetU = reader->ReadFloat(st);
             float offsetV = reader->ReadFloat(st);
@@ -465,7 +465,7 @@ PassPtr FbxParser::readMaterialPass(std::istream *st, MaterialPtr &material) {
                 pass = Pass::create();
             }
 
-            LOG_D("id: %d, offset: %f, %f, scale: %f, %f", id, offsetU, offsetV, scaleU, scaleV);
+            Log("id: {}, offset: {}, {}, scale: {}, {}", id, offsetU, offsetV, scaleU, scaleV);
         }
 
     } while (id != -1);

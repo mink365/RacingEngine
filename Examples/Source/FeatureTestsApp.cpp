@@ -43,7 +43,7 @@
 #include "Audio/AudioTest.h"
 #include "Resource/ResourceManager.h"
 
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 #include "Util/PredefineTweenAccessor.h"
 #include "Util/EventUtil.h"
 

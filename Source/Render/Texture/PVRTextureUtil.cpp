@@ -1,7 +1,7 @@
 #include "PVRTextureUtil.h"
 
 #include "FileSystem/FileSystem.h"
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 
 #include "GameHub.h"
 #include "Renderer/Renderer.h"
@@ -17,7 +17,7 @@
 #include "Texture.h"
 
 #define CPVRTgles2Ext::IsGLExtensionSupported(X) true
-#define PVRTErrorOutputDebug LOG_E
+#define PVRTErrorOutputDebug LogError
 #define PVR_FAIL false
 #define PVR_SUCCESS true
 

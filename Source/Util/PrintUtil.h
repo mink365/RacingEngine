@@ -23,7 +23,7 @@ void PrintArray(std::string head, T *value, int count, int split) {
         oss << "]" << "\n";
     }
 
-    LOG_D("%s", oss.str().c_str());
+    Log("Array {}", oss.str());
 }
 
 }

@@ -295,7 +295,7 @@ uint ShaderUtil::loadShader(const char *source, uint type)
         char* src = new char[length];
 
         glGetShaderSource(id, length, NULL, src);
-        LOG_E("ShaderUtil: ERROR: Failed to compile shader:\n%s", src);
+        LogError("ShaderUtil: ERROR: Failed to compile shader: {}\n", src);
 
         delete[] src;
 
@@ -309,10 +309,10 @@ uint ShaderUtil::loadShader(const char *source, uint type)
         glGetShaderInfoLog(id, logLength, &charsWritten, logBytes);
 
         if (type == GL_VERTEX_SHADER) {
-            LOG_E("VS: %s", logBytes);
+            LogError("VS: {}", logBytes);
 
         } else {
-            LOG_E("FS: %s", logBytes);
+            LogError("FS: {}", logBytes);
         }
         free(logBytes);
 
@@ -341,12 +341,12 @@ void ShaderUtil::linkPrograme(Shader *shader)
 
         glGetShaderInfoLog(shader->getVertexShader(), sizeof(buf), &len, buf);
         if (len > 0) {
-            LOG_E("VS: %s\n", buf);
+            LogError("VS: {}", buf);
         }
 
         glGetShaderInfoLog(shader->getFragmentShader(), sizeof(buf), &len, buf);
         if (len > 0) {
-            LOG_E("FS: %s\n", buf);
+            LogError("FS: {}", buf);
         }
 
         delete [] buf;
