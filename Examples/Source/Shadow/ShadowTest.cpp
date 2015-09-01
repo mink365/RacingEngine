@@ -86,8 +86,8 @@ void ShadowTest::Init()
     light->getEntity()->refreshTransformInHierarchy();
     light->getShadowInfo().shadowCameraNear = 10;
     light->getShadowInfo().shadowCameraFar = 500;
-    light->getSpotLightData().spotAngle = 50;
-    light->getSpotLightData().shadowCameraFov = 50;
+    light->getLightData<LightType::Spot>().spotAngle = 50;
+    light->getLightData<LightType::Spot>().shadowCameraFov = 50;
 
     sprite = CreateUIGraphicNode<Sprite>("diffuse.png");
     sprite->rebind();

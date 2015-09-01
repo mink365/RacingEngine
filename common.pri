@@ -13,6 +13,7 @@ macx {
     CONFIG += RE_PLATFORM_LINUX
     DEFINES += RE_PLATFORM_LINUX
 }
+DEFINES += FMT_HEADER_ONLY
 
 RE_PLATFORM_MAC {
     INCLUDEPATH += /usr/local/include/ \
