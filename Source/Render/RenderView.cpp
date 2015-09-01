@@ -50,7 +50,7 @@ void RenderView::init(LightPtr &light)
     this->_clearColor = Color::White;
 
     if (light->getType() == LightType::Directional) {
-        auto& directionalData = light->getDirectionalLightData();
+        auto& directionalData = light->getLightData<LightType::Directional>();
 
         this->mode = CameraProjectionMode::Orthographic;
 
@@ -72,7 +72,7 @@ void RenderView::init(LightPtr &light)
                                                zNear, zFar);
 
     } else if (light->getType() == LightType::Spot) {
-        auto& spotData = light->getSpotLightData();
+        auto& spotData = light->getLightData<LightType::Spot>();
 
         this->mode = CameraProjectionMode::Perspective;
 

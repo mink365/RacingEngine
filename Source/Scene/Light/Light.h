@@ -18,6 +18,12 @@ enum class LightType {
     Area = 3,
 };
 
+template<class T>
+constexpr int EnumToInt(T type)
+{
+    return (int)type;
+}
+
 class ShadowInfo
 {
 public:
@@ -34,6 +40,8 @@ class Light : public Component<Light>
 {
     friend class RenderView;
     friend class RenderManager;
+
+    using LightDataType = std::tuple<DirectionalLightData, SpotLightData>;
 
 public:
     Light();
@@ -56,14 +64,10 @@ public:
         return shadow;
     }
 
-    DirectionalLightData& getDirectionalLightData()
+    template<LightType type>
+    typename std::tuple_element<EnumToInt(type), LightDataType>::type& getLightData()
     {
-        return std::get<0>(datas);
-    }
-
-    SpotLightData& getSpotLightData()
-    {
-        return std::get<1>(datas);
+        return std::get<EnumToInt(type)>(datas);
     }
 
 protected:
@@ -76,7 +80,7 @@ protected:
 
     ShadowInfo shadow;
 
-    std::tuple<DirectionalLightData, SpotLightData> datas;
+    LightDataType datas;
 };
 
 } // namespace re
