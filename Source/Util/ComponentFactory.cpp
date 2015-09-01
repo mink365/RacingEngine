@@ -2,6 +2,8 @@
 
 #include "UI/Base/HierarchyColor.h"
 #include "UI/Base/Transform2D.h"
+#include "UI/Layout/LayoutElement.h"
+#include "UI/Widget.h"
 #include "UI/Base/Label.h"
 #include "UI/Base/Sprite.h"
 #include "UI/Base/NinePatch.h"
@@ -76,6 +78,20 @@ EntityPtr CreateBoneEntity()
     entity->switchState(EntityState::Awaked);
 
     return entity;
+}
+
+template <>
+ComponentHandle<ui::Widget> CreateNode2D<ui::Widget>()
+{
+    auto entity = CreateEntity();
+
+    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget>(entity);
+
+    entity->switchState(EntityState::Awaked);
+
+    auto component = entity->getComponent<ui::Widget>();
+
+    return component;
 }
 
 } // namespace re

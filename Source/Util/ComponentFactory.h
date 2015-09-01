@@ -15,6 +15,7 @@ namespace ui
     class Transform2D;
     class HierarchyColor;
     class LayoutElement;
+    class Widget;
 }
 
 template <class... TL>
@@ -54,7 +55,7 @@ ComponentHandle<T> CreateNode2D()
 {
     auto entity = CreateEntity();
 
-    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
+    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget, T>(entity);
 
     entity->switchState(EntityState::Awaked);
 
