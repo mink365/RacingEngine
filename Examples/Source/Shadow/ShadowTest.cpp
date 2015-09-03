@@ -90,7 +90,6 @@ void ShadowTest::Init()
     light->getLightData<LightType::Spot>().shadowCameraFov = 50;
 
     sprite = CreateUIGraphicNode<Image>("diffuse.png");
-    sprite->rebind();
     sprite->getComponent<Transform2D>()->setScale(Vec2(1, 1));
     sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));
 

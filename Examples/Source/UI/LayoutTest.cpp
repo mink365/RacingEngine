@@ -34,7 +34,6 @@ void LayoutTest::Init()
 
         for (size_t i = 0; i < 5; ++i) {
             ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
-            sprite->rebind();
             sprite->getNode()->setName("Sprite");
 
             auto alignment = Alignment::create();
@@ -66,7 +65,6 @@ void LayoutTest::Init()
 
         for (size_t i = 0; i < 5; ++i) {
             ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
-            sprite->rebind();
             sprite->getNode()->setName("Sprite");
 
             auto alignment = Alignment::create();

@@ -1,6 +1,5 @@
 #include "ScrollViewTest.h"
 
-#include "UI/Base/NinePatch.h"
 #include "UI/Widget/ListView/ScrollView.h"
 
 #include "MaskTest.h"
@@ -24,7 +23,7 @@ void ScrollViewTest::Init()
     scrollView->getComponent<Transform2D>()->setAnchor(Vec2(0.5f, 0.5f));
     scrollView->getComponent<Transform2D>()->setPosition(Vec2(700, 600));
 
-    NinePatchPtr patch = MaskTest::CreateNinePatch(800, 300);
+    auto patch = MaskTest::CreateNinePatch(800, 300);
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0, 0));
 
     scrollView->getNode()->addChild(patch->getNode());

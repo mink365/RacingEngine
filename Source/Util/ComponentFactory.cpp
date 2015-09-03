@@ -6,7 +6,6 @@
 #include "UI/Widget.h"
 #include "UI/Base/Text.h"
 #include "UI/Base/Image.h"
-#include "UI/Base/NinePatch.h"
 
 #include "Scene/RenderElement.h"
 #include "Render/Mesh.h"

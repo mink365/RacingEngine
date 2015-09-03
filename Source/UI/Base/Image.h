@@ -3,12 +3,58 @@
 
 #include "Texture/Frame/TextureFrame.h"
 #include "Graphic.h"
+#include "Math/Color.h"
+#include "UI/Layout/LayoutUtil.h"
 
 namespace re {
 namespace ui {
 
+enum class ImageType
+{
+    Sample,
+    NinePatch,
+    Filled,
+};
+
+class NinePatchData
+{
+public:
+    NinePatchData() {};
+    NinePatchData(float padding)
+    {
+        leftPadding = padding;
+        topPadding = padding;
+        rightPadding = padding;
+        bottomPadding = padding;
+    }
+    NinePatchData(float left, float top, float right, float bottom)
+    {
+        leftPadding = left;
+        topPadding = top;
+        rightPadding = right;
+        bottomPadding = bottom;
+    }
+
+public:
+    float leftPadding;
+    float topPadding;
+    float rightPadding;
+    float bottomPadding;
+};
+
+class NineGrid
+{
+public:
+    Rect lb;
+    Rect rt;
+
+    const Rect getRect(AlignType type) const;
+};
+
 class Image : public Graphic
 {
+    using ImageDataType = std::tuple<bool, NinePatchData, bool>;
+
 public:
     Image()
         : Graphic()
@@ -17,8 +63,22 @@ public:
     void init();
     void init(const std::string& tex);
 
+    void setType(ImageType type)
+    {
+        this->type = type;
+    }
+
+    template<ImageType type>
+    typename std::tuple_element<EnumToInt(type), ImageDataType>::type& getData()
+    {
+        return std::get<EnumToInt(type)>(datas);
+    }
+
 public:
     void setFrame(TextureFrame::ptr frame);
+
+protected:
+    void addQuad(AlignType type, const NineGrid& vertexGrid, const NineGrid& textureGrid, const re::Color &color);
     void rebind();
 
     virtual void updateViewColor();
@@ -28,8 +88,11 @@ protected:
 
 private:
     Rect rect;
-
     TextureFrame::ptr frame;
+
+    ImageType type;
+
+    ImageDataType datas;
 };
 
 } // namespace ui

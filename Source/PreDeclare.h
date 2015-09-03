@@ -46,7 +46,6 @@ class Transform2D;
 class HierarchyColor;
 class Image;
 class Text;
-class NinePatch;
 
 class Widget;
 class Button;
@@ -94,7 +93,6 @@ namespace ui {
 typedef ComponentHandle<Transform2D> Transform2DPtr;
 typedef ComponentHandle<HierarchyColor> HierarchyColorPtr;
 typedef ComponentHandle<Image> ImagePtr;
-typedef ComponentHandle<NinePatch> NinePatchPtr;
 typedef ComponentHandle<Text> TextPtr;
 
 typedef ComponentHandle<Widget> WidgetPtr;

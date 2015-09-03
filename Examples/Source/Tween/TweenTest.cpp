@@ -1,7 +1,6 @@
 #include "TweenTest.h"
 
 #include "UI/Base/Image.h"
-#include "UI/Base/NinePatch.h"
 #include "UI/Base/Text.h"
 
 #include "Tween.h"
@@ -26,15 +25,13 @@ void TweenTest::Init()
     TextureManager::instance().loadTextures();
 
     ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
-    sprite->rebind();
     sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
-    NinePatchPtr patch = CreateUIGraphicNode<NinePatch>("tab_press.png");
-    patch->setStrethPadding(20, 20, 20, 20);
+    auto patch = CreateUIGraphicNode<Image>("tab_press.png");
+    patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
-    patch->rebind();
 
     FontPtr font = FontManager::instance().GetResource("default");
     if (font == nullptr) {

@@ -12,7 +12,7 @@ public:
     virtual void Update();
 
 public:
-    static NinePatchPtr CreateNinePatch(int width, int height);
+    static ImagePtr CreateNinePatch(int width, int height);
 };
 
 #endif // MASKTEST_H
