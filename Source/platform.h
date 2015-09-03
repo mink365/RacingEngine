@@ -30,6 +30,12 @@ enum ClearBufferBit {
     STENCIL_BUFFER_BIT = 8,
 };
 
+template<class T>
+constexpr int EnumToInt(T type)
+{
+    return (int)type;
+}
+
 // Assert macros.
 #define _DEBUG
 

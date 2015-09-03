@@ -14,11 +14,11 @@ public:
         : Graphic()
     {};
 
+    void init();
     void init(const std::string& tex);
-    void init(const std::string& tex, const Rect& rect);
-    void init(const TextureFrame::ptr& tex, const Rect& rect);
 
 public:
+    void setFrame(TextureFrame::ptr frame);
     void rebind();
 
     virtual void updateViewColor();

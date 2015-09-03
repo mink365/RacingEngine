@@ -18,12 +18,6 @@ enum class LightType {
     Area = 3,
 };
 
-template<class T>
-constexpr int EnumToInt(T type)
-{
-    return (int)type;
-}
-
 class ShadowInfo
 {
 public:

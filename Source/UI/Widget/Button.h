@@ -22,12 +22,13 @@ public:
     ImageButtonData(const string& texDefault, const string& texPress, const string& texDis);
 
 public:
-
-    SpritePtr defaultSprite, pressedSprite, disabledSprite;
+    TextureFrame::ptr defaultSprite, pressedSprite, disabledSprite;
 };
 
 class Button : public Component<Widget>
 {
+    using ButtonDataType = std::tuple<ImageButtonData>;
+
 public:
     Button();
 
@@ -36,6 +37,12 @@ public:
     void initTouchListener();
 
     void setOnClickFunc(std::function<void(ButtonPtr &)> func);
+
+    template<ButtonType type>
+    typename std::tuple_element<EnumToInt(type), ButtonDataType>::type& getData()
+    {
+        return std::get<EnumToInt(type)>(datas);
+    }
 
 public:
     void registerEvents();
@@ -58,7 +65,7 @@ protected:
 
     WidgetState state;
 
-    std::tuple<ImageButtonData> datas;
+    ButtonDataType datas;
 };
 
 } // namespace ui

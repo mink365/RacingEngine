@@ -9,39 +9,29 @@
 namespace re {
 namespace ui {
 
-void Sprite::init(const std::string& tex)
+void Sprite::init()
 {
-    TextureFrame::ptr texture = TextureFrameManager::instance().GetResource(tex);
-    assert(texture != nullptr);
-
-    Rect rect;
-    rect.size = texture->getOriginalSize();
-
-    this->init(texture, rect);
-}
-
-void Sprite::init(const string &tex, const Rect &rect)
-{
-    TextureFrame::ptr texture = TextureFrameManager::instance().GetResource(tex);
-    assert(texture != nullptr);
-
-    this->init(texture, rect);
-}
-
-void Sprite::init(const TextureFrame::ptr &tex, const Rect &rect)
-{
-
-    this->frame = tex;
-    this->rect = rect;
-
-    this->getComponent<Transform2D>()->setSize(rect.size);
-
     auto element = this->getEntity()->addComponent<CanvasRenderElement>();
 
-    auto material = CreateDefaultMaterial(tex->getTexture(), "Shader_PTC");
-    element->setMaterial(material);
-    element->setTexture(tex->getTexture());
     element->setGeometry(geometry);
+}
+
+void Sprite::init(const std::string& tex)
+{
+    auto frame = TextureFrameManager::instance().GetResource(tex);
+
+    this->setFrame(frame);
+}
+
+void Sprite::setFrame(TextureFrame::ptr frame)
+{
+    this->frame = frame;
+    this->rect.size = frame->getOriginalSize();
+
+    auto element = this->getEntity()->addComponent<CanvasRenderElement>();
+    auto material = CreateDefaultMaterial(frame->getTexture(), "Shader_PTC");
+    element->setMaterial(material);
+    element->setTexture(frame->getTexture());
 
     this->rebind();
 }
