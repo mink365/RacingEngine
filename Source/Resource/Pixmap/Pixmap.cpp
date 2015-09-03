@@ -1,4 +1,4 @@
-#include "Image.h"
+#include "Pixmap.h"
 
 #include <string>
 #include <stdio.h>
@@ -54,7 +54,7 @@ void free_fn(png_structp png_ptr, png_voidp ptr){
     free(ptr);
 }
 
-Image::Image()
+Pixmap::Pixmap()
 {
     pixels = NULL;
     width  = 0;
@@ -68,13 +68,13 @@ Image::Image()
     extraData = NULL;
 }
 
-Image::~Image()
+Pixmap::~Pixmap()
 {
     delete [] pixels;
     delete [] extraData;
 }
 
-bool Image::loadJPEG(const char *fileName){
+bool Pixmap::loadJPEG(const char *fileName){
     jpeg_decompress_struct cinfo;
     jpeg_error_mgr jerr;
 
@@ -114,7 +114,7 @@ static void my_error_exit (j_common_ptr cinfo)
   longjmp(myerr->setjmp_buffer, 1);
 }
 
-bool Image::loadJPEG(void *pData, int datalen)
+bool Pixmap::loadJPEG(void *pData, int datalen)
 {
     /* these are standard libjpeg structures for reading(decompression) */
     struct jpeg_decompress_struct cinfo;
@@ -146,7 +146,7 @@ bool Image::loadJPEG(void *pData, int datalen)
     return result;
 }
 
-bool Image::loadJPEG(jpeg_decompress_struct &cinfo)
+bool Pixmap::loadJPEG(jpeg_decompress_struct &cinfo)
 {
     jpeg_read_header(&cinfo, TRUE);
     jpeg_start_decompress(&cinfo);
@@ -182,7 +182,7 @@ bool Image::loadJPEG(jpeg_decompress_struct &cinfo)
     return true;
 }
 
-bool Image::loadPNG(const char *fileName){
+bool Pixmap::loadPNG(const char *fileName){
     png_structp png_ptr = NULL;
     png_infop info_ptr = NULL;
     FILE *file;
@@ -224,7 +224,7 @@ bool Image::loadPNG(const char *fileName){
 }
 
 #define CC_BREAK_IF(cond)            if(cond) return false;
-bool Image::loadPNG(void *pData, int datalen)
+bool Pixmap::loadPNG(void *pData, int datalen)
 {
     // length of bytes to check if it is a valid png file
 #define PNGSIGSIZE  8
@@ -272,7 +272,7 @@ bool Image::loadPNG(void *pData, int datalen)
     ((unsigned)((unsigned char)(vb) * ((unsigned char)(va) + 1) >> 8) << 16) | \
     ((unsigned)(unsigned char)(va) << 24))
 
-bool Image::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
+bool Pixmap::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
 {
     // read all PNG info up to image data
     png_read_info(png_ptr, info_ptr);
@@ -382,22 +382,22 @@ bool Image::loadPNG(png_structp &png_ptr, png_infop &info_ptr)
     return true;
 }
 
-unsigned char *Image::getPixels() const
+unsigned char *Pixmap::getPixels() const
 {
     return pixels;
 }
 
-int Image::getDepth() const
+int Pixmap::getDepth() const
 {
     return depth;
 }
 
-int Image::getWidth() const
+int Pixmap::getWidth() const
 {
     return width;
 }
 
-int Image::getHeight() const
+int Pixmap::getHeight() const
 {
     return height;
 }

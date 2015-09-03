@@ -12,7 +12,7 @@ namespace re {
 
 class ImageLoader {
 public:
-    virtual void loadImage(Texture *texture, Image &image);
+    virtual void loadImage(Texture *texture, Pixmap &image);
 };
 
 class TextureManager : public Singleton<TextureManager>

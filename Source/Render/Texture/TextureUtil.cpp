@@ -1,7 +1,7 @@
 #include "TextureUtil.h"
 
 #include "opengl.h"
-#include "Image/Image.h"
+#include "Pixmap/Pixmap.h"
 #include "Texture/Texture.h"
 #include "GameHub.h"
 #include "Renderer/Renderer.h"
@@ -357,7 +357,7 @@ TextureUtil::TextureUtil()
 {
 }
 
-void TextureUtil::UploadTextureToHardware(Image &image, Texture &texture, int index)
+void TextureUtil::UploadTextureToHardware(Pixmap &image, Texture &texture, int index)
 {
     TextureFormat format = ImageFormatToPixelFormat(image.getFormat());
     texture.setFormat(format);

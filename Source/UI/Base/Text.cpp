@@ -1,4 +1,4 @@
-#include "Label.h"
+#include "Text.h"
 
 #include "HierarchyColor.h"
 #include "Transform2D.h"
@@ -13,12 +13,12 @@
 namespace re {
 namespace ui {
 
-Label::Label()
+Text::Text()
     : Graphic()
 {
 }
 
-void Label::init(Font::ptr &font)
+void Text::init(Font::ptr &font)
 {
     this->font = font;
 
@@ -35,7 +35,7 @@ void Label::init(Font::ptr &font)
     material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
 }
 
-void Label::setText(const string &text)
+void Text::setText(const string &text)
 {
     auto color = this->getComponent<HierarchyColor>();
     auto transform = this->getComponent<Transform2D>();
@@ -51,7 +51,7 @@ void Label::setText(const string &text)
 
 }
 
-void Label::copyProperties(const Label &rhs)
+void Text::copyProperties(const Text &rhs)
 {
     this->font = rhs.font;
     this->text = rhs.text;

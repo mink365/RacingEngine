@@ -1,5 +1,5 @@
 #include "LayoutTest.h"
-#include "UI/Base/Sprite.h"
+#include "UI/Base/Image.h"
 #include "UI/Layout/HorizontalLayoutGroup.h"
 #include "UI/Layout/VerticalLayoutGroup.h"
 
@@ -33,7 +33,7 @@ void LayoutTest::Init()
         group->SetAlign(LinearAlign::Left);
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
+            ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 
@@ -65,7 +65,7 @@ void LayoutTest::Init()
         group->SetAlign(LinearAlign::Center);
 
         for (size_t i = 0; i < 5; ++i) {
-            SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
+            ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
             sprite->rebind();
             sprite->getNode()->setName("Sprite");
 

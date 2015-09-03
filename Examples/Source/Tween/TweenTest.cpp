@@ -1,8 +1,8 @@
 #include "TweenTest.h"
 
-#include "UI/Base/Sprite.h"
+#include "UI/Base/Image.h"
 #include "UI/Base/NinePatch.h"
-#include "UI/Base/Label.h"
+#include "UI/Base/Text.h"
 
 #include "Tween.h"
 #include "Timeline.h"
@@ -25,7 +25,7 @@ void TweenTest::Init()
     TextureParser::instance().addTextures("UI/", "png");
     TextureManager::instance().loadTextures();
 
-    SpritePtr sprite = CreateUIGraphicNode<Sprite>("store_icon_coin.png");
+    ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
@@ -43,11 +43,11 @@ void TweenTest::Init()
         font = FontManager::instance().GetResource("default");
     }
 
-    LabelPtr label = CreateUIGraphicNode<Label>(font);
+    TextPtr label = CreateUIGraphicNode<Text>(font);
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
     label->getComponent<Transform2D>()->setPosition(Vec2(300, 500 + 40));
 
-    LabelPtr label2 = CreateUIGraphicNode<Label>(font);
+    TextPtr label2 = CreateUIGraphicNode<Text>(font);
     label2->setText("xHtbo xx");
     label2->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 40));
 

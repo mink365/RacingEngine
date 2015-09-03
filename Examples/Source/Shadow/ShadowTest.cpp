@@ -3,7 +3,7 @@
 #include "ShapeGenerater.h"
 #include "Scene/Light/DirectionalLight.h"
 #include "Scene/Light/Light.h"
-#include "UI/Base/Sprite.h"
+#include "UI/Base/Image.h"
 #include "Render/RenderTarget.h"
 #include "Scene/Node.h"
 #include "opengl.h"
@@ -15,7 +15,7 @@ ShadowTest::ShadowTest()
 
 static NodePtr box;
 static NodePtr ground;
-static SpritePtr sprite;
+static ImagePtr sprite;
 
 void SetupShadowMapShader();
 
@@ -89,7 +89,7 @@ void ShadowTest::Init()
     light->getLightData<LightType::Spot>().spotAngle = 50;
     light->getLightData<LightType::Spot>().shadowCameraFov = 50;
 
-    sprite = CreateUIGraphicNode<Sprite>("diffuse.png");
+    sprite = CreateUIGraphicNode<Image>("diffuse.png");
     sprite->rebind();
     sprite->getComponent<Transform2D>()->setScale(Vec2(1, 1));
     sprite->getComponent<Transform2D>()->setPosition(Vec2(0, 0));

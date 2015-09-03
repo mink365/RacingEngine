@@ -1,7 +1,7 @@
 #include "Button.h"
 
 #include "Util/ComponentFactory.h"
-#include "UI/Base/Sprite.h"
+#include "UI/Base/Image.h"
 #include "Texture/Frame/TextureFrame.h"
 
 namespace re {
@@ -99,7 +99,7 @@ void Button::copyProperties(const Button& rhs)
 
 void Button::initGraphic()
 {
-    auto& data = getData<ButtonType::Image>();
+    auto& data = getData<ButtonType::SpriteSwap>();
 
     this->getComponent<Transform2D>()->setSize(data.defaultSprite->getOriginalSize());
 }
@@ -118,19 +118,22 @@ ImageButtonData::ImageButtonData(const string &texDefault, const string &texPres
 
 void Button::switchStateForImage(WidgetState oldState, WidgetState newState)
 {
-    ImageButtonData data = getData<ButtonType::Image>();
+    ImageButtonData data = getData<ButtonType::SpriteSwap>();
 
-    SpritePtr sprite = this->getComponent<Sprite>();
+    auto sprite = this->getComponent<ui::Image>();
 
     switch (newState) {
-    case WidgetState::PRESSED:
-        sprite->rebind();
-        break;
     case WidgetState::DEFAULT:
+        sprite->setFrame(data.defaultSprite);
+        break;
+    case WidgetState::PRESSED:
+        sprite->setFrame(data.pressedSprite);
         break;
     case WidgetState::SELECTED:
+        sprite->setFrame(data.pressedSprite);
         break;
     case WidgetState::DISABLED:
+        sprite->setFrame(data.disabledSprite);
         break;
     }
 }

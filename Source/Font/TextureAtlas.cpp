@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <limits.h>
 
-#include "Image/Image.h"
+#include "Pixmap/Pixmap.h"
 #include "Texture/TextureUtil.h"
 
 namespace re {

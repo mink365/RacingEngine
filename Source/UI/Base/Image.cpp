@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "Image.h"
 #include "HierarchyColor.h"
 #include "Transform2D.h"
 
@@ -9,21 +9,21 @@
 namespace re {
 namespace ui {
 
-void Sprite::init()
+void Image::init()
 {
     auto element = this->getEntity()->addComponent<CanvasRenderElement>();
 
     element->setGeometry(geometry);
 }
 
-void Sprite::init(const std::string& tex)
+void Image::init(const std::string& tex)
 {
     auto frame = TextureFrameManager::instance().GetResource(tex);
 
     this->setFrame(frame);
 }
 
-void Sprite::setFrame(TextureFrame::ptr frame)
+void Image::setFrame(TextureFrame::ptr frame)
 {
     this->frame = frame;
     this->rect.size = frame->getOriginalSize();
@@ -36,19 +36,19 @@ void Sprite::setFrame(TextureFrame::ptr frame)
     this->rebind();
 }
 
-void Sprite::rebind()
+void Image::rebind()
 {
     auto color = this->getComponent<HierarchyColor>();
 
     QuadStuffer::FillQuad(frame, rect.size, color->getDisplayColor(), geometry);
 }
 
-void Sprite::updateViewColor()
+void Image::updateViewColor()
 {
     this->rebind();
 }
 
-void Sprite::copyProperties(const Sprite& rhs)
+void Image::copyProperties(const Image& rhs)
 {
 
     this->frame = rhs.frame;

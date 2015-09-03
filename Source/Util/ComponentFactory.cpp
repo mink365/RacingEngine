@@ -4,8 +4,8 @@
 #include "UI/Base/Transform2D.h"
 #include "UI/Layout/LayoutElement.h"
 #include "UI/Widget.h"
-#include "UI/Base/Label.h"
-#include "UI/Base/Sprite.h"
+#include "UI/Base/Text.h"
+#include "UI/Base/Image.h"
 #include "UI/Base/NinePatch.h"
 
 #include "Scene/RenderElement.h"

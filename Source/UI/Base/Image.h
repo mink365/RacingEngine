@@ -1,5 +1,5 @@
-#ifndef RE_UI_SPRITE_H
-#define RE_UI_SPRITE_H
+#ifndef RE_UI_IMAGE_H
+#define RE_UI_IMAGE_H
 
 #include "Texture/Frame/TextureFrame.h"
 #include "Graphic.h"
@@ -7,10 +7,10 @@
 namespace re {
 namespace ui {
 
-class Sprite : public Graphic
+class Image : public Graphic
 {
 public:
-    Sprite()
+    Image()
         : Graphic()
     {};
 
@@ -24,7 +24,7 @@ public:
     virtual void updateViewColor();
 
 protected:
-    void copyProperties(const Sprite &rhs);
+    void copyProperties(const Image &rhs);
 
 private:
     Rect rect;
@@ -35,4 +35,4 @@ private:
 } // namespace ui
 } // namespace re
 
-#endif // RE_UI_SPRITE_H
+#endif // RE_UI_IMAGE_H

@@ -1,5 +1,5 @@
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef RE_PIXMAP_H
+#define RE_PIXMAP_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -167,11 +167,11 @@ inline int getBytesPerBlock(const FORMAT format){
     return (format == FORMAT_DXT1 || format == FORMAT_ATI1N)? 8 : 16;
 }
 
-class Image
+class Pixmap
 {
 public:
-    Image();
-    ~Image();
+    Pixmap();
+    ~Pixmap();
 
     bool loadJPEG(const char *fileName);
     bool loadJPEG(void * pData, int datalen);
@@ -205,4 +205,4 @@ private:
 
 } // namespace re
 
-#endif // IMAGE_H
+#endif // RE_PIXMAP_H

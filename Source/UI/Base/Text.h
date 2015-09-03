@@ -1,5 +1,5 @@
-#ifndef RE_UI_LABEL_H
-#define RE_UI_LABEL_H
+#ifndef RE_UI_TEXT_H
+#define RE_UI_TEXT_H
 
 #include "Graphic.h"
 #include "Font/Font.h"
@@ -7,17 +7,17 @@
 namespace re {
 namespace ui {
 
-class Label : public Graphic
+class Text : public Graphic
 {
 public:
-    Label();
+    Text();
 
     void init(Font::ptr& font);
 
     void setText(const string &text);
 
 protected:
-    void copyProperties(const Label& rhs);
+    void copyProperties(const Text& rhs);
 
 protected:
     Font::ptr font;
@@ -29,4 +29,4 @@ protected:
 } // namespace ui
 } // namespace re
 
-#endif // RE_UI_LABEL_H
+#endif // RE_UI_TEXT_H

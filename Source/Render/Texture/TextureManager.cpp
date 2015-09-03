@@ -1,7 +1,7 @@
 #include "TextureManager.h"
 #include <vector>
 #include <iostream>
-#include "Image/Image.h"
+#include "Pixmap/Pixmap.h"
 #include "FileSystem/File.h"
 #include "Base/Memory/Buffer.h"
 
@@ -48,7 +48,7 @@ void TextureManager::loadTextures()
             continue;
         }
 
-        Image image;
+        Pixmap image;
 
         this->loader->loadImage(texture.get(), image);
         texture->setSize(image.getWidth(), image.getHeight());
@@ -62,7 +62,7 @@ void TextureManager::setImageLoader(ImageLoader *loader)
     this->loader = loader;
 }
 
-void ImageLoader::loadImage(Texture *texture, Image &image)
+void ImageLoader::loadImage(Texture *texture, Pixmap &image)
 {
     std::string ext = texture->getFile()->getExt();
 

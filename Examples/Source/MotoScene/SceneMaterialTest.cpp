@@ -4,8 +4,8 @@
 #include "Loader/MaterialLoader.h"
 #include "Resource/ModelLoader/fbx/FbxParser.h"
 #include "Resource/ResourceManager.h"
-#include "UI/Base/Sprite.h"
-#include "UI/Base/Label.h"
+#include "UI/Base/Image.h"
+#include "UI/Base/Text.h"
 #include "UI/Manager/UIManager.h"
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
@@ -80,7 +80,7 @@ void SceneMaterialTest::Update()
     this->camera->setView(Vec3(0, -1840 * s, 557 * s), Vec3(0, 30, 20), Vec3(0, 0, 1));
 }
 
-static LabelPtr labelName;
+static TextPtr labelName;
 
 void SceneMaterialTest::createUI()
 {
@@ -91,7 +91,7 @@ void SceneMaterialTest::createUI()
         font = FontManager::instance().GetResource("default");
     }
 
-    labelName = CreateUIGraphicNode<Label>(font);
+    labelName = CreateUIGraphicNode<Text>(font);
     labelName->setText("Name");
     labelName->getComponent<Transform2D>()->setAnchor(Vec2(0.5f, 0.5f));
 

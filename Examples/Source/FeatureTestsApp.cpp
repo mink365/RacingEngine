@@ -11,7 +11,7 @@
 #include "Shader/ShaderUtil.h"
 #include "Renderer/GLES2Renderer.h"
 #include "UI/Manager/UIManager.h"
-#include "UI/Base/Label.h"
+#include "UI/Base/Text.h"
 #include "UI/Widget/Button.h"
 #include "UI/Layout/LayoutUtil.h"
 #include "UI/Rendering/DebugRenderer.h"
@@ -157,11 +157,11 @@ void FeatureTestsApp::createBaseUI()
         font = FontManager::instance().GetResource("default");
     }
 
-    labelTitle = CreateUIGraphicNode<Label>(font);
+    labelTitle = CreateUIGraphicNode<Text>(font);
     labelTitle->getComponent<Transform2D>()->setAnchor(Vec2(0.5,0.5));
     labelTitle->setText("Hello");
 
-    labelFps = CreateUIGraphicNode<Label>(font);
+    labelFps = CreateUIGraphicNode<Text>(font);
     labelFps->setText("HelleH");
 
     auto buttonNext = CreateImageButton("b_you.png", "b_you.png", "b_you.png");

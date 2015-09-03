@@ -12,6 +12,10 @@ ScrollViewTest::ScrollViewTest()
 
 void ScrollViewTest::Init()
 {
+    Uv uv{1.3f, 30.0f};
+    Mat4 mat = Mat4::Identity;
+    LogError("xx: {}, {}", uv, mat);
+
     auto scene = stage->getLastLayer();
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
 

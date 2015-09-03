@@ -55,8 +55,8 @@ private:
     NodePtr rootNode;
     UIManagerPtr stage;
 
-    ui::LabelPtr labelTitle;
-    ui::LabelPtr labelFps;
+    ui::TextPtr labelTitle;
+    ui::TextPtr labelFps;
 };
 
 #endif // FEATURETESTSAPP_H

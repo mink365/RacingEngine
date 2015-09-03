@@ -2,8 +2,8 @@
 #define BUTTON_H
 
 #include "UI/Widget.h"
-#include "UI/Base/Sprite.h"
-#include "UI/Base/Label.h"
+#include "UI/Base/Image.h"
+#include "UI/Base/Text.h"
 #include "PreDeclare.h"
 
 namespace re {
@@ -11,7 +11,7 @@ namespace ui {
 
 enum ButtonType
 {
-    Image,
+    SpriteSwap,
 };
 
 class ImageButtonData

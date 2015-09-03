@@ -3,7 +3,7 @@
 
 namespace re {
 
-class Image;
+class Pixmap;
 class Texture;
 
 class TextureUtil
@@ -11,7 +11,7 @@ class TextureUtil
 public:
     TextureUtil();
 
-    static void UploadTextureToHardware(Image &image, Texture &texture, int index=0);
+    static void UploadTextureToHardware(Pixmap &image, Texture &texture, int index=0);
     static void UploadTextureToHardware(unsigned char *data, Texture &texture, int index=0);
     static void DeleteTextureFromHardware(Texture &texture);
 };
