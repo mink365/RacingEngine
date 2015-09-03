@@ -1,5 +1,4 @@
 #include "TextureManager.h"
-#include "Util/StringUtil.h"
 #include <vector>
 #include <iostream>
 #include "Image/Image.h"

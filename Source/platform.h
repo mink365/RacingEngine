@@ -9,7 +9,6 @@
 #include "Base/Shared.h"
 #include "Base/Singleton.h"
 #include "Util/Logging.h"
-#include "Util/StringUtil.h"
 
 using std::string;
 

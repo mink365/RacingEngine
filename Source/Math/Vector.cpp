@@ -27,9 +27,9 @@ Vec2 &Vec2::operator =(const Vec3 &v)
     return *this;
 }
 
-std::string Vec2::toString() const
+std::ostream &operator<<(std::ostream &os, const Vec2 &vec)
 {
-    return StringUtil::Printf("Vec2(%f, %f)", x, y);
+    return os << fmt::format("Vec2({}, {})", vec.x, vec.y);
 }
 
 Vec3::Vec3()
@@ -75,9 +75,9 @@ Quat Vec3::toQuat() const
     return result;
 }
 
-std::string Vec3::toString() const
+std::ostream &operator<<(std::ostream &os, const Vec3 &vec)
 {
-    return StringUtil::Printf("Vec3(%f, %f, %f)", x, y, z);
+    return os << fmt::format("Vec3({}, {}, {})", vec.x, vec.y, vec.z);
 }
 
 Vec4::Vec4()
@@ -93,9 +93,9 @@ Vec4::Vec4(const float& x, const float& y, const float& z, const float& w) {
     this->w = w;
 }
 
-std::string Vec4::toString() const
+std::ostream &operator<<(std::ostream &os, const Vec4 &vec)
 {
-    return StringUtil::Printf("Vec4(%f, %f, %f, %f)", x, y, z, w);
+    return os << fmt::format("Vec4({}, {}, {}, {})", vec.x, vec.y, vec.z, vec.w);
 }
 
 }

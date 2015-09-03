@@ -1,7 +1,6 @@
 #include "Button.h"
 
 #include "Util/ComponentFactory.h"
-#include "Util/LocalTime.h"
 
 namespace re {
 namespace ui {
@@ -35,7 +34,7 @@ void Button::initTouchListener()
 
     listener->onTouchDown = [&](TouchEvent&, WidgetPtr&) {
         this->isTouchDown = true;
-        this->touchDownTime = LocalTime::instance().getCurrentTime();
+        this->touchDownTime = std::time(nullptr);
 
         this->switchState(WidgetState::PRESSED);
 

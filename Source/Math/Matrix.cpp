@@ -96,17 +96,17 @@ Mat3 &Mat3::invert()
     return *this;
 }
 
-std::string Mat3::toString() const
+std::ostream &operator<<(std::ostream &os, const Mat3& mat)
 {
-    std::string out("Mat3( \n");
+    os << "Mat3( \n";
 
-    out += StringUtil::Printf("[%f, %f, %f] \n", mat[0][0], mat[0][1], mat[0][2]);
-    out += StringUtil::Printf("[%f, %f, %f] \n", mat[1][0], mat[1][1], mat[1][2]);
-    out += StringUtil::Printf("[%f, %f, %f] \n", mat[2][0], mat[2][1], mat[2][2]);
+    os << fmt::format("[{}, {}, {}] \n", mat[0][0], mat[0][1], mat[0][2]);
+    os << fmt::format("[{}, {}, {}] \n", mat[1][0], mat[1][1], mat[1][2]);
+    os << fmt::format("[{}, {}, {}] \n", mat[2][0], mat[2][1], mat[2][2]);
 
-    out += ")";
+    os << ")";
 
-    return out;
+    return os;
 }
 
 const Mat4 Mat4::Identity = Mat4().identity();
@@ -384,18 +384,18 @@ Mat4 &Mat4::lookAt(const Vec3 &eye, const Vec3 &center, const Vec3 &preUp)
     return *this;
 }
 
-std::string Mat4::toString() const
+std::ostream &operator<<(std::ostream &os, const Mat4& mat)
 {
-    std::string out("Mat4( \n");
+    os << "Mat4( \n";
 
-    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[0][0], mat[0][1], mat[0][2], mat[0][3]);
-    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[1][0], mat[1][1], mat[1][2], mat[1][3]);
-    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[2][0], mat[2][1], mat[2][2], mat[2][3]);
-    out += StringUtil::Printf("[%f, %f, %f, %f] \n", mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
+    os << fmt::format("[{}, {}, {}, {}] \n", mat[0][0], mat[0][1], mat[0][2], mat[0][3]);
+    os << fmt::format("[{}, {}, {}, {}] \n", mat[1][0], mat[1][1], mat[1][2], mat[1][3]);
+    os << fmt::format("[{}, {}, {}, {}] \n", mat[2][0], mat[2][1], mat[2][2], mat[2][3]);
+    os << fmt::format("[{}, {}, {}, {}] \n", mat[3][0], mat[3][1], mat[3][2], mat[3][3]);
 
-    out += ")";
+    os << ")";
 
-    return out;
+    return os;
 }
 
 }

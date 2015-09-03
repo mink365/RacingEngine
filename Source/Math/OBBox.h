@@ -18,7 +18,7 @@ class OBBox
 {
 public:
     OBBox() {};
-    OBBox(const Vec3& center, const Quat& rotation, const Vec3& extent);
+    OBBox(const Vec3& center, const Quat& rotation, const Vec3& extent_);
 
     const Vec3& Center() const;
     const Quat& Rotation() const;
@@ -28,13 +28,13 @@ public:
 
     Vec3 Corner(uint32_t index) const;
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream &os, const OBBox& obb);
 
 private:
     Vec3 center_;
     Quat rotation_;
 
-    Vec3 extent;
+    Vec3 extent_;
 };
 
 inline const Vec3& OBBox::Center() const
@@ -48,7 +48,7 @@ inline const Quat& OBBox::Rotation() const
 }
 
 inline const Vec3& OBBox::HalfSize() const {
-    return extent;
+    return extent_;
 }
 
 } // namespace re

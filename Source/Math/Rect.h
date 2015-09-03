@@ -53,7 +53,7 @@ public:
     bool containsRect(const Rect& rect) const;
     Rect unionWithRect(const Rect & rect) const;
 
-    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream &os, const Rect& rect);
 
 public:
     Vec2 origin;

@@ -33,10 +33,9 @@ Vec3 AABBox::Corner(uint32_t index) const
                 (index & 4UL) ? this->max.z : this->min.z);
 }
 
-string AABBox::toString() const
+std::ostream &operator<<(std::ostream &os, const AABBox &box)
 {
-    return StringUtil::Printf("AABB(%s, %s)", min.toString().c_str(),
-                              max.toString().c_str());
+    return os << fmt::format("AABB({}, {})", box.min, box.max);
 }
 
 } // namespace re

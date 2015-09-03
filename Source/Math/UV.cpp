@@ -89,6 +89,11 @@ const Uv Uv::operator -() const
     return Uv(-u, -v);
 }
 
+std::ostream &operator<<(std::ostream &os, const Uv &uv)
+{
+    return os << fmt::format("Uv({}, {})", uv.u, uv.v);
+}
+
 }
 
 

@@ -54,16 +54,11 @@ public:
 public:
     static Color FromHex(const std::string& hex);
 
-    std::string toString();
+    friend std::ostream &operator<<(std::ostream &os, const Color& color);
 
 public:
     float r, g, b, a;
 };
-
-inline std::string Color::toString()
-{
-    return StringUtil::Printf("Color(%i, %i, %i, %i)", (int)r*256, (int)g*256, (int)b*256, (int)a*256);
-}
 
 } // namespace re
 

@@ -64,7 +64,7 @@ public:
 
     Quat &slerp(Quat &q2, float changeAmnt);
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream& os, const Quat& quat);
 
 public:
     float x;
@@ -156,11 +156,6 @@ inline Quat &Quat::normalizeSelf()
     }
 
     return *this;
-}
-
-inline std::string Quat::toString() const
-{
-    return StringUtil::Printf("Quat(%f, %f, %f, %f)", x, y, z, w);
 }
 
 } // namespace re

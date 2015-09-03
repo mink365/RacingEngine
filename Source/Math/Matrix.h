@@ -44,7 +44,8 @@ public:
     float *toFloatPtr();
     const float *toFloatPtr () const;
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream &os, const Mat3& mat);
+
 private:
     Vec3 mat[3];
 };
@@ -161,7 +162,7 @@ public:
 
     Mat4 &transpose();
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream &os, const Mat4& mat);
 
 private:
     Vec4 mat[4];

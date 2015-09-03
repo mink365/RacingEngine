@@ -307,4 +307,9 @@ Quat &Quat::slerp(Quat &q2, float changeAmnt)
     return *this;
 }
 
+std::ostream &operator<<(std::ostream& os, const Quat& quat)
+{
+    return os << fmt::format("Quat({}, {}, {}, {})", quat.x, quat.y, quat.z, quat.w);
+}
+
 }

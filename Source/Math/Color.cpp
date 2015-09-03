@@ -186,6 +186,11 @@ Color Color::FromHex(const string &hex)
     return color;
 }
 
+std::ostream &operator<<(std::ostream &os, const Color& color)
+{
+    os << fmt::format("Color({}, {}, {}, {})", (int)color.r*256, (int)color.g*256, (int)color.b*256, (int)color.a*256);
+}
+
 }
 
 

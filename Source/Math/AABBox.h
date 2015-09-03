@@ -27,7 +27,7 @@ public:
 
     Vec3 Corner(uint32_t index) const;
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream& os, const AABBox& box);
 
 private:
     Vec3 min, max;

@@ -71,7 +71,7 @@ public:
     const float *	toFloatPtr( void ) const;
     float *			toFloatPtr( void );
 
-    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Vec2& vec);
 
 public:
     float x;
@@ -331,7 +331,7 @@ public:
 
     Quat toQuat() const;
 
-    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Vec3& vec);
 
 public:
     float x;
@@ -532,7 +532,7 @@ public:
     float *toFloatPtr();
     const float *toFloatPtr () const;
 
-    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream& os, const Vec4& vec);
 
 public:
     float x;

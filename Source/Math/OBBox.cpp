@@ -15,7 +15,7 @@ OBBox::OBBox(const Vec3 &center, const Quat &rotation, const Vec3 &extent)
 {
     this->center_ = center;
     this->rotation_ = rotation;
-    this->extent = extent;
+    this->extent_ = extent;
 }
 
 Vec3 OBBox::Axis(uint32_t axis) const
@@ -38,11 +38,9 @@ Vec3 OBBox::Corner(uint32_t index) const
                   + ((index & 4UL) ? +extent_z : -extent_z);
 }
 
-string OBBox::toString() const
+std::ostream &operator<<(std::ostream &os, const OBBox& obb)
 {
-    return StringUtil::Printf("OBB(%s, %s, %s)", center_.toString().c_str(),
-                              rotation_.toString().c_str(),
-                              extent.toString().c_str());
+    return os << fmt::format("OBB({}, {}, {})", obb.center_, obb.rotation_, obb.extent_);
 }
 
 } // namespace re

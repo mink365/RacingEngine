@@ -1,5 +1,5 @@
 #include "Message.h"
-#include "Util/LocalTime.h"
+#include <ctime>
 
 Message::Message()
 : type(-1)
@@ -18,7 +18,7 @@ void Message::set(int type, int id)
 void Message::set(int type, int id, std::shared_ptr<void> data)
 {
     this->isHandled = false;
-    this->eventTime = LocalTime::instance().getCurrentTime();
+    this->eventTime = std::time(nullptr);
 
     this->type = type;
     this->id = id;

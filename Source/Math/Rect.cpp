@@ -201,11 +201,10 @@ Rect Rect::unionWithRect(const Rect &rect) const
     return Rect(combinedLeftX, combinedBottomY, combinedRightX - combinedLeftX, combinedTopY - combinedBottomY);
 }
 
-string Rect::toString() const
+std::ostream& operator<<(std::ostream &os, const Rect& rect)
 {
-    return StringUtil::Printf("Rect(%f, %f, %f, %f)", origin.x, origin.y, size.width, size.height);
+    return os << fmt::format("Rect({}, {}, {}, {})", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
-
 
 Rect RectApplyMatrix(const Rect& rect, const Mat4& transform)
 {

@@ -32,17 +32,12 @@ public:
     const Uv operator +() const;
     const Uv operator -() const;
 
-    std::string toString() const;
+    friend std::ostream &operator<<(std::ostream &os, const Uv& uv);
 
 public:
     float u;
     float v;
 };
-
-inline std::string Uv::toString() const
-{
-    return StringUtil::Printf("Uv(%f, %f)", u, v);
-}
 
 } // namespace re
 
