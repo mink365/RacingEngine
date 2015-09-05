@@ -19,8 +19,10 @@ RE_PLATFORM_MAC {
     INCLUDEPATH += /usr/local/include/ \
                     /usr/local/include/freetype2/ \
                     /usr/local/include/bullet/
+    INCLUDEPATH += /usr/local/opt/openal-soft/include
 
     LIBS += -L/usr/local/lib
+    LIBS += -L/usr/local/opt/openal-soft/lib
 } RE_PLATFORM_LINUX {
     INCLUDEPATH += /usr/include/freetype2/
     INCLUDEPATH += /usr/include/bullet/

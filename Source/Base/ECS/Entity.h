@@ -11,6 +11,8 @@
 #include "Base/Named.h"
 #include "Message/Signal.h"
 #include "ComponentHandle.h"
+#include "EntityManager.h"
+#include "Event.h"
 
 namespace re {
 
@@ -24,32 +26,11 @@ typedef ComponentHandle<Transform> TransformPtr;
 typedef ComponentHandle<Node> NodePtr;
 typedef ComponentHandle<BaseComponent> ComponentPtr;
 
-class ComponentFactory : public Singleton<ComponentFactory>
+template<typename C>
+struct ComponentAddedEvent
 {
-public:
-    void CacheComponent(SharedPtr<BaseComponent> comp)
-    {
-        this->components.push_back(comp);
-    }
-
-public:
-    std::vector<EntityPtr> nodes;
-
-    std::vector<SharedPtr<BaseComponent>> components;
+    EntityPtr entity;
 };
-
-template <class T, typename... Args>
-ComponentHandle<T> CreateComponent(Args... args)
-{
-    auto p = Create<T>(args...);
-
-    ComponentFactory::instance().CacheComponent(p);
-
-    ComponentHandle<T> handle;
-    handle.ptr = p;
-
-    return handle;
-}
 
 enum class EntityState
 {
@@ -142,6 +123,7 @@ template<typename T, typename... Args>
 ComponentHandle<T> Entity::addComponent(Args... args)
 {
     auto comp = CreateComponent<T>(args...);
+    EventManager::instance().emit(ComponentAddedEvent<T>{this->shared_from_this()});
 
     this->addComponent(comp);
 

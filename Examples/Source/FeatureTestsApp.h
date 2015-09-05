@@ -4,6 +4,9 @@
 #include "Application.h"
 #include "BaseTest.h"
 #include "PreDeclare.h"
+#include "Base/ECS/Event.h"
+#include "Base/ECS/System.h"
+#include "Base/ECS/EntityManager.h"
 
 #include <vector>
 #include <memory>

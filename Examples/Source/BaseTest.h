@@ -38,7 +38,9 @@ inline ComponentHandle<Button> CreateImageButton(const string& texDefault, const
 {
     // TODO: init ImageButtonData
 
-    auto button = CreateNode2D<Button>();
+    auto entity = CreateEntity();
+    auto button = entity->addComponent<Button>();
+    entity->switchState(EntityState::Awaked);
 
     return button;
 }

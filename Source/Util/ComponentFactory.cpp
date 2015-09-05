@@ -1,5 +1,6 @@
 #include "ComponentFactory.h"
 
+#include "Base/ECS/EntityManager.h"
 #include "UI/Base/HierarchyColor.h"
 #include "UI/Base/Transform2D.h"
 #include "UI/Layout/LayoutElement.h"
@@ -22,7 +23,7 @@ EntityPtr CreateEntity()
     auto node = Create<Entity>();
 
     // make an reference to the node, make sure it not be delected
-    ComponentFactory::instance().nodes.push_back(node);
+    EntityManager::instance().nodes.push_back(node);
 
     return node;
 }
