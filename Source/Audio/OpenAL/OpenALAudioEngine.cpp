@@ -2,6 +2,8 @@
 
 #include "OpenALBase.h"
 #include <AL/alc.h>
+#include "OpenALListener.h"
+#include "OpenALSource.h"
 
 namespace re {
 
@@ -33,8 +35,6 @@ OpenALAudioEngine::OpenALAudioEngine()
 
 OpenALAudioEngine::~OpenALAudioEngine()
 {
-    LogError("remove engine");
-
     ALCcontext* context(alcGetCurrentContext());
     ALCdevice* device(alcGetContextsDevice(context));
 
@@ -42,6 +42,16 @@ OpenALAudioEngine::~OpenALAudioEngine()
 
     alcDestroyContext(context);
     alcCloseDevice(device);
+}
+
+SharedPtr<AudioListenerImpl> OpenALAudioEngine::CreateListenerImpl()
+{
+    return Create<OpenALListener>();
+}
+
+SharedPtr<AudioSourceImpl> OpenALAudioEngine::CreateSourceImpl()
+{
+    return Create<OpenALSource>();
 }
 
 } // namespace re

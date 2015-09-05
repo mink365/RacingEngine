@@ -6,11 +6,14 @@
 
 namespace re {
 
-class OpenALAudioEngine : public AudioEngine, public Singleton<OpenALAudioEngine>
+class OpenALAudioEngine : public AudioEngineImpl
 {
 public:
     OpenALAudioEngine();
     ~OpenALAudioEngine();
+
+    SharedPtr<AudioListenerImpl> CreateListenerImpl() override;
+    SharedPtr<AudioSourceImpl> CreateSourceImpl() override;
 };
 
 } // namespace re

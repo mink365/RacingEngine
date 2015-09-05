@@ -38,6 +38,8 @@ public:
     virtual void setPosition(const Vec3& pos) override;
     virtual void setVelocity(const Vec3& vel) override;
 
+    virtual void bindFile(const std::string& path) override;
+
 private:
     ALuint _alSource;
     OpenALBuffer::ptr _buffer;

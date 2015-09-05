@@ -7,6 +7,7 @@
 ******************************************************************************/
 
 #include "OpenALSource.h"
+#include "OpenALAudioFactory.h"
 
 namespace re {
 
@@ -122,6 +123,13 @@ void OpenALSource::setPosition(const Vec3 &pos)
 void OpenALSource::setVelocity(const Vec3 &vel)
 {
     AL_CHECK( alSourcefv(_alSource, AL_VELOCITY, vel.toFloatPtr()) );
+}
+
+void OpenALSource::bindFile(const std::string &path)
+{
+    auto buffer = OpenALAudioFactory::instance().CreateBuffer(path);
+
+    this->bindBuffer(buffer);
 }
 
 } // namespace re

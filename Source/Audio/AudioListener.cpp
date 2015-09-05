@@ -7,6 +7,7 @@
 ******************************************************************************/
 
 #include "AudioListener.h"
+#include "AudioEngine.h"
 
 namespace re {
 
@@ -67,6 +68,17 @@ void AudioListener::setVelocity(const Vec3 &vel)
     this->velocity = vel;
 
     impl->setVelocity(vel);
+}
+
+void AudioListener::registerEvents()
+{
+    RegisterEvent(Events::Awake, this, &AudioListener::onAwake);
+}
+
+void AudioListener::onAwake()
+{
+    this->impl = AudioEngine::instance().CreateListenerImpl();
+    this->impl->component = this->getComponent<AudioListener>();
 }
 
 } // namespace re

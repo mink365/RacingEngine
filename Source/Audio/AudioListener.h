@@ -34,6 +34,10 @@ public:
     void setVelocity(const Vec3& vel);
 
 protected:
+    void registerEvents();
+    void onAwake();
+
+protected:
     float gain;
 
     Vec3 position;
@@ -45,6 +49,7 @@ protected:
 
 class AudioListenerImpl
 {
+    friend class AudioListener;
 public:
     AudioListenerImpl() = default;
     virtual ~AudioListenerImpl() {};

@@ -11,6 +11,7 @@
 
 #include "Math/Vector.h"
 #include "Base/ECS/Component.h"
+#include "PreDeclare.h"
 
 namespace re {
 
@@ -53,6 +54,12 @@ public:
     void setPosition(const Vec3& pos);
     void setVelocity(const Vec3& vel);
 
+    void bindFile(const std::string &path);
+
+protected:
+    void registerEvents();
+    void onAwake();
+
 public:
     SharedPtr<AudioSourceImpl> getImpl()
     {
@@ -73,6 +80,7 @@ protected:
 
 class AudioSourceImpl
 {
+    friend class AudioSource;
 public:
     virtual ~AudioSourceImpl() {};
 
@@ -90,6 +98,8 @@ public:
     virtual void setPitch(float pitch) = 0;
     virtual void setPosition(const Vec3& pos) = 0;
     virtual void setVelocity(const Vec3& vel) = 0;
+
+    virtual void bindFile(const std::string& path) = 0;
 
 protected:
     ComponentHandle<AudioSource> component;

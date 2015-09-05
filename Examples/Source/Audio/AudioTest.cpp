@@ -10,11 +10,9 @@
 
 #include "Util/ComponentFactory.h"
 
-#include "Audio/OpenAL/OpenALSource.h"
-#include "Audio/OpenAL/OpenALListener.h"
-#include "Audio/OpenAL/OpenALBuffer.h"
-#include "Audio/OpenAL/OpenALAudioFactory.h"
-#include "Audio/OpenAL/OpenALAudioEngine.h"
+#include "Audio/AudioEngine.h"
+#include "Audio/AudioSource.h"
+#include "Audio/AudioListener.h"
 #include "GameHub.h"
 
 AudioTest::AudioTest()
@@ -24,13 +22,11 @@ AudioTest::AudioTest()
 
 void AudioTest::Init()
 {
-    OpenALAudioEngine::instance();
-
-    auto buffer = OpenALAudioFactory::instance().CreateBuffer("Sound/Bomb.ogg");
+    AudioEngine::instance();
 
     sourceNode = CreateNodeEntity();
     auto source = sourceNode->addComponent<AudioSource>();
-    std::dynamic_pointer_cast<OpenALSource>(source->getImpl())->bindBuffer(buffer);
+    source->bindFile("Sound/Bomb.ogg");
 
     listenerNode = CreateNodeEntity();
     listenerNode->addComponent<AudioListener>();

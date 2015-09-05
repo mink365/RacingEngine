@@ -7,6 +7,7 @@
 ******************************************************************************/
 
 #include "AudioSource.h"
+#include "AudioEngine.h"
 
 namespace re {
 
@@ -109,6 +110,22 @@ void AudioSource::setVelocity(const Vec3 &vel)
     this->velocity = vel;
 
     impl->setVelocity(vel);
+}
+
+void AudioSource::bindFile(const std::string& path)
+{
+    impl->bindFile(path);
+}
+
+void AudioSource::registerEvents()
+{
+    RegisterEvent(Events::Awake, this, &AudioSource::onAwake);
+}
+
+void AudioSource::onAwake()
+{
+    this->impl = AudioEngine::instance().CreateSourceImpl();
+    this->impl->component = this->getComponent<AudioSource>();
 }
 
 } // namespace re
