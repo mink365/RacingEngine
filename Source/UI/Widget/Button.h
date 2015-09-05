@@ -27,6 +27,9 @@ public:
 
 class Button : public Component<Button>
 {
+    template<class T>
+    friend class Component;
+
     using ButtonDataType = std::tuple<ImageButtonData>;
 
 public:
@@ -50,7 +53,7 @@ public:
 protected:
     void onAwake();
 
-protected:
+public:
     void copyProperties(const Button& rhs);
 
 protected:

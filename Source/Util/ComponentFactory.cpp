@@ -62,7 +62,7 @@ EntityPtr CreateSkinningMeshEntity()
 {
     auto entity = CreateEntity();
 
-    AddComponent<Node, Transform, Skeleton, SkeletonController, Animation, RenderElement>(entity);
+    AddComponent<Node, Transform, SkeletonController, RenderElement>(entity);
     entity->switchState(EntityState::Awaked);
 
     entity->getComponent<RenderElement>()->getMaterial()->initDefaultPass();
@@ -78,20 +78,6 @@ EntityPtr CreateBoneEntity()
     entity->switchState(EntityState::Awaked);
 
     return entity;
-}
-
-template <>
-ComponentHandle<ui::Widget> CreateNode2D<ui::Widget>()
-{
-    auto entity = CreateEntity();
-
-    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget>(entity);
-
-    entity->switchState(EntityState::Awaked);
-
-    auto component = entity->getComponent<ui::Widget>();
-
-    return component;
 }
 
 } // namespace re

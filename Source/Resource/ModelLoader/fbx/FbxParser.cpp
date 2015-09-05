@@ -330,8 +330,8 @@ void FbxParser::readMesh(std::istream *st, NodePtr node) {
 
 void FbxParser::readSkeleton(istream *st)
 {
-    SkeletonPtr skeleton = CreateComponent<Skeleton>();
-    AnimationPtr animation = CreateComponent<Animation>();
+    SkeletonPtr skeleton = Create<Skeleton>();
+    AnimationPtr animation = Create<Animation>();
 
     BonePtr bone = this->readBoneNode(st, animation);
 
@@ -523,9 +523,7 @@ NodePtr FbxParser::getSkinningNode(const string &name) const
     auto animation = this->animations.at(0);
 
     auto entity = node->getEntity();
-    entity->addComponent(skeleton);
-    entity->addComponent(animation);
-    auto controller = entity->addComponent<SkeletonController>();
+    auto controller = entity->addComponent<SkeletonController>(skeleton, animation);
     controller->init();
 
     return node;

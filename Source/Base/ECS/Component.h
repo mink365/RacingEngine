@@ -64,8 +64,9 @@ private:
         Handle cloned = this->createCloneInstance();
 
         cloned->attachEntity.reset();
-        // TODO:
-//        cloned->copyProperties(*(this));
+
+        const Derived* ptr = static_cast<const Derived*>(this);
+        cloned->copyProperties(*(ptr));
 
         return cloned;
     }
@@ -76,6 +77,8 @@ protected:
         Handle handle = CreateComponent<Derived>();
         return handle;
     }
+
+    virtual void copyProperties(const Derived&){};
 };
 
 inline Long BaseComponent::getId() const

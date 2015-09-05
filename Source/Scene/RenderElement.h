@@ -13,6 +13,8 @@ using MaterialPtr = SharedPtr<Material>;
 
 class RenderElement : public Component<RenderElement>
 {
+    template<class T>
+    friend class Component;
 public:
     RenderElement();
     RenderElement(MaterialPtr material, MeshPtr mesh);

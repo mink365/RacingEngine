@@ -16,8 +16,8 @@ class Animation;
 class Mesh;
 class SkinnedMeshData;
 
-using SkeletonPtr = ComponentHandle<Skeleton>;
-using AnimationPtr = ComponentHandle<Animation>;
+using SkeletonPtr = SharedPtr<Skeleton>;
+using AnimationPtr = SharedPtr<Animation>;
 using MeshPtr = SharedPtr<Mesh>;
 using SkinnedMeshDataPtr = SharedPtr<SkinnedMeshData>;
 
@@ -25,12 +25,11 @@ class SkeletonController : public Component<SkeletonController>
 {
 public:
     SkeletonController();
+    SkeletonController(SkeletonPtr skeleton, AnimationPtr animation);
     void init();
 
     SkeletonPtr getSkeleton();
     AnimationPtr getAnimation();
-    NodePtr getMeshNode();
-    MeshPtr getMesh();
 
     void play();
     void stop();
@@ -51,7 +50,6 @@ private:
 private:
     SkeletonPtr skeleton;
     AnimationPtr animation;
-    NodePtr sceneNode;
     MeshPtr mesh;
     SkinnedMeshDataPtr meshData;
 

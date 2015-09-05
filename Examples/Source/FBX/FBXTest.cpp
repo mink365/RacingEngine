@@ -91,7 +91,7 @@ void FBXTest::Init()
         blocks.push_back(blockNode);
     }
 
-    motoRoot = CreateEntity()->getNode();
+    motoRoot = CreateNodeEntity()->getNode();
     motoRoot->addChild(shadow);
     motoRoot->addChild(moto);
     motoRoot->getTransform()->setLocalTranslation(Vec3(0, 0, 12));
@@ -103,7 +103,7 @@ void FBXTest::Init()
     parser->parse(assertDir + "group_girl.data");
     man = parser->getSkinningNode("girl");
 
-    auto animation = man->getComponent<Animation>();
+    auto animation = man->getComponent<SkeletonController>()->getAnimation();
     AnimationTrackPtr track = animation->getCurrAnimationTrack();
     Long beginTime = track->getKeyFrame(2)->getTime();
     Long endTime = track->getKeyFrame(12)->getTime();

@@ -13,11 +13,11 @@ class AnimationStack;
 class Animation;
 class AnimationTrack;
 
-using AnimationPtr = ComponentHandle<Animation>;
+using AnimationPtr = SharedPtr<Animation>;
 using AnimationStackPtr = SharedPtr<AnimationStack>;
 using AnimationTrackPtr = SharedPtr<AnimationTrack>;
 
-class Animation : public Component<Animation>
+class Animation : public std::enable_shared_from_this<Animation>
 {
 public:
     Animation();
@@ -75,8 +75,6 @@ public:
     Long getStackEndTime() const;
 
 private:
-    ComponentHandle<Animation> animation;
-
     Long stackBeginTime;
     Long stackEndTime;
     Long stackLength;

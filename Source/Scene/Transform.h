@@ -22,6 +22,8 @@ typedef ComponentHandle<Transform> TransformPtr;
 class Transform : public Component<Transform>
 {
     friend class SceneManager;
+    template<class T>
+    friend class Component;
 
 public:
     Transform();

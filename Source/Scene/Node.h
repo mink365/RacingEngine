@@ -15,6 +15,9 @@ class Node : public Component<Node>
     friend class SceneManager;
     friend class Entity;
     friend class FbxParser;
+    template<class T>
+    friend class Component;
+
 public:
 	Node();
 
@@ -40,7 +43,7 @@ public:
     bool isInScene() const;
 
 protected:
-    virtual void copyProperties(const Node& component);
+    virtual void copyProperties(const Node& component) override;
 
 protected:
     void OnEnter();

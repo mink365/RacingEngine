@@ -12,6 +12,9 @@ typedef ComponentHandle<HierarchyColor> HierarchyColorPtr;
 
 class HierarchyColor : public Component<HierarchyColor>
 {
+    template<class T>
+    friend class Component;
+
 public:
     HierarchyColor();
     ~HierarchyColor();
@@ -28,6 +31,7 @@ public:
 protected:
     void updateColor();
 
+public:
     void copyProperties(const HierarchyColor& rhs);
 
 protected:

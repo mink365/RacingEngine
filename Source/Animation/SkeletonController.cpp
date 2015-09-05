@@ -10,7 +10,7 @@
 #include "Scene/Transform.h"
 #include "Platform/GameHub.h"
 
-re::SkeletonController::SkeletonController()
+SkeletonController::SkeletonController()
 {
     float* mat = this->emptyMatrix.toFloatPtr();
     std::fill(mat, mat+16, 0);
@@ -18,12 +18,15 @@ re::SkeletonController::SkeletonController()
     this->isPlaying = false;
 }
 
+re::SkeletonController::SkeletonController(SkeletonPtr skeleton, AnimationPtr animation)
+    : SkeletonController()
+{
+    this->skeleton = skeleton;
+    this->animation = animation;
+}
+
 void re::SkeletonController::init()
 {
-    this->sceneNode = this->getNode();
-    this->skeleton = this->getComponent<Skeleton>();
-    this->animation = this->getComponent<Animation>();
-
     this->mesh = this->getComponent<RenderElement>()->getMesh();
     this->meshData = std::dynamic_pointer_cast<SkinnedMeshData>(this->mesh->getMeshData());
 }
@@ -36,16 +39,6 @@ re::SkeletonPtr re::SkeletonController::getSkeleton()
 re::AnimationPtr re::SkeletonController::getAnimation()
 {
     return this->animation;
-}
-
-re::NodePtr re::SkeletonController::getMeshNode()
-{
-    return this->sceneNode;
-}
-
-re::MeshPtr re::SkeletonController::getMesh()
-{
-    return this->mesh;
 }
 
 void re::SkeletonController::play()

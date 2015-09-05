@@ -73,7 +73,7 @@ private:
     void linearDeformation();
 
 private:
-    ComponentHandle<Animation> animation;
+    SharedPtr<Animation> animation;
     WeakPtr<Entity> entity;
 
     std::vector<KeyFramePtr> keyFrames;

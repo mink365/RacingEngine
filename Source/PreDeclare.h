@@ -54,11 +54,11 @@ class LayoutElement;
 
 }
 
-typedef ComponentHandle<Animation> AnimationPtr;
+typedef SharedPtr<Animation> AnimationPtr;
 typedef SharedPtr<AnimationTrack> AnimationTrackPtr;
 typedef SharedPtr<AnimationStack> AnimationStackPtr;
 typedef SharedPtr<KeyFrame> KeyFramePtr;
-typedef ComponentHandle<Skeleton> SkeletonPtr;
+typedef SharedPtr<Skeleton> SkeletonPtr;
 typedef ComponentHandle<SkeletonController> SkeletonControllerPtr;
 
 typedef SharedPtr<Entity> EntityPtr;

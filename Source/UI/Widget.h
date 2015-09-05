@@ -58,12 +58,12 @@ protected:
 
 protected:
     virtual void addWidgets();
-    
+
     virtual void layoutSelf();
 
     virtual void initView() {};
 
-protected:
+public:
     void copyProperties(const Widget& rhs);
     
 public:
