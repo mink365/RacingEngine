@@ -72,7 +72,6 @@ private:
     Vec2 anchorInPixel;
 
     Vec2 skew;
-
 };
 
 } // namespace ui

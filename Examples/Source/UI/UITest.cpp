@@ -22,7 +22,7 @@ void UITest::Init()
 
     auto patch = CreateNode2D<Image>();
     patch->setType(ImageType::NinePatch);
-    patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setData<ImageType::NinePatch>({20, 20, 20, 20});
     patch->setFrame("tab_press.png");
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
@@ -79,7 +79,7 @@ WindowPtr UITest::createWin()
 
     auto patch = CreateNode2D<Image>();
     patch->setType(ImageType::NinePatch);
-    patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setData<ImageType::NinePatch>({20, 20, 20, 20});
     patch->setFrame("tab_press.png");
     patch->getComponent<Transform2D>()->setSize(Size(400, 500));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));

@@ -11,6 +11,17 @@ namespace ui {
 
 COMPONENT_DEPENDENCY(Image, CanvasRenderElement);
 
+void Image::setType(ImageType type)
+{
+    if (this->type == type) {
+        return;
+    }
+
+    this->type = type;
+
+    this->rebind();
+}
+
 void Image::setFrame(const std::string& tex)
 {
     auto frame = TextureFrameManager::instance().GetResource(tex);
@@ -45,10 +56,16 @@ void Image::onAwake()
     this->rebind();
 }
 
+void Image::onTransformModify()
+{
+    this->rebind();
+}
+
 void Image::registerEvents()
 {
     Graphic::registerEvents();
     RegisterEvent(Events::Awake, this, &Image::onAwake);
+    RegisterEvent(Events::Transform, this, &Image::onTransformModify);
 }
 
 void Image::addQuad(AlignType type, const NineGrid &vertexGrid, const NineGrid &textureGrid, const Color& color)

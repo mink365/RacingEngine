@@ -2,6 +2,7 @@
 #include "GameHub.h"
 #include "Base/ECS/Entity.h"
 #include "Base/ECS/Component.h"
+#include "Scene/Transform.h"
 
 std::map<Events, EventFactory::GetSignalFunc> EventFactory::eventSignals;
 std::unordered_map<BaseComponent*, std::map<Events, std::vector<EventFactory::EventConnection>>> EventFactory::connections;
@@ -56,6 +57,12 @@ void EventFactory::RegisterEvents()
         return comp.getEntity()->destroyEvent;
     };
     eventSignals[Events::Destroy] = func;
+
+    func = [](re::BaseComponent& comp) -> re::Signal<void()>&
+    {
+        return comp.getComponent<Transform>()->transformRefresh;
+    };
+    eventSignals[Events::Transform] = func;
 }
 
 void CallEvent(BaseComponent *object, Events event)

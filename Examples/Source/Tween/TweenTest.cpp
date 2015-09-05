@@ -31,7 +31,7 @@ void TweenTest::Init()
     auto patch = CreateNode2D<Image>();
     patch->setType(ImageType::NinePatch);
     patch->setFrame("tab_press.png");
-    patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setData<ImageType::NinePatch>({20, 20, 20, 20});
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));

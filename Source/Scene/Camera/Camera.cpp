@@ -170,13 +170,12 @@ std::function<bool (int queueID)> Camera::getQueueCullFunc() const
 void Camera::registerEvents()
 {
     RegisterEvent(Events::Enter, this, &Camera::onEnter);
+    RegisterEvent(Events::Transform, this, &Camera::onChange);
 }
 
 void Camera::onEnter()
 {
     transform = this->getComponent<Transform>();
-
-    transform->transformRefresh += slot(this, &Camera::onChange);
 }
 
 void Camera::recalcViewMatrix()

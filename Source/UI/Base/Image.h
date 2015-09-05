@@ -60,15 +60,20 @@ public:
         : Graphic()
     {};
 
-    void setType(ImageType type)
+    void setType(ImageType type);
+
+    template<ImageType type>
+    const typename std::tuple_element<EnumToInt(type), ImageDataType>::type& getData() const
     {
-        this->type = type;
+        return std::get<EnumToInt(type)>(datas);
     }
 
     template<ImageType type>
-    typename std::tuple_element<EnumToInt(type), ImageDataType>::type& getData()
+    void setData(const typename std::tuple_element<EnumToInt(type), ImageDataType>::type& d)
     {
-        return std::get<EnumToInt(type)>(datas);
+        std::get<EnumToInt(type)>(datas) = d;
+
+        this->rebind();
     }
 
 public:
@@ -77,6 +82,7 @@ public:
 
 protected:
     void onAwake();
+    void onTransformModify();
     void registerEvents();
 
 protected:
@@ -89,11 +95,11 @@ protected:
     void copyProperties(const Image &rhs);
 
 private:
+    bool dirty_;
     Rect rect;
     TextureFrame::ptr frame;
 
     ImageType type;
-
     ImageDataType datas;
 };
 
