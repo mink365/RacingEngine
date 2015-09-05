@@ -492,9 +492,9 @@ GeometryPtr ShapeGenerater::CreateSphere(float radius, int widthSegments, int he
                                            {d, nd}};
             AppendVertexNormal(geometry, normals);
 
-            if (abs(geometry.getPositions()[a].y) == radius) {
+            if (std::abs(geometry.getPositions()[a].y) == radius) {
                 geometry.addFace(Face(a, c, d));
-            } else if (abs(geometry.getPositions()[c].y) == radius) {
+            } else if (std::abs(geometry.getPositions()[c].y) == radius) {
                 geometry.addFace(Face(a, b, c));
             } else {
                 geometry.addFace(Face(a, b, d));

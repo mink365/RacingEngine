@@ -58,7 +58,7 @@ LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES)
 
 # LOCAL_CFLAGS    := -Werror
 LOCAL_CPPFLAGS 	:= -Wno-extern-c-compat
-LOCAL_EXPORT_CPPFLAGS := -Wno-extern-c-compat
+LOCAL_EXPORT_CPPFLAGS := -Wno-extern-c-compat -DFMT_HEADER_ONLY
 
 LOCAL_EXPORT_LDLIBS := -llog \
 					   -landroid \

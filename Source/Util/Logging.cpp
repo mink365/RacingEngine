@@ -1,5 +1,9 @@
 #include "Logging.h"
 
+#ifdef RE_PLATFORM_ANDROID
+#include <android/log.h>
+#endif
+
 namespace re {
 
 #ifndef RE_PLATFORM_ANDROID
@@ -63,7 +67,7 @@ void Log(LogLevel level, char const* format, fmt::ArgList args)
 #ifdef RE_PLATFORM_ANDROID
     int prio = LogLevelToPrio(level);
     std::string s = fmt::format(format, args);
-    __android_log_print(prio, MODULE_LOG_TAG, s.c_str())
+    __android_log_print(prio, MODULE_LOG_TAG, "[%s]", s.c_str());
 #else
     FILE* out_file = LogLevelToFile(level);
     const char* level_tag = LogLevelToTag(level);

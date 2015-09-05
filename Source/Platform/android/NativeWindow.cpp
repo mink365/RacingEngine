@@ -1,6 +1,6 @@
 #include "NativeWindow.h"
 
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 
 #include <jni.h>
 #include <errno.h>
@@ -172,7 +172,7 @@ static EGLenum checkErrorEGL(const char* msg)
         "EGL power management event has occurred",
     };
     EGLenum error = eglGetError();
-    LOG_E("%s: %s.", msg, errmsg[error - EGL_SUCCESS]);
+    LogError("{}: {}.", msg, errmsg[error - EGL_SUCCESS]);
     return error;
 }
 
@@ -254,7 +254,7 @@ int NativeWindow::initDisplay()
     }
 
     if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
-        LOG_E("Unable to eglMakeCurrent");
+        LogError("Unable to eglMakeCurrent");
         return -1;
     }
 
@@ -263,7 +263,7 @@ int NativeWindow::initDisplay()
 
     eglSwapInterval(display, vsync ? 1 : 0);
 
-    LOG_D("EGL display: %p, context: %p, App: %p, WH: %d %d", display, context, __app, w, h);
+    Log("EGL display: {}, context: {}, App: {}, WH: {} {}", (intptr_t)display, (intptr_t)context, (intptr_t)__app, w, h);
 
     this->display = display;
     this->context = context;

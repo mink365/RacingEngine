@@ -67,6 +67,7 @@ TextureFormat ImageFormatToPixelFormat(FORMAT format) {
         return TextureFormat::S3TC_DXT5;
     default:
         assert(false);
+        return TextureFormat::Alpha16;
     }
 }
 

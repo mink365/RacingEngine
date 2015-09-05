@@ -5,7 +5,8 @@
 
 namespace re {
 
-class ApplicationProtocol {
+class ApplicationProtocol
+{
 public:
     virtual void initViewSize() {};
 

@@ -41,6 +41,8 @@ public:
 
         auto id = std::type_index(typeid(S));
         systems_[id] = system;
+
+        return system;
     }
 
     template<typename S>

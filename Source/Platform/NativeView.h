@@ -12,7 +12,8 @@ public:
     virtual Size getFrameSize() const = 0;
 
     virtual void setVsync(bool) {};
-    virtual bool isVsync() const {
+    virtual bool isVsync() const
+    {
         return false;
     }
 };

@@ -3,7 +3,7 @@
 #include "NativeWindow.h"
 #include "Platform/GameHub.h"
 #include "FileSystemAndroid.h"
-#include "Util/LogUtil.h"
+#include "Util/Logging.h"
 
 #include <cmath>
 #include <unistd.h>
@@ -49,7 +49,7 @@ int getRotation()
     jint res = jvm->AttachCurrentThread(&env, NULL);
     if (res == JNI_ERR)
     {
-        LOG_E("Failed to retrieve JVM environment when entering message pump.");
+        LogError("Failed to retrieve JVM environment when entering message pump.");
         return -1; 
     }
     RE_ASSERT(env);
@@ -87,7 +87,7 @@ static int32_t handle_input(android_app *app, AInputEvent *event)
 
 static void handle_cmd(android_app *app, int32_t cmd)
 {
-    LOG_V("handle_cmd: %d", cmd);
+    Log("handle_cmd: {}", cmd);
 
     switch (cmd) {
         case APP_CMD_INIT_WINDOW:
@@ -274,7 +274,7 @@ void Application::run(android_app* state) {
                 }
                 else
                 {
-                    LOG_E("eglSwapBuffers");
+                    LogError("eglSwapBuffers");
                     break;
                 }
             }
