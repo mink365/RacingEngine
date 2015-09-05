@@ -9,27 +9,28 @@
 #include "Render/BufferObject/BufferObjectUtil.h"
 #include "Scene/RenderElement.h"
 #include "Render/Mesh.h"
+#include "PreDeclare.h"
 
 namespace re {
 namespace ui {
+
+COMPONENT_DEPENDENCY(Text, CanvasRenderElement);
 
 Text::Text()
     : Graphic()
 {
 }
 
-void Text::init(Font::ptr &font)
+void Text::setFont(Font::ptr &font)
 {
     this->font = font;
 
     string shaderName = font->getType() == FontType::TTF ? "Shader_Font" : "Shader_PTC";
 
-    this->getEntity()->addComponent<CanvasRenderElement>();
     auto element = this->getComponent<CanvasRenderElement>();
     auto material = CreateDefaultMaterial(font->getTexture(), shaderName);
     element->setMaterial(material);
     element->setTexture(font->getTexture());
-    element->setGeometry(geometry);
 
     material->getRenderState().blendState.blendModeAlpha = BlendMode::Alpha;
     material->getRenderState().blendState.blendModeRGB = BlendMode::Alpha;
@@ -49,6 +50,18 @@ void Text::setText(const string &text)
     // normal vertexOrigin is leftBottom of the rect, but label vertexOrigin is the pen begin place
 //    transform->setAnchorInPixels(textRect.origin); // TODO: just an offset of vertext
 
+}
+
+void Text::onAwake()
+{
+    auto font = FontManager::instance().GetResource("default");
+    this->setFont(font);
+}
+
+void Text::registerEvents()
+{
+    Graphic::registerEvents();
+    RegisterEvent(Events::Awake, this, &Text::onAwake);
 }
 
 void Text::copyProperties(const Text &rhs)

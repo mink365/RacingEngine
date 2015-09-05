@@ -9,14 +9,9 @@
 namespace re {
 namespace ui {
 
-void Image::init()
-{
-    auto element = this->getEntity()->addComponent<CanvasRenderElement>();
+COMPONENT_DEPENDENCY(Image, CanvasRenderElement);
 
-    element->setGeometry(geometry);
-}
-
-void Image::init(const std::string& tex)
+void Image::setFrame(const std::string& tex)
 {
     auto frame = TextureFrameManager::instance().GetResource(tex);
 
@@ -28,12 +23,32 @@ void Image::setFrame(TextureFrame::ptr frame)
     this->frame = frame;
     this->rect.size = frame->getOriginalSize();
 
-    auto element = this->getEntity()->addComponent<CanvasRenderElement>();
+    auto element = this->getComponent<CanvasRenderElement>();
+    // TODO: avoide create the material
     auto material = CreateDefaultMaterial(frame->getTexture(), "Shader_PTC");
     element->setMaterial(material);
     element->setTexture(frame->getTexture());
 
     this->rebind();
+}
+
+void Image::onAwake()
+{
+    this->frame = TextureFrameManager::instance().GetResource("store_icon_coin.png");
+    this->rect.size = frame->getOriginalSize();
+
+    auto element = this->getComponent<CanvasRenderElement>();
+    auto material = CreateDefaultMaterial(frame->getTexture(), "Shader_PTC");
+    element->setMaterial(material);
+    element->setTexture(frame->getTexture());
+
+    this->rebind();
+}
+
+void Image::registerEvents()
+{
+    Graphic::registerEvents();
+    RegisterEvent(Events::Awake, this, &Image::onAwake);
 }
 
 void Image::addQuad(AlignType type, const NineGrid &vertexGrid, const NineGrid &textureGrid, const Color& color)

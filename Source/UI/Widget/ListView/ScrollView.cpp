@@ -6,6 +6,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(ScrollView, Widget);
+
 ScrollParam::ScrollParam(FlickableDirection dir, float flickDcc, int gridCount)
 {
     this->scrollType = dir;

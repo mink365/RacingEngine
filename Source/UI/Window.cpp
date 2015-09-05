@@ -12,6 +12,8 @@ using namespace TweenEngine;
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(Window, Widget);
+
 Window::Window()
 : isFullScreen(true)
 , isTransparent(false)

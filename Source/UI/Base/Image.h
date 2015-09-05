@@ -60,9 +60,6 @@ public:
         : Graphic()
     {};
 
-    void init();
-    void init(const std::string& tex);
-
     void setType(ImageType type)
     {
         this->type = type;
@@ -75,7 +72,12 @@ public:
     }
 
 public:
+    void setFrame(const std::string& tex);
     void setFrame(TextureFrame::ptr frame);
+
+protected:
+    void onAwake();
+    void registerEvents();
 
 protected:
     void addQuad(AlignType type, const NineGrid& vertexGrid, const NineGrid& textureGrid, const re::Color &color);

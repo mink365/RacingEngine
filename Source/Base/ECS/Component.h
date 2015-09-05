@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Message/Signal.h"
 #include "Util/EventUtil.h"
+#include "Dependencies.h"
 
 namespace re {
 

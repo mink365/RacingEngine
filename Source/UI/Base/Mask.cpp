@@ -7,6 +7,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(Mask, CanvasRenderElement);
+
 Mask::Mask()
 {
 

@@ -6,6 +6,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(Scene, Widget);
+
 Scene::Scene()
 {
 }

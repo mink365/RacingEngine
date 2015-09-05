@@ -24,7 +24,6 @@ void Entity::refreshTransformInHierarchy()
 void Entity::addComponent(ComponentPtr component)
 {
     std::type_index id = std::type_index(typeid(*component.get()));
-    LogError("ID {}: Add: {} ",  (int64_t)this, typeid(*component.get()).name());
     assert(componentMap.count(id) == 0);
 
     EntityPtr ptr = this->shared_from_this();

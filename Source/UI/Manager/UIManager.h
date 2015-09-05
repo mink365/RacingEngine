@@ -14,7 +14,8 @@ typedef NamedComponentFactory<Window> WindowFactory;
 typedef NamedComponentFactory<Scene> SceneFactory;
 typedef ComponentHandle<Scene> ScenePtr;
 
-class UIManager : public Component<UIManager>, public LayerManager<Scene>, public IMessageHandler {
+class UIManager : public Component<UIManager>, public LayerManager<Scene>, public IMessageHandler
+{
 public:
     UIManager();
  

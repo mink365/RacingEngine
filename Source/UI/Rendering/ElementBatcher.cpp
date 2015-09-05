@@ -41,7 +41,7 @@ void ElementBatcher::Render()
         batch->Clear();
     }
 
-//    this->ReBuild();
+    this->ReBuild();
 
     auto& renderQueue = SceneManager::instance().getRenderManager().getRenderQueue();
 

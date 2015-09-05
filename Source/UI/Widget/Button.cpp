@@ -4,16 +4,14 @@
 #include "UI/Base/Image.h"
 #include "Texture/Frame/TextureFrame.h"
 #include "Base/ECS/System.h"
-#include "Base/ECS/Dependencies.h"
 
 namespace re {
 namespace ui {
 
-COMPONENT_DEPENDENCY(Button, Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget);
+COMPONENT_DEPENDENCY(Button, Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget, ui::Image);
 
 Button::Button()
 {
-    LogError("Create button");
 }
 
 void Button::onAwake()
@@ -21,6 +19,9 @@ void Button::onAwake()
     this->initTouchListener();
 
     this->onButtonClickFunc = nullptr;
+
+    this->initGraphic();
+    this->switchState(WidgetState::DEFAULT);
 }
 
 void Button::switchState(WidgetState newState)
@@ -139,6 +140,8 @@ void Button::switchStateForImage(WidgetState oldState, WidgetState newState)
         break;
     case WidgetState::DISABLED:
         sprite->setFrame(data.disabledSprite);
+        break;
+    case WidgetState::INIT:
         break;
     }
 }

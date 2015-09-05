@@ -13,6 +13,10 @@ public:
     Graphic();
 
 protected:
+    void onAwake();
+    void registerEvents();
+
+protected:
     GeometryPtr geometry;
 };
 

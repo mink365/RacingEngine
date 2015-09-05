@@ -84,14 +84,7 @@ static TextPtr labelName;
 
 void SceneMaterialTest::createUI()
 {
-    FontPtr font = FontManager::instance().GetResource("default");
-    if (font == nullptr) {
-        CreateDefaultFont();
-
-        font = FontManager::instance().GetResource("default");
-    }
-
-    labelName = CreateUIGraphicNode<Text>(font);
+    labelName = CreateNode2D<Text>();
     labelName->setText("Name");
     labelName->getComponent<Transform2D>()->setAnchor(Vec2(0.5f, 0.5f));
 

@@ -8,6 +8,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(Maskable, CanvasRenderElement);
+
 Maskable::Maskable()
 {
 

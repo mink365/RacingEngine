@@ -40,6 +40,8 @@ inline ComponentHandle<Button> CreateImageButton(const string& texDefault, const
 
     auto entity = CreateEntity();
     auto button = entity->addComponent<Button>();
+    ImageButtonData data{texDefault, texPress, texDis};
+    button->getData<ButtonType::SpriteSwap>() = data;
     entity->switchState(EntityState::Awaked);
 
     return button;

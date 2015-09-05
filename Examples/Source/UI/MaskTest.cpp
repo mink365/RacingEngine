@@ -34,8 +34,10 @@ void MaskTest::Update()
 
 ImagePtr MaskTest::CreateNinePatch(int width, int height)
 {
-    auto patch = CreateUIGraphicNode<Image>("tab_press.png");
+    auto patch = CreateNode2D<Image>();
+    patch->setType(ImageType::NinePatch);
     patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setFrame("tab_press.png");
     patch->getComponent<Transform2D>()->setSize(Size(width, height));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
 

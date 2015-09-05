@@ -16,32 +16,29 @@ extern TextureAtlasPtr CreateDefaultFont();
 
 void UITest::Init()
 {
-    ImagePtr sprite = CreateUIGraphicNode<Image>("store_icon_coin.png");
+    ImagePtr sprite = CreateNode2D<Image>();
+    sprite->setFrame("store_icon_coin.png");
     sprite->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 200));
 
-    auto patch = CreateUIGraphicNode<Image>("tab_press.png");
+    auto patch = CreateNode2D<Image>();
+    patch->setType(ImageType::NinePatch);
     patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setFrame("tab_press.png");
     patch->getComponent<Transform2D>()->setSize(Size(200, 100));
     patch->getComponent<Transform2D>()->setPosition(Vec2(300, 300 + 80));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
 
-    FontPtr font = FontManager::instance().GetResource("default");
-    if (font == nullptr) {
-        CreateDefaultFont();
-
-        font = FontManager::instance().GetResource("default");
-    }
-
-    TextPtr label = CreateUIGraphicNode<Text>(font);
+    TextPtr label = CreateNode2D<Text>();
     label->setText("xH<size=50>e<color=FF0000FF>l</color>l</size>o <color=00FFFF>xxo</color>tbo");
 
-    TextPtr label2 = CreateUIGraphicNode<Text>(font);
+    TextPtr label2 = CreateNode2D<Text>();
     label2->setText("xHtbo xx");
 
     auto button = CreateImageButton("rate.png", "rate_press.png", "rate.png");
 
     auto scene = stage->getLastLayer();
     auto window = scene->getComponent<WindowManager>()->pushWindow("HelloWindow");
+
     window->getNode()->addChild(sprite->getNode());
     window->getNode()->addChild(patch->getNode());
     window->getNode()->addChild(label->getNode());
@@ -80,8 +77,10 @@ WindowPtr UITest::createWin()
     win->getNode()->setName("Window1");
     win->getComponent<Transform2D>()->setSize(Size(400, 500));
 
-    auto patch = CreateUIGraphicNode<Image>("tab_press.png");
+    auto patch = CreateNode2D<Image>();
+    patch->setType(ImageType::NinePatch);
     patch->getData<ImageType::NinePatch>() = {20, 20, 20, 20};
+    patch->setFrame("tab_press.png");
     patch->getComponent<Transform2D>()->setSize(Size(400, 500));
     patch->getComponent<Transform2D>()->setAnchor(Vec2(0.5, 0.5));
 

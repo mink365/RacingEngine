@@ -15,6 +15,7 @@ namespace re {
 namespace ui {
 
 enum class WidgetState {
+    INIT,
     DEFAULT,
     PRESSED,
     SELECTED,

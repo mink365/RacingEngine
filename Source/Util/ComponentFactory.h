@@ -55,26 +55,11 @@ ComponentHandle<T> CreateNode2D()
 {
     auto entity = CreateEntity();
 
-    AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, ui::Widget, T>(entity);
-
-    entity->switchState(EntityState::Awaked);
-
-    auto component = entity->getComponent<T>();
-
-    return component;
-}
-
-template<typename T, typename... Args>
-ComponentHandle<T> CreateUIGraphicNode(Args... args)
-{
-    auto entity = CreateEntity();
-
     AddComponent<Node, ui::Transform2D, ui::HierarchyColor, ui::LayoutElement, T>(entity);
 
     entity->switchState(EntityState::Awaked);
 
     auto component = entity->getComponent<T>();
-    component->init(args...);
 
     return component;
 }

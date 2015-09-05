@@ -11,6 +11,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(WindowManager, Widget);
+
 WindowManager::WindowManager()
 : factory(nullptr), alphaBg(nullptr)
 {

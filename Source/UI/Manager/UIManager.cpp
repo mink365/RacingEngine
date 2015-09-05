@@ -6,6 +6,8 @@
 namespace re {
 namespace ui {
 
+COMPONENT_DEPENDENCY(UIManager, Widget);
+
 UIManager::UIManager()
     : isKeyBackActive(false)
 {

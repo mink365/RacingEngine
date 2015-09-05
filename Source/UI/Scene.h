@@ -10,7 +10,7 @@
 namespace re {
 namespace ui {
 
-class Scene :  public Component<Widget>, public AnimationView, public IMessageHandler, public IBackKeyHandler
+class Scene :  public Component<Scene>, public AnimationView, public IMessageHandler, public IBackKeyHandler
 {
 public:
     Scene();

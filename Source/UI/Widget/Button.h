@@ -25,7 +25,7 @@ public:
     TextureFrame::ptr defaultSprite, pressedSprite, disabledSprite;
 };
 
-class Button : public Component<Widget>
+class Button : public Component<Button>
 {
     using ButtonDataType = std::tuple<ImageButtonData>;
 

@@ -12,9 +12,13 @@ class Text : public Graphic
 public:
     Text();
 
-    void init(Font::ptr& font);
+    void setFont(Font::ptr& font);
 
     void setText(const string &text);
+
+protected:
+    void onAwake();
+    void registerEvents();
 
 protected:
     void copyProperties(const Text& rhs);
