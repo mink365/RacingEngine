@@ -1,12 +1,10 @@
-CONFIG += c++11
+CONFIG += c++14
 
 #CONFIG += RE_PLATFORM_ANDROID
 ## macros in source code
 #DEFINES += RE_PLATFORM_ANDROID
 
 macx {
-    unix: QMAKE_CXXFLAGS = -mmacosx-version-min=10.6
-
     CONFIG += RE_PLATFORM_MAC
     DEFINES += RE_PLATFORM_MAC
 } else {

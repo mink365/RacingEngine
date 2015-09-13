@@ -11,7 +11,8 @@ SOURCES += \
     $$system("find Audio/ -name '*.cpp'") \
     $$system("find Base/ -name '*.cpp'") \
     $$system("find Effect/ -name '*.cpp'") \
-    $$system("find External/ -name '*.cpp'") \
+    $$system("find External/tinyxml2/ -name '*.cpp'") \
+    $$system("find External/universal-tween-engine-cpp/ -name '*.cpp'") \
     $$system("find FileSystem/ -name '*.cpp'") \
     $$system("find Font/ -name '*.cpp'") \
     $$system("find Math/ -name '*.cpp'") \
@@ -32,6 +33,7 @@ HEADERS += \
     $$system("find Base/ -name '*.h'") \
     $$system("find Effect/ -name '*.h'") \
     $$system("find External/ -name '*.h'") \
+    $$system("find External/hana/include/ -name '*.hpp'") \
     $$system("find FileSystem/ -name '*.h'") \
     $$system("find Font/ -name '*.h'") \
     $$system("find Math/ -name '*.h'") \
@@ -73,3 +75,4 @@ INCLUDEPATH += \
     Resource \
     External \
     External/universal-tween-engine-cpp/ \
+    External/hana/include/ \
