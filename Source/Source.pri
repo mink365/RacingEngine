@@ -9,6 +9,7 @@ INCLUDEPATH += \
     $$PWD/Render \
     $$PWD/Scene \
     $$PWD/Resource \
+    $$PWD/External/hana/include/ \
     $$PWD/External/universal-tween-engine-cpp/ \
 
 RE_PLATFORM_MAC {

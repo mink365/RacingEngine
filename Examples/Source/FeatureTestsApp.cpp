@@ -41,6 +41,7 @@
 #include "Lightmap/Lightmap.h"
 #include "Bumpmap/Bumpmap.h"
 #include "Audio/AudioTest.h"
+#include "Serialization/SerializationTest.h"
 #include "Resource/ResourceManager.h"
 
 #include "Util/Logging.h"
@@ -100,6 +101,7 @@ void FeatureTestsApp::createTests()
 {
     CreateTest<FBXTest, AudioTest, FontTest, TweenTest
             , UITest, LayoutTest, MaskTest, ScrollViewTest
+            , SerializationTest
             , SceneMaterialTest, LightTest
             , ShadowTest, BulletTest, RenderToTextureTest, Skybox
             , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);

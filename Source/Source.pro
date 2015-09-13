@@ -11,6 +11,7 @@ SOURCES += \
     $$system("find Audio/ -name '*.cpp'") \
     $$system("find Base/ -name '*.cpp'") \
     $$system("find Effect/ -name '*.cpp'") \
+    $$system("find External/cppformat/ -name '*.cc'") \
     $$system("find External/tinyxml2/ -name '*.cpp'") \
     $$system("find External/universal-tween-engine-cpp/ -name '*.cpp'") \
     $$system("find FileSystem/ -name '*.cpp'") \
@@ -23,9 +24,6 @@ SOURCES += \
     $$system("find UI/ -name '*.cpp'") \
     $$system("find Util/ -name '*.cpp'") \
     $$files(Platform/*.cpp) \
-
-SOURCES += \
-    External/cppformat/format.cc
 
 HEADERS += \
     $$system("find Animation/ -name '*.h'") \
