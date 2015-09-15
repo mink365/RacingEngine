@@ -3,15 +3,6 @@ DEPENDPATH += $$PWD/
 
 include(../common.pri)
 
-INCLUDEPATH += \
-    $$PWD/ \
-    $$PWD/Platform \
-    $$PWD/Render \
-    $$PWD/Scene \
-    $$PWD/Resource \
-    $$PWD/External/hana/include/ \
-    $$PWD/External/universal-tween-engine-cpp/ \
-
 RE_PLATFORM_MAC {
     INCLUDEPATH += $$PWD/Platform/linux/
 } RE_PLATFORM_LINUX {

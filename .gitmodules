@@ -4,3 +4,7 @@
 [submodule "Source/External/hana"]
 	path = Source/External/hana
 	url = https://github.com/ldionne/hana
+[submodule "Source/External/yaml-cpp"]
+	path = Source/External/yaml-cpp
+	url = https://github.com/blair1618/yaml-cpp.git
+	branch = no-boost

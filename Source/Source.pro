@@ -14,6 +14,7 @@ SOURCES += \
     $$system("find External/cppformat/ -name '*.cc'") \
     $$system("find External/tinyxml2/ -name '*.cpp'") \
     $$system("find External/universal-tween-engine-cpp/ -name '*.cpp'") \
+    $$system("find External/yaml-cpp/src/ -name '*.cpp'") \
     $$system("find FileSystem/ -name '*.cpp'") \
     $$system("find Font/ -name '*.cpp'") \
     $$system("find Math/ -name '*.cpp'") \
@@ -30,8 +31,11 @@ HEADERS += \
     $$system("find Audio/ -name '*.h'") \
     $$system("find Base/ -name '*.h'") \
     $$system("find Effect/ -name '*.h'") \
-    $$system("find External/ -name '*.h'") \
+    $$system("find External/cppformat/ -name '*.h'") \
     $$system("find External/hana/include/ -name '*.hpp'") \
+    $$system("find External/tinyxml2/ -name '*.h'") \
+    $$system("find External/universal-tween-engine-cpp/ -name '*.h'") \
+    $$system("find External/yaml-cpp/include/ -name '*.h'") \
     $$system("find FileSystem/ -name '*.h'") \
     $$system("find Font/ -name '*.h'") \
     $$system("find Math/ -name '*.h'") \
@@ -65,12 +69,3 @@ RE_PLATFORM_ANDROID {
         $$system("find Platform/Base/desktop/ -name '*.h'") \
 }
 
-INCLUDEPATH += \
-    . \
-    Platform \
-    Render \
-    Scene \
-    Resource \
-    External \
-    External/universal-tween-engine-cpp/ \
-    External/hana/include/ \

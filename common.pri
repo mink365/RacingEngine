@@ -13,6 +13,18 @@ macx {
 }
 DEFINES += FMT_HEADER_ONLY
 
+SOURCES_DIR = $$PWD/Source
+INCLUDEPATH += \
+    $$SOURCES_DIR/ \
+    $$SOURCES_DIR/Platform \
+    $$SOURCES_DIR/Render \
+    $$SOURCES_DIR/Scene \
+    $$SOURCES_DIR/Resource \
+    $$SOURCES_DIR/External/ \
+    $$SOURCES_DIR/External/hana/include/ \
+    $$SOURCES_DIR/External/universal-tween-engine-cpp/ \
+    $$SOURCES_DIR/External/yaml-cpp/include/ \
+
 RE_PLATFORM_MAC {
     INCLUDEPATH += /usr/local/include/ \
                     /usr/local/include/freetype2/ \
