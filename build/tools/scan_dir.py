@@ -4,11 +4,11 @@ import argparse
 import os
 import sys
 
-def ensureDir(path):
+def ensure_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def scanDir(directory, target_ext, path_list):
+def scan_dir(directory, target_ext, path_list):
     file_list = os.listdir(directory)
     for line in file_list:
         file_path = os.path.join(directory, line)
@@ -23,7 +23,7 @@ def scanDir(directory, target_ext, path_list):
             if target_ext == "dir":
                 #print(file_path);
                 path_list.append(file_path);
-            scanDir(file_path, target_ext, path_list)
+            scan_dir(file_path, target_ext, path_list)
         else:
             ext = os.path.splitext(file_path)[-1]
             #relate_path = file_path[prefix_num:].replace("\\", "/")
@@ -51,7 +51,7 @@ def main(argv):
     #out = open(out_file, 'w')
    
     cpp_path_list = []
-    scanDir(assets_dir, target_ext, cpp_path_list)
+    scan_dir(assets_dir, target_ext, cpp_path_list)
 
     for path in cpp_path_list:
         #print(path + " \\")
