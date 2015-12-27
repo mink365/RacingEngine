@@ -1,5 +1,7 @@
 #include "SerializationTest.h"
 
+#include <yaml-cpp/yaml.h>
+
 struct Person {
     BOOST_HANA_DEFINE_STRUCT(Person,
                              (std::string, name),
@@ -69,6 +71,18 @@ SerializationTest::SerializationTest()
     this->name = "SerializationTest";
 }
 
+void TestYaml()
+{
+    YAML::Node node = YAML::Load("foo: bar\nx: 2.23");
+
+//    Vec3 v = node.as<Vec3>();
+//    double v = node[0].as<double>();
+
+    YAML::Node pi = node["pi"];
+
+    re::Log("Value: {} vv: {}", node["foo"].as<std::string>(), node["x"].as<double>());
+}
+
 void SerializationTest::Init()
 {
     Five v;
@@ -92,5 +106,7 @@ void SerializationTest::Init()
 //    serialize(std::cout, one);
 
     re::Log("json string: {}", to_json(v));
+
+    TestYaml();
 }
 
