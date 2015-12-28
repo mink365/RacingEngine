@@ -1,7 +1,13 @@
 
 
-
-
+set(PRE_HEADER_FILES
+		${RE_EXAMPLES_DIR}/BaseTest.cpp
+		${RE_EXAMPLES_DIR}/BaseTest.h
+		${RE_EXAMPLES_DIR}/FeatureTestsApp.cpp
+		${RE_EXAMPLES_DIR}/FeatureTestsApp.h
+		${RE_EXAMPLES_DIR}/ShapeGenerater.cpp
+		${RE_EXAMPLES_DIR}/ShapeGenerater.h
+		)
 	
 set(EXAMPLES_SOURCE_FILES 
         ${RE_EXAMPLES_DIR}/Audio/AudioTest.cpp
@@ -55,9 +61,14 @@ set(EXAMPLES_HEADER_FILES
 
 SOURCE_GROUP("Examples\\Source Files" FILES ${EXAMPLES_SOURCE_FILES})
 SOURCE_GROUP("Examples\\Header Files" FILES ${EXAMPLES_HEADER_FILES})
- 
 
-add_executable(Examples 
+
+include_directories(
+        ${RE_EXAMPLES_DIR}
+        )
+
+add_executable(Examples
+        ${PRE_HEADER_FILES}
         ${EXAMPLES_SOURCE_FILES}
 	    ${EXAMPLES_HEADER_FILES} 
         )

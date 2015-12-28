@@ -1,7 +1,10 @@
 
 
-
-
+set(PRE_HEADER_FILES
+        ${RE_SOURCE_DIR}/PreDeclare.h
+        ${RE_SOURCE_DIR}/opengl.h
+        ${RE_SOURCE_DIR}/platform.h
+        )
 	
 set(ANIMATION_SOURCE_FILES 
         ${RE_SOURCE_DIR}/Animation/Animation.cpp
@@ -416,9 +419,28 @@ set(UTIL_HEADER_FILES
 
 SOURCE_GROUP("Util\\Source Files" FILES ${UTIL_SOURCE_FILES})
 SOURCE_GROUP("Util\\Header Files" FILES ${UTIL_HEADER_FILES})
- 
 
-add_library(Engine 
+set(PLATFORM_SOURCE_FILES
+        ${RE_SOURCE_DIR}/Platform/GameHub.cpp
+        )
+
+set(PLATFORM_HEADER_FILES
+        ${RE_SOURCE_DIR}/Platform/ApplicationProtocol.h
+        ${RE_SOURCE_DIR}/Platform/GameHub.h
+        ${RE_SOURCE_DIR}/Platform/NativeView.h
+        )
+
+if(${RE_PLATFORM_MAC})
+    set(PLATFORM_SPECIAL_FILES
+            ${RE_SOURCE_DIR}/Platform/linux/Application.cpp
+            ${RE_SOURCE_DIR}/Platform/linux/Application.h
+            ${RE_SOURCE_DIR}/Platform/Base/desktop/NativeWindow.cpp
+            ${RE_SOURCE_DIR}/Platform/Base/desktop/NativeWindow.h
+            )
+endif()
+
+add_library(Engine
+        ${PRE_HEADER_FILES}
         ${ANIMATION_SOURCE_FILES}
 	    ${ANIMATION_HEADER_FILES} 
         ${AUDIO_SOURCE_FILES}
@@ -444,5 +466,8 @@ add_library(Engine
         ${UI_SOURCE_FILES}
 	    ${UI_HEADER_FILES} 
         ${UTIL_SOURCE_FILES}
-	    ${UTIL_HEADER_FILES} 
+	    ${UTIL_HEADER_FILES}
+        ${PLATFORM_SOURCE_FILES}
+        ${PLATFORM_HEADER_FILES}
+        ${PLATFORM_SPECIAL_FILES}
         )
