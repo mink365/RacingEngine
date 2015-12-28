@@ -67,8 +67,40 @@ include_directories(
         ${RE_EXAMPLES_DIR}
         )
 
+find_package(Freetype REQUIRED)
+include_directories(${FREETYPE_INCLUDE_DIRS})
+
+find_package(PNG REQUIRED)
+include_directories(${PNG_INCLUDE_DIRS})
+
+find_package(JPEG REQUIRED)
+include_directories(${JPEG_INCLUDE_DIRS})
+
+find_package(OpenAL REQUIRED)
+include_directories(${OPENAL_INCLUDE_DIRS})
+
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIRS})
+
+find_package(Bullet REQUIRED)
+include_directories(${BULLET_INCLUDE_DIRS})
+
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+
 add_executable(Examples
         ${PRE_HEADER_FILES}
         ${EXAMPLES_SOURCE_FILES}
 	    ${EXAMPLES_HEADER_FILES} 
+        )
+
+target_link_libraries(Examples
+        Engine
+        ${FREETYPE_LIBRARIES}
+        ${PNG_LIBRARIES}
+        ${JPEG_LIBRARIES}
+        ${OPENAL_LIBRARIES}
+        ${OPENGL_LIBRARIES}
+        ${BULLET_LIBRARIES}
+        ${GLEW_LIBRARIES}
         )

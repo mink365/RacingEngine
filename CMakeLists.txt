@@ -41,6 +41,12 @@ if(${RE_PLATFORM_MAC})
     )
 endif()
 
+link_directories(
+        /usr/local/lib
+        /usr/local/opt/openal-soft/lib
+        )
+SET(CMAKE_EXE_LINKER_FLAGS "-v -lglfw3 -lopenal -lvorbis -lvorbisenc -lvorbisfile -logg")
+
 # Projects
 ADD_SUBDIRECTORY(Build/CMake/Core)
 ADD_SUBDIRECTORY(Build/CMake/Examples)
