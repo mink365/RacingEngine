@@ -1,14 +1,14 @@
 
 
 set(PRE_HEADER_FILES
-		${RE_EXAMPLES_DIR}/BaseTest.cpp
-		${RE_EXAMPLES_DIR}/BaseTest.h
-		${RE_EXAMPLES_DIR}/FeatureTestsApp.cpp
-		${RE_EXAMPLES_DIR}/FeatureTestsApp.h
-		${RE_EXAMPLES_DIR}/ShapeGenerater.cpp
-		${RE_EXAMPLES_DIR}/ShapeGenerater.h
-		)
-	
+        ${RE_EXAMPLES_DIR}/BaseTest.cpp
+        ${RE_EXAMPLES_DIR}/BaseTest.h
+        ${RE_EXAMPLES_DIR}/FeatureTestsApp.cpp
+        ${RE_EXAMPLES_DIR}/FeatureTestsApp.h
+        ${RE_EXAMPLES_DIR}/ShapeGenerater.cpp
+        ${RE_EXAMPLES_DIR}/ShapeGenerater.h
+        )
+
 set(EXAMPLES_SOURCE_FILES 
         ${RE_EXAMPLES_DIR}/Audio/AudioTest.cpp
         ${RE_EXAMPLES_DIR}/BaseTest.cpp
@@ -95,7 +95,7 @@ include_directories(${GLEW_INCLUDE_DIRS})
 add_executable(Examples
         ${PRE_HEADER_FILES}
         ${EXAMPLES_SOURCE_FILES}
-	    ${EXAMPLES_HEADER_FILES}
+        ${EXAMPLES_HEADER_FILES}
         ${EXAMPLE_MAIN_SOURCE_FILES}
         )
 

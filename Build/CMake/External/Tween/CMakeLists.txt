@@ -1,12 +1,12 @@
 
-aux_source_directory(${RE_SOURCE_DIR}/External/universal-tween-engine-cpp TWEEN_SRC_FILES)
+set(TWEEN_SOURCE_DIR
+        ${RE_SOURCE_DIR}/External/universal-tween-engine-cpp
+        )
 
-aux_source_directory(${RE_SOURCE_DIR}/External/universal-tween-engine-cpp/paths TWEEN_SRC_PATH_FILES)
-
-aux_source_directory(${RE_SOURCE_DIR}/External/universal-tween-engine-cpp/equations TWEEN_SRC_EQUATIONS_FILES)
+file(GLOB_RECURSE TWEEN_SOURCE_FILES "${TWEEN_SOURCE_DIR}/[a-zA-Z]*.cpp")
+file(GLOB_RECURSE TWEEN_HEADER_FILES "${TWEEN_SOURCE_DIR}/[a-zA-Z]*.h")
 
 add_library(Tween
-        ${TWEEN_SRC_FILES}
-        ${TWEEN_SRC_PATH_FILES}
-        ${TWEEN_SRC_EQUATIONS_FILES}
+        ${TWEEN_SOURCE_FILES}
+        ${TWEEN_HEADER_FILES}
         )
