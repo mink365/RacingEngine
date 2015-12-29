@@ -96,6 +96,8 @@ add_executable(Examples
 
 target_link_libraries(Examples
         Engine
+        Tween
+        yaml-cpp
         ${FREETYPE_LIBRARIES}
         ${PNG_LIBRARIES}
         ${JPEG_LIBRARIES}

@@ -48,6 +48,8 @@ link_directories(
 SET(CMAKE_EXE_LINKER_FLAGS "-v -lglfw3 -lopenal -lvorbis -lvorbisenc -lvorbisfile -logg")
 
 # Projects
+ADD_SUBDIRECTORY(Build/CMake/External/Tween)
+ADD_SUBDIRECTORY(Source/External/yaml-cpp)
 ADD_SUBDIRECTORY(Build/CMake/Core)
 ADD_SUBDIRECTORY(Build/CMake/Examples)
 
