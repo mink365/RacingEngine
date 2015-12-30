@@ -13,6 +13,7 @@ FIND_PATH(RE_PROJECT_DIR racing.pro PATHS .)
 MARK_AS_ADVANCED(RE_PROJECT_DIR)
 SET(RE_EXAMPLES_DIR "${RE_PROJECT_DIR}/Examples/Source")
 SET(RE_SOURCE_DIR "${RE_PROJECT_DIR}/Source")
+SET(RE_EXTERNAL_DIR "${RE_PROJECT_DIR}/Source/External")
 
 set(RE_PLATFORM_MAC 1)
 
@@ -41,11 +42,14 @@ if(${RE_PLATFORM_MAC})
     )
 endif()
 
+# path need to be absolute
+set(CMAKE_MODULE_PATH "${RE_PROJECT_DIR}/Build/CMake/Modules/" ${CMAKE_MODULE_PATH})
+
 link_directories(
         /usr/local/lib
         /usr/local/opt/openal-soft/lib
         )
-SET(CMAKE_EXE_LINKER_FLAGS "-v -lglfw3 -lopenal -lvorbis -lvorbisenc -lvorbisfile -logg")
+SET(CMAKE_EXE_LINKER_FLAGS "-v -lglfw3")
 
 # Projects
 ADD_SUBDIRECTORY(Build/CMake/External/Tween)
