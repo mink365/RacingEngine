@@ -34,6 +34,12 @@ elseif(IOS)
 
 else()
     find_path(JPEG_INCLUDE_DIRS jpeglib.h
+            PATHS
+            "/usr/local/include"
+            NO_DEFAULT_PATH
+            )
+
+    find_path(JPEG_INCLUDE_DIRS jpeglib.h
             )
 
     find_library(JPEG_LIBRARIES

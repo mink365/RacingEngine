@@ -239,7 +239,7 @@ void FeatureTestsApp::initResources()
 
     SearchPath searchPath;
 #ifdef RE_PLATFORM_LINUX
-    searchPath.dir = "/home/jk/workspace/engines/RacingEngine/Examples/Resources/";
+    searchPath.dir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
 #elif RE_PLATFORM_ANDROID
 //    searchPath.dir = "/sdcard/regame/assets/";
     searchPath.dir = "asset:";

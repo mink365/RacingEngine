@@ -5,8 +5,6 @@
 # FREETYPE_INCLUDE_DIRS, where to find headers.
 # FREETYPE_VERSION_STRING, the version of freetype found (since CMake 2.8.8)
 
-MESSAGE("ANdroid: ${ANDROID}")
-
 if(ANDROID)
     find_path(FREETYPE_INCLUDE_DIRS freetype.h
             PATHS

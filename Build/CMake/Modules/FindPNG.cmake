@@ -36,6 +36,12 @@ elseif(IOS)
 
 else()
     find_path(PNG_INCLUDE_DIRS png.h
+            PATHS
+            "/usr/local/include"
+            NO_DEFAULT_PATH
+            )
+
+    find_path(PNG_INCLUDE_DIRS png.h
             )
 
     find_library(PNG_LIBRARIES
