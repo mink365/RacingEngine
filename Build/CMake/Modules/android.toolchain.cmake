@@ -1573,6 +1573,8 @@ set( ANDROID True )
 set( BUILD_ANDROID True )
 
 # where is the target environment
+# http://www.vtk.org/Wiki/CMake_Cross_Compiling
+# we need to use find_path in our custorm modules, so disable it.
 # set( CMAKE_FIND_ROOT_PATH "${ANDROID_TOOLCHAIN_ROOT}/bin" "${ANDROID_TOOLCHAIN_ROOT}/${ANDROID_TOOLCHAIN_MACHINE_NAME}" "${ANDROID_SYSROOT}" "${CMAKE_INSTALL_PREFIX}" "${CMAKE_INSTALL_PREFIX}/share" )
 
 # only search for libraries and includes in the ndk toolchain
