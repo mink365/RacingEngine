@@ -8,15 +8,16 @@ SET(RE_MINOR_VERSION 1)
 SET(RE_PATCH_VERSION 0)
 SET(RE_VERSION ${RE_MAJOR_VERSION}.${RE_MINOR_VERSION}.${RE_PATCH_VERSION})
 
-FIND_PATH(RE_PROJECT_DIR racing.pro PATHS .)
+find_path(RE_PROJECT_DIR NAMES README.md
+    PATHS 
+    ${CMAKE_SOURCE_DIR}
+    NO_DEFAULT_PATH
+    )
 
 MARK_AS_ADVANCED(RE_PROJECT_DIR)
 SET(RE_EXAMPLES_DIR "${RE_PROJECT_DIR}/Examples/Source")
 SET(RE_SOURCE_DIR "${RE_PROJECT_DIR}/Source")
 SET(RE_EXTERNAL_DIR "${RE_PROJECT_DIR}/Source/External")
-
-# path need to be absolute
-set(CMAKE_MODULE_PATH "${RE_PROJECT_DIR}/Build/CMake/Modules/" ${CMAKE_MODULE_PATH})
 
 if(ANDROID)
     set(RE_PLATFORM_ANDROID 1)
@@ -28,8 +29,6 @@ elseif(IOS)
     add_definitions(-DRE_PLATFORM_IOS -DFMT_HEADER_ONLY)
 else(APPLE)
     set(RE_PLATFORM_MAC 1)
-
-    SET(CMAKE_EXE_LINKER_FLAGS "-v")
 
     add_definitions(-DRE_PLATFORM_MAC -DFMT_HEADER_ONLY)
 endif()
@@ -45,6 +44,10 @@ set(BASE_INCLUDE_DIRECTORIES
         ${RE_SOURCE_DIR}/External/universal-tween-engine-cpp/
         ${RE_SOURCE_DIR}/External/yaml-cpp/include/
         )
+
+# path need to be absolute
+# set(CMAKE_MODULE_PATH "${RE_PROJECT_DIR}/Build/CMake/Modules/" ${CMAKE_MODULE_PATH})
+list(INSERT CMAKE_MODULE_PATH 0 "${RE_PROJECT_DIR}/Build/CMake/Modules/")
 
 find_package(Freetype REQUIRED)
 find_package(PNG REQUIRED)
@@ -71,7 +74,26 @@ set(RE_LINK_LIBRARIES
         ${BULLET_LIBRARIES}
         )
 
-if(${RE_PLATFORM_MAC})
+if(ANDROID)
+    include(AndroidNdkModules)
+    android_ndk_import_module_native_app_glue()
+
+    set(RE_INCLUDE_DIRECTORIES
+            ${RE_INCLUDE_DIRECTORIES}
+            ${RE_SOURCE_DIR}/Platform/android
+            )
+
+    set(RE_LINK_LIBRARIES
+            ${RE_LINK_LIBRARIES}
+            OpenSLES
+            )
+
+elseif(IOS)
+    set(RE_INCLUDE_DIRECTORIES
+            ${RE_INCLUDE_DIRECTORIES}
+            ${RE_SOURCE_DIR}/Platform/linux
+            )
+elseif(${RE_PLATFORM_MAC})
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
     find_package(GLFW REQUIRED)

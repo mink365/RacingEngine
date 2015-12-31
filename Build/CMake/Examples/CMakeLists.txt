@@ -62,10 +62,11 @@ set(EXAMPLES_HEADER_FILES
 SOURCE_GROUP("Examples\\Source Files" FILES ${EXAMPLES_SOURCE_FILES})
 SOURCE_GROUP("Examples\\Header Files" FILES ${EXAMPLES_HEADER_FILES})
 
-
-set(EXAMPLE_MAIN_SOURCE_FILES
-        ${RE_PROJECT_DIR}/Build/Desktop/main.cpp
-        )
+if(${RE_PLATFORM_MAC})
+        set(EXAMPLE_MAIN_SOURCE_FILES
+                ${RE_PROJECT_DIR}/Build/Desktop/main.cpp
+                )
+endif()
 
 include_directories(
         ${RE_EXAMPLES_DIR}

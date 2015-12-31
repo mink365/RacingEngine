@@ -430,7 +430,20 @@ set(PLATFORM_HEADER_FILES
         ${RE_SOURCE_DIR}/Platform/NativeView.h
         )
 
-if(${RE_PLATFORM_MAC})
+if(ANDROID)
+    set(PLATFORM_SPECIAL_FILES
+            ${RE_SOURCE_DIR}/Platform/android/Application.cpp
+            ${RE_SOURCE_DIR}/Platform/android/Application.h
+            ${RE_SOURCE_DIR}/Platform/android/FileAndroid.cpp
+            ${RE_SOURCE_DIR}/Platform/android/FileAndroid.h
+            ${RE_SOURCE_DIR}/Platform/android/NativeWindow.cpp
+            ${RE_SOURCE_DIR}/Platform/android/NativeWindow.h
+            ${RE_SOURCE_DIR}/Platform/android/FileSystemAndroid.cpp
+            ${RE_SOURCE_DIR}/Platform/android/FileSystemAndroid.h
+            )
+elseif(IOS)
+
+elseif(${RE_PLATFORM_MAC})
     set(PLATFORM_SPECIAL_FILES
             ${RE_SOURCE_DIR}/Platform/linux/Application.cpp
             ${RE_SOURCE_DIR}/Platform/linux/Application.h
