@@ -71,51 +71,6 @@ include_directories(
         ${RE_EXAMPLES_DIR}
         )
 
-find_package(Freetype REQUIRED)
-include_directories(${FREETYPE_INCLUDE_DIRS})
-
-find_package(PNG REQUIRED)
-include_directories(${PNG_INCLUDE_DIRS})
-
-find_package(JPEG REQUIRED)
-include_directories(${JPEG_INCLUDE_DIRS})
-
-find_package(OpenAL REQUIRED)
-include_directories(${OPENAL_INCLUDE_DIRS})
-
-find_package(Vorbis REQUIRED)
-include_directories(${VORBIS_INCLUDE_DIRS})
-
-find_package(Bullet REQUIRED)
-include_directories(${BULLET_INCLUDE_DIRS})
-
-set(LINK_LIBRARIES
-        ${FREETYPE_LIBRARIES}
-        ${PNG_LIBRARIES}
-        ${JPEG_LIBRARIES}
-        ${OPENAL_LIBRARIES}
-        ${VORBIS_LIBRARIES}
-        ${BULLET_LIBRARIES}
-        )
-
-if(ANDROID)
-
-elseif(IOS)
-
-else()
-    find_package(OpenGL REQUIRED)
-    include_directories(${OPENGL_INCLUDE_DIRS})
-
-    find_package(GLEW REQUIRED)
-    include_directories(${GLEW_INCLUDE_DIRS})
-
-    set(LINK_LIBRARIES
-            ${LINK_LIBRARIES}
-            ${OPENGL_LIBRARIES}
-            ${GLEW_LIBRARIES}
-            )
-endif()
-
 add_executable(Examples
         ${PRE_HEADER_FILES}
         ${EXAMPLES_SOURCE_FILES}
@@ -127,5 +82,5 @@ target_link_libraries(Examples
         Engine
         Tween
         yaml-cpp
-        ${LINK_LIBRARIES}
+        ${RE_LINK_LIBRARIES}
         )

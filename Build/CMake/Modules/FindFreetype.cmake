@@ -8,7 +8,7 @@
 if(ANDROID)
     find_path(FREETYPE_INCLUDE_DIRS freetype.h
             PATHS
-            "${RE_EXTERNAL_DIR}/freetype2/include/android"
+            "${RE_EXTERNAL_DIR}/freetype2/include/android/freetype2"
             NO_DEFAULT_PATH
             )
 
@@ -21,7 +21,7 @@ if(ANDROID)
 elseif(IOS)
     FIND_PATH(FREETYPE_INCLUDE_DIRS freetype.h
             PATHS
-            "${RE_EXTERNAL_DIR}/freetype2/include/ios"
+            "${RE_EXTERNAL_DIR}/freetype2/include/ios/freetype2"
             NO_DEFAULT_PATH
             )
 
@@ -32,11 +32,13 @@ elseif(IOS)
             NO_DEFAULT_PATH
             )
 else()
-    find_path(FREETYPE_INCLUDE_DIRS freetype2/freetype.h
+    find_path(FREETYPE_INCLUDE_DIRS freetype.h
+            PATHS
+            "/usr/local/include/freetype2"
             )
 
     find_library(FREETYPE_LIBRARIES
-            NAMES freetype libfreetype
+            NAMES freetype
             )
 endif()
 

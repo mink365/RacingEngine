@@ -5,37 +5,37 @@
 # OPENAL_FOUND, If false, do not try to use OpenAL.
 
 if(ANDROID)
-    find_path(OPENAL_INCLUDE_DIRS al.h
-            PATHS
-            "${RE_EXTERNAL_DIR}/openal/include/android"
-            NO_DEFAULT_PATH
-            )
-
-    find_library(OPENAL_LIBRARIES
-            NAMES OpenAL libOpenAL
-            PATHS
-            "${RE_EXTERNAL_DIR}/openal/lib/android/arm"
-            NO_DEFAULT_PATH
-            )
-elseif(IOS)
-    FIND_PATH(OPENAL_INCLUDE_DIRS al.h
+    find_path(OPENAL_INCLUDE_DIRS AL/al.h
             PATHS
             "${RE_EXTERNAL_DIR}/openal/include"
             NO_DEFAULT_PATH
             )
 
     find_library(OPENAL_LIBRARIES
-            NAMES OpenAL libOpenAL
+            NAMES OpenAL
             PATHS
-            "${RE_EXTERNAL_DIR}/openal/lib"
+            "${RE_EXTERNAL_DIR}/openal/lib/android/arm"
             NO_DEFAULT_PATH
             )
-else()
-    find_path(OPENAL_INCLUDE_DIRS al.h
+elseif(IOS)
+    FIND_PATH(OPENAL_INCLUDE_DIRS AL/al.h
+            PATHS
+            "${RE_EXTERNAL_DIR}/openal/include"
+            NO_DEFAULT_PATH
             )
 
     find_library(OPENAL_LIBRARIES
-            NAMES OpenAL libOpenAL
+            NAMES OpenAL
+            )
+else()
+    find_path(OPENAL_INCLUDE_DIRS AL/al.h
+            PATHS
+            "${RE_EXTERNAL_DIR}/openal/include"
+            NO_DEFAULT_PATH
+            )
+
+    find_library(OPENAL_LIBRARIES
+            NAMES OpenAL
             )
 endif()
 

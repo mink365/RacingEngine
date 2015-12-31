@@ -5,7 +5,7 @@
 # VORBIS_FOUND, If false, do not try to use Vorbis.
 
 if(ANDROID)
-    find_path(VORBIS_INCLUDE_DIRS vorbisenc.h
+    find_path(VORBIS_INCLUDE_DIRS ogg/ogg.h
             PATHS
             "${RE_EXTERNAL_DIR}/oggvorbis/include"
             NO_DEFAULT_PATH
@@ -18,11 +18,13 @@ if(ANDROID)
             NO_DEFAULT_PATH
             )
 elseif(IOS)
-    FIND_PATH(VORBIS_INCLUDE_DIRS vorbisenc.h
+    FIND_PATH(VORBIS_INCLUDE_DIRS ogg/ogg.h
             PATHS
             "${RE_EXTERNAL_DIR}/oggvorbis/include"
             NO_DEFAULT_PATH
             )
+
+        set(IOS_ARCH armv7s)
 
     find_library(VORBIS_LIBRARIE
             NAMES vorbis

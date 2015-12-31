@@ -33,7 +33,9 @@ elseif(IOS)
             NO_DEFAULT_PATH
             )
 else()
-    find_path(BULLET_INCLUDE_DIRS bullet/btBulletCollisionCommon.h
+    find_path(BULLET_INCLUDE_DIRS btBulletCollisionCommon.h
+            PATHS
+            "/usr/local/include/bullet"
             )
 
     find_library(BULLET_COLLISION_LIBRARIE
