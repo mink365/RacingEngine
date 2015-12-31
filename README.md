@@ -14,9 +14,9 @@ for MAC:
 
 for Android:
 -------------
-	```
-	$ export ANDROID_NDK=/absolute/path/to/the/android-ndk
-	$ mkdir build && cd build
-	$ cmake -DCMAKE_TOOLCHAIN_FILE=../Build/CMake/Modules/android.toolchain.cmake -DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-clang3.6 -DANDROID_STL=c++_static -DANDROID_NATIVE_API_LEVEL=android-9 ../
-	$ make Examples
-	```
+```bash
+export ANDROID_NDK=/absolute/path/to/the/android-ndk
+mkdir build && cd build
+cmake -DCMAKE_TOOLCHAIN_FILE=../Build/CMake/Modules/android.toolchain.cmake -DANDROID_TOOLCHAIN_NAME=arm-linux-androideabi-clang3.6 -DANDROID_STL=c++_static -DANDROID_NATIVE_API_LEVEL=android-9 ../
+make Examples
+```
