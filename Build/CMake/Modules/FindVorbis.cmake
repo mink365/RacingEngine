@@ -23,9 +23,7 @@ elseif(IOS)
             "${RE_EXTERNAL_DIR}/oggvorbis/include"
             NO_DEFAULT_PATH
             )
-
-        set(IOS_ARCH armv7s)
-
+    
     find_library(VORBIS_LIBRARIE
             NAMES vorbis
             PATHS

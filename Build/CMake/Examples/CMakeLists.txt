@@ -66,6 +66,15 @@ if(${RE_PLATFORM_MAC})
         set(EXAMPLE_MAIN_SOURCE_FILES
                 ${RE_PROJECT_DIR}/Build/Desktop/main.cpp
                 )
+elseif(RE_PLATFORM_IOS)
+        enable_language( Swift )
+
+        set(EXAMPLE_MAIN_SOURCE_FILES
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/GameLoop.swift
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/GameView.swift
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/GameViewController.swift
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/AppDelegate.swift
+                )
 endif()
 
 include_directories(
@@ -78,6 +87,8 @@ add_executable(Examples
         ${EXAMPLES_HEADER_FILES}
         ${EXAMPLE_MAIN_SOURCE_FILES}
         )
+
+# add_dependencies(Examples yaml-cpp)
 
 target_link_libraries(Examples
         Engine

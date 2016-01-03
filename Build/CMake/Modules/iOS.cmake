@@ -144,7 +144,7 @@ set (CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS su
 # set the architecture for iOS 
 # NOTE: Currently both ARCHS_STANDARD_32_BIT and ARCHS_UNIVERSAL_IPHONE_OS set armv7 only, so set both manually
 if (${IOS_PLATFORM} STREQUAL "OS")
-	set (IOS_ARCH armv6 armv7)
+	set (IOS_ARCH armv7)
 else (${IOS_PLATFORM} STREQUAL "OS")
 	set (IOS_ARCH i386)
 endif (${IOS_PLATFORM} STREQUAL "OS")
@@ -190,6 +190,18 @@ macro (find_host_package)
 	set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 	set (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 endmacro (find_host_package)
+
+macro(ADD_FRAMEWORK fwname frameworks)
+    find_library(FRAMEWORK_${fwname}
+        NAMES ${fwname}
+        )
+    if( ${FRAMEWORK_${fwname}} STREQUAL FRAMEWORK_${fwname}-NOTFOUND)
+        MESSAGE(ERROR ": Framework ${fwname} not found")
+    else()
+        list(APPEND ${frameworks} ${FRAMEWORK_${fwname}})
+        MESSAGE(STATUS "Framework ${fwname} found at ${FRAMEWORK_${fwname}}")
+    endif()
+endmacro(ADD_FRAMEWORK)
 
 # http://stackoverflow.com/questions/14171740/cmake-with-ios-toolchain-cant-find-threads
 # http://public.kitware.com/Bug/view.php?id=12288

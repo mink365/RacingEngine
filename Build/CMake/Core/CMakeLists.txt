@@ -442,7 +442,12 @@ if(ANDROID)
             ${RE_SOURCE_DIR}/Platform/android/FileSystemAndroid.h
             )
 elseif(IOS)
-
+    set(PLATFORM_SPECIAL_FILES
+            ${RE_SOURCE_DIR}/Platform/iOS/Application.h
+            ${RE_SOURCE_DIR}/Platform/iOS/NativeWindow.h
+            ${RE_SOURCE_DIR}/Platform/iOS/Application.cpp
+            ${RE_SOURCE_DIR}/Platform/iOS/NativeWindow.cpp
+            )
 elseif(${RE_PLATFORM_MAC})
     set(PLATFORM_SPECIAL_FILES
             ${RE_SOURCE_DIR}/Platform/linux/Application.cpp

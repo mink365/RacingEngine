@@ -91,8 +91,16 @@ if(ANDROID)
 elseif(IOS)
     set(RE_INCLUDE_DIRECTORIES
             ${RE_INCLUDE_DIRECTORIES}
-            ${RE_SOURCE_DIR}/Platform/linux
+            ${RE_SOURCE_DIR}/Platform/iOS
             )
+
+    ADD_FRAMEWORK(OpenGLES RE_LINK_LIBRARIES)
+    ADD_FRAMEWORK(UIKit RE_LINK_LIBRARIES)
+    ADD_FRAMEWORK(QuartzCore RE_LINK_LIBRARIES)
+
+    # add libz.dylib needed by png
+    list(APPEND RE_LINK_LIBRARIES "z")
+
 elseif(${RE_PLATFORM_MAC})
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
