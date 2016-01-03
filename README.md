@@ -30,3 +30,21 @@ make Examples
 we need to use the `c++_static` because of the bug of `cmath` when we use `NDK` with `gnustl_static`:
 
 [C++11 cmath functions not in std namespace for android NDK w/gcc-4.8 or clang 3.4](http://stackoverflow.com/questions/22922961/c11-cmath-functions-not-in-std-namespace-for-android-ndk-w-gcc-4-8-or-clang-3)
+
+for iOS:
+------------
+
+```bash
+mkdir build && cd build
+cmake -DCMAKE_TOOLCHAIN_FILE=../Build/CMake/Modules/iOS.cmake ../ -GXcode
+```
+
+then we can open the project in Xcode.
+
+`Bitcode:`
+we need to disable `Bitcode` by hand
+
+`libswiftCore.dylib:`
+we need to add `@executable_path/Frameworks` to `Runpath Search Paths` in the build setting or you will got a 
+error of `Library not loaded: @rpath/libswiftCore.dylib` when run the app
+
