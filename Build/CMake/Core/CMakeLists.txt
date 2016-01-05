@@ -447,6 +447,7 @@ elseif(IOS)
             ${RE_SOURCE_DIR}/Platform/iOS/NativeWindow.h
             ${RE_SOURCE_DIR}/Platform/iOS/Application.cpp
             ${RE_SOURCE_DIR}/Platform/iOS/NativeWindow.cpp
+            ${RE_SOURCE_DIR}/Platform/iOS/Engine-Bridging-Header.h
             )
 elseif(${RE_PLATFORM_MAC})
     set(PLATFORM_SPECIAL_FILES

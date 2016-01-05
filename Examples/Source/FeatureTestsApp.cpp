@@ -314,3 +314,31 @@ void FeatureTestsApp::update()
     auto node = stage->getNode();
     DebugRenderer::instance().Step(node);
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+    void application_init()
+    {
+        Application* app = new FeatureTestsApp();
+        
+        app->initViewSize();
+        
+        GameHub& game = GameHub::instance();
+        game.init(app);
+        
+        app->initEnvironment();
+    }
+    
+    void application_update()
+    {
+        GameHub& game = GameHub::instance();
+        
+        int64_t dt = 10;
+        game.mainLoop(dt);
+    }
+    
+#ifdef __cplusplus
+}
+#endif

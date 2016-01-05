@@ -70,10 +70,11 @@ elseif(RE_PLATFORM_IOS)
         enable_language( Swift )
 
         set(EXAMPLE_MAIN_SOURCE_FILES
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/main.swift
+                ${RE_PROJECT_DIR}/Source/Platform/iOS/AppDelegate.swift
                 ${RE_PROJECT_DIR}/Source/Platform/iOS/GameLoop.swift
                 ${RE_PROJECT_DIR}/Source/Platform/iOS/GameView.swift
                 ${RE_PROJECT_DIR}/Source/Platform/iOS/GameViewController.swift
-                ${RE_PROJECT_DIR}/Source/Platform/iOS/AppDelegate.swift
                 )
 endif()
 

@@ -101,6 +101,8 @@ elseif(IOS)
     # add libz.dylib needed by png
     list(APPEND RE_LINK_LIBRARIES "z")
 
+    SET(MACOSX_BUNDLE_GUI_IDENTIFIER "org.racing.examples")
+
 elseif(${RE_PLATFORM_MAC})
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)

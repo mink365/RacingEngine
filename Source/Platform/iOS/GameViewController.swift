@@ -25,6 +25,9 @@ class GameViewController : UIViewController {
         super.viewDidLoad()
         
         self.gameLoop = GameLoop(frameInternal: 1, doSomething: self.updateInternal)
+        
+        // init the game
+        application_init();
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,14 +54,16 @@ class GameViewController : UIViewController {
     }
     
     func update() {
-        NSLog("xxxx")
+        // update call
+        
+        application_update();
     }
     
     func glView(view: GameView, drawInRect rect: CGRect) {
-        
+        // draw call
     }
     
     func tearDownGL() {
-    
+        // exit the game
     }
 }

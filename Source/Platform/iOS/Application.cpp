@@ -1,7 +1,11 @@
 #include "Application.h"
 
+#include "NativeWindow.h"
+
 #include "Platform/GameHub.h"
 #include "FileSystem/FileSystem.h"
+
+using namespace re;
 
 namespace re {
 
@@ -14,9 +18,7 @@ FileSystem& FileSystem::getInstance()
 
 Application::Application()
 {
-    // application = this;
-
-    // this->view = new NativeWindow();
+    this->view = new NativeWindow();
 }
 
 }

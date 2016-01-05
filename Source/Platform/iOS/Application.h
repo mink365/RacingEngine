@@ -10,10 +10,19 @@ class Application : public ApplicationProtocol
 {
 public:
     Application();
-
-    void run();
 };
 
 } // namespace re
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void application_init();
+void application_update();
+ 
+#ifdef __cplusplus
+}
+#endif
 
 #endif // RE_APPLICATION_H
