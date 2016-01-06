@@ -18,7 +18,7 @@ public:
 extern "C" {
 #endif
 
-void application_init();
+void application_init(float width, float height, const char* resource_dir);
 void application_update();
  
 #ifdef __cplusplus

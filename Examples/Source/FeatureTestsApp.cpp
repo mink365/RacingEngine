@@ -50,6 +50,10 @@
 
 extern TextureAtlasPtr CreateDefaultFont();
 
+static float _width, _height;
+static string _resource_dir;
+
+
 FeatureTestsApp::FeatureTestsApp()
 {
 }
@@ -58,6 +62,10 @@ bool FeatureTestsApp::initEnvironment()
 {
     PredefineTweenAccessor::registerAccessor();
     EventFactory::RegisterEvents();
+    
+#if RE_PLATFORM_IOS
+    this->view->setFrameSize(_width, _height);
+#endif
 
     Screen::instance().setDesignSize(614, 1024);
 
@@ -245,6 +253,8 @@ void FeatureTestsApp::initResources()
     searchPath.dir = "asset:";
 #elif RE_PLATFORM_MAC
     searchPath.dir = "/Users/ruikou/workspace/RacingEngine/Examples/Resources/";
+#elif RE_PLATFORM_IOS
+    searchPath.dir = _resource_dir;
 #endif
     FileSystem::getInstance().addSearchPath(searchPath);
 
@@ -319,8 +329,13 @@ void FeatureTestsApp::update()
 extern "C" {
 #endif
     
-    void application_init()
+    void application_init(float width, float height, const char* resource_dir)
     {
+        _width = width;
+        _height = height;
+        
+        _resource_dir = resource_dir;
+        
         Application* app = new FeatureTestsApp();
         
         app->initViewSize();
