@@ -45,6 +45,11 @@ class GameViewController : UIViewController {
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool
+    {
+        return true;
+    }
+    
     private func updateInternal() {
         self.update()
         

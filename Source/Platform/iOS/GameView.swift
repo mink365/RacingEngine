@@ -6,6 +6,15 @@ import Foundation
 import UIKit
 import GLKit
 
+//extension CGFloat {
+//    var swf: Float { return Float(self) }
+//}
+
+public func * (left:CGPoint, right:CGFloat) -> CGPoint
+{
+    return CGPoint(x: left.x*right, y: left.y * right);
+}
+
 class GameView : UIView
 {
     var drawableDepthFormat:GLKViewDrawableDepthFormat = .Format24
@@ -147,18 +156,34 @@ class GameView : UIView
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first;
+        var pos = touch?.locationInView(self);
+        pos = pos! * eaglLayer.contentsScale;
         
+        view_touch_begin(Float((pos?.x)!), Float((pos?.y)!));
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first;
+        var pos = touch?.locationInView(self);
+        pos = pos! * eaglLayer.contentsScale;
         
+        view_touch_moved(Float((pos?.x)!), Float((pos?.y)!));
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first;
+        var pos = touch?.locationInView(self);
+        pos = pos! * eaglLayer.contentsScale;
         
+        view_touch_ended(Float((pos?.x)!), Float((pos?.y)!));
     }
     
     override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+        let touch = touches?.first;
+        var pos = touch?.locationInView(self);
+        pos = pos! * eaglLayer.contentsScale;
         
+        view_touch_cancled(Float((pos?.x)!), Float((pos?.y)!));
     }
 };

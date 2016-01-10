@@ -16,5 +16,9 @@ extern void application_initView(uint32_t width, uint32_t height, uint32_t frame
                             uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil);
 extern void application_update();
 
+extern void view_touch_begin(float x, float y);
+extern void view_touch_moved(float x, float y);
+extern void view_touch_ended(float x, float y);
+extern void view_touch_cancled(float x, float y);
 
 #endif /* Examples_Swift_h */

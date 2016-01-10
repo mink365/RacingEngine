@@ -12,7 +12,7 @@ import UIKit
 class MyApplication: UIApplication {
     override func sendEvent(event: UIEvent) {
         super.sendEvent(event)
-        print("Event sent: \(event)");
+//        print("Event sent: \(event)");
     }
 }
 
