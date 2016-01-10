@@ -48,11 +48,9 @@ class GameView : UIView
         
         self.initLayer()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder:aDecoder);
-        
-        self.initLayer()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func initLayer()

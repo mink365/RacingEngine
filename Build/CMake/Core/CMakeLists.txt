@@ -458,6 +458,8 @@ elseif(${RE_PLATFORM_MAC})
             )
 endif()
 
+SOURCE_GROUP("Platform" FILES ${PLATFORM_SOURCE_FILES} ${PLATFORM_HEADER_FILES} ${PLATFORM_SPECIAL_FILES})
+
 add_library(Engine
         ${PRE_HEADER_FILES}
         ${ANIMATION_SOURCE_FILES}

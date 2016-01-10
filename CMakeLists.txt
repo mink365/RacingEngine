@@ -15,7 +15,8 @@ find_path(RE_PROJECT_DIR NAMES README.md
     )
 
 MARK_AS_ADVANCED(RE_PROJECT_DIR)
-SET(RE_EXAMPLES_DIR "${RE_PROJECT_DIR}/Examples/Source")
+SET(RE_EXAMPLES_DIR "${RE_PROJECT_DIR}/Examples")
+SET(RE_EXAMPLES_SOURCE_DIR "${RE_EXAMPLES_DIR}/Source")
 SET(RE_SOURCE_DIR "${RE_PROJECT_DIR}/Source")
 SET(RE_EXTERNAL_DIR "${RE_PROJECT_DIR}/Source/External")
 
@@ -46,7 +47,6 @@ set(BASE_INCLUDE_DIRECTORIES
         )
 
 # path need to be absolute
-# set(CMAKE_MODULE_PATH "${RE_PROJECT_DIR}/Build/CMake/Modules/" ${CMAKE_MODULE_PATH})
 list(INSERT CMAKE_MODULE_PATH 0 "${RE_PROJECT_DIR}/Build/CMake/Modules/")
 
 find_package(Freetype REQUIRED)
@@ -101,8 +101,6 @@ elseif(IOS)
     # add libz.dylib needed by png
     list(APPEND RE_LINK_LIBRARIES "z")
 
-    SET(MACOSX_BUNDLE_GUI_IDENTIFIER "org.racing.examples")
-
 elseif(${RE_PLATFORM_MAC})
     find_package(OpenGL REQUIRED)
     find_package(GLEW REQUIRED)
@@ -132,6 +130,6 @@ include_directories(
 
 # Projects
 ADD_SUBDIRECTORY(Build/CMake/External/Tween)
-ADD_SUBDIRECTORY(Source/External/yaml-cpp)
+ADD_SUBDIRECTORY(Source/External/yaml-cpp EXCLUDE_FROM_ALL)
 ADD_SUBDIRECTORY(Build/CMake/Core)
 ADD_SUBDIRECTORY(Build/CMake/Examples)
