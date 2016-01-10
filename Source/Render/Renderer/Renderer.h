@@ -35,10 +35,14 @@ public:
     const Mat4& getViewMatrix() const;
     const Mat4& getProjectionMatrix() const;
 
+    void setDefaultRenderbuffer(uint32_t width, uint32_t height, uint32_t framebuffer,
+                                uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil);
+
     virtual void bindTexture(int unit, bool enable, const Texture &texture) = 0;
 
     virtual void bindRenderTarget(const RenderTarget &target) = 0;
-    virtual void resetRenderTarget() = 0;
+    virtual void resetRenderTarget();
+
     virtual void setupRenderTarget(RenderTarget &target) = 0;
 
     virtual void bindShader(const Shader &shader) = 0;

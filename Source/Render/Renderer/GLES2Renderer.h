@@ -15,7 +15,6 @@ public:
     virtual void bindTexture(int unit, bool enable, const Texture &texture);
 
     virtual void bindRenderTarget(const RenderTarget &target);
-    virtual void resetRenderTarget();
 
     virtual void bindShader(const Shader &shader);
     virtual void bindBuffer(const MeshData &meshData);

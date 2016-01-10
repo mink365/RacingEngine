@@ -13,8 +13,8 @@ Texture::Texture()
     this->target = TargetType::TEXTURE_2D;
     this->minFilter = FilterValue::LINEAR;
     this->magFilter = FilterValue::LINEAR;
-    this->wrapU = WrapValue::REPEAT;
-    this->wrapV = WrapValue::REPEAT;
+    this->wrapU = WrapValue::CLAMP_TO_EDGE;
+    this->wrapV = WrapValue::CLAMP_TO_EDGE;
 }
 
 Texture::Texture(const int width, const int height, const int glID)
@@ -26,8 +26,8 @@ Texture::Texture(const int width, const int height, const int glID)
     this->target = TargetType::TEXTURE_2D;
     this->minFilter = FilterValue::LINEAR;
     this->magFilter = FilterValue::LINEAR;
-    this->wrapU = WrapValue::REPEAT;
-    this->wrapV = WrapValue::REPEAT;
+    this->wrapU = WrapValue::CLAMP_TO_EDGE;
+    this->wrapV = WrapValue::CLAMP_TO_EDGE;
 }
 
 std::string Texture::getName() const

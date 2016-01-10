@@ -6,6 +6,7 @@
  */
 
 #include "Renderer.h"
+#include "RenderTarget.h"
 
 namespace re {
 
@@ -45,6 +46,25 @@ const Mat4 &Renderer::getViewMatrix() const
 const Mat4 &Renderer::getProjectionMatrix() const
 {
     return this->projMatrix;
+}
+
+void Renderer::setDefaultRenderbuffer(uint32_t width, uint32_t height, uint32_t framebuffer,
+                                uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil)
+{
+    RenderTarget &target = *(this->context.defaultRenderTarget);
+
+    target.framebuffer = framebuffer;
+    target.colorRenderBuffer = colorRenderbuffer;
+    target.depthRenderbuffer = depthRenderbuffer;
+    target.setHasDepthBuffer(depth);
+    target.setHasDepthBuffer(stencil);
+}
+
+void Renderer::resetRenderTarget()
+{
+    const RenderTarget &target = *(this->context.defaultRenderTarget);
+
+    this->bindRenderTarget(target);
 }
 
 void Renderer::setClearColor(const Color &color)

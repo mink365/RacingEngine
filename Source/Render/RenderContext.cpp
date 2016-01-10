@@ -6,6 +6,7 @@
  */
 
 #include "RenderContext.h"
+#include "RenderTarget.h"
 
 namespace re {
 
@@ -15,6 +16,8 @@ RenderContext::RenderContext() {
     this->boundFBO = 0;
 
     this->textureUnits.resize(8);
+
+    this->defaultRenderTarget = Create<RenderTarget>();
 }
 
 RenderContext::~RenderContext() {

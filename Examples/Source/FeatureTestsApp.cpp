@@ -50,9 +50,9 @@
 
 extern TextureAtlasPtr CreateDefaultFont();
 
-static float _width, _height;
+static uint32_t _width, _height;
 static string _resource_dir;
-
+static Application* _app;
 
 FeatureTestsApp::FeatureTestsApp()
 {
@@ -67,13 +67,37 @@ bool FeatureTestsApp::initEnvironment()
     this->view->setFrameSize(_width, _height);
 #endif
 
-    Screen::instance().setDesignSize(614, 1024);
-
     Screen::instance().setRealFrameSize(this->view->getFrameSize());
 
+    Screen::instance().setDesignSize(614, 1024);
+
+#if !RE_PLATFORM_IOS
+    // init the renderer
+    auto& sceneManager = SceneManager::instance();
+    RendererPtr renderer = Create<GLES2Renderer>();
+    
+    sceneManager.getRenderManager().setRenderer(renderer);
+    sceneManager.getRenderManager().initDefaultRenderState();
+#endif
+    
+    SearchPath searchPath;
+#if RE_PLATFORM_ANDROID
+    searchPath.dir = "asset:";
+#elif RE_PLATFORM_IOS
+    searchPath.dir = _resource_dir;
+#elif RE_PLATFORM_LINUX
+    searchPath.dir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
+#elif RE_PLATFORM_MAC
+    searchPath.dir = "/Users/ruikou/workspace/RacingEngine/Examples/Resources/";
+#endif
+    FileSystem::getInstance().addSearchPath(searchPath);
+    
+    TextureManager::instance().setImageLoader(new ImageLoader());
+    
     GameHub::instance().updateEvent += std::bind(&FeatureTestsApp::update, this);
 
     this->initResources();
+    
     this->createTests();
 
     return true;
@@ -114,7 +138,7 @@ void FeatureTestsApp::createTests()
             , ShadowTest, BulletTest, RenderToTextureTest, Skybox
             , Reflection, Refraction, Lightmap, Bumpmap>(this->tests);
 
-    currIndex = 7;
+    currIndex = 12;
 
     this->onCurrentTestChanged();
 }
@@ -203,13 +227,6 @@ void FeatureTestsApp::createBaseUI()
 
 void FeatureTestsApp::initResources()
 {
-//    InitGLStates();
-    auto& sceneManager = SceneManager::instance();
-    RendererPtr renderer = Create<GLES2Renderer>();
-
-    sceneManager.getRenderManager().setRenderer(renderer);
-    sceneManager.getRenderManager().initDefaultRenderState();
-
     const Screen& screen = Screen::instance();
 
     presCamera = CreateNode<Camera>();
@@ -245,19 +262,6 @@ void FeatureTestsApp::initResources()
     SceneManager::instance().addRootNode(presCamera->getNode());
     SceneManager::instance().addRootNode(uiCamera->getNode());
 
-    SearchPath searchPath;
-#ifdef RE_PLATFORM_LINUX
-    searchPath.dir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
-#elif RE_PLATFORM_ANDROID
-//    searchPath.dir = "/sdcard/regame/assets/";
-    searchPath.dir = "asset:";
-#elif RE_PLATFORM_MAC
-    searchPath.dir = "/Users/ruikou/workspace/RacingEngine/Examples/Resources/";
-#elif RE_PLATFORM_IOS
-    searchPath.dir = _resource_dir;
-#endif
-    FileSystem::getInstance().addSearchPath(searchPath);
-
     std::string shaderDir = "Shaders/";
 
 //    LoadShader("Shader_Default", shaderDir + "light.vert", shaderDir + "light.frag");
@@ -273,8 +277,6 @@ void FeatureTestsApp::initResources()
 
     LoadShader("Shader_Font", shaderDir + "v3f-t2f-c4f.vert",
                               shaderDir + "v3f-t2f-c4f.frag");
-
-    TextureManager::instance().setImageLoader(new ImageLoader());
 
     DebugRenderer::instance().InitNode();
 
@@ -329,21 +331,35 @@ void FeatureTestsApp::update()
 extern "C" {
 #endif
     
-    void application_init(float width, float height, const char* resource_dir)
+    void application_init(const char* resource_dir)
+    {
+        _resource_dir = resource_dir;
+        
+        _app->initEnvironment();
+    }
+
+    void application_initView(uint32_t width, uint32_t height, uint32_t framebuffer,
+                          uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil)
     {
         _width = width;
         _height = height;
-        
-        _resource_dir = resource_dir;
-        
-        Application* app = new FeatureTestsApp();
-        
-        app->initViewSize();
-        
+
+        _app = new FeatureTestsApp();
+        _app->initViewSize();
+
         GameHub& game = GameHub::instance();
-        game.init(app);
+        game.init(_app);
+
+        // init the renderer
+        auto& sceneManager = SceneManager::instance();
+        RendererPtr renderer = Create<GLES2Renderer>();
         
-        app->initEnvironment();
+        sceneManager.getRenderManager().setRenderer(renderer);
+        sceneManager.getRenderManager().initDefaultRenderState();
+        
+        SceneManager::instance().getRenderManager().getRenderer()
+                .setDefaultRenderbuffer(width, height,
+                                        framebuffer, colorRenderbuffer, depthRenderbuffer, depth, stencil);
     }
     
     void application_update()

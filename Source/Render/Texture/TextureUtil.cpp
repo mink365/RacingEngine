@@ -66,7 +66,7 @@ TextureFormat ImageFormatToPixelFormat(FORMAT format) {
     case FORMAT_DXT5:
         return TextureFormat::S3TC_DXT5;
     default:
-        assert(false);
+//        assert(false);
         return TextureFormat::Alpha16;
     }
 }

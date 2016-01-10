@@ -27,11 +27,7 @@ class GameViewController : UIViewController {
         self.gameLoop = GameLoop(frameInternal: 1, doSomething: self.updateInternal)
         
         // init the game
-        let width  = Float(self.__view.framebufferWidth);
-        let height = Float(self.__view.framebufferHeight);
-        application_init(
-            width, height,
-            NSBundle.mainBundle().resourcePath!);
+        application_init(NSBundle.mainBundle().resourcePath!);
     }
     
     override func didReceiveMemoryWarning() {

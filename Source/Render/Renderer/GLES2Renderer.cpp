@@ -97,18 +97,11 @@ void GLES2Renderer::bindRenderTarget(const RenderTarget &target)
         framebuffer = target.framebuffer;
     }
 
-//    if (framebuffer != context.boundFBO) {
+    if (framebuffer != context.boundFBO) {
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
         context.boundFBO = framebuffer;
-//    }
-}
-
-void GLES2Renderer::resetRenderTarget()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    context.boundFBO = 0;
+    }
 }
 
 void GLES2Renderer::bindShader(const Shader &shader)
@@ -153,9 +146,9 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
         target.framebuffer = CreateFrameBuffer();
 
         if (target.shareDepthFrom == nullptr) {
-            target.renderbuffer = CreateRenderBuffer();
+            target.depthRenderbuffer = CreateRenderBuffer();
         } else {
-            target.renderbuffer = target.shareDepthFrom->renderbuffer;
+            target.depthRenderbuffer = target.shareDepthFrom->depthRenderbuffer;
         }
 
         texture->setTarget(Texture::TargetType::TEXTURE_2D);
@@ -164,14 +157,14 @@ void GLES2Renderer::setupRenderTarget(RenderTarget &target)
         SetupFrameBuffer(target.framebuffer, target, GL_TEXTURE_2D);
 
         if (target.shareDepthFrom == nullptr) {
-            SetupRenderBuffer(target.renderbuffer, target);
+            SetupRenderBuffer(target.depthRenderbuffer, target);
         } else {
             // no need to allocate memory, just bind
 
             if (target.getHasDepthBuffer() && ! target.getHasStencilBuffer()) {
-                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, target.renderbuffer);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, target.depthRenderbuffer);
             } else if (target.getHasDepthBuffer() && target.getHasStencilBuffer()) {
-                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, target.renderbuffer);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, target.depthRenderbuffer);
             }
         }
 

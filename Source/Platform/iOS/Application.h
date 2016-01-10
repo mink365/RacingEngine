@@ -18,7 +18,9 @@ public:
 extern "C" {
 #endif
 
-void application_init(float width, float height, const char* resource_dir);
+void application_init(const char* resource_dir);
+void application_initView(uint32_t width, uint32_t height, uint32_t framebuffer,
+                            uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil);
 void application_update();
  
 #ifdef __cplusplus

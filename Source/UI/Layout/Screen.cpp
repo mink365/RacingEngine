@@ -10,22 +10,8 @@ void Screen::setRealFrameSize(const Size &size)
 void Screen::setRealFrameSize(float screenWidth, float screenHeight) {
     _realSize.width = screenWidth;
     _realSize.height = screenHeight;
-    _finalScale = 1;
 
-    float scaleX = screenWidth / _designSize.width;
-    float scaleY = screenHeight / _designSize.height;
-
-    if (screenHeight / screenWidth > _designSize.height / _designSize.width) {
-        _finalScale = scaleX;
-    } else {
-        _finalScale = scaleY;
-    }
-
-    _scaledSize.width = _realSize.width / _finalScale;
-    _scaledSize.height = _realSize.height / _finalScale;
-
-    _fitScreenScale.x = _scaledSize.width / _designSize.width;
-    _fitScreenScale.y = _scaledSize.height / _designSize.height;
+    this->updateScale();
 }
 
 float Screen::getFinalScale() const {
@@ -36,6 +22,28 @@ void Screen::setDesignSize(float width, float height)
 {
     this->_designSize.width = width;
     this->_designSize.height = height;
+
+     this->updateScale();
+}
+
+void Screen::updateScale()
+{
+    _finalScale = 1;
+
+    float scaleX = _realSize.width / _designSize.width;
+    float scaleY = _realSize.height / _designSize.height;
+
+    if (_realSize.height / _realSize.width > _designSize.height / _designSize.width) {
+        _finalScale = scaleX;
+    } else {
+        _finalScale = scaleY;
+    }
+
+    _scaledSize.width = _realSize.width / _finalScale;
+    _scaledSize.height = _realSize.height / _finalScale;
+
+    _fitScreenScale.x = _scaledSize.width / _designSize.width;
+    _fitScreenScale.y = _scaledSize.height / _designSize.height;
 }
 
 float Screen::getWidth() const {

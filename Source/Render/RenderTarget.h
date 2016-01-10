@@ -18,7 +18,7 @@ class RenderTarget
 {
 public:
     RenderTarget();
-    virtual ~RenderTarget() {};
+    virtual ~RenderTarget() {}
 
     RenderTargetType getType() const;
 
@@ -39,7 +39,8 @@ public:
 
 public:
     GPU_ID framebuffer;
-    GPU_ID renderbuffer;
+    GPU_ID colorRenderBuffer;
+    GPU_ID depthRenderbuffer;
 
     RenderTargetPtr shareDepthFrom;
 

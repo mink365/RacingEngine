@@ -104,6 +104,10 @@ class GameView : UIView
         if (Int32(status) != GL_FRAMEBUFFER_COMPLETE) {
             NSLog("Failed to make complete framebuffer object %x", status)
         }
+
+        application_initView(UInt32(framebufferWidth), UInt32(framebufferHeight),
+                defaultFramebuffer, colorRenderbuffer, depthRenderbuffer,
+                true, false)
     }
     
     func deleteFramebuffer() {
@@ -137,9 +141,9 @@ class GameView : UIView
     
     override func layoutSubviews() {
         // The framebuffer will be re-created at the beginning of the next setFramebuffer method call.
-        self.deleteFramebuffer()
-        
-        self.createFramebuffer()
+//        self.deleteFramebuffer()
+//        
+//        self.createFramebuffer()
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

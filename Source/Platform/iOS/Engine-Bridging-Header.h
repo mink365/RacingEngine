@@ -9,7 +9,11 @@
 #ifndef Examples_Swift_h
 #define Examples_Swift_h
 
-extern void application_init(float width, float height, const char* resource_dir);
+#include <stdint.h>
+
+extern void application_init(const char* resource_dir);
+extern void application_initView(uint32_t width, uint32_t height, uint32_t framebuffer,
+                            uint32_t colorRenderbuffer, uint32_t depthRenderbuffer, bool depth, bool stencil);
 extern void application_update();
 
 

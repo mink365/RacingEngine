@@ -20,6 +20,10 @@ public:
     const Size& getRealSize() const;
     const Vec2& getFitScreenScale() const;
     float getFinalScale() const;
+
+private:
+    void updateScale();
+
 private:
     Size _designSize;
     Size _realSize;

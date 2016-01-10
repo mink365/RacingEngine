@@ -8,9 +8,14 @@ RenderTarget::RenderTarget()
 
     this->size.set(Size(512, 512));
 
-    this->generateMipmaps = false;
+    this->framebuffer = 0;
+    this->colorRenderBuffer = 0;
+    this->depthRenderbuffer = 0;
+
     this->hasDepthBuffer = true;
     this->hasStencilBuffer = false;
+
+    this->generateMipmaps = false;
 }
 
 RenderTargetType RenderTarget::getType() const

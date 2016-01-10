@@ -15,6 +15,9 @@
 
 namespace re {
 
+class RenderTarget;
+using RenderTargetPtr = SharedPtr<RenderTarget>;
+
 class RenderContext {
     friend class Renderer;
     friend class GLES2Renderer;
@@ -33,6 +36,9 @@ private:
     RenderState renderState;
 
     std::vector<TextureUnitContextState> textureUnits;
+
+    // RenderTarget of framebuffer
+    RenderTargetPtr defaultRenderTarget;
 };
 
 } // namespace re

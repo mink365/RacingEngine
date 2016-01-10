@@ -28,9 +28,9 @@ class FeatureTestsApp : public Application
 public:
     FeatureTestsApp();
 
-    virtual bool initEnvironment();
-    virtual void onEnterForeground();
-    virtual void onExitForeground();
+    virtual bool initEnvironment() override;
+    virtual void onEnterForeground() override;
+    virtual void onExitForeground() override;
 
 protected:
     void createTests();
@@ -45,6 +45,7 @@ protected:
     void registerScenes();
 
 private:
+    void initGame();
     void initResources();
 
     void update();
