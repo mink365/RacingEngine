@@ -81,14 +81,10 @@ bool FeatureTestsApp::initEnvironment()
 #endif
     
     SearchPath searchPath;
-#if RE_PLATFORM_ANDROID
-    searchPath.dir = "asset:";
-#elif RE_PLATFORM_IOS
+#if RE_PLATFORM_IOS
     searchPath.dir = _resource_dir;
-#elif RE_PLATFORM_LINUX
-    searchPath.dir = "/home/jk/workspace/RacingEngine/Examples/Resources/";
-#elif RE_PLATFORM_MAC
-    searchPath.dir = "/Users/ruikou/workspace/RacingEngine/Examples/Resources/";
+#else
+    searchPath.dir = RE_RESOURCES_SEARCH_PATH;
 #endif
     FileSystem::getInstance().addSearchPath(searchPath);
     
