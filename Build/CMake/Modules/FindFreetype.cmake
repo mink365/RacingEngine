@@ -32,7 +32,7 @@ elseif(IOS)
             NO_DEFAULT_PATH
             )
 else()
-    find_path(FREETYPE_INCLUDE_DIRS freetype.h
+    find_path(FREETYPE_INCLUDE_DIRS freetype/freetype.h
             PATHS
             "/usr/local/include/freetype2"
             )
