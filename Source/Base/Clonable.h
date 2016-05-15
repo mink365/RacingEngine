@@ -15,7 +15,7 @@ SharedPtr<T> CreateCloneInstance() {
 template<class T>
 class Clonable : public Uncopyable {
 public:
-    virtual ~Clonable() {};
+    virtual ~Clonable() {}
 
     virtual SharedPtr<T> clone() const = 0;
 };
