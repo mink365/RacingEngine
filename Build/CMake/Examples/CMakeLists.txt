@@ -102,9 +102,9 @@ if(${RE_PLATFORM_ANDROID})
         add_library(Examples SHARED
                 ${RE_EXAMPLES_SOURCE_DIRS}
                 )
-        set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/libs")
+        set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/libs/${ANDROID_ABI}")
 
-else(${RE_PLATFORM_IOS})
+elseif(${RE_PLATFORM_IOS})
         add_executable(Examples MACOSX_BUNDLE
                 ${RE_EXAMPLES_SOURCE_DIRS}
 
@@ -135,8 +135,6 @@ if(${RE_PLATFORM_ANDROID})
         set_target_properties(Examples PROPERTIES COMPILE_DEFINITIONS "ANDROID")
 
         set(ANDROID_APK_API_LEVEL "21")
-
-        MESSAGE(STATUS "Could NOT find zlib. ${CMAKE_CURRENT_BINARY_DIR}")
 
         android_create_apk(Examples "org.racing.examples" 
         "${CMAKE_BINARY_DIR}/apk" 
