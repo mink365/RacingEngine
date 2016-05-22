@@ -41,6 +41,9 @@ cmake -DCMAKE_TOOLCHAIN_FILE=../Build/CMake/Modules/iOS.cmake ../ -GXcode
 
 then we can open the project in Xcode.
 
+`yaml-cpp:`
+first open `Source/External/yaml-cpp/YAML_CPP.xcodeproj` to build `libyaml-cpp.a`
+
 `Bitcode:`
 we need to disable `Bitcode` by hand
 
