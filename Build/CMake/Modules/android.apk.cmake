@@ -72,7 +72,7 @@ macro(android_create_apk name apk_package_name apk_directory libs_directory andr
     COMMAND ${CMAKE_COMMAND} -E make_directory "${apk_directory}/libs")
   add_custom_command(TARGET ${ANDROID_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/libs" "${apk_directory}/libs/")
+    "${libs_directory}/" "${apk_directory}/libs/")
   
   # Create "build.xml", "default.properties", "local.properties" and "proguard.cfg" files
   if(CMAKE_BUILD_TYPE MATCHES Release)
@@ -105,7 +105,7 @@ macro(android_create_apk name apk_package_name apk_directory libs_directory andr
     COMMAND ${CMAKE_COMMAND} -E make_directory "${apk_directory}/assets/")
   add_custom_command(TARGET ${ANDROID_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/assets" "${apk_directory}/assets/")
+    "${assets_directory}/" "${apk_directory}/assets/")
 
   # Build the apk file
   if(CMAKE_BUILD_TYPE MATCHES Release)
