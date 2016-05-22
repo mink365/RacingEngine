@@ -77,22 +77,25 @@ set(RE_LINK_LIBRARIES
         )
 
 if(ANDROID)
-    include(AndroidNdkModules)
-    android_ndk_import_module_native_app_glue()
+    include(AndroidNdkModules REQUIRED)
+    include(android.apk REQUIRED)
+    android_ndk_import_module_ndk_helper()
 
-    set(RE_INCLUDE_DIRECTORIES
-            ${RE_INCLUDE_DIRECTORIES}
+    find_package(ZLib REQUIRED)
+
+    list(APPEND RE_INCLUDE_DIRECTORIES
+            ${ZLIB_INCLUDE_DIRS}
+
             ${RE_SOURCE_DIR}/Platform/android
             )
 
-    set(RE_LINK_LIBRARIES
-            ${RE_LINK_LIBRARIES}
+    list(APPEND RE_LINK_LIBRARIES 
+            ${ZLIB_LIBRARIES}
+            ndk_helper
             OpenSLES
             )
-
 elseif(IOS)
-    set(RE_INCLUDE_DIRECTORIES
-            ${RE_INCLUDE_DIRECTORIES}
+    list(APPEND RE_INCLUDE_DIRECTORIES
             ${RE_SOURCE_DIR}/Platform/iOS
             )
 
@@ -108,8 +111,7 @@ elseif(${RE_PLATFORM_MAC})
     find_package(GLEW REQUIRED)
     find_package(GLFW REQUIRED)
 
-    set(RE_INCLUDE_DIRECTORIES
-            ${RE_INCLUDE_DIRECTORIES}
+    list(APPEND RE_INCLUDE_DIRECTORIES
             ${OPENGL_INCLUDE_DIRS}
             ${GLEW_INCLUDE_DIRS}
             ${GLFW_INCLUDE_DIRS}
@@ -117,8 +119,7 @@ elseif(${RE_PLATFORM_MAC})
             ${RE_SOURCE_DIR}/Platform/linux
             )
 
-    set(RE_LINK_LIBRARIES
-            ${RE_LINK_LIBRARIES}
+    list(APPEND RE_LINK_LIBRARIES
             ${OPENGL_LIBRARIES}
             ${GLEW_LIBRARIES}
             ${GLFW_LIBRARIES}

@@ -62,11 +62,17 @@ set(EXAMPLES_HEADER_FILES
 SOURCE_GROUP("Examples\\Source Files" FILES ${EXAMPLES_SOURCE_FILES})
 SOURCE_GROUP("Examples\\Header Files" FILES ${EXAMPLES_HEADER_FILES})
 
+set(RE_EXAMPLES_BUILD_DIR "${RE_PROJECT_DIR}/Build/Examples")
+
 if(${RE_PLATFORM_MAC})
         set(EXAMPLE_MAIN_SOURCE_FILES
-                ${RE_PROJECT_DIR}/Build/Desktop/main.cpp
+                ${RE_EXAMPLES_BUILD_DIR}/Desktop/main.cpp
                 )
-elseif(RE_PLATFORM_IOS)
+elseif(${RE_PLATFORM_ANDROID})
+        set(EXAMPLE_MAIN_SOURCE_FILES
+                ${RE_EXAMPLES_BUILD_DIR}/Android/jni/main.cpp
+                )
+elseif(${RE_PLATFORM_IOS})
         enable_language( Swift )
 
         set(EXAMPLE_MAIN_SOURCE_FILES
@@ -85,29 +91,36 @@ include_directories(
         ${RE_EXAMPLES_SOURCE_DIR}
         )
 
-add_executable(Examples MACOSX_BUNDLE
+set(RE_EXAMPLES_SOURCE_DIRS
         ${PRE_HEADER_FILES}
         ${EXAMPLES_SOURCE_FILES}
         ${EXAMPLES_HEADER_FILES}
         ${EXAMPLE_MAIN_SOURCE_FILES}
-
-        ${RESOURCES}
         )
 
-if(${RE_PLATFORM_IOS})
-        set_target_properties(Examples PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${RE_PROJECT_DIR}/Build/iOS/Info.plist.in)
+if(${RE_PLATFORM_ANDROID})
+        add_library(Examples SHARED
+                ${RE_EXAMPLES_SOURCE_DIRS}
+                )
+else(${RE_PLATFORM_IOS})
+        add_executable(Examples MACOSX_BUNDLE
+                ${RE_EXAMPLES_SOURCE_DIRS}
+
+                ${RESOURCES}
+                )
+
+        set_target_properties(Examples PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${RE_EXAMPLES_BUILD_DIR}/iOS/Info.plist.in)
         set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.racing.examples")
 
         #
         set_xcode_property(Examples GCC_GENERATE_DEBUGGING_SYMBOLS YES)
         set_xcode_property(Examples SWIFT_OBJC_BRIDGING_HEADER ${RE_PROJECT_DIR}/Source/Platform/iOS/Engine-Bridging-Header.h)
         set_xcode_property(Examples LD_RUNPATH_SEARCH_PATHS @executable_path/Frameworks)
-
-        # TODO add property to the project
-        set_xcode_property(Examples SYMROOT ${CMAKE_CFG_INTDIR})
-
+else()
+        add_executable(Examples
+        ${RE_EXAMPLES_SOURCE_DIRS}
+        )
 endif()
-
 
 target_link_libraries(Examples
         Engine
@@ -115,3 +128,16 @@ target_link_libraries(Examples
         yaml-cpp
         ${RE_LINK_LIBRARIES}
         )
+
+if(${RE_PLATFORM_ANDROID})
+        set_target_properties(Examples PROPERTIES COMPILE_DEFINITIONS "ANDROID")
+
+        set(ANDROID_APK_API_LEVEL "21")
+
+        android_create_apk(Examples "org.racing.examples" 
+        "${CMAKE_BINARY_DIR}/apk" 
+        "${RE_EXAMPLES_BUILD_DIR}/Android/libs" 
+        "${RE_EXAMPLES_BUILD_DIR}/Android" 
+        "${RE_EXAMPLES_BUILD_DIR}/Android/assets")
+endif()
+
