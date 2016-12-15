@@ -34,7 +34,7 @@ class FileSystem
 public:
     static FileSystem& getInstance();
 
-    virtual ~FileSystem(){};
+    virtual ~FileSystem(){}
 
 public:
     void addSearchPath(const SearchPath& searchPath);

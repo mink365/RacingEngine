@@ -91,8 +91,8 @@ public:
      */
     void AddText(const std::wstring& text, Geometry::ptr geometry, Font::constPtr font=nullptr);
 
-    const Rect& getTextRect() const {return rect;};
-    const Vec2& getTextOrigin() const {return vertexOrigin;};
+    const Rect& getTextRect() const {return rect;}
+    const Vec2& getTextOrigin() const {return vertexOrigin;}
 
 protected:
     void AddText(Pen& pen, const Markup& markup, const std::wstring& text, size_t begin=0, size_t end=0);

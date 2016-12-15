@@ -21,9 +21,9 @@ public:
 public:
     typedef C ComponentType;
 
-    ComponentHandle() {};
+    ComponentHandle() {}
 
-    ComponentHandle(std::nullptr_t) {};
+    ComponentHandle(std::nullptr_t) {}
 
     ComponentHandle(const ComponentHandle<BaseComponent>& handle) {
         this->entity = handle.entity;

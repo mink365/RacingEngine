@@ -29,7 +29,7 @@ private:
 class AudioEngineImpl
 {
 public:
-    virtual ~AudioEngineImpl() {};
+    virtual ~AudioEngineImpl() {}
     virtual SharedPtr<AudioListenerImpl> CreateListenerImpl() = 0;
     virtual SharedPtr<AudioSourceImpl> CreateSourceImpl() = 0;
 };

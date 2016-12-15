@@ -37,8 +37,8 @@ public:
     virtual void removeChild(NodePtr node);
     virtual void removeAllChildren();
 
-    bool isVisible() const {return this->_visible;};
-    void setVisible(bool v) {this->_visible = v;};
+    bool isVisible() const {return this->_visible;}
+    void setVisible(bool v) {this->_visible = v;}
 
     bool isInScene() const;
 

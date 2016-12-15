@@ -14,8 +14,8 @@ public:
         return _instance;
     }
 protected:
-    Singleton() {};
-    ~Singleton() {};
+    Singleton() {}
+    ~Singleton() {}
 };
 
 }

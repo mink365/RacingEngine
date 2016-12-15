@@ -17,9 +17,9 @@ public:
     System();
 
 public:
-    virtual void configure(EventManager &events) {};
+    virtual void configure(EventManager &events) {}
 
-    virtual void update() {};
+    virtual void update() {}
 };
 
 class SystemManager : public Singleton<SystemManager>

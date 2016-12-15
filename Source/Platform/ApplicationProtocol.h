@@ -8,7 +8,7 @@ namespace re {
 class ApplicationProtocol
 {
 public:
-    virtual void initViewSize() {};
+    virtual void initViewSize() {}
 
     virtual bool initEnvironment() = 0;
 

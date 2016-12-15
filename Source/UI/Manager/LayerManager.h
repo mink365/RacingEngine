@@ -59,7 +59,7 @@ protected:
      */
     virtual ViewPtr getDefaultLayer() = 0;
 
-    virtual void onLayerStackPopToEmpty() {};
+    virtual void onLayerStackPopToEmpty() {}
     
 private:
     std::list<ViewPtr> stack;

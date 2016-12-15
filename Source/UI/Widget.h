@@ -32,8 +32,8 @@ public:
 
     void layout();
 
-    bool isVisible() {return true;};
-    bool isRunning() {return true;};
+    bool isVisible() {return true;}
+    bool isRunning() {return true;}
 
 public:
     void registerEvents();
@@ -61,7 +61,7 @@ protected:
 
     virtual void layoutSelf();
 
-    virtual void initView() {};
+    virtual void initView() {}
 
 public:
     void copyProperties(const Widget& rhs);

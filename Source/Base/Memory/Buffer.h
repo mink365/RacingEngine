@@ -24,25 +24,26 @@ public:
 
     ~Buffer() {
         this->clear();
-    };
+    }
 
     void allocate(size_t capacity) {
         this->clear();
 
         this->_data = (T*)malloc(capacity * sizeof(T));
         this->_size = capacity;
-    };
+    }
+
     void clear() {
         if (this->_data) {
             free(_data);
         }
         _data = nullptr;
         _size = 0;
-    };
+    }
 
     T* getData() const {
         return _data;
-    };
+    }
 
     void setData(T* data, size_t size) {
         this->clear();
@@ -53,7 +54,7 @@ public:
 
     size_t getSize() const {
         return _size;
-    };
+    }
 
     size_t getByteSize() const {
         return _size * sizeof(T);
@@ -61,7 +62,8 @@ public:
 
     bool isNull() const {
         return (this->_size == 0) || (this->_data == nullptr);
-    };
+    }
+
 private:
     size_t _size;
     T* _data;

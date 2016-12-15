@@ -11,7 +11,7 @@ public:
     virtual void setFrameSize(float width, float height) = 0;
     virtual Size getFrameSize() const = 0;
 
-    virtual void setVsync(bool) {};
+    virtual void setVsync(bool) {}
     virtual bool isVsync() const
     {
         return false;

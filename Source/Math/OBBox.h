@@ -17,7 +17,7 @@ namespace re {
 class OBBox
 {
 public:
-    OBBox() {};
+    OBBox() {}
     OBBox(const Vec3& center, const Quat& rotation, const Vec3& extent_);
 
     const Vec3& Center() const;

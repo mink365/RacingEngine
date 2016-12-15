@@ -38,7 +38,7 @@ public:
     const std::vector<ComponentHandle<BaseComponent>>& getComponents() const;
 
 public:
-    virtual void registerEvents() {};
+    virtual void registerEvents() {}
 
 protected:
     virtual ComponentHandle<BaseComponent> clone() const = 0;
@@ -78,7 +78,7 @@ protected:
         return handle;
     }
 
-    virtual void copyProperties(const Derived&){};
+    virtual void copyProperties(const Derived&){}
 };
 
 inline Long BaseComponent::getId() const

@@ -82,7 +82,7 @@ class AudioSourceImpl
 {
     friend class AudioSource;
 public:
-    virtual ~AudioSourceImpl() {};
+    virtual ~AudioSourceImpl() {}
 
     virtual void play() = 0;
     virtual void pause() = 0;

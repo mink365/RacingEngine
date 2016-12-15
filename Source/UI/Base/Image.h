@@ -19,7 +19,7 @@ enum class ImageType
 class NinePatchData
 {
 public:
-    NinePatchData() {};
+    NinePatchData() {}
     NinePatchData(float padding)
     {
         leftPadding = padding;
